@@ -33,11 +33,12 @@ TEST(protocoliterator, ProtocolRangeSplitOffset) {
 }
 
 TEST(protocoliterator, IsProtocolRangeValid) {
-  ByteList buf{HexToRawData("000000050000000180000007000081030000200f00000003")};
+  ByteList buf{
+      HexToRawData("000000050000000180000007000081030000200f00000003")};
 
   Validation context;
-  bool valid = detail::IsProtocolRangeValid(4, buf.toRange(), 2,
-                                        8, &context, ProtocolIteratorType::Property);
+  bool valid = detail::IsProtocolRangeValid(4, buf.toRange(), 2, 8, &context,
+                                            ProtocolIteratorType::Property);
 
   EXPECT_FALSE(valid);
 }

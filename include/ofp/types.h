@@ -272,11 +272,11 @@ template <size_t Length>
 char *RawDataToHexDelimitedLowercase(const std::array<UInt8, Length> &data,
                                      char (&buf)[Length * 3]);
 
-extern template 
-char *RawDataToHexDelimitedLowercase(const std::array<UInt8, 8> &data, char (&buf)[24]);
+extern template char *RawDataToHexDelimitedLowercase(
+    const std::array<UInt8, 8> &data, char (&buf)[24]);
 
-extern template 
-char *RawDataToHexDelimitedLowercase(const std::array<UInt8, 6> &data, char (&buf)[18]);
+extern template char *RawDataToHexDelimitedLowercase(
+    const std::array<UInt8, 6> &data, char (&buf)[18]);
 
 /// Convert a hexadecimal string with each hex-pair delimited by ':'.
 ///
@@ -332,12 +332,12 @@ inline bool IsPtrAligned(const void *ptr, size_t byteBoundary) {
 }
 
 /// Set a watchdog alarm to detect infinite loops.
-/// 
-/// Calling SetWatchdogTimer(secs) when there is already an alarm pushes back 
+///
+/// Calling SetWatchdogTimer(secs) when there is already an alarm pushes back
 /// the alarm.
-/// 
-/// To clear the alarm, call SetWatchdogTimer(0). 
-/// 
+///
+/// To clear the alarm, call SetWatchdogTimer(0).
+///
 /// \param secs  number of seconds until alarm
 void SetWatchdogTimer(unsigned secs);
 

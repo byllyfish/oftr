@@ -413,7 +413,7 @@ bool PktSource::getDeviceList(std::string *result) {
 
   pcap_if_t *devs = nullptr;
   char errbuf[PCAP_ERRBUF_SIZE];
-  
+
   if (pcap_findalldevs(&devs, errbuf) < 0) {
     assert(devs == nullptr);
     error_ = errbuf;

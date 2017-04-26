@@ -1,8 +1,8 @@
 #ifndef OFP_STAT_H_
 #define OFP_STAT_H_
 
-#include "ofp/statheader.h"
 #include "ofp/oxmlist.h"
+#include "ofp/statheader.h"
 
 namespace ofp {
 
@@ -22,4 +22,4 @@ class Stat {
 
 }  // namespace ofp
 
-#endif // OFP_STAT_H_
+#endif  // OFP_STAT_H_

@@ -196,14 +196,15 @@ static void watchdogtimer() {
   volatile UInt64 counter = 0;
   while (counter < 0xffffffffffff) {
     ++counter;
-  }  
+  }
 }
 
 OFP_BEGIN_IGNORE_USED_BUT_UNUSED
 
 TEST(types_DeathTest, watchdogtimer) {
   // This macro generates a warning on clang. [-Wused-but-marked-unused]
-  EXPECT_EXIT(watchdogtimer(), ::testing::ExitedWithCode(200), "watchdog_timer");
+  EXPECT_EXIT(watchdogtimer(), ::testing::ExitedWithCode(200),
+              "watchdog_timer");
 }
 
 OFP_END_IGNORE_USED_BUT_UNUSED

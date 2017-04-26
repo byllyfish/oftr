@@ -12,9 +12,8 @@ OFP_BEGIN_IGNORE_PADDING
 class StatBuilderInserter {
  public:
   StatBuilderInserter(llvm::yaml::IO &io, StatBuilder &builder,
-                       OXMFullType type)
-      : io_(io), builder_(builder), type_{type} {
-  }
+                      OXMFullType type)
+      : io_(io), builder_(builder), type_{type} {}
 
   template <class ValueType>
   void visit() {
@@ -45,7 +44,7 @@ template <>
 struct SequenceTraits<ofp::Stat> {
   using iterator = ofp::OXMIterator;
 
-  static iterator begin(IO &io, ofp::Stat &stat) { 
+  static iterator begin(IO &io, ofp::Stat &stat) {
     auto it = stat.begin();
     skip(it, end(io, stat));
     return it;
@@ -53,7 +52,7 @@ struct SequenceTraits<ofp::Stat> {
 
   static iterator end(IO &io, ofp::Stat &stat) { return stat.end(); }
 
-  static void next(iterator &iter, iterator iterEnd) { 
+  static void next(iterator &iter, iterator iterEnd) {
     ++iter;
     skip(iter, iterEnd);
   }
@@ -62,8 +61,7 @@ struct SequenceTraits<ofp::Stat> {
     using namespace ofp;
     for (; iter < iterEnd; ++iter) {
       OXMType type = iter->type();
-      if (type != OXS_DURATION::type() &&
-          type != OXS_PACKET_COUNT::type() &&
+      if (type != OXS_DURATION::type() && type != OXS_PACKET_COUNT::type() &&
           type != OXS_BYTE_COUNT::type()) {
         break;
       }
@@ -75,9 +73,8 @@ template <>
 struct SequenceTraits<ofp::StatBuilder> {
   static size_t size(IO &io, ofp::StatBuilder &match) { return 0; }
 
-  static ofp::detail::StatBuilderItem &element(IO &io,
-                                                ofp::StatBuilder &match,
-                                                size_t index) {
+  static ofp::detail::StatBuilderItem &element(IO &io, ofp::StatBuilder &match,
+                                               size_t index) {
     return Ref_cast<ofp::detail::StatBuilderItem>(match);
   }
 };
@@ -100,9 +97,9 @@ struct MappingTraits<ofp::detail::StatBuilderItem> {
     }
   }
 
-  static void addUnexpected(IO &io, ofp::StatBuilder &builder, const ofp::OXMFullType &type) {
-    log_debug("MappingTraits<StatBuilderItem>: Unexpected match field",
-              type);
+  static void addUnexpected(IO &io, ofp::StatBuilder &builder,
+                            const ofp::OXMFullType &type) {
+    log_debug("MappingTraits<StatBuilderItem>: Unexpected match field", type);
     ofp::ByteList data;
     io.mapRequired("value", data);
 
@@ -119,4 +116,4 @@ struct MappingTraits<ofp::detail::StatBuilderItem> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YSTAT_H_
+#endif  // OFP_YAML_YSTAT_H_

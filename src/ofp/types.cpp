@@ -2,11 +2,11 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/types.h"
-#include "ofp/log.h"
-#include <array>
-#include <unistd.h>  // for _exit
-#include <signal.h>   // for sigaction
+#include <signal.h>    // for sigaction
 #include <sys/time.h>  // for setitimer
+#include <unistd.h>    // for _exit
+#include <array>
+#include "ofp/log.h"
 
 namespace ofp {
 
@@ -303,4 +303,3 @@ void ofp::SetWatchdogTimer(unsigned secs) {
     log::fatal("SetWatchdogTimer: setitimer failed");
   }
 }
-

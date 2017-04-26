@@ -59,10 +59,10 @@ class Message {
     assert(offset < buf_.size());
     return buf_.data()[offset];
   }
-  
+
   void setByteAtIndex(UInt8 val, size_t offset) {
     assert(offset < buf_.size());
-    buf_.mutableData()[offset] = val; 
+    buf_.mutableData()[offset] = val;
   }
 
   const Header *header() const { return Interpret_cast<Header>(buf_.data()); }

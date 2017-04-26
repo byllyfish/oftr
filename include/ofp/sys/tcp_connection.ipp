@@ -258,8 +258,9 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
   updateTimeReadStarted();
 
   asio::async_read(
-      socket_, asio::buffer(message_.mutableDataResized(msgLength) + sizeof(Header),
-                            msgLength - sizeof(Header)),
+      socket_,
+      asio::buffer(message_.mutableDataResized(msgLength) + sizeof(Header),
+                   msgLength - sizeof(Header)),
       make_custom_alloc_handler(
           allocator_,
           [this, self](const asio::error_code &err, size_t bytes_transferred) {

@@ -28,7 +28,6 @@ class StatHeader {
 static_assert(sizeof(StatHeader) == 4, "Unexpected size.");
 static_assert(IsStandardLayout<StatHeader>(), "Expected standard layout.");
 
-
 }  // namespace ofp
 
-#endif // OFP_STATHEADER_H_
+#endif  // OFP_STATHEADER_H_

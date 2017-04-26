@@ -1,6 +1,6 @@
-#include "ofp/unittest.h"
 #include "ofp/flowremovedv6.h"
 #include "ofp/statbuilder.h"
+#include "ofp/unittest.h"
 
 using namespace ofp;
 
@@ -30,7 +30,9 @@ TEST(flowremovedv6, test) {
   EXPECT_EQ(0x050, channel.size());
 
   const char *expected =
-      "060B005000000001403022207770888011111111111111100001000C800000040000001B000000000000002880020008555555506666666080020808999999999999999080020A08AAAAAAAAAAAAAAA0";
+      "060B005000000001403022207770888011111111111111100001000C800000040000001B"
+      "000000000000002880020008555555506666666080020808999999999999999080020A08"
+      "AAAAAAAAAAAAAAA0";
   EXPECT_HEX(expected, channel.data(), channel.size());
 
   Message message{channel.data(), channel.size()};

@@ -10,7 +10,8 @@ OXMRange StatHeader::oxmRange() const {
                   length() - sizeof(StatHeader)};
 }
 
-bool StatHeader::validateInput(size_t lengthRemaining, Validation *context) const {
+bool StatHeader::validateInput(size_t lengthRemaining,
+                               Validation *context) const {
   // Make sure remaining length at least accomodates the match header.
   if (lengthRemaining < sizeof(StatHeader)) {
     context->matchIsInvalid("Insufficient bytes", BytePtr(this));

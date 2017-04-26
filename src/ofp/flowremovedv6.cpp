@@ -8,7 +8,7 @@ DurationSec FlowRemovedV6::duration() const {
   return statHeader()->oxmRange().get<OXS_DURATION>();
 }
 
-UInt64 FlowRemovedV6::packetCount() const { 
+UInt64 FlowRemovedV6::packetCount() const {
   return statHeader()->oxmRange().get<OXS_PACKET_COUNT>();
 }
 
@@ -25,7 +25,8 @@ Stat FlowRemovedV6::stat() const {
 }
 
 const StatHeader *FlowRemovedV6::statHeader() const {
-  return Interpret_cast<StatHeader>(BytePtr(&matchHeader_) + matchHeader_.paddedLength());
+  return Interpret_cast<StatHeader>(BytePtr(&matchHeader_) +
+                                    matchHeader_.paddedLength());
 }
 
 bool FlowRemovedV6::validateInput(Validation *context) const {
@@ -50,7 +51,8 @@ bool FlowRemovedV6::validateInput(Validation *context) const {
 
   remainingLength -= paddedMatchLen;
 
-  const StatHeader *stat = Interpret_cast<StatHeader>(BytePtr(&matchHeader_) + paddedMatchLen);
+  const StatHeader *stat =
+      Interpret_cast<StatHeader>(BytePtr(&matchHeader_) + paddedMatchLen);
   if (!stat->validateInput(remainingLength, context)) {
     log_info("FlowRemovedV6: invalid stat");
     return false;
@@ -64,7 +66,6 @@ bool FlowRemovedV6::validateInput(Validation *context) const {
   return true;
 }
 
-
 void FlowRemovedV6Builder::setPacketCount(UInt64 packetCount) {
   stat_.add(OXS_PACKET_COUNT{packetCount});
 }
@@ -77,11 +78,11 @@ void FlowRemovedV6Builder::setDuration(const DurationSec &duration) {
   stat_.add(OXS_DURATION{duration});
 }
 
-
 UInt32 FlowRemovedV6Builder::send(Writable *channel) {
   // Calculate length of FlowRemoved message up to end of match section. Then
   // pad it to a multiple of 8 bytes.
-  size_t msgMatchLen = FlowRemovedV6::UnpaddedSizeWithMatchHeader + match_.size();
+  size_t msgMatchLen =
+      FlowRemovedV6::UnpaddedSizeWithMatchHeader + match_.size();
   size_t msgMatchLenPadded = PadLength(msgMatchLen);
 
   size_t msgStatLen = msgMatchLenPadded + sizeof(StatHeader) + stat_.size();

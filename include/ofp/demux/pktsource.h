@@ -72,7 +72,7 @@ class PktSource {
 
   const std::string error() const { return error_; }
   UInt32 packetCount() const { return packetCount_; }
-  
+
   bool getDeviceList(std::string *result);
 
  private:

@@ -134,10 +134,11 @@ class Decode : public Subprogram {
   static void pcapMessageCallback(ofp::Message *message, void *context);
   bool pcapFormat() const;
 
-  bool verifyOutput(const std::string &input, const ofp::Message *originalMessage);
+  bool verifyOutput(const std::string &input,
+                    const ofp::Message *originalMessage);
   void extractPacketDataToFile(const ofp::Message *message);
   void fuzzStressTest(const ofp::Message *originalMessage);
-  
+
   enum PcapFormat { kPcapFormatAuto, kPcapFormatYes, kPcapFormatNo };
   enum JsonFlavor { kJsonFlavorDefault, kJsonFlavorMongoDB };
   enum TimestampFormat { kTimestampUnset, kTimestampNone, kTimestampSecs };
@@ -163,9 +164,12 @@ class Decode : public Subprogram {
   cl::opt<bool> verifyOutput_{
       "verify-output",
       cl::desc("Verify output by translating it back to binary")};
-  cl::opt<bool> fuzzStressTest_{"fuzz-stress-test", cl::desc("Stress test the decoder by fuzzing the input"), cl::Hidden};
+  cl::opt<bool> fuzzStressTest_{
+      "fuzz-stress-test",
+      cl::desc("Stress test the decoder by fuzzing the input"), cl::Hidden};
   cl::opt<bool> useFindx_{"use-findx",
-                          cl::desc("Use metadata from tcpflow '.findx' files"), cl::Hidden};
+                          cl::desc("Use metadata from tcpflow '.findx' files"),
+                          cl::Hidden};
   cl::opt<bool> pktDecode_{
       "pkt-decode",
       cl::desc("Include _pkt_decode in PacketIn/PacketOut decodes")};
@@ -178,7 +182,8 @@ class Decode : public Subprogram {
   cl::opt<TimestampFormat> timestampFormat_{
       "timestamp", cl::desc("Show the timestamp in all decodes"),
       cl::values(clEnumValN(kTimestampNone, "none", "None"),
-                 clEnumValN(kTimestampSecs, "secs", "Seconds since January 1, 1970 UTC")),
+                 clEnumValN(kTimestampSecs, "secs",
+                            "Seconds since January 1, 1970 UTC")),
       cl::init(kTimestampUnset)};
   cl::opt<std::string> outputFile_{
       "output", cl::desc("Write output to specified file instead of stdout"),

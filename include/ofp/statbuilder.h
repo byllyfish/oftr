@@ -37,4 +37,4 @@ class StatBuilder {
 
 }  // namespace ofp
 
-#endif // OFP_STATBUILDER_H_
+#endif  // OFP_STATBUILDER_H_

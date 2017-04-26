@@ -12,10 +12,10 @@
 #include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/ybytelist.h"
 #include "ofp/yaml/ybyteorder.h"
+#include "ofp/yaml/ydurationsec.h"
 #include "ofp/yaml/ylldpvalue.h"
 #include "ofp/yaml/yoxmfulltype.h"
 #include "ofp/yaml/yportnumber.h"
-#include "ofp/yaml/ydurationsec.h"
 
 namespace ofp {
 namespace detail {
@@ -198,9 +198,9 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
     }
   }
 
-  static void addUnexpected(IO &io, ofp::MatchBuilder &builder, const ofp::OXMFullType &type) {
-    log_debug("MappingTraits<MatchBuilderItem>: Unexpected match field",
-              type);
+  static void addUnexpected(IO &io, ofp::MatchBuilder &builder,
+                            const ofp::OXMFullType &type) {
+    log_debug("MappingTraits<MatchBuilderItem>: Unexpected match field", type);
     ofp::ByteList data;
     io.mapRequired("value", data);
 

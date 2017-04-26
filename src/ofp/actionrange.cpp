@@ -9,7 +9,8 @@
 
 using namespace ofp;
 
-static bool validateInput_SetField(const detail::ActionIteratorItem &item, Validation *context) {
+static bool validateInput_SetField(const detail::ActionIteratorItem &item,
+                                   Validation *context) {
   size_t len = item.size();
 
   // Check SetField action size.
@@ -26,7 +27,6 @@ static bool validateInput_SetField(const detail::ActionIteratorItem &item, Valid
 
   return true;
 }
-
 
 // Delegating constructor.
 ActionRange::ActionRange(const ActionList &list)

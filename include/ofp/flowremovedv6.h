@@ -6,9 +6,9 @@
 
 #include "ofp/durationsec.h"
 #include "ofp/matchbuilder.h"
-#include "ofp/statbuilder.h"
 #include "ofp/padding.h"
 #include "ofp/protocolmsg.h"
+#include "ofp/statbuilder.h"
 #include "ofp/tablenumber.h"
 
 namespace ofp {
@@ -76,7 +76,7 @@ class FlowRemovedV6Builder {
   void setHardTimeout(UInt16 hardTimeout) { msg_.hardTimeout_ = hardTimeout; }
   void setPacketCount(UInt64 packetCount);
   void setByteCount(UInt64 byteCount);
-  
+
   void setMatch(const MatchBuilder &match) { match_ = match; }
   void setStat(const StatBuilder &stat) { stat_ = stat; }
 
