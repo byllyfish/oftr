@@ -54,6 +54,7 @@ namespace ofpx {
 //   (for debugging).
 //   --msg-include=<types> Output these OpenFlow message types (glob).
 //   --msg-exclude=<types> Don't output these OpenFlow message types (glob).
+//   --timestamp=none|secs Show timestamp in all decodes.
 //
 // Usage:
 //
@@ -139,6 +140,7 @@ class Decode : public Subprogram {
   
   enum PcapFormat { kPcapFormatAuto, kPcapFormatYes, kPcapFormatNo };
   enum JsonFlavor { kJsonFlavorDefault, kJsonFlavorMongoDB };
+  enum TimestampFormat { kTimestampUnset, kTimestampNone, kTimestampSecs };
 
   // --- Command-line Arguments (Order is important here.) ---
   cl::opt<bool> json_{"json",
@@ -173,6 +175,11 @@ class Decode : public Subprogram {
       cl::ValueRequired};
   cl::opt<bool> showFilename_{"show-filename",
                               cl::desc("Show the file name in all decodes")};
+  cl::opt<TimestampFormat> timestampFormat_{
+      "timestamp", cl::desc("Show the timestamp in all decodes"),
+      cl::values(clEnumValN(kTimestampNone, "none", "None"),
+                 clEnumValN(kTimestampSecs, "secs", "Seconds since January 1, 1970 UTC")),
+      cl::init(kTimestampUnset)};
   cl::opt<std::string> outputFile_{
       "output", cl::desc("Write output to specified file instead of stdout"),
       cl::ValueRequired};

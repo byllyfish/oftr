@@ -198,6 +198,7 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
   // Create message buffers.
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
+  ofp::Timestamp timestamp;
 
   message.setInfo(&sessionInfo_);
 
@@ -209,6 +210,10 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
     input.read(msg, sizeof(ofp::Header));
     if (!input) {
       return checkError(input, sizeof(ofp::Header), true);
+    }
+
+    if (timestampFormat_ > kTimestampNone) {
+      timestamp = ofp::Timestamp::now();
     }
 
     // Check header length in message. If the header says the length is less
@@ -233,6 +238,7 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
 
     originalMessage.assign(message);
     message.normalize();
+    message.setTime(timestamp);
 
     ExitStatus result = decodeOneMessage(&message, &originalMessage);
     if (result != ExitStatus::Success && !keepGoing_) {
