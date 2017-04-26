@@ -130,11 +130,6 @@ OpenFlow version using the --ofversion option.
 *--json-array*::
     Json input is arbitrarily delimited objects.
 
-*--json-flavor*='FLAVOR'::
-    Specifies the flavor of JSON output. The default is 'default'.
-    - *default* = Regular JSON output.
-    - *mongodb* = MongoDB JSON with binary data.
-
 *-k, --keep-going*::
     Continue processing input after errors.
 
@@ -185,6 +180,11 @@ also represents stdin.
 *--json-array*::
     Write output as a valid JSON array.
 
+*--json-flavor*='FLAVOR'::
+    Specifies the flavor of JSON output. The default is 'default'.
+    - *default* = Regular JSON output.
+    - *mongodb* = MongoDB JSON with binary data.
+
 *-k, --keep-going*::
     Continue processing messages after errors.
 
@@ -218,6 +218,11 @@ also represents stdin.
 
 *--pkt-write-file*='FILE'::
     Write data from PacketIn/PacketOut messages to .pcap file.
+
+*--timestamp*='FORMAT'
+    Specifies the timestamp output format.
+    - *none* = No timestamp
+    - *secs* = Seconds since January 1, 1970 UTC (nanosecond precision)
 
 === Packet Capture Options
 
