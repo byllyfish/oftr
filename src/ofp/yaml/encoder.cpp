@@ -343,9 +343,15 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
       break;
     }
     case FlowRemoved::type(): {
-      FlowRemovedBuilder flowRemoved;
-      io.mapRequired("msg", flowRemoved);
-      flowRemoved.send(&channel_);
+      if (header_.version() < OFP_VERSION_6) {
+        FlowRemovedBuilder flowRemoved;
+        io.mapRequired("msg", flowRemoved);
+        flowRemoved.send(&channel_);
+      } else {
+        FlowRemovedV6Builder flowRemoved;
+        io.mapRequired("msg", flowRemoved);
+        flowRemoved.send(&channel_);
+      }
       break;
     }
     case MeterMod::type(): {

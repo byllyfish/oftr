@@ -3595,8 +3595,8 @@ msg:
       value:           0x05
     - field:           MPLS_BOS
       value:           0x01
-    - field:           0x80004A03
-      value:           ABCDEF
+    - field:           PBB_ISID
+      value:           0x00ABCDEF
     - field:           TUNNEL_ID
       value:           0x0909090909090909
     - field:           IPV6_EXTHDR
@@ -3707,8 +3707,8 @@ msg:
       value:           0x05
     - field:           MPLS_BOS
       value:           0x01
-    - field:           0x80004A03
-      value:           ABCDEF
+    - field:           PBB_ISID
+      value:           0x00ABCDEF
     - field:           TUNNEL_ID
       value:           0x0909090909090909
     - field:           IPV6_EXTHDR
@@ -6223,8 +6223,8 @@ msg:
       value:           0x05
     - field:           MPLS_BOS
       value:           0x01
-    - field:           0x80004A03
-      value:           ABCDEF
+    - field:           PBB_ISID
+      value:           0x00ABCDEF
     - field:           TUNNEL_ID
       value:           0x0909090909090909
     - field:           IPV6_EXTHDR
@@ -6323,8 +6323,8 @@ msg:
       value:           0x05
     - field:           MPLS_BOS
       value:           0x01
-    - field:           0x80004A03
-      value:           ABCDEF
+    - field:           PBB_ISID
+      value:           0x00ABCDEF
     - field:           TUNNEL_ID
       value:           0x0909090909090909
     - field:           IPV6_EXTHDR

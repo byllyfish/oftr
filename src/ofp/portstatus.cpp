@@ -8,7 +8,7 @@
 using namespace ofp;
 
 bool PortStatus::validateInput(Validation *context) const {
-  size_t length = context->length();
+  size_t length = header_.length();
 
   if (length < sizeof(PortStatus) + sizeof(Port)) {
     log_debug("PortStatus too small", length);

@@ -194,6 +194,7 @@ set(LIBOFP_SOURCES
   src/ofp/featuresreply.cpp
   src/ofp/flowmod.cpp
   src/ofp/flowremoved.cpp
+  src/ofp/flowremovedv6.cpp
   src/ofp/mpflowstatsreply.cpp
   src/ofp/mpflowstatsrequest.cpp
   src/ofp/mpflowmonitorrequest.cpp
@@ -272,6 +273,7 @@ set(LIBOFP_SOURCES
   src/ofp/smallbuffer.cpp
   src/ofp/smallcstring.cpp
   src/ofp/standardmatch.cpp
+  src/ofp/statheader.cpp
   src/ofp/tabledesc.cpp
   src/ofp/tablefeatureproperty.cpp
   src/ofp/tablemod.cpp

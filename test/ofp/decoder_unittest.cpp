@@ -75,6 +75,18 @@ static void testDecodeOnly(const char *hex, const char *yaml) {
   EXPECT_EQ(yaml, decoder.result().str());
 }
 
+static void testDecodeFail(const char *hex) {
+  auto s = HexToRawData(hex);
+
+  Message msg{s.data(), s.size()};
+  msg.normalize();
+
+  Decoder decoder{&msg};
+
+  EXPECT_EQ("Invalid data.", decoder.error());
+  EXPECT_EQ("", decoder.result());
+}
+
 TEST(decoder, hellov1) {
   testDecodeEncode(
       "0100000800000001",
@@ -1315,6 +1327,21 @@ TEST(decoder, flowremovedv3) {
       "IN_PORT\n      value:           0x12345678\n...\n");
 }
 
+TEST(decoder, flowremovedv6) {
+  testDecodeEncode(
+      "060B005011111111554433338888999922222222222222220001000C8000000412345678"
+      "000000000000002880020008666666667777777780020808AAAAAAAAAAAAAAAA80020A08"
+      "BBBBBBBBBBBBBBBB",
+      "---\ntype:            FLOW_REMOVED\nxid:             "
+      "0x11111111\nversion:         0x06\nmsg:             \n  cookie:         "
+      " 0x2222222222222222\n  priority:        0x3333\n  reason:          "
+      "0x44\n  table_id:        0x55\n  duration:        "
+      "1717986918.x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    "
+      "0x9999\n  packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
+      "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
+      "IN_PORT\n      value:           0x12345678\n  stat:            \n...\n");
+}
+
 TEST(decoder, ofmp_desc_request_v4) {
   testDecodeEncode("04120010111111110000000000000000",
                    "---\ntype:            REQUEST.DESC\nflags:           [  "
@@ -1784,7 +1811,7 @@ TEST(decoder, ofmp_tablefeaturesv4_reply_unpadded_len) {
       "            0x00007777\nversion:         0x04\nmsg:             \n  - "
       "table_id:        0x55\n    name:            Table 1\n    "
       "metadata_match:  0x0000000000888888\n    metadata_write:  "
-      "0x0000000000999999\n    config:          [ VACANCY_EVENTS, '0x000000A0' "
+      "0x0000000000999999\n    config:          [ VACANCY_EVENTS, '0x000000A2' "
       "]\n    max_entries:     0x000000BB\n    instructions:    [  ]\n    "
       "next_tables:     [  ]\n    write_actions:   [  ]\n    apply_actions:   "
       "[  ]\n    match:           [  ]\n    wildcards:       [  ]\n    "
@@ -1993,4 +2020,101 @@ TEST(decoder, ofmp_groupstats_v3_2) {
       "0x200000000000AAAA\n    duration:        0\n    bucket_stats:    \n     "
       " - packet_count:    0x300000000000BBBB\n        byte_count:      "
       "0x400000000000CCCC\n...\n");
+}
+
+TEST(decoder, ofmp_table_features) {
+  testDecodeEncode(
+      "0413018800000000000C0000000000000178000000000000506F72742041434C00000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000003000000320000001800010004000300040004000400050004000600040002000B"
+      "0102030405060700000000000004001C0000000400110004001200040016000400170004"
+      "00190004000000000006001C000000040011000400120004001600040017000400190004"
+      "00000000000800348000000480000A028000070C8000090C80000C028000140180001908"
+      "8000372080001E028000200280001A0280001C0200000000000A00348000000480000A02"
+      "800006068000080680000C0280001401800018048000361080001E028000200280001A02"
+      "80001C0200000000000C0030800006068000080680000C0280000E018000100180001604"
+      "8000180480001A0280001C0280001E0280002002000E0030800006068000080680000C02"
+      "80000E0180001001800016048000180480001A0280001C0280001E0280002002",
+      "---\ntype:            REPLY.TABLE_FEATURES\nflags:           [  ]\nxid: "
+      "            0x00000000\nversion:         0x04\nmsg:             \n  - "
+      "table_id:        0x00\n    name:            Port ACL\n    "
+      "metadata_match:  0x0000000000000000\n    metadata_write:  "
+      "0x0000000000000000\n    config:          [ '0x00000003' ]\n    "
+      "max_entries:     0x00000032\n    instructions:    [ GOTO_TABLE, "
+      "WRITE_ACTIONS, APPLY_ACTIONS, CLEAR_ACTIONS, \n                       "
+      "METER ]\n    next_tables:     [ 1, 2, 3, 4, 5, 6, 7 ]\n    "
+      "write_actions:   [ OUTPUT, PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, \n   "
+      "                    SET_FIELD ]\n    apply_actions:   [ OUTPUT, "
+      "PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, \n                       "
+      "SET_FIELD ]\n    match:           [ IN_PORT, ETH_TYPE, ETH_DST/, "
+      "ETH_SRC/, VLAN_VID, \n                       IP_PROTO, IPV4_DST/, "
+      "IPV6_DST/, UDP_SRC, UDP_DST, \n                       TCP_SRC, TCP_DST "
+      "]\n    wildcards:       [ IN_PORT, ETH_TYPE, ETH_DST, ETH_SRC, "
+      "VLAN_VID, IP_PROTO, \n                       IPV4_DST, IPV6_DST, "
+      "UDP_SRC, UDP_DST, TCP_SRC, TCP_DST ]\n    write_set_field: [ ETH_DST, "
+      "ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, \n                      "
+      " IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    apply_set_field: [ "
+      "ETH_DST, ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, \n             "
+      "          IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    "
+      "properties:      \n...\n");
+}
+
+TEST(decoder, packet_in_fuzz1) {
+  // Invalid oxm range.
+  testDecodeFail(
+      "040a00940000000000000002 002a 010100010203000000000001 "
+      "0058800020240000000680000aa0080680000606ffffffffbfff80000806f20ba47df8ea"
+      "80002a02000180002c140a00000180002e040a00000300003006f20ba47df8ea80003206"
+      "0000000084040000fffffffffffff20ba47df8ea08060001080206040001f20ba47df8ea"
+      "0a0000030000000000000a000003");
+
+  // Wrong match type.
+  testDecodeFail(
+      "040a00940000000000000002 002a 010100010203000000000000 "
+      "0058800020240000000680000aa0080680000606ffffffffbfff80000806f20ba47df8ea"
+      "80002a02000180002c140a00000180002e040a00000300003006f20ba47df8ea80003206"
+      "0000000084040000fffffffffffff20ba47df8ea08060001080206040001f20ba47df8ea"
+      "0a0000030000000000000a000003");
+}
+
+TEST(decoder, table_status_fuzz) {
+  testDecodeFail(
+      "041f002000000000000000050000000180000007000081030000200f00000003");
+}
+
+TEST(decoder, flowmod_fuzz) {
+  testDecodeEncode(
+      "030e00800000000000000000000000000000000000000000010000000000007b0000ffff"
+      "ffffffffffffffff000000000001000e80000606f20ba47df8ea00000003002800000000"
+      "0019001080000c0201020000000000000000001000000006ffff00000000000000040018"
+      "0000000000190010800008060102030405060000",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000000\nversion:   "
+      "      0x03\nmsg:             \n  cookie:          0x0000000000000000\n  "
+      "cookie_mask:     0x0000000000000000\n  table_id:        0x01\n  "
+      "command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    "
+      "0x0000\n  priority:        0x007B\n  buffer_id:       0x0000FFFF\n  "
+      "out_port:        ANY\n  out_group:       ANY\n  flags:           [  ]\n "
+      " match:           \n    - field:           ETH_DST\n      value:        "
+      "   'f2:0b:a4:7d:f8:ea'\n  instructions:    \n    - instruction:     "
+      "WRITE_ACTIONS\n      actions:         \n        - action:          "
+      "SET_FIELD\n          field:           VLAN_VID\n          value:        "
+      "   0x0102\n        - action:          OUTPUT\n          port_no:        "
+      " 0x00000006\n          max_len:         NO_BUFFER\n    - instruction:   "
+      "  APPLY_ACTIONS\n      actions:         \n        - action:          "
+      "SET_FIELD\n          field:           ETH_SRC\n          value:         "
+      "  '01:02:03:04:05:06'\n...\n");
+  // This should fail.
+  testDecodeFail(
+      "030e00800000000000000000000000000000000000000000010000000000007b0000ffff"
+      "ffffffffffffffff000000000001000e80000606f20ba47df8ea00000003002800000000"
+      "0019001080000cff01020000000000000000001000000006ffff00000000000000040018"
+      "0000000000190010800008060102030405060000");
+}
+
+TEST(decoder, portstatus_fuzz) {
+  // This should fail.
+  testDecodeFail(
+      "050c00480000000000090000000000000000006400380000000000000000000000000000"
+      "00000000000000000000000000000000000753000000000000000000000000000000000"
+      "0");
 }

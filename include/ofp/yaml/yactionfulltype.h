@@ -36,7 +36,7 @@ struct ScalarTraits<ofp::ActionFullType> {
     auto pair = scalar.split('.');
     if (!pair.second.empty()) {
       ofp::UInt16 action = ofp::OFPAT_EXPERIMENTER;
-      ofp::UInt32 experimenter;
+      ofp::UInt32 experimenter = 0;
       if ((pair.first == "EXPERIMENTER" ||
            ofp::yaml::ParseUnsignedInteger(pair.first, &action)) &&
           ofp::yaml::ParseUnsignedInteger(pair.second, &experimenter)) {
