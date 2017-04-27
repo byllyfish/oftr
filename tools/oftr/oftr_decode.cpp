@@ -198,17 +198,22 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
   // Create message buffers.
   ofp::Message message{nullptr};
   ofp::Message originalMessage{nullptr};
+  ofp::Timestamp timestamp;
 
   message.setInfo(&sessionInfo_);
 
   while (input) {
     // Read the message header.
-    char *msg =
-        reinterpret_cast<char *>(message.mutableData(sizeof(ofp::Header)));
+    char *msg = reinterpret_cast<char *>(
+        message.mutableDataResized(sizeof(ofp::Header)));
 
     input.read(msg, sizeof(ofp::Header));
     if (!input) {
       return checkError(input, sizeof(ofp::Header), true);
+    }
+
+    if (timestampFormat_ > kTimestampNone) {
+      timestamp = ofp::Timestamp::now();
     }
 
     // Check header length in message. If the header says the length is less
@@ -219,7 +224,7 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
     }
 
     // Read the message body.
-    msg = reinterpret_cast<char *>(message.mutableData(msgLen));
+    msg = reinterpret_cast<char *>(message.mutableDataResized(msgLen));
     std::streamsize bodyLen = ofp::Signed_cast(msgLen - sizeof(ofp::Header));
 
     input.read(msg + sizeof(ofp::Header), bodyLen);
@@ -233,6 +238,7 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
 
     originalMessage.assign(message);
     message.normalize();
+    message.setTime(timestamp);
 
     ExitStatus result = decodeOneMessage(&message, &originalMessage);
     if (result != ExitStatus::Success && !keepGoing_) {
@@ -305,7 +311,8 @@ ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
     previousPos = pos;
 
     size_t offset = buffer.size();
-    char *buf = reinterpret_cast<char *>(buffer.mutableData(offset + length));
+    char *buf =
+        reinterpret_cast<char *>(buffer.mutableDataResized(offset + length));
     assert(buffer.size() == offset + length);
 
     // Read length bytes from input into buffer.
@@ -379,6 +386,14 @@ ExitStatus Decode::decodePcapDevice(const std::string &device) {
 
   if (!pcap.openDevice(device.c_str(), pcapFilter_)) {
     llvm::errs() << "Error: " << pcap.error() << '\n';
+    // If device is not found, list all available devices.
+    if (llvm::StringRef{pcap.error()}.endswith("No such device")) {
+      std::string devices;
+      if (pcap.getDeviceList(&devices)) {
+        llvm::errs() << "Available devices:\n" << devices << '\n';
+      }
+    }
+
     return ExitStatus::FileOpenFailed;
   }
 
@@ -422,6 +437,14 @@ ExitStatus Decode::decodePcapFiles() {
     msg.runLoop(&pcap);
     pcap.close();
     setCurrentFilename("");
+  }
+
+  llvm::errs() << pcap.packetCount() << " packets processed from "
+               << files.size() << " file(s).";
+  if (pcap.packetCount() == 0 && !pcapFilter_.empty()) {
+    llvm::errs() << " Use --pcap-filter='' to process all packets.\n";
+  } else {
+    llvm::errs() << '\n';
   }
 
   return ExitStatus::Success;
@@ -508,29 +531,20 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
     output_->flush();
   }
 
-  if (verifyOutput_) {
-    // Double-check the result by re-encoding the YAML message. We should obtain
-    // the original message contents. If there is a difference, report the
-    // error.
-
-    ofp::yaml::Encoder encoder{decoder.result(), false};
-
-    if (!encoder.error().empty()) {
-      llvm::errs() << "Filename: " << currentFilename_ << '\n';
-      llvm::errs() << "Error: Decode succeeded but encode failed: "
-                   << encoder.error() << '\n';
-      return ExitStatus::VerifyOutputFailed;
-    }
-
-    if (!equalMessages({originalMessage->data(), originalMessage->size()},
-                       {encoder.data(), encoder.size()})) {
-      return ExitStatus::VerifyOutputFailed;
-    }
+  // Double-check the result by re-encoding the YAML message.
+  if (verifyOutput_ && !verifyOutput(decoder.result(), originalMessage)) {
+    return ExitStatus::VerifyOutputFailed;
   }
 
   // Optionally, write data from PacketIn or PacketOut messages.
   if (pktSinkFile_) {
     extractPacketDataToFile(message);
+  }
+
+  // Optionally run the original message through a basic fuzz test to stress
+  // test the decoder.
+  if (fuzzStressTest_) {
+    fuzzStressTest(originalMessage);
   }
 
   return ExitStatus::Success;
@@ -545,6 +559,68 @@ void Decode::parseMsgFilter(const std::string &input,
   for (const auto &s : vals) {
     filter->push_back(s.str());
   }
+}
+
+/// Helper function to compare string pattern to endpoint. Currently, we only
+/// compare the port.
+static bool matchEndpoint(llvm::StringRef pattern,
+                          const ofp::IPv6Endpoint &endpt) {
+  ofp::UInt16 port = 0;
+  if (pattern.getAsInteger(0, port))
+    return false;
+  return port == endpt.port();
+}
+
+/// Helper function to compare string pattern to conn_id.
+static bool matchConnId(llvm::StringRef pattern, ofp::UInt64 connId) {
+  ofp::UInt64 conn = 0;
+  if (pattern.getAsInteger(0, conn))
+    return false;
+  return conn == connId;
+}
+
+/// Return true if pattern matches this message.
+///
+/// `msgType` is passed in pre-computed. If pattern begins with '!', negate
+/// the result.
+static bool matchMessage(const char *pattern, const ofp::Message *message,
+                         const char *msgType) {
+  assert(pattern);
+  assert(msgType);
+
+  bool negate = false;
+  if (*pattern == '!') {
+    negate = true;
+    ++pattern;
+  }
+
+  llvm::StringRef pat{pattern};
+  bool result = false;
+
+  if (pat.startswith("src:")) {
+    // "src:<port>" matches messages from <port>
+    ofp::MessageInfo *info = message->info();
+    if (!info)
+      return false;
+    result = matchEndpoint(pat.substr(4), info->source());
+  } else if (pat.startswith("dst:")) {
+    // "dst:<port>" matches messages to <port>
+    ofp::MessageInfo *info = message->info();
+    if (!info)
+      return false;
+    result = matchEndpoint(pat.substr(4), info->dest());
+  } else if (pat.startswith("conn_id:")) {
+    // "conn_id:<id>" matches message for conn_id <id>
+    ofp::MessageInfo *info = message->info();
+    if (!info)
+      return false;
+    result = matchConnId(pat.substr(8), info->sessionId());
+  } else {
+    // Test pattern as glob against message type.
+    result = (fnmatch(pattern, msgType, FNM_CASEFOLD) == 0);
+  }
+
+  return negate ? !result : result;
 }
 
 /// Return true if we're allowed to output this message type.
@@ -562,7 +638,7 @@ bool Decode::isMsgTypeAllowed(const ofp::Message *message) const {
 
   // Check msgType against the exclude filter.
   for (const auto &pattern : excludeFilter_) {
-    if (fnmatch(pattern.c_str(), msgType.c_str(), FNM_CASEFOLD) == 0)
+    if (matchMessage(pattern.c_str(), message, msgType.c_str()))
       return false;
   }
 
@@ -572,7 +648,7 @@ bool Decode::isMsgTypeAllowed(const ofp::Message *message) const {
 
   // Check msgType against the include filter.
   for (const auto &pattern : includeFilter_) {
-    if (fnmatch(pattern.c_str(), msgType.c_str(), FNM_CASEFOLD) == 0)
+    if (matchMessage(pattern.c_str(), message, msgType.c_str()))
       return true;
   }
 
@@ -752,6 +828,23 @@ void Decode::pcapMessageCallback(ofp::Message *message, void *context) {
   }
 }
 
+/// Return true if file has pcap magic header.
+static bool hasPcapMagicHeader(const std::string &fname) {
+  const ofp::UInt32 PCAP_MAGIC = 0xa1b2c3d4;
+  bool result = false;
+  FILE *file = std::fopen(fname.c_str(), "rb");
+  if (file) {
+    ofp::UInt32 magic = 0;
+    if (std::fread(&magic, 1, sizeof(magic), file) == sizeof(magic)) {
+      log_debug("hasPcapMagicHeader: magic", magic);
+      result = (magic == PCAP_MAGIC) ||
+               (ofp::detail::SwapByteOrder(magic) == PCAP_MAGIC);
+    }
+    std::fclose(file);
+  }
+  return result;
+}
+
 bool Decode::pcapFormat() const {
   if (pcapFormat_ == kPcapFormatNo)
     return false;
@@ -764,12 +857,42 @@ bool Decode::pcapFormat() const {
   // Check if any of the input files have the .pcap file extension.
   for (const auto &filename : inputFiles_) {
     llvm::StringRef fname{filename};
-    if (fname.endswith(".pcap") || fname.endswith(".pcapng")) {
+    if (fname.endswith(".pcap") || fname.endswith(".pcapng") ||
+        fname.endswith(".cap")) {
+      return true;
+    }
+  }
+
+  // Check for PCAP file signature (first 4 bytes) in the first file.
+  if (!inputFiles_.empty()) {
+    if (hasPcapMagicHeader(inputFiles_[0])) {
       return true;
     }
   }
 
   return false;
+}
+
+// Double-check the result by re-encoding the YAML message. We should obtain
+// the original message contents. If there is a difference, report the
+// error.
+bool Decode::verifyOutput(const std::string &input,
+                          const ofp::Message *originalMessage) {
+  ofp::yaml::Encoder encoder{input, false};
+
+  if (!encoder.error().empty()) {
+    llvm::errs() << "Filename: " << currentFilename_ << '\n';
+    llvm::errs() << "Error: Decode succeeded but encode failed: "
+                 << encoder.error() << '\n';
+    return false;
+  }
+
+  if (!equalMessages({originalMessage->data(), originalMessage->size()},
+                     {encoder.data(), encoder.size()})) {
+    return false;
+  }
+
+  return true;
 }
 
 // If message is a PacketIn or PacketOut, write it's data payload to a .pcap
@@ -799,6 +922,56 @@ void Decode::extractPacketDataToFile(const ofp::Message *message) {
     }
   }
 #endif
+}
+
+// Run a simple fuzz test on the original message.
+//
+// 1. Treat the message as a different type (2nd byte, OFPT_MAX_ALLOWED).
+// 2. Change one post-header byte at a time:
+//     a. Set byte to 0x00
+//     b. Set byte to 0xFF
+//
+void Decode::fuzzStressTest(const ofp::Message *originalMessage) {
+  using namespace ofp;
+  Message message{nullptr};
+  UInt64 count = 0;
+
+  for (UInt8 newType = 0; newType <= OFPT_MAX_ALLOWED; ++newType) {
+    if (newType != originalMessage->type()) {
+      message.assign(*originalMessage);
+      message.mutableHeader()->setType(static_cast<OFPType>(newType));
+      SetWatchdogTimer(3);
+      message.normalize();
+      yaml::Decoder decoder{&message, json_, pktDecode_};
+      if ((++count % 100) == 0) {
+        log_info("fuzz-stress-test:", count);
+      }
+    }
+  }
+
+  const UInt8 values[] = {0x00, 0xFF};
+
+  // Only fuzz the first 256 bytes.
+  const size_t kFuzzPrefix = 256;
+  const size_t kMaxSize =
+      std::min(originalMessage->size(), kFuzzPrefix + sizeof(Header));
+
+  for (size_t i = sizeof(Header); i < kMaxSize; ++i) {
+    for (UInt8 val : values) {
+      if (originalMessage->getByteAtIndex(i) != val) {
+        message.assign(*originalMessage);
+        message.setByteAtIndex(val, i);
+        SetWatchdogTimer(3);
+        message.normalize();
+        yaml::Decoder decoder{&message, json_, pktDecode_};
+        if ((++count % 100) == 0) {
+          log_info("fuzz-stress-test:", count);
+        }
+      }
+    }
+  }
+
+  SetWatchdogTimer(0);
 }
 
 // Compare two buffers and return offset of the byte that differs. If buffers

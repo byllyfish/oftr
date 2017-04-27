@@ -2,12 +2,12 @@
 .\"     Title: oftr
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 02/28/2017
+.\"      Date: 04/26/2017
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "OFTR" "1" "02/28/2017" "\ \&" "\ \&"
+.TH "OFTR" "1" "04/26/2017" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -161,20 +161,6 @@ oftr encode input\&.yml | nc \-w 3 10\&.0\&.0\&.1 6653 | oftr decode
 .RE
 .\}
 .sp
-You can parse a \&.pcap file with tcpflow and then decode all the OpenFlow messages, while retaining metadata:
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-#!/bin/bash
-tcpflow \-I \-r saved\&.pcap \-o "/tmp/flow_$$"
-oftr decode \-\-use\-findx "/tmp/flow_$$/*\&.findx"
-.fi
-.if n \{\
-.RE
-.\}
-.sp
 The oftr help tool provides information about the schema used for reading/writing OpenFlow messages in YAML\&. To obtain information about the syntax for the \fIFLOW_MOD\fR message:
 .sp
 .if n \{\
@@ -227,36 +213,6 @@ Json input is separated by linefeeds\&.
 \fB\-\-json\-array\fR
 .RS 4
 Json input is arbitrarily delimited objects\&.
-.RE
-.PP
-\fB\-\-json\-flavor\fR=\fIFLAVOR\fR
-.RS 4
-Specifies the flavor of JSON output\&. The default is
-\fIdefault\fR\&.
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-\fBdefault\fR
-= Regular JSON output\&.
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-\fBmongodb\fR
-= MongoDB JSON with binary data\&.
-.RE
 .RE
 .PP
 \fB\-k, \-\-keep\-going\fR
@@ -324,6 +280,36 @@ Write compact JSON output instead of YAML\&.
 Write output as a valid JSON array\&.
 .RE
 .PP
+\fB\-\-json\-flavor\fR=\fIFLAVOR\fR
+.RS 4
+Specifies the flavor of JSON output\&. The default is
+\fIdefault\fR\&.
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBdefault\fR
+= Regular JSON output\&.
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fBmongodb\fR
+= MongoDB JSON with binary data\&.
+.RE
+.RE
+.PP
 \fB\-k, \-\-keep\-going\fR
 .RS 4
 Continue processing messages after errors\&.
@@ -344,13 +330,6 @@ Quiet mode; suppress normal output\&.
 Suppress error output for invalid messages\&.
 .RE
 .PP
-\fB\-\-use\-findx\fR
-.RS 4
-Use metadata from tcpflow
-\fI\&.findx\fR
-files\&.
-.RE
-.PP
 \fB\-V, \-verify\-output\fR
 .RS 4
 Verify output by translating it back to binary\&.
@@ -363,16 +342,18 @@ Show the file name in all decodes\&.
 .PP
 \fB\-\-msg\-include\fR=\fITYPES\fR
 .RS 4
-Output these OpenFlow message types\&. Argument is a comma separated list of
+Output these OpenFlow message types\&. Argument is a comma separated list of patterns\&. A pattern is a
 \fIglob\fR
-patterns\&.
+for the message type (e\&.g\&.
+\fIFLOW_MOD\fR,
+\fIREQUEST\&.*\fR)\&. If a pattern begins with "src:" or "dst:", it matches a source or destination port number\&. If a pattern begins with "conn_id:", it matches against the conn_id value\&. Any pattern prefixed by
+\fI!\fR
+is negated\&.
 .RE
 .PP
 \fB\-\-msg\-exclude\fR=\fITYPES\fR
 .RS 4
-Don\(cqt output these OpenFlow message types\&. Argument is a comma separated list of
-\fIglob\fR
-patterns\&.
+Don\(cqt output these OpenFlow message types\&. Argument is a comma separated list of patterns as described under the \-\-msg\-include option\&.
 .RE
 .PP
 \fB\-\-pkt\-decode\fR
@@ -384,6 +365,8 @@ Include _pkt_decode in PacketIn/PacketOut decodes\&.
 .RS 4
 Write data from PacketIn/PacketOut messages to \&.pcap file\&.
 .RE
+.sp
+\fB\-\-timestamp\fR=\fIFORMAT\fR Specifies the timestamp output format\&. \- \fBnone\fR = No timestamp \- \fBsecs\fR = Seconds since January 1, 1970 UTC (nanosecond precision)
 .SS "Packet Capture Options"
 .PP
 \fB\-\-pcap\-device\fR=\fIDEVICE\fR
@@ -398,13 +381,13 @@ Specify the packet capture filter\&. The default filter is \(oqtcp port 6653 or 
 .PP
 \fB\-\-pcap\-format\fR=\fIauto|yes|no\fR
 .RS 4
-Specify whether to treat all input files as \&.pcap format\&.
+Specify whether to treat all input files as pcap format\&.
 yes
-causes the decoder to open the file using libpcap\&.
+causes the decoder to open all files using libpcap\&.
 no
 causes the decoder to always treat the file as binary\&. The default
 auto
-sets the \-\-pcap\-format to yes if there is at least one file name that ends in "\&.pcap"\&. It is an error if we fail to open a \&.pcap file\&.
+sets the \-\-pcap\-format to yes if there is at least one file with a pcap file extension, or the first file is pcap file\&. It is an error if we fail to open a pcap file\&.
 .RE
 .PP
 \fB\-\-pcap\-max\-missing\-bytes\fR=SIZE

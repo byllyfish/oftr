@@ -12,6 +12,7 @@
 #include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/ybytelist.h"
 #include "ofp/yaml/ybyteorder.h"
+#include "ofp/yaml/ydurationsec.h"
 #include "ofp/yaml/ylldpvalue.h"
 #include "ofp/yaml/yoxmfulltype.h"
 #include "ofp/yaml/yportnumber.h"
@@ -193,34 +194,41 @@ struct MappingTraits<ofp::detail::MatchBuilderItem> {
       OXMDispatch(id, &inserter);
 
     } else {
-      log_debug("MappingTraits<MatchBuilderItem>: Unexpected match field",
-                type);
-      ofp::ByteList data;
-      io.mapRequired("value", data);
+      addUnexpected(io, builder, type);
+    }
+  }
 
-      if (!type.hasMask()) {
-        size_t len = data.size() + (type.experimenter() != 0 ? 4 : 0);
-        if (len == type.length()) {
-          builder.addUnchecked(type.type(), type.experimenter(), data);
-        } else {
-          log_debug("Invalid data size:", type);
-        }
+  static void addUnexpected(IO &io, ofp::MatchBuilder &builder,
+                            const ofp::OXMFullType &type) {
+    log_debug("MappingTraits<MatchBuilderItem>: Unexpected match field", type);
+    ofp::ByteList data;
+    io.mapRequired("value", data);
+
+    if (!type.hasMask()) {
+      size_t len = data.size() + (type.experimenter() != 0 ? 4 : 0);
+      if (len == type.length()) {
+        builder.addUnchecked(type.type(), type.experimenter(), data);
       } else {
-        // Handle mask in unknown OXM field value.
-        ofp::ByteList mask;
-        io.mapRequired("mask", mask);
+        io.setError("Invalid field length");
+        log_debug("Invalid data size:", type);
+      }
+    } else {
+      // Handle mask in unknown OXM field value.
+      ofp::ByteList mask;
+      io.mapRequired("mask", mask);
 
-        if (data.size() != mask.size()) {
-          log_debug("Mask size does not equal data size");
-          return;
-        }
+      if (data.size() != mask.size()) {
+        io.setError("Unequal field mask size");
+        log_debug("Mask size does not equal data size");
+        return;
+      }
 
-        size_t len = 2 * data.size() + (type.experimenter() != 0 ? 4 : 0);
-        if (len == type.length()) {
-          builder.addUnchecked(type.type(), type.experimenter(), data, mask);
-        } else {
-          log_debug("Invalid data size:", type);
-        }
+      size_t len = 2 * data.size() + (type.experimenter() != 0 ? 4 : 0);
+      if (len == type.length()) {
+        builder.addUnchecked(type.type(), type.experimenter(), data, mask);
+      } else {
+        io.setError("Invalid field length");
+        log_debug("Invalid data size:", type);
       }
     }
   }

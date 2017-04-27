@@ -40,7 +40,7 @@ class Message {
     assert(header()->length() == size);
   }
 
-  UInt8 *mutableData(size_t size) {
+  UInt8 *mutableDataResized(size_t size) {
     buf_.resize(size);
     return buf_.mutableData();
   }
@@ -53,6 +53,16 @@ class Message {
   void removeFront(size_t bytes) {
     assert(bytes <= buf_.size());
     buf_.remove(buf_.data(), bytes);
+  }
+
+  UInt8 getByteAtIndex(size_t offset) const {
+    assert(offset < buf_.size());
+    return buf_.data()[offset];
+  }
+
+  void setByteAtIndex(UInt8 val, size_t offset) {
+    assert(offset < buf_.size());
+    buf_.mutableData()[offset] = val;
   }
 
   const Header *header() const { return Interpret_cast<Header>(buf_.data()); }

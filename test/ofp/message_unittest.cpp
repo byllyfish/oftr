@@ -20,7 +20,7 @@ TEST(message, normalize) {
   auto s = HexToRawData(hexBefore);
 
   Message msg{nullptr};
-  std::memcpy(msg.mutableData(s.length()), s.data(), s.length());
+  std::memcpy(msg.mutableDataResized(s.length()), s.data(), s.length());
 
   EXPECT_EQ(0x48, msg.size());
   EXPECT_HEX(hexBefore, msg.data(), msg.size());
@@ -47,7 +47,7 @@ TEST(message, normalize_flow_mod) {
   auto s = HexToRawData(hexBefore);
 
   Message message{nullptr};
-  std::memcpy(message.mutableData(s.length()), s.data(), s.length());
+  std::memcpy(message.mutableDataResized(s.length()), s.data(), s.length());
 
   message.normalize();
 

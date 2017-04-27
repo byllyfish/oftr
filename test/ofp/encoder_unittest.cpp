@@ -2404,6 +2404,38 @@ TEST(encoder, flowremovedv3) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, flowremovedv6) {
+  const char *input = R"""(
+      version: 6
+      type: FLOW_REMOVED
+      datapath_id: 00:00:00:00:00:00:00:01
+      xid: 0x11111111
+      msg:
+        cookie: 0x2222222222222222
+        priority: 0x3333
+        reason: 0x44
+        table_id: 0x55
+        duration: 1717986918.x77777777
+        idle_timeout: 0x8888
+        hard_timeout: 0x9999
+        packet_count: 0xAAAAAAAAAAAAAAAA
+        byte_count: 0xBBBBBBBBBBBBBBBB
+        match:
+            - field: IN_PORT
+              value: 0x12345678
+        stat:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x50, encoder.size());
+  EXPECT_HEX(
+      "060B005011111111554433338888999922222222222222220001000C8000000412345678"
+      "000000000000002880020008666666667777777780020808AAAAAAAAAAAAAAAA80020A08"
+      "BBBBBBBBBBBBBBBB",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, ofmp_desc_request) {
   const char *input = R"""(
       version: 4
@@ -3481,5 +3513,107 @@ TEST(encoder, ofmp_groupstats_v3_2) {
       "00009999200000000000AAAA300000000000BBBB400000000000CCCC0030000000000001"
       "00000002000000001000000000009999200000000000AAAA300000000000BBBB40000000"
       "0000CCCC",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_table_features) {
+  const char *input = R"""(
+      type:            REPLY.TABLE_FEATURES
+      xid:             0x00000000
+      version:         0x04
+      msg:             
+        - table_id:        0x00
+          name:            Port ACL
+          metadata_match:  0x0000000000000000
+          metadata_write:  0x0000000000000000
+          config:          [ 0x03 ]
+          max_entries:     0x00000032
+          instructions:    [ GOTO_TABLE, WRITE_ACTIONS, APPLY_ACTIONS, CLEAR_ACTIONS, 
+                             METER ]
+          next_tables:     [ 1, 2, 3, 4, 5, 6, 7 ]
+          write_actions:   [ OUTPUT, PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, 
+                             SET_FIELD ]
+          apply_actions:   [ OUTPUT, PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, 
+                             SET_FIELD ]
+          match:           [ IN_PORT, ETH_TYPE, ETH_DST/, ETH_SRC/, VLAN_VID, 
+                             IP_PROTO, IPV4_DST/, IPV6_DST/, UDP_SRC, UDP_DST, 
+                             TCP_SRC, TCP_DST ]
+          wildcards:       [ IN_PORT, ETH_TYPE, ETH_DST, ETH_SRC, VLAN_VID, IP_PROTO, 
+                             IPV4_DST, IPV6_DST, UDP_SRC, UDP_DST, TCP_SRC, TCP_DST ]
+          write_set_field: [ ETH_DST, ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, 
+                             IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]
+          apply_set_field: [ ETH_DST, ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, 
+                             IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(392, encoder.size());
+  EXPECT_HEX(
+      "0413018800000000000C0000000000000178000000000000506F72742041434C00000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000003000000320000001800010004000300040004000400050004000600040002000B"
+      "0102030405060700000000000004001C0000000400110004001200040016000400170004"
+      "00190004000000000006001C000000040011000400120004001600040017000400190004"
+      "00000000000800348000000480000A028000070C8000090C80000C028000140180001908"
+      "8000372080001E028000200280001A0280001C0200000000000A00348000000480000A02"
+      "800006068000080680000C0280001401800018048000361080001E028000200280001A02"
+      "80001C0200000000000C0030800006068000080680000C0280000E018000100180001604"
+      "8000180480001A0280001C0280001E0280002002000E0030800006068000080680000C02"
+      "80000E0180001001800016048000180480001A0280001C0280001E0280002002",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, flowmod_fuzz) {
+  const char *input = R"""(
+    type:            FLOW_MOD
+    xid:             0x00000000
+    version:         0x03
+    msg:             
+      cookie:          0x0000000000000000
+      cookie_mask:     0x0000000000000000
+      table_id:        0x01
+      command:         ADD
+      idle_timeout:    0x0000
+      hard_timeout:    0x0000
+      priority:        0x007B
+      buffer_id:       0x0000FFFF
+      out_port:        ANY
+      out_group:       ANY
+      flags:           [  ]
+      match:           
+        - field:           ETH_DST
+          value:           'f2:0b:a4:7d:f8:ea'
+      instructions:    
+        - instruction:     WRITE_ACTIONS
+          actions:         
+            - action:          SET_FIELD
+              field:           0x80000CFF
+              value:           01020000000000000000001000000006FFFF000000000000000400180000000000190010800008060102030405060000BEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBE
+            - action:          OUTPUT
+              port_no:         0x00000006
+              max_len:         NO_BUFFER
+        - instruction:     APPLY_ACTIONS
+          actions:         
+            - action:          SET_FIELD
+              field:           ETH_SRC
+              value:           '01:02:03:04:05:06'
+  )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x178, encoder.size());
+  EXPECT_HEX(
+      "030E01780000000000000000000000000000000000000000010000000000007B0000FFFF"
+      "FFFFFFFFFFFFFFFF000000000001000E80000606F20BA47DF8EA00000003012000000000"
+      "0019010880000CFF01020000000000000000001000000006FFFF00000000000000040018"
+      "0000000000190010800008060102030405060000BEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBE"
+      "BEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBE"
+      "BEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBE"
+      "BEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBE"
+      "BEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBE"
+      "BEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBE"
+      "BEBEBEBEBEBEBEBEBEBEBE000000001000000006FFFF0000000000000004001800000000"
+      "00190010800008060102030405060000",
       encoder.data(), encoder.size());
 }
