@@ -256,7 +256,7 @@ bool Engine::registerDatapath(Connection *channel) {
             dpid, std::make_pair("conn_id", channel->connectionId()));
         Connection *old = item->second;
         item->second = channel;
-        old->shutdown();
+        old->shutdown(true);  // force immediate reset
 
       } else {
         log_warning("registerDatapath: Datapath is already registered.", dpid,

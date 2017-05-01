@@ -46,7 +46,7 @@ class TCP_Connection
   }
 
   void flush() override;
-  void shutdown() override;
+  void shutdown(bool reset = false) override;
 
  private:
   Message message_;

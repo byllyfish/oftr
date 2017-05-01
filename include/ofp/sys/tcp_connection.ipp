@@ -106,12 +106,22 @@ void TCP_Connection<SocketType>::flush() {
 }
 
 template <class SocketType>
-void TCP_Connection<SocketType>::shutdown() {
+void TCP_Connection<SocketType>::shutdown(bool reset) {
   if (!(flags() & Connection::kShutdownCalled)) {
     // Do nothing if socket is not open.
     if (!socket_.is_open())
       return;
     setFlags(flags() | Connection::kShutdownCalled);
+    // If reset is true, we need to forcefully reset the TCP connection.
+    if (reset) {
+      log_debug("TCP_Connection::shutdown reset",
+                std::make_pair("connid", connectionId()));
+      setFlags(flags() | Connection::kShutdownDone);
+      channelDown();
+      socket_.shutdownLowestLayer();
+      return;
+    }
+
     log_debug("TCP_Connection::shutdown started",
               std::make_pair("connid", connectionId()));
     auto self(this->shared_from_this());

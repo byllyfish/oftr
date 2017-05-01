@@ -26,7 +26,7 @@ class Channel : public Writable {
   virtual ChannelTransport transport() const = 0;
   virtual IPv6Endpoint remoteEndpoint() const = 0;
   virtual IPv6Endpoint localEndpoint() const = 0;
-  virtual void shutdown() = 0;
+  virtual void shutdown(bool reset = false) = 0;
   virtual void tickle(TimePoint now) = 0;
 
   virtual Milliseconds keepAliveTimeout() const = 0;
