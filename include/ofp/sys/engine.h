@@ -92,7 +92,7 @@ class Engine {
     return iter != serverList_.end() ? *iter : nullptr;
   }
 
-  Connection *findDatapath(const DatapathID &dpid, UInt64 connId) const;
+  Connection *findDatapath(UInt64 connId, const DatapathID &dpid) const;
 
   UInt64 assignConnectionId();
 

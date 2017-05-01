@@ -56,7 +56,7 @@ class Buffered : private StreamType {
   template <class CompletionHandler>
   void buf_flush(UInt64 id, CompletionHandler &&handler);
 
-  void shutdownLowestLayer();
+  void shutdownLowestLayer(bool reset = false);
 
  private:
   // Use a two buffer strategy for async-writes. We queue up data in one
@@ -109,10 +109,19 @@ void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
 }
 
 template <class StreamType>
-void Buffered<StreamType>::shutdownLowestLayer() {
+void Buffered<StreamType>::shutdownLowestLayer(bool reset) {
   if (is_open()) {
     std::error_code ignore;
-    lowest_layer().shutdown(tcp::socket::shutdown_both, ignore);
+    if (reset) {
+      // Set SO_LINGER to (on, 0) to force a TCP reset upon close().
+      asio::socket_base::linger option(true, 0);
+      lowest_layer().set_option(option, ignore);
+    } else {
+      // FIXME(bfish): check when this is needed. asio suggests calling shutdown
+      // before close: "For portable behaviour with respect to graceful closure 
+      // of a connected socket, call shutdown() before closing the socket."
+      lowest_layer().shutdown(tcp::socket::shutdown_both, ignore);
+    }
     lowest_layer().close(ignore);
   }
 }

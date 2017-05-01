@@ -291,12 +291,11 @@ void RpcServer::onMessage(Channel *channel, const Message *message) {
     oneConn_->onMessage(channel, message);
 }
 
-ofp::Channel *RpcServer::findDatapath(const DatapathID &datapathId,
-                                      UInt64 connId) {
+ofp::Channel *RpcServer::findDatapath(UInt64 connId, const DatapathID &datapathId) {
   if (defaultChannel_)
     return defaultChannel_;
 
-  return engine_->findDatapath(datapathId, connId);
+  return engine_->findDatapath(connId, datapathId);
 }
 
 void RpcServer::alertCallback(Channel *channel, const std::string &alert,

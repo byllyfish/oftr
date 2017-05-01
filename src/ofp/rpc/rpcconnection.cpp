@@ -100,8 +100,8 @@ void RpcConnection::onAlert(Channel *channel, const std::string &alert,
 
 void RpcConnection::handleEvent(const std::string &eventText) {
   RpcEncoder encoder{eventText, this,
-                     [this](const DatapathID &datapathId, UInt64 connId) {
-                       return server_->findDatapath(datapathId, connId);
+                     [this](UInt64 connId, const DatapathID &datapathId) {
+                       return server_->findDatapath(connId, datapathId);
                      }};
 }
 

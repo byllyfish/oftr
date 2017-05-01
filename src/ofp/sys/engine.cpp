@@ -381,7 +381,15 @@ UInt64 Engine::assignConnectionId() {
   return lastConnId_;
 }
 
-Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
+Connection *Engine::findDatapath(UInt64 connId, const DatapathID &dpid) const {
+  // Use the connectionId, it it's non-zero.
+  if (connId != 0) {
+    // FIXME(bfish): conn list is likely sorted by connId. Use binary search.
+    return findConnection([connId](Channel *channel) {
+      return channel->connectionId() == connId;
+    });
+  }
+
   // If datapath ID is not all zeros, use it to look up the connection.
   if (!dpid.empty()) {
     auto item = dpidMap_.find(dpid);
@@ -389,13 +397,6 @@ Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
       return item->second;
     }
     return nullptr;
-  }
-
-  // Otherwise use the connectionId, it it's non-zero.
-  if (connId != 0) {
-    return findConnection([connId](Channel *channel) {
-      return channel->connectionId() == connId;
-    });
   }
 
   assert(dpid.empty() && connId == 0);

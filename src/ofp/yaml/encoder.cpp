@@ -112,14 +112,14 @@ void Encoder::encodeMsg(llvm::yaml::IO &io) {
 
   if (finder_) {
     // If there's a datapath or connId specified, look up the channel.
-    outputChannel_ = finder_(datapathId_, connId_);
+    outputChannel_ = finder_(connId_, datapathId_);
     if (!outputChannel_) {
-      if (!datapathId_.empty()) {
-        io.setError("unable to locate datapath_id " + datapathId_.toString());
-      } else if (connId_ != 0) {
+      if (connId_ != 0) {
         io.setError("unable to locate conn_id " + std::to_string(connId_));
+      } else if (!datapathId_.empty()) {
+        io.setError("unable to locate datapath_id " + datapathId_.toString());
       } else {
-        io.setError("unable to locate connection; no datapath_id or conn_id");
+        io.setError("unable to locate connection; no conn_id or datapath_id");
       }
       return;
     }
