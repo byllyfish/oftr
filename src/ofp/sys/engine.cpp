@@ -251,15 +251,16 @@ bool Engine::registerDatapath(Connection *channel) {
       // different, close it and replace it with the new one.
       auto item = pair.first;
       if (item->second != channel) {
-        log_warning(
-            "registerDatapath: Conflict between main connections detected",
-            dpid, std::make_pair("conn_id", channel->connectionId()));
+        log_error(
+            "Datapath conflict between main connections detected:",
+            dpid, std::make_pair("prev_conn_id", item->second->connectionId()), 
+            std::make_pair("conn_id", channel->connectionId()));
         Connection *old = item->second;
         item->second = channel;
         old->shutdown(true);  // force immediate reset
 
       } else {
-        log_warning("registerDatapath: Datapath is already registered.", dpid,
+        log_warning("Datapath is already registered:", dpid,
                     std::make_pair("conn_id", channel->connectionId()));
       }
     }
@@ -411,7 +412,11 @@ void Engine::asyncIdle() {
   idleTimer_.async_wait([this](const asio::error_code &err) {
     if (!err) {
       TimePoint now = TimeClock::now();
-      forEachConnection([this, &now](Connection *conn) { conn->tickle(now); });
+      forEachConnection([this, &now](Connection *conn) {
+        if (conn->flags() & Connection::kConnectionUp) {
+          conn->tickle(now);
+        }
+      });
       asyncIdle();
     }
   });

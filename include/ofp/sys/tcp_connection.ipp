@@ -299,6 +299,9 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
 
 template <class SocketType>
 void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
+  // Indicate the connection is up.
+  setFlags(flags() | kConnectionUp);
+
   // Start async handshake.
   auto mode = isClient ? asio::ssl::stream_base::client
                        : asio::ssl::stream_base::server;

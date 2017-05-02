@@ -149,6 +149,8 @@ bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
 }
 
 void Connection::tickle(TimePoint now) {
+  assert((flags() & kConnectionUp) != 0);
+
   // Give channel listener first dibs on the tickle.
   if (listener_ && listener_->onTickle(this, now)) {
     return;
