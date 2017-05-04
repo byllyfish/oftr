@@ -75,7 +75,7 @@ void MessageSource::finish() {
         },
         maxMissingBytes_);
   }
-  log_error("MessageSource: ", flows_.stats());
+  log_info("MessageSource: ", flows_.stats());
   flows_.clear();
 }
 

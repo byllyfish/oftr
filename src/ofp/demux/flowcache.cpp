@@ -49,8 +49,7 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     // SYN or SYN-ACK packet must not contain any data.
     end = seq + 1;
     if (!data.empty()) {
-      log_warning("FlowCache: TCP SYN has unexpected data", data.size(),
-                  "bytes:", data);
+      log_warning("FlowCache: TCP SYN has unexpected data", data.size(), "B");
       return FlowData{0};
     }
   } else {
@@ -75,12 +74,16 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
   if (entry.sessionID == 0) {
     // This is a new entry. Assign a new ID to the session.
     entry.reset(ts, assignSessionID());
+    log_info("TCP started", entry.sessionID, tcpFlagToString(flags), src, dst);
+
   } else if (entry.finished()) {
     // This is a packet for a finished entry. We check for expiry so we don't
     // open a new session just because of a late re-transmit. However, a
     // SYN or SYN-ACK flag means we can skip the timeout.
     if ((flags & TCP_SYN) != 0 || entry.secondsSince(ts) >= kTwoMinuteTimeout) {
       entry.reset(ts, assignSessionID());
+      log_info("TCP started*", entry.sessionID, tcpFlagToString(flags), src, dst);
+
     } else {
       log_warning("TCP late segment ignored", entry.sessionID,
                   tcpFlagToString(flags), src, dst, end);
@@ -93,10 +96,15 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     log_warning("TCP SYN for unfinished entry", entry.sessionID,
                 tcpFlagToString(flags), src, dst, end);
     entry.reset(ts, assignSessionID());
+    log_info("TCP started**", entry.sessionID, tcpFlagToString(flags), src, dst);
   }
 
   log_debug("TCP segment", entry.sessionID, tcpFlagToString(flags), src, dst,
             entry.secondsSince(ts));
+
+  if (final) {
+    log_info("TCP finished", entry.sessionID, tcpFlagToString(flags), src, dst);
+  }
 
   if (isX) {
     return entry.x.receive(ts, end, data, entry.sessionID, final,
