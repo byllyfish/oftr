@@ -110,9 +110,7 @@ size_t Engine::close(UInt64 connId) {
       return 1;
     }
 
-    Connection *conn = findConnection(
-        [connId](Connection *c) { return c->connectionId() == connId; });
-
+    Connection *conn = findConnId(connId);
     if (conn) {
       conn->shutdown();
       if (conn->flags() & Connection::kManualDelete) {
@@ -385,10 +383,7 @@ UInt64 Engine::assignConnectionId() {
 Connection *Engine::findDatapath(UInt64 connId, const DatapathID &dpid) const {
   // Use the connectionId, it it's non-zero.
   if (connId != 0) {
-    // FIXME(bfish): conn list is likely sorted by connId. Use binary search.
-    return findConnection([connId](Channel *channel) {
-      return channel->connectionId() == connId;
-    });
+    return findConnId(connId);
   }
 
   // If datapath ID is not all zeros, use it to look up the connection.
@@ -401,6 +396,25 @@ Connection *Engine::findDatapath(UInt64 connId, const DatapathID &dpid) const {
   }
 
   assert(dpid.empty() && connId == 0);
+
+  return nullptr;
+}
+
+Connection *Engine::findConnId(UInt64 connId) const {
+  assert(connId != 0);
+  //assert(std::is_sorted(connList_.begin(), connList_.end(), 
+  //  [](Connection *lhs, Connection *rhs) {
+  //  return lhs->connectionId() < rhs->connectionId();
+  //}));
+
+  // Use binary search to locate connection with connID.
+  auto iter = std::lower_bound(connList_.begin(), connList_.end(), connId, [](Connection *conn, UInt64 cid) {
+    return conn->connectionId() < cid;
+  });
+
+  if (iter != connList_.end()) {
+    return *iter;
+  }
 
   return nullptr;
 }
