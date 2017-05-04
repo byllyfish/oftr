@@ -111,18 +111,17 @@ void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
 template <class StreamType>
 void Buffered<StreamType>::shutdownLowestLayer(bool reset) {
   if (is_open()) {
-    std::error_code ignore;
+    std::error_code err;
     if (reset) {
       // Set SO_LINGER to (on, 0) to force a TCP reset upon close().
+      // Ignore the error.
       asio::socket_base::linger option(true, 0);
-      lowest_layer().set_option(option, ignore);
-    } else {
-      // FIXME(bfish): check when this is needed. asio suggests calling shutdown
-      // before close: "For portable behaviour with respect to graceful closure 
-      // of a connected socket, call shutdown() before closing the socket."
-      lowest_layer().shutdown(tcp::socket::shutdown_both, ignore);
+      lowest_layer().set_option(option, err);
     }
-    lowest_layer().close(ignore);
+    lowest_layer().close(err);
+    if (err) {
+      log_error("shutdownLowestLayer close error:", err);
+    }
   }
 }
 

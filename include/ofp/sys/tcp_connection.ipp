@@ -100,7 +100,10 @@ void TCP_Connection<SocketType>::flush() {
     log_debug("TCP_Connection::flush finished",
               std::make_pair("connid", connectionId()), error);
     if (error) {
+      log_error("TCP_Connection::flush error", error);
+      // FIXME(bfish): check for error on close?
       socket_.lowest_layer().close();
+
     }
   });
 }
@@ -118,7 +121,7 @@ void TCP_Connection<SocketType>::shutdown(bool reset) {
                 std::make_pair("connid", connectionId()));
       setFlags(flags() | Connection::kShutdownDone);
       channelDown();
-      socket_.shutdownLowestLayer();
+      socket_.shutdownLowestLayer(true);
       return;
     }
 
