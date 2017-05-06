@@ -1,6 +1,6 @@
 = Changelog
 
-== Version 0.28 (5 May 2017)
+== Version 0.28 (6 May 2017)
 
 - A CHANNEL_DOWN event will always be sent after a CHANNEL_UP event; they are ordered correctly.
 - OFP.SEND now dispatches messages first by non-zero conn_id, then by datapath_id.
