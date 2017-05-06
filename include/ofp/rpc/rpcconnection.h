@@ -5,6 +5,7 @@
 #define OFP_RPC_RPCCONNECTION_H_
 
 #include "ofp/bytelist.h"
+#include "ofp/timestamp.h"
 #include "ofp/rpc/rpcserver.h"
 #include "ofp/yaml/yllvm.h"
 
@@ -42,8 +43,9 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
 
   void onChannel(Channel *channel, const char *status);
   void onMessage(Channel *channel, const Message *message);
-  void onAlert(Channel *channel, const std::string &alert,
-               const ByteRange &data);
+
+  void rpcAlert(Channel *channel, const std::string &alert,
+               const ByteRange &data, const Timestamp &time, UInt32 xid = 0);
 
   void handleEvent(const std::string &eventText);
 

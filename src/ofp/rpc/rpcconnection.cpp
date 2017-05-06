@@ -70,31 +70,27 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
 
   } else {
     // Send `CHANNEL_ALERT` notification event.
-    RpcAlert messageAlert;
-    messageAlert.params.type = "CHANNEL_ALERT";
-    messageAlert.params.time = message->time();
-    messageAlert.params.connId = channel->connectionId();
-    messageAlert.params.datapathId = channel->datapathId();
-    messageAlert.params.alert =
-        std::string("DECODE FAILED: ") + decoder.error();
-    messageAlert.params.data = {message->data(), message->size()};
-    rpcReply(&messageAlert);
+    auto alert = std::string("DECODE FAILED: ") + decoder.error();
+    rpcAlert(channel, alert, {message->data(), message->size()}, message->time(), message->xid());
 
-    log_warning("OpenFlow parse error:", decoder.error(),
+    log_error("OpenFlow parse error:", decoder.error(),
                 std::make_pair("connid", message->source()->connectionId()));
   }
 }
 
-void RpcConnection::onAlert(Channel *channel, const std::string &alert,
-                            const ByteRange &data) {
+void RpcConnection::rpcAlert(Channel *channel, const std::string &alert,
+                            const ByteRange &data, const Timestamp &time, UInt32 xid) {
   // Send `CHANNEL_ALERT` notification event.
   RpcAlert messageAlert;
   messageAlert.params.type = "CHANNEL_ALERT";
-  messageAlert.params.time = Timestamp::now();
-  messageAlert.params.connId = channel->connectionId();
-  messageAlert.params.datapathId = channel->datapathId();
+  messageAlert.params.time = time;
+  if (channel) {
+    messageAlert.params.connId = channel->connectionId();
+    messageAlert.params.datapathId = channel->datapathId();
+  }
   messageAlert.params.alert = alert;
   messageAlert.params.data = data;
+  messageAlert.params.xid = xid;
   rpcReply(&messageAlert);
 }
 

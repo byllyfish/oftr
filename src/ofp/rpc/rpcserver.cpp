@@ -302,7 +302,7 @@ void RpcServer::alertCallback(Channel *channel, const std::string &alert,
                               const ByteRange &data, void *context) {
   RpcServer *self = reinterpret_cast<RpcServer *>(context);
   if (self->oneConn_) {
-    self->oneConn_->onAlert(channel, alert, data);
+    self->oneConn_->rpcAlert(channel, alert, data, Timestamp::now());
   }
 }
 
