@@ -15,9 +15,9 @@ RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
       output_{std::move(output)},
       streambuf_{RPC_MAX_MESSAGE_SIZE} {}
 
-void RpcConnectionStdio::write(const std::string &msg) {
-  outgoing_[outgoingIdx_].add(msg.data(), msg.length());
-  if (!writing_) {
+void RpcConnectionStdio::write(llvm::StringRef msg, bool eom) {
+  outgoing_[outgoingIdx_].add(msg.data(), msg.size());
+  if (eom && !writing_) {
     asyncWrite();
   }
 }

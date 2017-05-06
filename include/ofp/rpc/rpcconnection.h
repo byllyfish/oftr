@@ -50,7 +50,7 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
   void handleEvent(const std::string &eventText);
 
  protected:
-  virtual void write(const std::string &msg) = 0;
+  virtual void write(llvm::StringRef msg, bool eom = true) = 0;
   virtual void asyncRead() = 0;
 
   void rpcRequestTooBig();

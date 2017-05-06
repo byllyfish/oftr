@@ -12,7 +12,7 @@ namespace rpc {
 
 OFP_BEGIN_IGNORE_PADDING
 
-class RpcConnectionStdio : public RpcConnection {
+class RpcConnectionStdio final : public RpcConnection {
  public:
   RpcConnectionStdio(RpcServer *server, asio::posix::stream_descriptor input,
                      asio::posix::stream_descriptor output);
@@ -21,7 +21,7 @@ class RpcConnectionStdio : public RpcConnection {
   void close() override;
 
  protected:
-  void write(const std::string &msg) override;
+  void write(llvm::StringRef msg, bool eom = true) override;
   void asyncRead() override;
   void asyncWrite();
 

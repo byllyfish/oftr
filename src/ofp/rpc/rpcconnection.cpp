@@ -63,10 +63,12 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
 
   if (decoder.error().empty()) {
     // Send `OFP.MESSAGE` notification event.
-    write("{\"params\":");
-    write(decoder.result());
-    write(",\"method\":\"OFP.MESSAGE\"}");
-    write(std::string{RPC_EVENT_DELIMITER_CHAR});  // delimiter
+    const llvm::StringRef prefix{"{\"params\":", 10};
+    const llvm::StringRef suffix{",\"method\":\"OFP.MESSAGE\"}\x00", 25};
+
+    write(prefix, false);
+    write(decoder.result(), false);
+    write(suffix);
 
   } else {
     // Send `CHANNEL_ALERT` notification event.
