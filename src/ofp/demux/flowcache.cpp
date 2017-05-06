@@ -82,7 +82,8 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     // SYN or SYN-ACK flag means we can skip the timeout.
     if ((flags & TCP_SYN) != 0 || entry.secondsSince(ts) >= kTwoMinuteTimeout) {
       entry.reset(ts, assignSessionID());
-      log_info("TCP started*", entry.sessionID, tcpFlagToString(flags), src, dst);
+      log_info("TCP started*", entry.sessionID, tcpFlagToString(flags), src,
+               dst);
 
     } else {
       log_warning("TCP late segment ignored", entry.sessionID,
@@ -96,7 +97,8 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
     log_warning("TCP SYN for unfinished entry", entry.sessionID,
                 tcpFlagToString(flags), src, dst, end);
     entry.reset(ts, assignSessionID());
-    log_info("TCP started**", entry.sessionID, tcpFlagToString(flags), src, dst);
+    log_info("TCP started**", entry.sessionID, tcpFlagToString(flags), src,
+             dst);
   }
 
   log_debug("TCP segment", entry.sessionID, tcpFlagToString(flags), src, dst,

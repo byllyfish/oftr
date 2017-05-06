@@ -155,6 +155,7 @@ void RpcEncoder::replySendError(UInt32 xid) {
     replyError();
   } else if (conn_) {
     // Send CHANNEL_ALERT to report failure to send message.
-    conn_->rpcAlert(nullptr, llvm::StringRef{error()}.rtrim(), {}, Timestamp::now(), xid);
+    conn_->rpcAlert(nullptr, llvm::StringRef{error()}.rtrim(), {},
+                    Timestamp::now(), xid);
   }
 }

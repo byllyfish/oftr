@@ -249,10 +249,9 @@ bool Engine::registerDatapath(Connection *channel) {
       // different, close it and replace it with the new one.
       auto item = pair.first;
       if (item->second != channel) {
-        log_error(
-            "Datapath conflict between main connections detected:",
-            dpid, std::make_pair("prev_conn_id", item->second->connectionId()), 
-            std::make_pair("conn_id", channel->connectionId()));
+        log_error("Datapath conflict between main connections detected:", dpid,
+                  std::make_pair("prev_conn_id", item->second->connectionId()),
+                  std::make_pair("conn_id", channel->connectionId()));
         Connection *old = item->second;
         item->second = channel;
         old->shutdown(true);  // force immediate reset
@@ -402,15 +401,15 @@ Connection *Engine::findDatapath(UInt64 connId, const DatapathID &dpid) const {
 
 Connection *Engine::findConnId(UInt64 connId) const {
   assert(connId != 0);
-  //assert(std::is_sorted(connList_.begin(), connList_.end(), 
+  // assert(std::is_sorted(connList_.begin(), connList_.end(),
   //  [](Connection *lhs, Connection *rhs) {
   //  return lhs->connectionId() < rhs->connectionId();
   //}));
 
   // Use binary search to locate connection with connID.
-  auto iter = std::lower_bound(connList_.begin(), connList_.end(), connId, [](Connection *conn, UInt64 cid) {
-    return conn->connectionId() < cid;
-  });
+  auto iter = std::lower_bound(
+      connList_.begin(), connList_.end(), connId,
+      [](Connection *conn, UInt64 cid) { return conn->connectionId() < cid; });
 
   if (iter != connList_.end()) {
     return *iter;

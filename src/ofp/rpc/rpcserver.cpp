@@ -291,7 +291,8 @@ void RpcServer::onMessage(Channel *channel, const Message *message) {
     oneConn_->onMessage(channel, message);
 }
 
-ofp::Channel *RpcServer::findDatapath(UInt64 connId, const DatapathID &datapathId) {
+ofp::Channel *RpcServer::findDatapath(UInt64 connId,
+                                      const DatapathID &datapathId) {
   if (defaultChannel_)
     return defaultChannel_;
 

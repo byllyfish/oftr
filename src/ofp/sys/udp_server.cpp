@@ -258,7 +258,7 @@ void UDP_Server::asyncSend() {
 }
 
 Connection *UDP_Server::accept() {
-  // TODO(bfish): check if this UDP server allows incoming UDP connections...
+// TODO(bfish): check if this UDP server allows incoming UDP connections...
 #if LIBOFP_ENABLE_OPENSSL
   if (securityId_ != 0) {
     return UDP_Accept<DTLS_Adapter>(this, options_, securityId_, versions_,
@@ -266,8 +266,8 @@ Connection *UDP_Server::accept() {
   }
 #endif
 
-  return UDP_Accept<Plaintext_Adapter>(this, options_, securityId_,
-                                       versions_, sender_);
+  return UDP_Accept<Plaintext_Adapter>(this, options_, securityId_, versions_,
+                                       sender_);
 }
 
 void UDP_Server::datagramReceived() {

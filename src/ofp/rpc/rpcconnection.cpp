@@ -73,15 +73,17 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
   } else {
     // Send `CHANNEL_ALERT` notification event.
     auto alert = std::string("DECODE FAILED: ") + decoder.error();
-    rpcAlert(channel, alert, {message->data(), message->size()}, message->time(), message->xid());
+    rpcAlert(channel, alert, {message->data(), message->size()},
+             message->time(), message->xid());
 
     log_error("OpenFlow parse error:", decoder.error(),
-                std::make_pair("connid", message->source()->connectionId()));
+              std::make_pair("connid", message->source()->connectionId()));
   }
 }
 
 void RpcConnection::rpcAlert(Channel *channel, const std::string &alert,
-                            const ByteRange &data, const Timestamp &time, UInt32 xid) {
+                             const ByteRange &data, const Timestamp &time,
+                             UInt32 xid) {
   // Send `CHANNEL_ALERT` notification event.
   RpcAlert messageAlert;
   messageAlert.params.type = "CHANNEL_ALERT";
