@@ -57,7 +57,7 @@ class RpcServer {
   void onChannelDown(Channel *channel);
   void onMessage(Channel *channel, const Message *message);
 
-  Channel *findDatapath(const DatapathID &datapathId, UInt64 connId);
+  Channel *findDatapath(UInt64 connId, const DatapathID &datapathId);
 
   sys::Engine *engine() { return engine_; }
 

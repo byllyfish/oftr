@@ -23,7 +23,7 @@ OFP_BEGIN_IGNORE_PADDING
 class Encoder {
  public:
   using ChannelFinder =
-      std::function<Channel *(const DatapathID &datapathId, UInt64 connId)>;
+      std::function<Channel *(UInt64 connId, const DatapathID &datapathId)>;
 
   explicit Encoder(ChannelFinder finder);
   Encoder(const std::string &input, bool matchPrereqsChecked = true,

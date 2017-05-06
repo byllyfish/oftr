@@ -1,5 +1,15 @@
 = Changelog
 
+== Version 0.28 (6 May 2017)
+
+- A CHANNEL_DOWN event will always be sent after a CHANNEL_UP event; they are ordered correctly.
+- OFP.SEND now dispatches messages first by non-zero conn_id, then by datapath_id.
+- Fix race condition under load testing where connections not yet up were being timed out incorrectly.
+- When a connection detects a duplicate datapath_id, the old connection sends a TCP reset.
+- pcap option now logs start (SYN) and end (both FIN's) of each TCP session.
+- Use binary search to find connections by conn_id.
+- Improve efficiency of OFP.MESSAGE notification.
+
 == Version 0.27 (26 April 2017)
 
 - Support OF 1.5 FlowRemoved messages.

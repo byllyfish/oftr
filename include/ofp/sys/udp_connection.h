@@ -29,7 +29,7 @@ class UDP_Connection : public Connection {
 
   void write(const void *data, size_t length) override;
   void flush() override;
-  void shutdown() override;
+  void shutdown(bool reset = false) override;
 
   ChannelTransport transport() const override {
     return ToChannelTransport<AdapterType>();

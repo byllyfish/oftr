@@ -110,9 +110,7 @@ size_t Engine::close(UInt64 connId) {
       return 1;
     }
 
-    Connection *conn = findConnection(
-        [connId](Connection *c) { return c->connectionId() == connId; });
-
+    Connection *conn = findConnId(connId);
     if (conn) {
       conn->shutdown();
       if (conn->flags() & Connection::kManualDelete) {
@@ -251,15 +249,15 @@ bool Engine::registerDatapath(Connection *channel) {
       // different, close it and replace it with the new one.
       auto item = pair.first;
       if (item->second != channel) {
-        log_warning(
-            "registerDatapath: Conflict between main connections detected",
-            dpid, std::make_pair("conn_id", channel->connectionId()));
+        log_error("Datapath conflict between main connections detected:", dpid,
+                  std::make_pair("prev_conn_id", item->second->connectionId()),
+                  std::make_pair("conn_id", channel->connectionId()));
         Connection *old = item->second;
         item->second = channel;
-        old->shutdown();
+        old->shutdown(true);  // force immediate reset
 
       } else {
-        log_warning("registerDatapath: Datapath is already registered.", dpid,
+        log_warning("Datapath is already registered:", dpid,
                     std::make_pair("conn_id", channel->connectionId()));
       }
     }
@@ -381,7 +379,12 @@ UInt64 Engine::assignConnectionId() {
   return lastConnId_;
 }
 
-Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
+Connection *Engine::findDatapath(UInt64 connId, const DatapathID &dpid) const {
+  // Use the connectionId, it it's non-zero.
+  if (connId != 0) {
+    return findConnId(connId);
+  }
+
   // If datapath ID is not all zeros, use it to look up the connection.
   if (!dpid.empty()) {
     auto item = dpidMap_.find(dpid);
@@ -391,14 +394,26 @@ Connection *Engine::findDatapath(const DatapathID &dpid, UInt64 connId) const {
     return nullptr;
   }
 
-  // Otherwise use the connectionId, it it's non-zero.
-  if (connId != 0) {
-    return findConnection([connId](Channel *channel) {
-      return channel->connectionId() == connId;
-    });
-  }
-
   assert(dpid.empty() && connId == 0);
+
+  return nullptr;
+}
+
+Connection *Engine::findConnId(UInt64 connId) const {
+  assert(connId != 0);
+  // assert(std::is_sorted(connList_.begin(), connList_.end(),
+  //  [](Connection *lhs, Connection *rhs) {
+  //  return lhs->connectionId() < rhs->connectionId();
+  //}));
+
+  // Use binary search to locate connection with connID.
+  auto iter = std::lower_bound(
+      connList_.begin(), connList_.end(), connId,
+      [](Connection *conn, UInt64 cid) { return conn->connectionId() < cid; });
+
+  if (iter != connList_.end()) {
+    return *iter;
+  }
 
   return nullptr;
 }
@@ -410,7 +425,11 @@ void Engine::asyncIdle() {
   idleTimer_.async_wait([this](const asio::error_code &err) {
     if (!err) {
       TimePoint now = TimeClock::now();
-      forEachConnection([this, &now](Connection *conn) { conn->tickle(now); });
+      forEachConnection([this, &now](Connection *conn) {
+        if (conn->flags() & Connection::kConnectionUp) {
+          conn->tickle(now);
+        }
+      });
       asyncIdle();
     }
   });

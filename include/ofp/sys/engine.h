@@ -79,20 +79,14 @@ class Engine {
   }
 
   template <class UnaryPredicate>
-  Connection *findConnection(UnaryPredicate func) const {
-    SaveRestore<bool> lock{connListLock_, true};
-    auto iter = std::find_if(connList_.begin(), connList_.end(), func);
-    return iter != connList_.end() ? *iter : nullptr;
-  }
-
-  template <class UnaryPredicate>
   TCP_Server *findTCPServer(UnaryPredicate func) const {
     SaveRestore<bool> lock{serverListLock_, true};
     auto iter = std::find_if(serverList_.begin(), serverList_.end(), func);
     return iter != serverList_.end() ? *iter : nullptr;
   }
 
-  Connection *findDatapath(const DatapathID &dpid, UInt64 connId) const;
+  Connection *findDatapath(UInt64 connId, const DatapathID &dpid) const;
+  Connection *findConnId(UInt64 connId) const;
 
   UInt64 assignConnectionId();
 

@@ -257,6 +257,19 @@ void UDP_Server::asyncSend() {
       });
 }
 
+Connection *UDP_Server::accept() {
+// TODO(bfish): check if this UDP server allows incoming UDP connections...
+#if LIBOFP_ENABLE_OPENSSL
+  if (securityId_ != 0) {
+    return UDP_Accept<DTLS_Adapter>(this, options_, securityId_, versions_,
+                                    sender_);
+  }
+#endif
+
+  return UDP_Accept<Plaintext_Adapter>(this, options_, securityId_, versions_,
+                                       sender_);
+}
+
 void UDP_Server::datagramReceived() {
   // Lookup sender_ to find an existing UDP_Connection. If it exists, dispatch
   // incoming message to that connection. If there is no related connection,
@@ -264,17 +277,7 @@ void UDP_Server::datagramReceived() {
 
   auto conn = findConnection(convertEndpoint<udp>(sender_));
   if (!conn) {
-    // TODO(bfish): check if this UDP server allows incoming UDP connections...
-
-    if (securityId_ != 0) {
-#if LIBOFP_ENABLE_OPENSSL
-      conn = UDP_Accept<DTLS_Adapter>(this, options_, securityId_, versions_,
-                                      sender_);
-#endif
-    } else {
-      conn = UDP_Accept<Plaintext_Adapter>(this, options_, securityId_,
-                                           versions_, sender_);
-    }
+    conn = accept();
   }
 
   conn->datagramReceived(buffer_.data(), buffer_.size());
