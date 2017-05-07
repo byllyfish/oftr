@@ -118,7 +118,7 @@ void UDP_Connection<AdapterType>::flush() {
 }
 
 template <class AdapterType>
-void UDP_Connection<AdapterType>::shutdown() {
+void UDP_Connection<AdapterType>::shutdown(bool reset) {
   setFlags(flags() | Connection::kShutdownCalled);
 }
 

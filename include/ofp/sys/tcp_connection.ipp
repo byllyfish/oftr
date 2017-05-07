@@ -100,18 +100,30 @@ void TCP_Connection<SocketType>::flush() {
     log_debug("TCP_Connection::flush finished",
               std::make_pair("connid", connectionId()), error);
     if (error) {
+      log_error("TCP_Connection::flush error", error);
+      // FIXME(bfish): check for error on close?
       socket_.lowest_layer().close();
     }
   });
 }
 
 template <class SocketType>
-void TCP_Connection<SocketType>::shutdown() {
+void TCP_Connection<SocketType>::shutdown(bool reset) {
   if (!(flags() & Connection::kShutdownCalled)) {
     // Do nothing if socket is not open.
     if (!socket_.is_open())
       return;
     setFlags(flags() | Connection::kShutdownCalled);
+    // If reset is true, we need to forcefully reset the TCP connection.
+    if (reset) {
+      log_debug("TCP_Connection::shutdown reset",
+                std::make_pair("connid", connectionId()));
+      setFlags(flags() | Connection::kShutdownDone);
+      channelDown();
+      socket_.shutdownLowestLayer(true);
+      return;
+    }
+
     log_debug("TCP_Connection::shutdown started",
               std::make_pair("connid", connectionId()));
     auto self(this->shared_from_this());
@@ -232,7 +244,8 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
               assert(err);
 
               if (err != asio::error::eof &&
-                  err != asio::error::operation_aborted) {
+                  err != asio::error::operation_aborted &&
+                  err != asio::error::connection_reset) {
                 log_error("asyncReadHeader error",
                           std::make_pair("connid", connectionId()), err);
               }
@@ -289,6 +302,9 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
 
 template <class SocketType>
 void TCP_Connection<SocketType>::asyncHandshake(bool isClient) {
+  // Indicate the connection is up.
+  setFlags(flags() | kConnectionUp);
+
   // Start async handshake.
   auto mode = isClient ? asio::ssl::stream_base::client
                        : asio::ssl::stream_base::server;

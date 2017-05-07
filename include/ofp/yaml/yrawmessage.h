@@ -21,7 +21,7 @@ msg:
 template <>
 struct MappingTraits<ofp::RawMessageBuilder> {
   static void mapping(IO &io, ofp::RawMessageBuilder &msg) {
-    ofp::OFPType type;
+    ofp::OFPType type = ofp::OFPT_UNSUPPORTED;
     io.mapRequired("type", type);
     msg.setType(type);
 

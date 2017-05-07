@@ -77,6 +77,7 @@ class UDP_Server : public std::enable_shared_from_this<UDP_Server> {
   void listen(const IPv6Endpoint &localEndpt, std::error_code &error);
   void asyncReceive();
   void asyncSend();
+  Connection *accept();
 
   void datagramReceived();
 };

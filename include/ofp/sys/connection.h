@@ -93,7 +93,10 @@ class Connection : public Channel {
     kPermitsOtherVersions = 0x0100,
 
     /// Indicates channel is associated with a controller.
-    kDefaultController = 0x0200
+    kDefaultController = 0x0200,
+
+    /// Indicates underlying connection is connected and handshake has started.
+    kConnectionUp = 0x0400
   };
 
   void tickle(TimePoint now) override;
