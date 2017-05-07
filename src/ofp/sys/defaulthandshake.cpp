@@ -49,7 +49,8 @@ bool DefaultHandshake::onTickle(Channel *channel, TimePoint now) {
 
   auto age = now - timeStarted_;
   if (age >= kHandshakeTimeout) {
-    log_warning("DefaultHandshake: Timed out",
+    auto msec = std::chrono::duration_cast<Milliseconds>(age).count();
+    log_warning("DefaultHandshake: Timed out; age is", msec,
                 std::make_pair("connid", channel_->connectionId()));
     channel_->shutdown();
   }
@@ -123,6 +124,7 @@ void DefaultHandshake::onHello(const Message *message) {
 
     FeaturesRequestBuilder reply{};
     reply.send(channel_);
+    timeStarted_ = TimeClock::now();
 
   } else {
     channel_->setKeepAliveTimeout(kRawKeepAliveTimeout);

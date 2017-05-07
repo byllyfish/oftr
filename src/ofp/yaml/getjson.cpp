@@ -5,7 +5,7 @@
 
 static void scanDoubleQuotes(std::istream &input, std::string &json,
                              int &newlineCount) {
-  char ch;
+  char ch = 0;
 
   while (input.get(ch)) {
     json.push_back(ch);
@@ -26,7 +26,7 @@ static void scanObject(std::istream &input, std::string &json,
                        int &newlineCount) {
   int brace = 1;
 
-  char ch;
+  char ch = 0;
   while (input.get(ch)) {
     json.push_back(ch);
 
@@ -56,7 +56,7 @@ bool ofp::yaml::getjson(std::istream &input, std::string &json, int &lineNum,
   json.clear();
   lineNum = -1;
 
-  char ch;
+  char ch = 0;
   while (input.get(ch)) {
     if (ch == '{') {
       json.push_back(ch);
