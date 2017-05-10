@@ -401,10 +401,10 @@ Connection *Engine::findDatapath(UInt64 connId, const DatapathID &dpid) const {
 
 Connection *Engine::findConnId(UInt64 connId) const {
   assert(connId != 0);
-  // assert(std::is_sorted(connList_.begin(), connList_.end(),
-  //  [](Connection *lhs, Connection *rhs) {
-  //  return lhs->connectionId() < rhs->connectionId();
-  //}));
+  assert(std::is_sorted(connList_.begin(), connList_.end(),
+    [](Connection *lhs, Connection *rhs) {
+    return lhs->connectionId() < rhs->connectionId();
+  }));
 
   // Use binary search to locate connection with connID.
   auto iter = std::lower_bound(
@@ -412,7 +412,9 @@ Connection *Engine::findConnId(UInt64 connId) const {
       [](Connection *conn, UInt64 cid) { return conn->connectionId() < cid; });
 
   if (iter != connList_.end()) {
-    return *iter;
+    Connection *conn = *iter;
+    if (conn->connectionId() == connId)
+      return conn;
   }
 
   return nullptr;
