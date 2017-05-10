@@ -80,7 +80,7 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       if (!errorFound(io)) {
         conn_->onRpcSend(&send);
       } else {
-        replySendError(send.params.xid());
+        replySendError(send.params.xid(), send.params.flags());
       }
       break;
     }
@@ -150,12 +150,16 @@ void RpcEncoder::replyError() {
   }
 }
 
-void RpcEncoder::replySendError(UInt32 xid) {
+void RpcEncoder::replySendError(UInt32 xid, OFPMessageFlags flags) {
   if (!id_.is_missing()) {
     replyError();
   } else if (conn_) {
-    // Send CHANNEL_ALERT to report failure to send message.
-    conn_->rpcAlert(nullptr, llvm::StringRef{error()}.rtrim(), {},
-                    Timestamp::now(), xid);
+    // Send CHANNEL_ALERT to report failure to send message, unless NO_ALERT
+    // flag is set.
+    if ((flags & OFP_NO_ALERT) == 0) {
+      llvm::StringRef errmsg = llvm::StringRef{error()}.rtrim();
+      log_warning("Failed to send message:", errmsg);
+      conn_->rpcAlert(nullptr, errmsg, {}, Timestamp::now(), xid);
+    }
   }
 }
