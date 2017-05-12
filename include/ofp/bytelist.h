@@ -42,6 +42,12 @@ class ByteList {
   /// \returns pointer to beginning of constant byte buffer.
   const UInt8 *data() const { return buf_.begin(); }
 
+  /// \return byte at specific offset (used for testing; mutable data only).
+  UInt8 &operator[](size_t offset) {
+    assert(offset < buf_.size());
+    return buf_.begin()[offset];
+  }
+
   /// \returns pointer to beginning of mutable byte buffer.
   UInt8 *mutableData() { return buf_.begin(); }
 

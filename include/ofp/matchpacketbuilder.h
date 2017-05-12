@@ -38,6 +38,8 @@ class MatchPacketBuilder {
   IPv4Address ipv4Dst_;
   IPv6Address ipv6Src_;
   IPv6Address ipv6Dst_;
+  UInt16 srcPort_ = 0;
+  UInt16 dstPort_ = 0;
   UInt8 ipProto_ = 0;
   UInt8 ipTtl_ = 0;
   IPv6Address ndTarget_;
@@ -51,10 +53,13 @@ class MatchPacketBuilder {
   void addIPv4(ByteList *msg, size_t length) const;
   void addIPv6(ByteList *msg, size_t length) const;
 
+  void buildEthernet(ByteList *msg, const ByteRange &data) const;
   void buildArp(ByteList *msg) const;
   void buildLldp(ByteList *msg) const;
   void buildIPv4(ByteList *msg, const ByteRange &data) const;
+  void buildIPv4_other(ByteList *msg, const ByteRange &data) const;
   void buildICMPv4(ByteList *msg, const ByteRange &data) const;
+  void buildTCPv4(ByteList *msg, const ByteRange &data) const;
   void buildIPv6(ByteList *msg, const ByteRange &data) const;
   void buildICMPv6(ByteList *msg, const ByteRange &data) const;
   void buildICMPv6_ND(ByteList *msg) const;

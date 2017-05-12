@@ -65,6 +65,12 @@ MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
       case NXM_NX_IP_TTL::type():
         ipTtl_ = item.value<NXM_NX_IP_TTL>();
         break;
+      case OFB_TCP_SRC::type():
+        srcPort_ = item.value<OFB_TCP_SRC>();
+        break;
+      case OFB_TCP_DST::type():
+        dstPort_ = item.value<OFB_TCP_DST>();
+        break;
       case OFB_ICMPV4_CODE::type():
         icmpCode_ = item.value<OFB_ICMPV4_CODE>();
         break;
@@ -127,6 +133,7 @@ void MatchPacketBuilder::build(ByteList *msg, const ByteRange &data) const {
 
     default:
       log_error("MatchPacketBuilder: Unknown ethType:", ethType_);
+      buildEthernet(msg, data);
       break;
   }
 }
@@ -180,6 +187,11 @@ void MatchPacketBuilder::addIPv6(ByteList *msg, size_t length) const {
   msg->add(&ip, sizeof(ip));
 }
 
+void MatchPacketBuilder::buildEthernet(ByteList *msg, const ByteRange &data) const {
+  addEthernet(msg);
+  msg->add(data.data(), data.size());
+}
+
 void MatchPacketBuilder::buildArp(ByteList *msg) const {
   addEthernet(msg);
 
@@ -217,10 +229,22 @@ void MatchPacketBuilder::buildIPv4(ByteList *msg, const ByteRange &data) const {
       buildICMPv4(msg, data);
       break;
 
+    case PROTOCOL_TCP:
+      buildTCPv4(msg, data);
+      break;
+
     default:
       log_error("MatchPacketBuilder: Unknown IPv4 protocol:", ipProto_);
+      buildIPv4_other(msg, data);
       break;
   }
+}
+
+void MatchPacketBuilder::buildIPv4_other(ByteList *msg, const ByteRange &data) const {
+  addEthernet(msg);
+  addIPv4(msg, data.size());
+
+  msg->add(data.data(), data.size());
 }
 
 void MatchPacketBuilder::buildICMPv4(ByteList *msg,
@@ -235,6 +259,20 @@ void MatchPacketBuilder::buildICMPv4(ByteList *msg,
   icmp.cksum = pkt::Checksum({&icmp, sizeof(icmp)}, data);
 
   msg->add(&icmp, sizeof(icmp));
+  msg->add(data.data(), data.size());
+}
+
+void MatchPacketBuilder::buildTCPv4(ByteList *msg, const ByteRange &data) const {
+  addEthernet(msg);
+  addIPv4(msg, sizeof(pkt::TCPHdr) + data.size());
+
+  pkt::TCPHdr tcp;
+  std::memset(&tcp, 0, sizeof(tcp));
+  tcp.srcPort = srcPort_;
+  tcp.dstPort = dstPort_;
+  tcp.cksum = pkt::Checksum({&tcp, sizeof(tcp)}, data);
+
+  msg->add(&tcp, sizeof(tcp));
   msg->add(data.data(), data.size());
 }
 
