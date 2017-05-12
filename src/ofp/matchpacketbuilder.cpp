@@ -289,8 +289,16 @@ void MatchPacketBuilder::buildIPv6(ByteList *msg, const ByteRange &data) const {
 
     default:
       log_error("MatchPacketBuilder: Unknown IPv6 protocol:", ipProto_);
+      buildIPv6_other(msg, data);
       break;
   }
+}
+
+void MatchPacketBuilder::buildIPv6_other(ByteList *msg, const ByteRange &data) const {
+  addEthernet(msg);
+  addIPv6(msg, data.size());
+  
+  msg->add(data.data(), data.size());
 }
 
 void MatchPacketBuilder::buildICMPv6(ByteList *msg,

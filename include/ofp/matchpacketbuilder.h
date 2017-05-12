@@ -61,6 +61,7 @@ class MatchPacketBuilder {
   void buildICMPv4(ByteList *msg, const ByteRange &data) const;
   void buildTCPv4(ByteList *msg, const ByteRange &data) const;
   void buildIPv6(ByteList *msg, const ByteRange &data) const;
+  void buildIPv6_other(ByteList *msg, const ByteRange &data) const;
   void buildICMPv6(ByteList *msg, const ByteRange &data) const;
   void buildICMPv6_ND(ByteList *msg) const;
 };
