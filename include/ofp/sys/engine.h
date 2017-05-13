@@ -86,7 +86,6 @@ class Engine {
   }
 
   Connection *findDatapath(UInt64 connId, const DatapathID &dpid) const;
-  Connection *findConnId(UInt64 connId) const;
 
   UInt64 assignConnectionId();
 
@@ -147,6 +146,9 @@ class Engine {
                     ChannelListener::Factory listenerFactory,
                     std::error_code &error);
   void asyncIdle();
+
+  Connection *findConnId(UInt64 connId) const;
+  std::vector<Connection*>::const_iterator findConnIter(UInt64 connId) const;
 };
 
 OFP_END_IGNORE_PADDING
