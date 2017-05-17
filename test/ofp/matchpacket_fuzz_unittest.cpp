@@ -1,3 +1,6 @@
+// Copyright (c) 2017 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #include "ofp/matchpacket.h"
 #include "ofp/matchpacketbuilder.h"
 #include "ofp/unittest.h"
@@ -8,7 +11,7 @@ static void fuzzPacket(const char *hex, size_t start = 0) {
   ByteList buf{HexToRawData(hex)};
   ByteList result;
 
-  EXPECT_TRUE(buf.size() >= 14);
+  EXPECT_GE(buf.size(), 14);
 
   // Insert two zero bytes at the beginning. MatchPacket expects packet data
   // to be aligned at 2 bytes past the 8-byte alignment.
@@ -27,7 +30,7 @@ static void fuzzPacket(const char *hex, size_t start = 0) {
       buf[i] = val;
       ByteRange pkt{buf.data() + 2, buf.size() - 2};
       MatchPacket match{pkt};
-      EXPECT_TRUE(match.size() > 0);
+      EXPECT_GT(match.size(), 0);
 
       MatchPacketBuilder builder{match.toRange()};
       size_t offset = match.toRange().get<X_PKT_POS>();
@@ -39,7 +42,7 @@ static void fuzzPacket(const char *hex, size_t start = 0) {
           SafeByteRange(buf.data() + 2, buf.size() - 2, offset);
       result.clear();
       builder.build(&result, remaining);
-      EXPECT_TRUE(result.size() > 0);
+      EXPECT_GT(result.size(), 0);
     }
 
     buf[i] = saved;
