@@ -10,16 +10,13 @@
 
 using namespace ofp;
 
-
 TEST(matchpacketbuilder, empty) {
   OXMList oxm;
   ByteList data;
   MatchPacketBuilder packet{oxm.toRange()};
   packet.build(&data, {"a1b2", 4});
 
-  EXPECT_HEX(
-      "000000000000000000000000000061316232",
-      data.data(), data.size());  
+  EXPECT_HEX("000000000000000000000000000061316232", data.data(), data.size());
 }
 
 TEST(matchpacketbuilder, arp) {

@@ -407,7 +407,8 @@ Connection *Engine::findConnId(UInt64 connId) const {
   return nullptr;
 }
 
-std::vector<Connection*>::const_iterator Engine::findConnIter(UInt64 connId) const {
+std::vector<Connection *>::const_iterator Engine::findConnIter(
+    UInt64 connId) const {
   assert(connId != 0);
 
   // Use binary search to locate connection with connID.

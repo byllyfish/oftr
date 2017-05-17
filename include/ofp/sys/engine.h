@@ -148,7 +148,7 @@ class Engine {
   void asyncIdle();
 
   Connection *findConnId(UInt64 connId) const;
-  std::vector<Connection*>::const_iterator findConnIter(UInt64 connId) const;
+  std::vector<Connection *>::const_iterator findConnIter(UInt64 connId) const;
 };
 
 OFP_END_IGNORE_PADDING

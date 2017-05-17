@@ -187,7 +187,8 @@ void MatchPacketBuilder::addIPv6(ByteList *msg, size_t length) const {
   msg->add(&ip, sizeof(ip));
 }
 
-void MatchPacketBuilder::buildEthernet(ByteList *msg, const ByteRange &data) const {
+void MatchPacketBuilder::buildEthernet(ByteList *msg,
+                                       const ByteRange &data) const {
   addEthernet(msg);
   msg->add(data.data(), data.size());
 }
@@ -240,7 +241,8 @@ void MatchPacketBuilder::buildIPv4(ByteList *msg, const ByteRange &data) const {
   }
 }
 
-void MatchPacketBuilder::buildIPv4_other(ByteList *msg, const ByteRange &data) const {
+void MatchPacketBuilder::buildIPv4_other(ByteList *msg,
+                                         const ByteRange &data) const {
   addEthernet(msg);
   addIPv4(msg, data.size());
 
@@ -262,7 +264,8 @@ void MatchPacketBuilder::buildICMPv4(ByteList *msg,
   msg->add(data.data(), data.size());
 }
 
-void MatchPacketBuilder::buildTCPv4(ByteList *msg, const ByteRange &data) const {
+void MatchPacketBuilder::buildTCPv4(ByteList *msg,
+                                    const ByteRange &data) const {
   addEthernet(msg);
   addIPv4(msg, sizeof(pkt::TCPHdr) + data.size());
 
@@ -294,10 +297,11 @@ void MatchPacketBuilder::buildIPv6(ByteList *msg, const ByteRange &data) const {
   }
 }
 
-void MatchPacketBuilder::buildIPv6_other(ByteList *msg, const ByteRange &data) const {
+void MatchPacketBuilder::buildIPv6_other(ByteList *msg,
+                                         const ByteRange &data) const {
   addEthernet(msg);
   addIPv6(msg, data.size());
-  
+
   msg->add(data.data(), data.size());
 }
 
