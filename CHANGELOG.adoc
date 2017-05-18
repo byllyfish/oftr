@@ -1,5 +1,11 @@
 = Changelog
 
+== Version 0.29 (17 May 2017)
+
+- Add support for NO_ALERT message flag.
+- Fix bug which could cause messages to be sent out the wrong conn_id.
+- Add fuzzing unit test for MatchPacket/MatchPacketBuilder.
+
 == Version 0.28 (6 May 2017)
 
 - A CHANNEL_DOWN event will always be sent after a CHANNEL_UP event; they are ordered correctly.
