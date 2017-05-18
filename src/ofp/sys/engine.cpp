@@ -333,7 +333,13 @@ void Engine::releaseConnection(Connection *connection) {
   auto iter = findConnIter(connection->connectionId());
   if (iter != connList_.end()) {
     assert(*iter == connection);
+#if __GNUC__ == 4 && __GNUC_MINOR__ == 8
+    // Convert const_iterator to iterator.
+    auto it = connList_.begin() + (iter - connList_.begin());
+    connList_.erase(it);
+#else
     connList_.erase(iter);
+#endif
   }
 }
 
