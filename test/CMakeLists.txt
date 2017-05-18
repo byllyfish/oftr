@@ -48,6 +48,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/matchheader_unittest.cpp
 	ofp/matchpacket_unittest.cpp
 	ofp/matchpacketbuilder_unittest.cpp
+	ofp/matchpacket_fuzz_unittest.cpp
 	ofp/message_unittest.cpp
 	ofp/multipartreply_unittest.cpp
 	ofp/nicira_unittest.cpp

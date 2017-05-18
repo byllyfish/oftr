@@ -330,10 +330,16 @@ UInt64 Engine::registerConnection(Connection *connection) {
 
 void Engine::releaseConnection(Connection *connection) {
   assert(!connListLock_);
-  auto iter = std::find(connList_.begin(), connList_.end(), connection);
+  auto iter = findConnIter(connection->connectionId());
   if (iter != connList_.end()) {
     assert(*iter == connection);
+#if __GNUC__ == 4 && __GNUC_MINOR__ == 8
+    // Convert const_iterator to iterator.
+    auto it = connList_.begin() + (iter - connList_.begin());
+    connList_.erase(it);
+#else
     connList_.erase(iter);
+#endif
   }
 }
 
@@ -400,11 +406,16 @@ Connection *Engine::findDatapath(UInt64 connId, const DatapathID &dpid) const {
 }
 
 Connection *Engine::findConnId(UInt64 connId) const {
+  auto iter = findConnIter(connId);
+  if (iter != connList_.end()) {
+    return *iter;
+  }
+  return nullptr;
+}
+
+std::vector<Connection *>::const_iterator Engine::findConnIter(
+    UInt64 connId) const {
   assert(connId != 0);
-  // assert(std::is_sorted(connList_.begin(), connList_.end(),
-  //  [](Connection *lhs, Connection *rhs) {
-  //  return lhs->connectionId() < rhs->connectionId();
-  //}));
 
   // Use binary search to locate connection with connID.
   auto iter = std::lower_bound(
@@ -412,10 +423,12 @@ Connection *Engine::findConnId(UInt64 connId) const {
       [](Connection *conn, UInt64 cid) { return conn->connectionId() < cid; });
 
   if (iter != connList_.end()) {
-    return *iter;
+    Connection *conn = *iter;
+    if (conn->connectionId() == connId)
+      return iter;
   }
 
-  return nullptr;
+  return connList_.end();
 }
 
 void Engine::asyncIdle() {
