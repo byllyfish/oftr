@@ -127,7 +127,8 @@ void MatchPacket::decodeARP(const UInt8 *pkt, size_t length) {
   }
 
   if (std::memcmp(arp->prefix, OFP_ARP_PREFIX_STR, sizeof(arp->prefix)) != 0) {
-    log_warning("MatchPacket: Unexpected arp prefix", log::hex(arp->prefix));
+    log_warning("MatchPacket: Unexpected arp prefix",
+                RawDataToHex(arp->prefix, sizeof(arp->prefix)));
     return;
   }
 

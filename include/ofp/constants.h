@@ -695,8 +695,9 @@ enum OFPMessageFlags : UInt32 {
   OFP_DEFAULT_MESSAGE_FLAGS = 0,
   OFP_MORE = static_cast<UInt32>(OFPMPF_MORE),
   OFP_NO_FLUSH = 1 << 16,
+  OFP_NO_ALERT = 1 << 17,
 
-  OFP_OTHER_MESSAGE_FLAGS = 0xFFFEFFFE
+  OFP_OTHER_MESSAGE_FLAGS = 0xFFFCFFFE
 };
 
 inline OFPMessageFlags operator|(OFPMessageFlags lhs, OFPMessageFlags rhs) {

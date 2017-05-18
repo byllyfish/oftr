@@ -43,7 +43,7 @@ class RpcEncoder {
 
   void encodeParams(llvm::yaml::IO &io);
   void replyError();
-  void replySendError(UInt32 xid);
+  void replySendError(UInt32 xid, OFPMessageFlags flags);
 
   friend struct llvm::yaml::MappingTraits<ofp::rpc::RpcEncoder>;
 };
