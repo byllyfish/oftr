@@ -52,6 +52,7 @@ namespace ofpx {
 //   --pcap-skip-payload   Skip payload from TCP streams (for debugging).
 //   --pcap-max-missing-bytes=<num>  Add missing zero bytes to partial streams
 //   (for debugging).
+//   --pcap-convert-packetin  Convert captured packets to PacketIn messages.
 //   --msg-include=<types> Output these OpenFlow message types (glob).
 //   --msg-exclude=<types> Don't output these OpenFlow message types (glob).
 //   --timestamp=none|secs Show timestamp in all decodes.
@@ -221,6 +222,10 @@ class Decode : public Subprogram {
   cl::opt<ofp::UInt32> pcapMaxMissingBytes_{
       "pcap-max-missing-bytes",
       cl::desc("Add missing zero bytes to partial streams (for debugging)"),
+      cl::cat(pcapCategory_), cl::Hidden};
+  cl::opt<bool> pcapConvertPacketIn_{
+      "pcap-convert-packetin",
+      cl::desc("Convert captured packets to PacketIn messages"),
       cl::cat(pcapCategory_), cl::Hidden};
   cl::list<std::string> inputFiles_{cl::Positional, cl::desc("<Input files>")};
 
