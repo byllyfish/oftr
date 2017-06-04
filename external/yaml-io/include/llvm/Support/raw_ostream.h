@@ -428,6 +428,8 @@ public:
   void clear_error() {
     Error = false;
   }
+
+  int fd() const { return FD; }
 };
 
 /// This returns a reference to a raw_ostream for standard output. Use it like:

@@ -8,7 +8,8 @@ int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
 
   // The key thing is to set up logging to stderr before running the tests.
-  ofp::log::configure(ofp::log::Level::Debug);
+  using namespace ofp::log;
+  ofp::log::configure(Level::Debug, Trace::None, STDERR, true);
 
   return RUN_ALL_TESTS();
 }

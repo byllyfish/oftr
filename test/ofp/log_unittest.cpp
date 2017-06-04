@@ -92,3 +92,28 @@ TEST(log, dangling_else) {
 
   GLOBAL_Logger->setLevelFilter(savedFilter);
 }
+
+static int log_crash_illegal() {
+  volatile int *ptr = 0;
+  return *ptr;
+}
+
+static size_t log_crash_stack_overflow(size_t n) {
+  if (n > 0xffffffff) return 0;
+  return log_crash_stack_overflow(n + 1);
+}
+
+OFP_BEGIN_IGNORE_USED_BUT_UNUSED
+
+TEST(log_DeathTest, log_crash_illegal) {
+  // This macro generates a warning on clang. [-Wused-but-marked-unused]
+  EXPECT_EXIT(log_crash_illegal(), ::testing::KilledBySignal(SIGILL), "36log_DeathTest_log_crash_illegal_Test8TestBody");
+}
+
+TEST(log_DeathTest, log_crash_stack_overflow) {
+  // This macro generates a warning on clang. [-Wused-but-marked-unused]
+  EXPECT_EXIT(log_crash_stack_overflow(0), ::testing::KilledBySignal(SIGILL), "28log_DeathTest_log_crash_Test8TestBody");
+}
+
+OFP_END_IGNORE_USED_BUT_UNUSED
+

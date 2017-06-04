@@ -28,7 +28,7 @@ void JsonRpc::setMaxOpenFiles() {
     return;
   }
 
-  log_debug("Open file limit: rlim_cur", rlp.rlim_cur, "rlim_max",
+  log_debug("Original open file limit: rlim_cur", rlp.rlim_cur, "rlim_max",
             rlp.rlim_max);
 
 #ifdef __APPLE__
@@ -44,7 +44,7 @@ void JsonRpc::setMaxOpenFiles() {
     return;
   }
 
-  log_info("Open file limit: rlim_cur", rlp.rlim_cur, "rlim_max", rlp.rlim_max);
+  log_info("Open file limit:", rlp.rlim_cur);
 }
 
 void JsonRpc::runStdio() {
