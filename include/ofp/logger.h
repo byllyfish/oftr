@@ -8,7 +8,7 @@
 #include "ofp/types.h"
 
 namespace llvm {
-class raw_fd_ostream;
+class raw_ostream;
 }  // namespace llvm
 
 namespace ofp {
@@ -47,15 +47,13 @@ inline Trace operator|(Trace lhs, Trace rhs) {
                             static_cast<unsigned>(rhs));
 }
 
-OFP_BEGIN_IGNORE_PADDING
-
 class Logger {
  public:
   Logger() = default;
 
-  void configure(Level level, Trace trace, int fd, bool logSignals);
+  void configure(Level level, Trace trace, int fd);
   void configure(Level level, Trace trace,
-                 std::unique_ptr<llvm::raw_fd_ostream> &&output, bool logSignals);
+                 std::unique_ptr<llvm::raw_ostream> &&output);
 
   Level levelFilter() const { return levelFilter_; }
   void setLevelFilter(Level level) { levelFilter_ = level; }
@@ -70,29 +68,22 @@ class Logger {
 
   void write(Level level, const char *data, size_t size);
 
-  int fd() const { return fd_; }
-
  private:
-  std::unique_ptr<llvm::raw_fd_ostream> output_;
+  std::unique_ptr<llvm::raw_ostream> output_;
   std::mutex outputMutex_;  // protect `output_`
   Level levelFilter_ = Level::Silent;
   Trace traceFilter_ = Trace::None;
-  int fd_ = -1;
-
-  void initFatalSignalHandlers();
 };
-
-OFP_END_IGNORE_PADDING
 
 extern Logger *const GLOBAL_Logger;
 
-inline void configure(Level level, Trace trace = Trace::None, int fd = STDERR, bool logSignals = false) {
-  GLOBAL_Logger->configure(level, trace, fd, logSignals);
+inline void configure(Level level, Trace trace = Trace::None, int fd = STDERR) {
+  GLOBAL_Logger->configure(level, trace, fd);
 }
 
 inline void configure(Level level, Trace trace,
-                      std::unique_ptr<llvm::raw_fd_ostream> output, bool logSignals = false) {
-  GLOBAL_Logger->configure(level, trace, std::move(output), logSignals);
+                      std::unique_ptr<llvm::raw_ostream> output) {
+  GLOBAL_Logger->configure(level, trace, std::move(output));
 }
 
 }  // namespace log

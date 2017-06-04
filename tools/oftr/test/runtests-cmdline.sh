@@ -20,11 +20,4 @@ $LIBOFP_MEMCHECK $LIBOFP encode --loglevel=info < /dev/null
 echo "Run oftr decode"
 $LIBOFP_MEMCHECK $LIBOFP decode --loglevel=info < /dev/null
 
-echo "Run oftr jsonrpc and test QUIT signal backtrace"
-$LIBOFP_MEMCHECK $LIBOFP jsonrpc --initial-sleep=5 &> backtrace.txt &
-PID=$!
-sleep 1
-kill -QUIT $PID
-grep "4ofpx10Subprogram23parseCommandLineOptions" backtrace.txt
-
 exit 0

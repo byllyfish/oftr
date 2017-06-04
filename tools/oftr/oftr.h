@@ -46,7 +46,7 @@ class Subprogram {
 
   void setupLogging() {
     using namespace llvm::sys;
-    std::unique_ptr<llvm::raw_fd_ostream> logStream;
+    std::unique_ptr<llvm::raw_ostream> logStream;
 
     if (!logfile_.empty()) {
       std::error_code err;
@@ -63,7 +63,7 @@ class Subprogram {
 
     ofp::log::configure(loglevel_,
                         static_cast<ofp::log::Trace>(logtrace_.getBits()),
-                        std::move(logStream), true);
+                        std::move(logStream));
   }
 
   // --- Command-line Arguments ---
