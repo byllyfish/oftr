@@ -4,6 +4,7 @@
 #include "ofp/demux/messagesource.h"
 #include <sys/stat.h>  // mkdir for debugWrite
 #include <fstream>     // for debugWrite
+#include "ofp/demux/messageconvert.h"
 #include "ofp/demux/pktsource.h"
 #include "ofp/header.h"
 #include "ofp/message.h"
@@ -26,8 +27,13 @@ static void sIPCallback(Timestamp ts, ByteRange data, unsigned len,
 }
 
 void MessageSource::runLoop(PktSource *pcap) {
-  PktSource::PktCallback callback;
+  if (msgConvert_) {
+    MessageConvert convert{callback_, context_};
+    convert.runLoop(pcap);
+    return;
+  }
 
+  PktSource::PktCallback callback;
   if (pcap->encapsulation() == PktSource::ENCAP_ETHERNET) {
     callback = sEthernetCallback;
   } else {

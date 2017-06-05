@@ -1,5 +1,11 @@
 = Changelog
 
+== Version 0.30 (4 June 2017)
+
+- Add `--pcap-convert-packetin` option for oftr decode.
+- Ignore SIGHUP signal. 
+- Update boringssl module.
+
 == Version 0.29 (17 May 2017)
 
 - Add support for NO_ALERT message flag.

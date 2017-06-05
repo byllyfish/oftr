@@ -29,12 +29,13 @@ class MessageSource {
 
   explicit MessageSource(MessageCallback callback, void *context,
                          const std::string &outputDir, bool skipPayload = false,
-                         size_t maxMissingBytes = 0)
+                         size_t maxMissingBytes = 0, bool msgConvert = false)
       : callback_{callback},
         context_{context},
         outputDir_{outputDir},
         maxMissingBytes_{maxMissingBytes},
-        skipPayload_{skipPayload} {}
+        skipPayload_{skipPayload},
+        msgConvert_{msgConvert} {}
 
   void runLoop(PktSource *pcap);
 
@@ -54,6 +55,7 @@ class MessageSource {
   std::string outputDir_;
   size_t maxMissingBytes_;
   bool skipPayload_;
+  bool msgConvert_;
 
   void submitEthernet(const UInt8 *data, size_t length);
   void submitIPv4(const UInt8 *data, size_t length);

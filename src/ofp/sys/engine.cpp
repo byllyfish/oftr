@@ -343,6 +343,18 @@ void Engine::releaseConnection(Connection *connection) {
   }
 }
 
+static const char *sSigname(int signum) {
+  switch (signum) {
+    case SIGTERM:
+      return "SIGTERM";
+    case SIGINT:
+      return "SIGINT";
+    case SIGHUP:
+      return "SIGHUP";
+  }
+  return "???";
+}
+
 void Engine::installSignalHandlers(std::function<void()> callback) {
   log_debug("Install signal handlers");
 
@@ -351,16 +363,20 @@ void Engine::installSignalHandlers(std::function<void()> callback) {
   signals_.clear(ignore);
   signals_.add(SIGINT);
   signals_.add(SIGTERM);
+  signals_.add(SIGHUP);
 
   OFP_BEGIN_IGNORE_PADDING
 
   signals_.async_wait(
       [this, callback](const asio::error_code &error, int signum) {
         if (!error) {
-          const char *signame = (signum == SIGTERM)
-                                    ? "SIGTERM"
-                                    : (signum == SIGINT) ? "SIGINT" : "???";
-          log_info("Signal received:", signame);
+          // Log and ignore SIGHUP.
+          if (signum == SIGHUP) {
+            log_info("Signal ignored:", sSigname(signum));
+            return;
+          }
+
+          log_info("Signal received:", sSigname(signum));
 
           signals_.cancel();
           idleTimer_.cancel();
