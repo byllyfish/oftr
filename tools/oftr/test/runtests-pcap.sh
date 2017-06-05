@@ -91,5 +91,12 @@ $LIBOFP_MEMCHECK $LIBOFP decode --json-array "$CURRENT_SOURCE_DIR/cap_single.pca
 echo "Compare $CURRENT_TEST_DIR/cap_single.pcap.out to $CURRENT_SOURCE_DIR/cap_single.pcap.out"
 diff "$CURRENT_TEST_DIR/cap_single.pcap.out" "$CURRENT_SOURCE_DIR/cap_single.pcap.out"
 
+# Decode packets in pcap files (--pcap-convert-packetin)
+
+echo "Run oftr decode --pcap-convert-packetin on $CURRENT_SOURCE_DIR/tcp.pcap $CURRENT_SOURCE_DIR/flow58899.pcap $CURRENT_SOURCE_DIR/cap_single.pcap"
+$LIBOFP_MEMCHECK $LIBOFP decode --json-array --pcap-convert-packetin --pkt-decode $CURRENT_SOURCE_DIR/tcp.pcap $CURRENT_SOURCE_DIR/flow58899.pcap $CURRENT_SOURCE_DIR/cap_single.pcap > "$CURRENT_TEST_DIR/pcap-packetin.out"
+echo "Compare $CURRENT_TEST_DIR/pcap-packetin.out to $CURRENT_SOURCE_DIR/pcap-packetin.out"
+diff "$CURRENT_TEST_DIR/pcap-packetin.out" "$CURRENT_SOURCE_DIR/pcap-packetin.out"
+
 echo "Done."
 exit 0
