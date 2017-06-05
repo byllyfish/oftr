@@ -4,8 +4,8 @@
 #include "ofp/demux/messagesource.h"
 #include <sys/stat.h>  // mkdir for debugWrite
 #include <fstream>     // for debugWrite
-#include "ofp/demux/pktsource.h"
 #include "ofp/demux/messageconvert.h"
+#include "ofp/demux/pktsource.h"
 #include "ofp/header.h"
 #include "ofp/message.h"
 #include "ofp/messageinfo.h"

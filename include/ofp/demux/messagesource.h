@@ -56,7 +56,7 @@ class MessageSource {
   size_t maxMissingBytes_;
   bool skipPayload_;
   bool msgConvert_;
-  
+
   void submitEthernet(const UInt8 *data, size_t length);
   void submitIPv4(const UInt8 *data, size_t length);
   void submitIPv6(const UInt8 *data, size_t length);
