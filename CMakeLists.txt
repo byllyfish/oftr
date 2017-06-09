@@ -282,6 +282,7 @@ set(LIBOFP_SOURCES
   src/ofp/timestamp.cpp
   src/ofp/types.cpp
   src/ofp/validation.cpp
+  src/ofp/vlannumber.cpp
   src/ofp/yaml/decoder.cpp
   src/ofp/yaml/encoder.cpp
   src/ofp/yaml/getjson.cpp

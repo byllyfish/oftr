@@ -1442,6 +1442,42 @@ TEST(encoder, flowmodv1_2) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, flowmodv1_modvlan) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         1
+      xid:             1
+      msg:             
+        cookie:          0x1111111111111111
+        cookie_mask:     0x2222222222222222
+        table_id:        0x33
+        command:         0x44
+        idle_timeout:    0x5152
+        hard_timeout:    0x6162
+        priority:        0x7172
+        buffer_id:       0x81828384
+        out_port:        0x91929394
+        out_group:       0xA1A2A3A4
+        flags:           [ '0xB1B2' ]
+        match:           
+          - field:           IN_PORT
+            value:           0xC1C2C3C4
+        instructions:
+          - instruction:    APPLY_ACTIONS
+            actions:
+               - action: SET_FIELD
+                 field: VLAN_VID
+                 value: 0x822c
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x050, encoder.size());
+  EXPECT_HEX(
+      "010E005000000001003820FEC3C40000000000000000000000000000000000000000000000000000000000000000000011111111111111110044515261627172818283849394B1B200010008822C0000",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, flowmodv6) {
   const char *input = R"""(
       type:            FLOW_MOD

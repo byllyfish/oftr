@@ -16,6 +16,7 @@
 #include "ofp/yaml/ylldpvalue.h"
 #include "ofp/yaml/yoxmfulltype.h"
 #include "ofp/yaml/yportnumber.h"
+#include "ofp/yaml/yvlannumber.h"
 
 namespace ofp {
 namespace detail {

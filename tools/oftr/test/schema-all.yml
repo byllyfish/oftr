@@ -1519,7 +1519,7 @@ Action/NX_REG_MOVE:
   dst: RegisterBits
   
 Action/NX_REG_LOAD: 
-  action: NX_REG_MOVE
+  action: NX_REG_LOAD
   dst: RegisterBits
   value: UInt64
   
@@ -1724,8 +1724,8 @@ Field/ETH_TYPE:
   
 Field/VLAN_VID: 
   field: VLAN_VID
-  value: UInt16
-  mask: !optout UInt16
+  value: VlanNumber
+  mask: !optout VlanNumber
   
 Field/VLAN_PCP: 
   field: VLAN_PCP
@@ -2091,4 +2091,6 @@ Builtin/Timestamp: <builtin>
 Builtin/RegisterBits: <builtin>
 
 Builtin/DurationSec: <builtin>
+
+Builtin/VlanNumber: <builtin>
 

@@ -9,6 +9,7 @@
 #include "ofp/lldpvalue.h"
 #include "ofp/macaddress.h"
 #include "ofp/oxmrange.h"
+#include "ofp/vlannumber.h"
 
 namespace ofp {
 
