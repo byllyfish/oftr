@@ -44,6 +44,10 @@ TEST(datapathid, test) {
   EXPECT_HEX("aa:bb:cc:dd:aa:bb:cc:dd", &f, sizeof(f));
   // It's NOT okay to pass more data than necessary...
   EXPECT_FALSE(f.parse("aa:bb:cc:dd:aa:bb:cc:dd:ee"));
+
+  // Dropping a colon is disallowed.
+  EXPECT_FALSE(f.parse("aa:bb:cc:dd:aa:bb:ccdd"));
+  EXPECT_FALSE(f.parse("aabbccddaabbccdd"));
 }
 
 TEST(datapathid, relational) {

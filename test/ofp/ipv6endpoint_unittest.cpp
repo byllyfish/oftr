@@ -54,10 +54,12 @@ TEST(ipv6endpoint, parse2) {
   EXPECT_TRUE(endpt.parse("80"));
   EXPECT_EQ(IPv6Address{}, endpt.address());
   EXPECT_EQ(80, endpt.port());
+  EXPECT_EQ("[::]:80", endpt.toString());
 
   EXPECT_TRUE(endpt.parse(":65535"));
   EXPECT_EQ(IPv6Address{}, endpt.address());
   EXPECT_EQ(65535, endpt.port());
+  EXPECT_EQ("[::]:65535", endpt.toString());
 
   EXPECT_TRUE(endpt.parse("127.000.000.001:06633"));
   EXPECT_EQ(IPv6Address{"127.0.0.1"}, endpt.address());
