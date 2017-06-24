@@ -147,7 +147,21 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
 }
 
 void RpcServer::onRpcClose(RpcConnection *conn, RpcClose *close) {
-  size_t count = engine_->close(close->params.connId);
+  UInt64 connId = close->params.connId;
+  DatapathID datapathId = close->params.datapathId;
+
+  if (connId == 0 && datapathId.empty()) {
+    // Return an error if no connId or datapathId is specified.
+    if (!close->id.is_missing()) {
+      RpcErrorResponse response{close->id};
+      response.error.code = ERROR_CODE_INVALID_OPTIONS;
+      response.error.message = "Invalid options";
+      conn->rpcReply(&response);
+    }
+    return;    
+  }
+
+  size_t count = engine_->close(connId, datapathId);
 
   if (close->id.is_missing())
     return;

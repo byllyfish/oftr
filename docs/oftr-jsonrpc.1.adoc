@@ -41,6 +41,22 @@ The jsonrpc service is a JSON-RPC 2.0 server (http://www.jsonrpc.org/).
 - Replies may be returned in a different order than requests are submitted.
 - Batch requests are not supported.
 
+== Connection Management
+
+OpenFlow connections (and listeners) are uniquely identified by a unique conn_id. The
+conn_id is a monotonically increasing 64-bit unsigned integer. If a connection is associated
+with an OpenFlow switch, the connection will also have an assigned datapath_id.
+
+A client may use a conn_id or datapath_id to select a channel. You should always include
+the conn_id if you can. When the client uses the datapath_id only, a situation exists where:
+
+- you send a message M to datapath X
+- datapath X disconnects and reconnects with new conn_id C
+- you receive notification of the disconnect and reconnect
+- your message M is still sent to datapath X on conn_id C
+
+If you use conn_id and datapath_id together, the channel must match both.
+
 == RPC Overview
 
 There are seven core JSON-RPC requests with corresponding replies.
@@ -87,10 +103,10 @@ Request information about the `oftr` implementation.
 
 ==== Discussion
 
-The reply contains the software version, API version, and supported OpenFlow 
+The reply contains static information about the server: software version, API version, and supported OpenFlow 
 protocol versions. The OFP.DESCRIPTION result will never change at runtime.
 
-The major API version is incremented when there are changes that are incompatible
+The major API version is incremented when there are software changes that are incompatible
 with previous versions of the API. The minor API version is incremented when the
 API changes are backward compatible.
 
@@ -264,9 +280,12 @@ Close the specified connection.
     id: UInt64
     method: OFP.CLOSE
     params:
-      conn_id: UInt64
+      conn_id: !opt UInt64
+      datapath_id: !opt DatapathID
 
-*conn_id*:: Specify the connection to close. Use 0 to close all connections.
+*conn_id*:: Specify the connection to close.
+
+*datapath_id*:: Specify the datapath_id to close.
 
 ==== Reply
 
@@ -278,8 +297,8 @@ Close the specified connection.
 
 ==== Discussion
 
-Use the OFP.CLOSE command to close a connection, or close all connections. The reply
-contains the number of matching connections that were closed.
+Use the OFP.CLOSE command to close a connection. The reply contains the number 
+of matching connections that were closed.
 
 === OFP.LIST_CONNECTIONS
 
@@ -324,14 +343,14 @@ using Transport Layer Security (TLS).
     params:
       cert: String
       cert_auth: String
-      privkey_password: String        # Optional
+      password: String        # Optional
 
 *cert*:: PEM certificate chain data with PEM private key appended. The
   PEM private key may be encrypted with a password.
 
 *cert_auth*:: Trusted PEM root certificate. One certificate, not a list.
 
-*privkey_password*:: Password for PEM private key, if needed. (Optional)
+*password*:: Password for PEM private key, if needed. (Optional)
 
 ==== Reply
 

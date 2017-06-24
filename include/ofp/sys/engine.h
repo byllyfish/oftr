@@ -39,8 +39,9 @@ class Engine {
                  ChannelListener::Factory listenerFactory,
                  std::function<void(Channel *, std::error_code)> resultHandler);
 
-  size_t close(UInt64 connId);
-
+  size_t close(UInt64 connId, const DatapathID &dpid);
+  size_t closeAll();
+  
   void run();
   void stop(Milliseconds timeout = 0_ms);
   bool isRunning() const { return isRunning_; }

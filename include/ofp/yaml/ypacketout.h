@@ -20,6 +20,7 @@ msg:
   actions: !opt [Action]              # default=[]
   data: !opt HexData                  # default=''
   _pkt_decode: !optout [Field]
+  _pkt_data: !opt HexData             # default = ''
 )""";
 
 template <>

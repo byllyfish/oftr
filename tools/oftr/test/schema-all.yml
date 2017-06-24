@@ -32,7 +32,8 @@ Rpc/OFP.CLOSE:
   id: !opt UInt64
   method: !request OFP.CLOSE
   params: !request
-    conn_id: UInt64
+    conn_id: !opt UInt64
+    datapath_id: !opt DatapathID
   result: !reply
     count: UInt32
   
@@ -346,6 +347,7 @@ Message/PacketOut:
     actions: !opt [Action]              # default=[]
     data: !opt HexData                  # default=''
     _pkt_decode: !optout [Field]
+    _pkt_data: !opt HexData             # default = ''
   
 Message/FlowMod: 
   version: !opt UInt8

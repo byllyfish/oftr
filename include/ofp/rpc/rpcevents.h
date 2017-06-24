@@ -173,6 +173,8 @@ struct RpcClose {
   struct Params {
     /// Connection ID to close.
     UInt64 connId = 0;
+    /// DatapathID to close.
+    DatapathID datapathId;
   };
 
   RpcID id;
@@ -350,7 +352,8 @@ result: !reply
 id: !opt UInt64
 method: !request OFP.CLOSE
 params: !request
-  conn_id: UInt64
+  conn_id: !opt UInt64
+  datapath_id: !opt DatapathID
 result: !reply
   count: UInt32
 
@@ -483,7 +486,8 @@ struct MappingTraits<ofp::rpc::RpcConnect::Params> {
 template <>
 struct MappingTraits<ofp::rpc::RpcClose::Params> {
   static void mapping(IO &io, ofp::rpc::RpcClose::Params &params) {
-    io.mapRequired("conn_id", params.connId);
+    io.mapOptional("conn_id", params.connId);
+    io.mapOptional("datapath_id", params.datapathId);
   }
 };
 
