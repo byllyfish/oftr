@@ -111,15 +111,20 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
 
   std::error_code result = loadCertificateChain(ctx, certData);
   if (result) {
+    log_debug("Identity: loadCertificateChain failed", result);
     return result;
   }
 
   result = loadPrivateKey(ctx, privKey, keyPassphrase);
   if (result) {
+    log_debug("Identity: loadPrivateKey failed", result);
     return result;
   }
 
   result = loadVerifier(ctx, verifyData);
+  if (result) {
+    log_debug("Identity: loadVerifier failed", result);
+  }
 
   return result;
 }
@@ -156,12 +161,14 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
   MemX509 mainCert{PEM_read_bio_X509_AUX(bio.get(), nullptr, nullptr, nullptr)};
 
   if (!mainCert) {
+    log_debug("loadCertificateChain failed reading main cert");
     return sslError(ERR_R_PEM_LIB);
   }
 
   int rc = SSL_CTX_use_certificate(ctx, mainCert.get());
 
   if (rc == 0 || ERR_peek_error() != 0) {
+    log_debug("loadCertificateChain failed: SSL_CTX_use_certificate");
     return sslError(::ERR_get_error());
   }
 
@@ -173,6 +180,7 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
       break;
 
     if (!SSL_CTX_add0_chain_cert(ctx, caCert.get())) {
+      log_debug("loadCertificateChain failed: SSL_CTX_add0_chain_cert");
       return sslError(::ERR_get_error());
     }
 

@@ -342,16 +342,15 @@ using Transport Layer Security (TLS).
     method: OFP.ADD_IDENTITY
     params:
       cert: String
-      cert_auth: String
-      priv_key: String
+      cacert: String
+      privkey: String
       password: !opt String
 
-*cert*:: PEM certificate chain data. The
-  PEM private key may be encrypted with a password.
+*cert*:: PEM certificate chain data.
 
-*cert_auth*:: Trusted PEM root certificate. One certificate, not a list.
+*cacert*:: Trusted PEM root certificate. One certificate, not a list.
 
-*priv_key*: PEM private key, possibly encrypted with a password.
+*privkey*: PEM private key, possibly encrypted with a password.
 
 *password*:: Password for PEM private key, if needed. (Optional)
 
@@ -369,7 +368,7 @@ Use the `OFP.ADD_IDENTITY` command to add a SSL/TLS identity for use in encrypti
 connections. The reply contains the unique `tls_id` to pass to OFP.CONNECT and
 OFP.LISTEN commands.
 
-The `cert_auth` parameter contains the certificate authority used to authenticate the 
+The `cacert` parameter contains the certificate authority used to authenticate the 
 certificate chain presented by the other end of the connection.
 
 == RPC Notifications

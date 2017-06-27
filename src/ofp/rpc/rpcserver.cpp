@@ -258,10 +258,10 @@ void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
 
 #if LIBOFP_ENABLE_OPENSSL
   UInt64 securityId = engine_->addIdentity(
-      add->params.cert, add->params.privKey, add->params.password, add->params.certAuth, err);
+      add->params.cert, add->params.privkey, add->params.password, add->params.cacert, err);
 
   // Nuke security parameters.
-  std::memset(&add->params.privKey[0], '\0', add->params.privKey.size());
+  std::memset(&add->params.privkey[0], '\0', add->params.privkey.size());
   std::memset(&add->params.password[1], '\0', add->params.password.size());
 
 #else
