@@ -225,10 +225,12 @@ struct RpcAddIdentity {
   explicit RpcAddIdentity(RpcID ident) : id{ident} {}
 
   struct Params {
-    /// Certificate chain in PEM format (which also contains private key).
+    /// Certificate chain in PEM format (which may contain private key).
     std::string cert;
     /// PEM certificate for trusted CA to use for verifying a peer certificate.
-    std::string cert_auth;
+    std::string certAuth;
+    /// Private key for certificate (if empty, look for private key with cert).
+    std::string privKey;
     /// Optional password for encrypted private key.
     std::string password;
   };
@@ -384,6 +386,7 @@ method: !request OFP.ADD_IDENTITY
 params: !request
   cert: String
   cert_auth: String
+  priv_key: String
   password: !opt String
 result: !reply
   tls_id: UInt64
@@ -502,7 +505,8 @@ template <>
 struct MappingTraits<ofp::rpc::RpcAddIdentity::Params> {
   static void mapping(IO &io, ofp::rpc::RpcAddIdentity::Params &params) {
     io.mapRequired("cert", params.cert);
-    io.mapRequired("cert_auth", params.cert_auth);
+    io.mapRequired("cert_auth", params.certAuth);
+    io.mapOptional("priv_key", params.privKey);
     io.mapOptional("password", params.password);
   }
 };

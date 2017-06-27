@@ -64,6 +64,7 @@ Rpc/OFP.ADD_IDENTITY:
   params: !request
     cert: String
     cert_auth: String
+    priv_key: String
     password: !opt String
   result: !reply
     tls_id: UInt64

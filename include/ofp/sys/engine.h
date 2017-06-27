@@ -97,6 +97,7 @@ class Engine {
 
 #if LIBOFP_ENABLE_OPENSSL
   UInt64 addIdentity(const std::string &certData,
+                     const std::string &privKey,
                      const std::string &keyPassphrase,
                      const std::string &verifier, std::error_code &error);
 

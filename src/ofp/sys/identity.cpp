@@ -45,6 +45,7 @@ void Identity::SetConnectionPtr(SSL *ssl, Connection *conn) {
 }
 
 Identity::Identity(const std::string &certData,
+                   const std::string &privKey,
                    const std::string &keyPassphrase,
                    const std::string &verifyData, std::error_code &error)
     : tls_{asio::ssl::context_base::tlsv12},
@@ -55,12 +56,12 @@ Identity::Identity(const std::string &certData,
 
   // Initialize the TLS context.
   error =
-      initContext(tls_.native_handle(), certData, keyPassphrase, verifyData);
+      initContext(tls_.native_handle(), certData, privKey, keyPassphrase, verifyData);
   if (error)
     return;
 
   // Initialize the DTLS context identically.
-  error = initContext(dtls_.get(), certData, keyPassphrase, verifyData);
+  error = initContext(dtls_.get(), certData, privKey, keyPassphrase, verifyData);
   if (error)
     return;
 
@@ -100,6 +101,7 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
 }
 
 std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
+                                      const std::string &privKey,
                                       const std::string &keyPassphrase,
                                       const std::string &verifyData) {
   prepareOptions(ctx);
@@ -112,7 +114,7 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
     return result;
   }
 
-  result = loadPrivateKey(ctx, certData, keyPassphrase);
+  result = loadPrivateKey(ctx, privKey, keyPassphrase);
   if (result) {
     return result;
   }

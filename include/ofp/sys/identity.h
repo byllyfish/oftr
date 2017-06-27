@@ -16,6 +16,7 @@ class Connection;
 class Identity {
  public:
   explicit Identity(const std::string &certData,
+                    const std::string &privKey,
                     const std::string &keyPassphrase,
                     const std::string &verifyData, std::error_code &error);
   ~Identity();
@@ -55,6 +56,7 @@ class Identity {
   std::unordered_map<IPv6Endpoint, SSL_SESSION *> clientSessions_;
 
   std::error_code initContext(SSL_CTX *ctx, const std::string &certData,
+                              const std::string &privKey,
                               const std::string &keyPassphrase,
                               const std::string &verifyData);
 

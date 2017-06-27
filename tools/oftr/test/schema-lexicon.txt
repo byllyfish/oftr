@@ -122,6 +122,7 @@ port_status_slave
 ports
 prec_level
 priority
+priv_key
 properties
 property
 queue_id

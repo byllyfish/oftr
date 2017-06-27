@@ -161,11 +161,12 @@ size_t Engine::closeAll() {
 #if LIBOFP_ENABLE_OPENSSL
 
 UInt64 Engine::addIdentity(const std::string &certData,
+                           const std::string &privKey,
                            const std::string &keyPassphrase,
                            const std::string &verifier,
                            std::error_code &error) {
   auto idPtr =
-      MakeUniquePtr<Identity>(certData, keyPassphrase, verifier, error);
+      MakeUniquePtr<Identity>(certData, privKey, keyPassphrase, verifier, error);
   if (error)
     return 0;
 
@@ -206,17 +207,13 @@ UInt64 Engine::assignSecurityId() {
 
 void Engine::run() {
   if (!isRunning_) {
-    isRunning_ = true;
-
     // Set isRunning_ to true when we are in io.run(). This guards against
     // re-entry and provides a flag to test when shutting down.
 
+    isRunning_ = true;
     asyncIdle();
-
     io_.run();
-
     idleTimer_.cancel();
-
     isRunning_ = false;
   }
 }

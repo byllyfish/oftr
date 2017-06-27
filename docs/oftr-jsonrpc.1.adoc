@@ -343,12 +343,15 @@ using Transport Layer Security (TLS).
     params:
       cert: String
       cert_auth: String
-      password: String        # Optional
+      priv_key: String
+      password: !opt String
 
-*cert*:: PEM certificate chain data with PEM private key appended. The
+*cert*:: PEM certificate chain data. The
   PEM private key may be encrypted with a password.
 
 *cert_auth*:: Trusted PEM root certificate. One certificate, not a list.
+
+*priv_key*: PEM private key, possibly encrypted with a password.
 
 *password*:: Password for PEM private key, if needed. (Optional)
 
