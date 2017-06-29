@@ -265,7 +265,7 @@ Message/PacketIn:
     cookie: UInt64
     match: [Field]
     data: HexData
-    _pkt_decode: !optout [Field]
+    _pkt: !optout [Field]
   
 Message/FlowRemoved: 
   version: !opt UInt8
@@ -347,7 +347,7 @@ Message/PacketOut:
     in_port: !opt PortNumber            # default=CONTROLLER
     actions: !opt [Action]              # default=[]
     data: !opt HexData                  # default=''
-    _pkt_decode: !optout [Field]
+    _pkt: !optout [Field]
     _pkt_data: !opt HexData             # default = ''
   
 Message/FlowMod: 

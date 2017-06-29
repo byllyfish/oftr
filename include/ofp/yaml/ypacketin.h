@@ -24,7 +24,7 @@ msg:
   cookie: UInt64
   match: [Field]
   data: HexData
-  _pkt_decode: !optout [Field]
+  _pkt: !optout [Field]
 )""";
 
 template <>
@@ -60,7 +60,7 @@ struct MappingTraits<ofp::PacketIn> {
 
     if (ofp::yaml::GetIncludePktMatchFromContext(io)) {
       ofp::MatchPacket mp{enetFrame};
-      io.mapRequired("_pkt_decode", mp);
+      io.mapRequired("_pkt", mp);
     }
   }
 };
@@ -94,7 +94,7 @@ struct MappingTraits<ofp::PacketInBuilder> {
     io.mapRequired("data", msg.enetFrame_);
 
     MatchBuilder ignorePktDecode;  // FIXME(bfish) Add `mapIgnore` method?
-    io.mapOptional("_pkt_decode", ignorePktDecode);
+    io.mapOptional("_pkt", ignorePktDecode);
   }
 };
 

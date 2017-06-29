@@ -39,7 +39,7 @@ namespace ofpx {
 //   --keep-going (-k)     Continue processing messages after errors.
 //   --verify-output (-V)  Verify output by translating it back to binary.
 //   --use-findx           Use metadata from tcpflow '.findx' files.
-//   --pkt-decode          Include _pkt_decode in PacketIn/PacketOut decodes.
+//   --pkt-decode          Include _pkt in PacketIn/PacketOut decodes.
 //   --pkt-write-file=<file> Write data from PacketIn/PacketOut messages to
 //   .pcap file.
 //   --show-filename       Show the file name in all decodes.
@@ -173,7 +173,7 @@ class Decode : public Subprogram {
                           cl::Hidden};
   cl::opt<bool> pktDecode_{
       "pkt-decode",
-      cl::desc("Include _pkt_decode in PacketIn/PacketOut decodes")};
+      cl::desc("Include _pkt in PacketIn/PacketOut decodes")};
   cl::opt<std::string> pktWriteFile_{
       "pkt-write-file",
       cl::desc("Write data from PacketIn/PacketOut messages to .pcap file"),
