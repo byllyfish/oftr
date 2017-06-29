@@ -105,7 +105,8 @@ TEST(identity, cert_with_private_key_no_ca) {
 
 TEST(identity, cert_with_private_key) {
   std::error_code err;
-  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey, "", kGarbageCertificate, err};
+  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey, "",
+                         kGarbageCertificate, err};
 
   log_debug("identity error", err);
   asio::error_code expected;

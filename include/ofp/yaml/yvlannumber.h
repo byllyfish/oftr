@@ -6,7 +6,7 @@
 namespace llvm {
 namespace yaml {
 
-#define VLAN_FORMAT_DISPLAY    0
+#define VLAN_FORMAT_DISPLAY 0
 
 template <>
 struct ScalarTraits<ofp::VlanNumber> {
@@ -16,7 +16,7 @@ struct ScalarTraits<ofp::VlanNumber> {
     ScalarTraits<ofp::SignedInt32>::output(value.displayCode(), ctxt, out);
 #else
     ScalarTraits<Hex16>::output(value.value(), ctxt, out);
-#endif // VLAN_FORMAT_DISPLAY
+#endif  // VLAN_FORMAT_DISPLAY
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::VlanNumber &value) {
@@ -54,4 +54,4 @@ inline std::string primitive_to_json(ofp::VlanNumber value) {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YVLANNUMBER_H_
+#endif  // OFP_YAML_YVLANNUMBER_H_

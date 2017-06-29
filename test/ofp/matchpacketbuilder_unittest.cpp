@@ -337,7 +337,6 @@ TEST(matchpacketbuilder, icmpv6_nd_solicit2) {
       data.data(), data.size());
 }
 
-
 TEST(matchpacketbuilder, icmpv6_nd_router_advert) {
   MacAddress ethSrc{"2e:29:6e:ee:d1:44"};
   MacAddress ethDst{"33:33:ff:10:00:01"};
@@ -361,6 +360,7 @@ TEST(matchpacketbuilder, icmpv6_nd_router_advert) {
   packet.build(&data, {"\x01\x02\x03\x04", 4});
 
   EXPECT_HEX(
-      "3333FF1000012E296EEED14486DD6000000000083AFFFC000000000000000000000000000001FF0200000000000000000001FF10000185007C9F01020304",
+      "3333FF1000012E296EEED14486DD6000000000083AFFFC00000000000000000000000000"
+      "0001FF0200000000000000000001FF10000185007C9F01020304",
       data.data(), data.size());
 }

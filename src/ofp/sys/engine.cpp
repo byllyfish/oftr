@@ -165,8 +165,8 @@ UInt64 Engine::addIdentity(const std::string &certData,
                            const std::string &keyPassphrase,
                            const std::string &verifier,
                            std::error_code &error) {
-  auto idPtr =
-      MakeUniquePtr<Identity>(certData, privKey, keyPassphrase, verifier, error);
+  auto idPtr = MakeUniquePtr<Identity>(certData, privKey, keyPassphrase,
+                                       verifier, error);
   if (error)
     return 0;
 
@@ -407,7 +407,7 @@ UInt64 Engine::assignConnectionId() {
 Connection *Engine::findDatapath(UInt64 connId, const DatapathID &dpid) const {
   bool dpidEmpty = dpid.empty();
 
-  // Use the connectionId, it it's non-zero. If a datapathID is also provided, 
+  // Use the connectionId, it it's non-zero. If a datapathID is also provided,
   // it must match also.
   if (connId != 0) {
     Connection *conn = findConnId(connId);
@@ -432,7 +432,7 @@ Connection *Engine::findDatapath(UInt64 connId, const DatapathID &dpid) const {
 
   assert(dpidEmpty && connId == 0);
   log_warning("findDatapath: no conn_id or datapath_id specified");
-  
+
   return nullptr;
 }
 

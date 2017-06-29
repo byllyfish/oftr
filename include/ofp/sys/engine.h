@@ -41,7 +41,7 @@ class Engine {
 
   size_t close(UInt64 connId, const DatapathID &dpid);
   size_t closeAll();
-  
+
   void run();
   void stop(Milliseconds timeout = 0_ms);
   bool isRunning() const { return isRunning_; }
@@ -96,8 +96,7 @@ class Engine {
   void alert(Channel *conn, const std::string &alert, const ByteRange &data);
 
 #if LIBOFP_ENABLE_OPENSSL
-  UInt64 addIdentity(const std::string &certData,
-                     const std::string &privKey,
+  UInt64 addIdentity(const std::string &certData, const std::string &privKey,
                      const std::string &keyPassphrase,
                      const std::string &verifier, std::error_code &error);
 

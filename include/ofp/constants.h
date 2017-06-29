@@ -66,8 +66,8 @@ enum {
 /// variable.
 UInt16 OFPGetDefaultPort();
 
-enum : UInt16 { 
-  OFPVID_PRESENT = 0x1000, 
+enum : UInt16 {
+  OFPVID_PRESENT = 0x1000,
   OFPVID_NONE = 0x0000,
   OFPVID_MASK = 0x0fff
 };

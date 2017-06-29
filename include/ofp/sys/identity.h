@@ -15,8 +15,7 @@ class Connection;
 
 class Identity {
  public:
-  explicit Identity(const std::string &certData,
-                    const std::string &privKey,
+  explicit Identity(const std::string &certData, const std::string &privKey,
                     const std::string &keyPassphrase,
                     const std::string &verifyData, std::error_code &error);
   ~Identity();

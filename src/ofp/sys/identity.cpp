@@ -44,8 +44,7 @@ void Identity::SetConnectionPtr(SSL *ssl, Connection *conn) {
   SSL_set_ex_data(ssl, SSL_CONNECTION_PTR, conn);
 }
 
-Identity::Identity(const std::string &certData,
-                   const std::string &privKey,
+Identity::Identity(const std::string &certData, const std::string &privKey,
                    const std::string &keyPassphrase,
                    const std::string &verifyData, std::error_code &error)
     : tls_{asio::ssl::context_base::tlsv12},
@@ -55,13 +54,14 @@ Identity::Identity(const std::string &certData,
   SetIdentityPtr(dtls_.get(), this);
 
   // Initialize the TLS context.
-  error =
-      initContext(tls_.native_handle(), certData, privKey, keyPassphrase, verifyData);
+  error = initContext(tls_.native_handle(), certData, privKey, keyPassphrase,
+                      verifyData);
   if (error)
     return;
 
   // Initialize the DTLS context identically.
-  error = initContext(dtls_.get(), certData, privKey, keyPassphrase, verifyData);
+  error =
+      initContext(dtls_.get(), certData, privKey, keyPassphrase, verifyData);
   if (error)
     return;
 

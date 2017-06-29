@@ -158,7 +158,7 @@ void RpcServer::onRpcClose(RpcConnection *conn, RpcClose *close) {
       response.error.message = "Invalid options";
       conn->rpcReply(&response);
     }
-    return;    
+    return;
   }
 
   size_t count = engine_->close(connId, datapathId);
@@ -257,8 +257,9 @@ void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
   std::error_code err;
 
 #if LIBOFP_ENABLE_OPENSSL
-  UInt64 securityId = engine_->addIdentity(
-      add->params.cert, add->params.privkey, add->params.password, add->params.cacert, err);
+  UInt64 securityId =
+      engine_->addIdentity(add->params.cert, add->params.privkey,
+                           add->params.password, add->params.cacert, err);
 
   // Nuke security parameters.
   std::memset(&add->params.privkey[0], '\0', add->params.privkey.size());
