@@ -172,8 +172,7 @@ class Decode : public Subprogram {
                           cl::desc("Use metadata from tcpflow '.findx' files"),
                           cl::Hidden};
   cl::opt<bool> pktDecode_{
-      "pkt-decode",
-      cl::desc("Include _pkt in PacketIn/PacketOut decodes")};
+      "pkt-decode", cl::desc("Include _pkt in PacketIn/PacketOut decodes")};
   cl::opt<std::string> pktWriteFile_{
       "pkt-write-file",
       cl::desc("Write data from PacketIn/PacketOut messages to .pcap file"),
