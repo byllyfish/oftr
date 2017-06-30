@@ -4,6 +4,7 @@
 #ifndef OFP_YAML_YPACKETIN_H_
 #define OFP_YAML_YPACKETIN_H_
 
+#include "ofp/matchpacketbuilder.h"
 #include "ofp/packetin.h"
 #include "ofp/yaml/ybuffernumber.h"
 #include "ofp/yaml/ymatchpacket.h"
@@ -25,6 +26,7 @@ msg:
   match: [Field]
   data: HexData
   _pkt: !optout [Field]
+  _pkt_data: !opt HexData             # default = ''
 )""";
 
 template <>
@@ -93,8 +95,14 @@ struct MappingTraits<ofp::PacketInBuilder> {
     io.mapOptional("match", msg.match_);
     io.mapRequired("data", msg.enetFrame_);
 
-    MatchBuilder ignorePktDecode;  // FIXME(bfish) Add `mapIgnore` method?
-    io.mapOptional("_pkt", ignorePktDecode);
+    MatchBuilder pktDecode;
+    io.mapOptional("_pkt", pktDecode);
+    if (msg.enetFrame_.empty() && pktDecode.size() > 0) {
+      ByteList pktData;
+      io.mapOptional("_pkt_data", pktData);
+      ofp::MatchPacketBuilder mp{pktDecode.toRange()};
+      mp.build(&msg.enetFrame_, pktData.toRange());
+    }
   }
 };
 
