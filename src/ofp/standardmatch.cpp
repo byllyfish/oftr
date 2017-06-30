@@ -33,15 +33,15 @@ StandardMatch::StandardMatch(const OXMRange &range) {
         dl_dst_mask = item.mask<OFB_ETH_DST>();
         break;
       case OFB_VLAN_VID::type(): {
-        UInt16 vlan = item.value<OFB_VLAN_VID>();
+        UInt16 vlan = item.value<OFB_VLAN_VID>().value();
         dl_vlan =
             (vlan == OFPVID_NONE ? v1::OFPVID_NONE : (vlan & ~OFPVID_PRESENT));
         wc &= ~OFPFW_DL_VLAN;
         break;
       }
       case OFB_VLAN_VID::typeWithMask(): {
-        UInt16 vlan = item.value<OFB_VLAN_VID>();
-        UInt16 mask = item.mask<OFB_VLAN_VID>();
+        UInt16 vlan = item.value<OFB_VLAN_VID>().value();
+        UInt16 mask = item.mask<OFB_VLAN_VID>().value();
         if (vlan == OFPVID_PRESENT && mask == OFPVID_PRESENT) {
           dl_vlan = v1::OFPVID_PRESENT;
         } else {

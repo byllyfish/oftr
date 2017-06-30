@@ -1442,6 +1442,44 @@ TEST(encoder, flowmodv1_2) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, flowmodv1_modvlan) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         1
+      xid:             1
+      msg:             
+        cookie:          0x1111111111111111
+        cookie_mask:     0x2222222222222222
+        table_id:        0x33
+        command:         0x44
+        idle_timeout:    0x5152
+        hard_timeout:    0x6162
+        priority:        0x7172
+        buffer_id:       0x81828384
+        out_port:        0x91929394
+        out_group:       0xA1A2A3A4
+        flags:           [ '0xB1B2' ]
+        match:           
+          - field:           IN_PORT
+            value:           0xC1C2C3C4
+        instructions:
+          - instruction:    APPLY_ACTIONS
+            actions:
+               - action: SET_FIELD
+                 field: VLAN_VID
+                 value: 0x822c
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x050, encoder.size());
+  EXPECT_HEX(
+      "010E005000000001003820FEC3C400000000000000000000000000000000000000000000"
+      "00000000000000000000000011111111111111110044515261627172818283849394B1B2"
+      "00010008822C0000",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, flowmodv6) {
   const char *input = R"""(
       type:            FLOW_MOD
@@ -1555,6 +1593,50 @@ TEST(encoder, packetinv4) {
   EXPECT_HEX(
       "040A0064000000013333333344440188999999999999999900010020800000045"
       "555555580000204666666668000040877777777777777770000FFFFFFFFFFFF00"
+      "0000000001080600010800060400010000000000010A0000010000000000000A0"
+      "00002",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, packetinv4_pkt) {
+  const char *input = R"""(
+      type:            PACKET_IN
+      version:         4
+      xid:             1
+      msg:             
+        buffer_id:       0x33333330
+        total_len:       0x4440
+        in_port:         0x55555550
+        in_phy_port:     0x66666660
+        metadata:        0x7777777777777770
+        reason:          APPLY_ACTION
+        table_id:        0x80
+        cookie:          0x9999999999999990
+        match:
+        data:            ''
+        _pkt:
+          - field: ETH_DST
+            value: ff:ff:ff:ff:ff:ff
+          - field: ETH_SRC
+            value: 00:00:00:00:00:01
+          - field: ETH_TYPE
+            value: 0x0806
+          - field: ARP_OP
+            value: 1
+          - field: ARP_SHA
+            value: 00:00:00:00:00:01
+          - field: ARP_SPA
+            value: 10.0.0.1
+          - field: ARP_TPA
+            value: 10.0.0.2
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x064, encoder.size());
+  EXPECT_HEX(
+      "040A0064000000013333333044400180999999999999999000010020800000045"
+      "555555080000204666666608000040877777777777777700000FFFFFFFFFFFF00"
       "0000000001080600010800060400010000000000010A0000010000000000000A0"
       "00002",
       encoder.data(), encoder.size());

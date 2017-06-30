@@ -32,7 +32,8 @@ Rpc/OFP.CLOSE:
   id: !opt UInt64
   method: !request OFP.CLOSE
   params: !request
-    conn_id: UInt64
+    conn_id: !opt UInt64
+    datapath_id: !opt DatapathID
   result: !reply
     count: UInt32
   
@@ -62,7 +63,8 @@ Rpc/OFP.ADD_IDENTITY:
   method: !request OFP.ADD_IDENTITY
   params: !request
     cert: String
-    cert_auth: String
+    cacert: String
+    privkey: String
     password: !opt String
   result: !reply
     tls_id: UInt64
@@ -263,7 +265,8 @@ Message/PacketIn:
     cookie: UInt64
     match: [Field]
     data: HexData
-    _pkt_decode: !optout [Field]
+    _pkt: !optout [Field]
+    _pkt_data: !opt HexData             # default = ''
   
 Message/FlowRemoved: 
   version: !opt UInt8
@@ -345,7 +348,8 @@ Message/PacketOut:
     in_port: !opt PortNumber            # default=CONTROLLER
     actions: !opt [Action]              # default=[]
     data: !opt HexData                  # default=''
-    _pkt_decode: !optout [Field]
+    _pkt: !optout [Field]
+    _pkt_data: !opt HexData             # default=''
   
 Message/FlowMod: 
   version: !opt UInt8
@@ -1519,7 +1523,7 @@ Action/NX_REG_MOVE:
   dst: RegisterBits
   
 Action/NX_REG_LOAD: 
-  action: NX_REG_MOVE
+  action: NX_REG_LOAD
   dst: RegisterBits
   value: UInt64
   
@@ -1724,8 +1728,8 @@ Field/ETH_TYPE:
   
 Field/VLAN_VID: 
   field: VLAN_VID
-  value: UInt16
-  mask: !optout UInt16
+  value: VlanNumber
+  mask: !optout VlanNumber
   
 Field/VLAN_PCP: 
   field: VLAN_PCP
@@ -2091,4 +2095,6 @@ Builtin/Timestamp: <builtin>
 Builtin/RegisterBits: <builtin>
 
 Builtin/DurationSec: <builtin>
+
+Builtin/VlanNumber: <builtin>
 
