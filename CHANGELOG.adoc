@@ -1,6 +1,6 @@
 = Changelog
 
-== Version 0.31 (28 June 2017)
+== Version 0.31 (30 June 2017)
 
 - Changed OFP.CLOSE rpc command so it will only close one connection.
 - Clean up OFP.ADD_IDENTITY rpc command argument names.
