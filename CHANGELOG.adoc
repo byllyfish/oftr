@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.31 (28 June 2017)
+
+- Changed OFP.CLOSE rpc command so it will only close one connection.
+- Clean up OFP.ADD_IDENTITY rpc command argument names.
+- Encoding a PacketIn message now supports _pkt option.
+- Update boringssl submodule.
+
 == Version 0.30 (4 June 2017)
 
 - Add `--pcap-convert-packetin` option for oftr decode.
