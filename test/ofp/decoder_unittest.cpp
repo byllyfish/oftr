@@ -809,6 +809,24 @@ TEST(decoder, flowmod1_2) {
       "    COPY_TTL_OUT\n...\n");
 }
 
+TEST(decoder, flowmod1_modvlan) {
+  testDecodeEncode(
+      "010E005000000001003820FEC3C400000000000000000000000000000000000000000000"
+      "00000000000000000000000011111111111111110044515261627172818283849394B1B2"
+      "00010008822C0000",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:   "
+      "      0x01\nmsg:             \n  cookie:          0x1111111111111111\n  "
+      "cookie_mask:     0xFFFFFFFFFFFFFFFF\n  table_id:        0x00\n  "
+      "command:         0x44\n  idle_timeout:    0x5152\n  hard_timeout:    "
+      "0x6162\n  priority:        0x7172\n  buffer_id:       0x81828384\n  "
+      "out_port:        0x00009394\n  out_group:       0x00000000\n  flags:    "
+      "       [ CHECK_OVERLAP, NO_BYT_COUNTS, '0x0000B1A0' ]\n  match:         "
+      "  \n    - field:           IN_PORT\n      value:           0x0000C3C4\n "
+      " instructions:    \n    - instruction:     APPLY_ACTIONS\n      "
+      "actions:         \n        - action:          SET_FIELD\n          "
+      "field:           VLAN_VID\n          value:           0x822C\n...\n");
+}
+
 TEST(decoder, flowmodv6) {
   testDecodeEncode(
       "060E00680000000111111111111111102222222222222220304055506660777088888880"

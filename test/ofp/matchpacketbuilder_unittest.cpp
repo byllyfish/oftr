@@ -336,3 +336,31 @@ TEST(matchpacketbuilder, icmpv6_nd_solicit2) {
       "0000 0000 fc00 0000 0000 0000 0010 0010 0010 0001 0101 2e29 6eee d144",
       data.data(), data.size());
 }
+
+TEST(matchpacketbuilder, icmpv6_nd_router_advert) {
+  MacAddress ethSrc{"2e:29:6e:ee:d1:44"};
+  MacAddress ethDst{"33:33:ff:10:00:01"};
+  IPv6Address src{"fc00::1"};
+  IPv6Address dst{"ff02::1:ff10:1"};
+  IPv6Address target{"fc00::10:10:10:1"};
+
+  OXMList oxm;
+  oxm.add(OFB_ETH_DST{ethDst});
+  oxm.add(OFB_ETH_SRC{ethSrc});
+  oxm.add(OFB_ETH_TYPE{DATALINK_IPV6});
+  oxm.add(OFB_IPV6_SRC{src});
+  oxm.add(OFB_IPV6_DST{dst});
+  oxm.add(OFB_IP_PROTO{PROTOCOL_ICMPV6});
+  oxm.add(NXM_NX_IP_TTL{255});
+  oxm.add(OFB_ICMPV6_TYPE{0x85});
+  oxm.add(OFB_ICMPV6_CODE{0});
+
+  ByteList data;
+  MatchPacketBuilder packet{oxm.toRange()};
+  packet.build(&data, {"\x01\x02\x03\x04", 4});
+
+  EXPECT_HEX(
+      "3333FF1000012E296EEED14486DD6000000000083AFFFC00000000000000000000000000"
+      "0001FF0200000000000000000001FF10000185007C9F01020304",
+      data.data(), data.size());
+}

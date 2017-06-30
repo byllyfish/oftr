@@ -17,7 +17,7 @@ Engine::Engine(Driver *driver)
 
 Engine::~Engine() {
   // Shutdown all existing connections and servers.
-  (void)close(0);
+  (void)closeAll();
   log_debug("Engine shutting down");
 }
 
@@ -99,9 +99,13 @@ UInt64 Engine::connectUDP(UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
   return connId;
 }
 
-size_t Engine::close(UInt64 connId) {
-  if (connId != 0) {
-    // Close a specific server or connection.
+// Close a specific server or connection.
+size_t Engine::close(UInt64 connId, const DatapathID &dpid) {
+  if (dpid.empty()) {
+    if (connId == 0) {
+      return 0;
+    }
+
     TCP_Server *server = findTCPServer(
         [connId](TCP_Server *svr) { return svr->connectionId() == connId; });
 
@@ -109,23 +113,25 @@ size_t Engine::close(UInt64 connId) {
       server->shutdown();
       return 1;
     }
-
-    Connection *conn = findConnId(connId);
-    if (conn) {
-      conn->shutdown();
-      if (conn->flags() & Connection::kManualDelete) {
-        delete conn;
-      }
-      return 1;
-    }
-
-    return 0;
   }
 
+  Connection *conn = findDatapath(connId, dpid);
+  if (conn) {
+    conn->shutdown();
+    if (conn->flags() & Connection::kManualDelete) {
+      delete conn;
+    }
+    return 1;
+  }
+
+  return 0;
+}
+
+size_t Engine::closeAll() {
   // Close all servers and connections.
   size_t result = serverList_.size() + connList_.size() + (udpConnect_ ? 1 : 0);
   if (result == 0)
-    return result;
+    return 0;
 
   log_info("Close all servers and connections");
 
@@ -155,11 +161,12 @@ size_t Engine::close(UInt64 connId) {
 #if LIBOFP_ENABLE_OPENSSL
 
 UInt64 Engine::addIdentity(const std::string &certData,
+                           const std::string &privKey,
                            const std::string &keyPassphrase,
                            const std::string &verifier,
                            std::error_code &error) {
-  auto idPtr =
-      MakeUniquePtr<Identity>(certData, keyPassphrase, verifier, error);
+  auto idPtr = MakeUniquePtr<Identity>(certData, privKey, keyPassphrase,
+                                       verifier, error);
   if (error)
     return 0;
 
@@ -200,17 +207,13 @@ UInt64 Engine::assignSecurityId() {
 
 void Engine::run() {
   if (!isRunning_) {
-    isRunning_ = true;
-
     // Set isRunning_ to true when we are in io.run(). This guards against
     // re-entry and provides a flag to test when shutting down.
 
+    isRunning_ = true;
     asyncIdle();
-
     io_.run();
-
     idleTimer_.cancel();
-
     isRunning_ = false;
   }
 }
@@ -380,7 +383,7 @@ void Engine::installSignalHandlers(std::function<void()> callback) {
 
           signals_.cancel();
           idleTimer_.cancel();
-          (void)this->close(0);
+          (void)this->closeAll();
 
           if (callback)
             callback();
@@ -402,13 +405,24 @@ UInt64 Engine::assignConnectionId() {
 }
 
 Connection *Engine::findDatapath(UInt64 connId, const DatapathID &dpid) const {
-  // Use the connectionId, it it's non-zero.
+  bool dpidEmpty = dpid.empty();
+
+  // Use the connectionId, it it's non-zero. If a datapathID is also provided,
+  // it must match also.
   if (connId != 0) {
-    return findConnId(connId);
+    Connection *conn = findConnId(connId);
+    if (conn != nullptr) {
+      if (dpidEmpty || conn->datapathId() == dpid) {
+        return conn;
+      } else {
+        log_warning("findDatapath: conn_id with mismatched datapath", connId);
+      }
+    }
+    return nullptr;
   }
 
   // If datapath ID is not all zeros, use it to look up the connection.
-  if (!dpid.empty()) {
+  if (!dpidEmpty) {
     auto item = dpidMap_.find(dpid);
     if (item != dpidMap_.end()) {
       return item->second;
@@ -416,7 +430,8 @@ Connection *Engine::findDatapath(UInt64 connId, const DatapathID &dpid) const {
     return nullptr;
   }
 
-  assert(dpid.empty() && connId == 0);
+  assert(dpidEmpty && connId == 0);
+  log_warning("findDatapath: no conn_id or datapath_id specified");
 
   return nullptr;
 }

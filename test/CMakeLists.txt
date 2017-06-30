@@ -90,6 +90,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/types_unittest.cpp
 	ofp/unittest_unittest.cpp
 	ofp/validateinput_unittest.cpp
+	ofp/vlannumber_unittest.cpp
 	ofp/ybyteorder_unittest.cpp
 	ofp/yhello_unittest.cpp
 	ofp/ymatch_unittest.cpp

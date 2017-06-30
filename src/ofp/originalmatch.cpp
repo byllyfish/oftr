@@ -50,15 +50,15 @@ OriginalMatch::OriginalMatch(const OXMRange &range) {
         wc &= ~OFPFW_DL_TYPE;
         break;
       case OFB_VLAN_VID::type(): {
-        UInt16 vlan = item.value<OFB_VLAN_VID>();
+        UInt16 vlan = item.value<OFB_VLAN_VID>().value();
         dl_vlan =
             (vlan == OFPVID_NONE ? v1::OFPVID_NONE : (vlan & ~OFPVID_PRESENT));
         wc &= ~OFPFW_DL_VLAN;
         break;
       }
       case OFB_VLAN_VID::typeWithMask(): {
-        UInt16 vlan = item.value<OFB_VLAN_VID>();
-        UInt16 mask = item.mask<OFB_VLAN_VID>();
+        UInt16 vlan = item.value<OFB_VLAN_VID>().value();
+        UInt16 mask = item.mask<OFB_VLAN_VID>().value();
         if (vlan == OFPVID_PRESENT && mask == OFPVID_PRESENT) {
           // This is a OpenFlow 1.1 feature; I didn't see it mentioned in the
           // 1.0 specification. Allow it anyway.

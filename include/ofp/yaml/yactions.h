@@ -145,7 +145,7 @@ dst: RegisterBits
 )""";
 
 const char *const kNiciraRegLoadActionSchema = R"""({Action/NX_REG_LOAD}
-action: NX_REG_MOVE
+action: NX_REG_LOAD
 dst: RegisterBits
 value: UInt64
 )""";

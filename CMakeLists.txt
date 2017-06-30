@@ -43,7 +43,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.30.0)
+set(Libofp_VERSION 0.31.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -282,6 +282,7 @@ set(LIBOFP_SOURCES
   src/ofp/timestamp.cpp
   src/ofp/types.cpp
   src/ofp/validation.cpp
+  src/ofp/vlannumber.cpp
   src/ofp/yaml/decoder.cpp
   src/ofp/yaml/encoder.cpp
   src/ofp/yaml/getjson.cpp
@@ -392,13 +393,9 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
-  # (old note) -fsanitize=undefined doesn't seem to compile/link with Clang 
-  # 7.0.2, even with -frtti added back in. Here is the work-around I used:
-  # set(LIBOFP_FSANITIZE "-fsanitize=address,alignment,bool,bounds,enum,null,object-size,shift,signed-integer-overflow -fsanitize-undefined-trap-on-error")
   set(LIBOFP_FSANITIZE "-fsanitize=address,undefined -fsanitize-undefined-trap-on-error")
-  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_FSANITIZE}")
-  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_FSANITIZE}")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_FSANITIZE}")
+else()
+  set(LIBOFP_FSANITIZE "")
 endif()
 
 # Enable Link Time Optimization in Release builds. After this step, these
@@ -537,9 +534,9 @@ endif()
 # Modify flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
 
-set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
-set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_COVERAGE}")
+set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE} ${LIBOFP_FSANITIZE}")
+set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE} ${LIBOFP_FSANITIZE}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_COVERAGE} ${LIBOFP_FSANITIZE}")
 
 message(STATUS "LIBOFP_C_FLAGS: ${LIBOFP_C_FLAGS}")
 message(STATUS "LIBOFP_CXX_FLAGS: ${LIBOFP_CXX_FLAGS}")
