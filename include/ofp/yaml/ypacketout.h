@@ -19,7 +19,8 @@ msg:
   in_port: !opt PortNumber            # default=CONTROLLER
   actions: !opt [Action]              # default=[]
   data: !opt HexData                  # default=''
-  _pkt_decode: !optout [Field]
+  _pkt: !optout [Field]
+  _pkt_data: !opt HexData             # default=''
 )""";
 
 template <>
@@ -38,7 +39,7 @@ struct MappingTraits<ofp::PacketOut> {
 
     if (ofp::yaml::GetIncludePktMatchFromContext(io)) {
       ofp::MatchPacket mp{enetFrame, false};
-      io.mapRequired("_pkt_decode", mp);
+      io.mapRequired("_pkt", mp);
     }
   }
 };
@@ -54,7 +55,7 @@ struct MappingTraits<ofp::PacketOutBuilder> {
     io.mapOptional("data", msg.enetFrame_);
 
     MatchBuilder pktDecode;
-    io.mapOptional("_pkt_decode", pktDecode);
+    io.mapOptional("_pkt", pktDecode);
     if (msg.enetFrame_.empty() && pktDecode.size() > 0) {
       ByteList pktData;
       io.mapOptional("_pkt_data", pktData);
@@ -87,7 +88,7 @@ struct MappingTraits<ofp::PacketOutV6> {
 
     if (ofp::yaml::GetIncludePktMatchFromContext(io)) {
       ofp::MatchPacket mp{enetFrame, false};
-      io.mapRequired("_pkt_decode", mp);
+      io.mapRequired("_pkt", mp);
     }
   }
 };
@@ -114,7 +115,7 @@ struct MappingTraits<ofp::PacketOutV6Builder> {
     io.mapOptional("data", msg.enetFrame_);
 
     MatchBuilder pktDecode;
-    io.mapOptional("_pkt_decode", pktDecode);
+    io.mapOptional("_pkt", pktDecode);
     if (msg.enetFrame_.empty() && pktDecode.size() > 0) {
       ByteList pktData;
       io.mapOptional("_pkt_data", pktData);

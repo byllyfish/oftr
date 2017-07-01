@@ -173,6 +173,8 @@ struct RpcClose {
   struct Params {
     /// Connection ID to close.
     UInt64 connId = 0;
+    /// DatapathID to close.
+    DatapathID datapathId;
   };
 
   RpcID id;
@@ -223,10 +225,12 @@ struct RpcAddIdentity {
   explicit RpcAddIdentity(RpcID ident) : id{ident} {}
 
   struct Params {
-    /// Certificate chain in PEM format (which also contains private key).
+    /// Certificate chain in PEM format.
     std::string cert;
     /// PEM certificate for trusted CA to use for verifying a peer certificate.
-    std::string cert_auth;
+    std::string cacert;
+    /// Private key for certificate in `cert`.
+    std::string privkey;
     /// Optional password for encrypted private key.
     std::string password;
   };
@@ -350,7 +354,8 @@ result: !reply
 id: !opt UInt64
 method: !request OFP.CLOSE
 params: !request
-  conn_id: UInt64
+  conn_id: !opt UInt64
+  datapath_id: !opt DatapathID
 result: !reply
   count: UInt32
 
@@ -380,7 +385,8 @@ id: !opt UInt64
 method: !request OFP.ADD_IDENTITY
 params: !request
   cert: String
-  cert_auth: String
+  cacert: String
+  privkey: String
   password: !opt String
 result: !reply
   tls_id: UInt64
@@ -483,7 +489,8 @@ struct MappingTraits<ofp::rpc::RpcConnect::Params> {
 template <>
 struct MappingTraits<ofp::rpc::RpcClose::Params> {
   static void mapping(IO &io, ofp::rpc::RpcClose::Params &params) {
-    io.mapRequired("conn_id", params.connId);
+    io.mapOptional("conn_id", params.connId);
+    io.mapOptional("datapath_id", params.datapathId);
   }
 };
 
@@ -498,7 +505,8 @@ template <>
 struct MappingTraits<ofp::rpc::RpcAddIdentity::Params> {
   static void mapping(IO &io, ofp::rpc::RpcAddIdentity::Params &params) {
     io.mapRequired("cert", params.cert);
-    io.mapRequired("cert_auth", params.cert_auth);
+    io.mapRequired("cacert", params.cacert);
+    io.mapOptional("privkey", params.privkey);
     io.mapOptional("password", params.password);
   }
 };

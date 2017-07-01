@@ -27,7 +27,7 @@ MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
         ethType_ = item.value<OFB_ETH_TYPE>();
         break;
       case OFB_VLAN_VID::type():
-        vlanVid_ = item.value<OFB_VLAN_VID>();
+        vlanVid_ = item.value<OFB_VLAN_VID>().value();
         break;
       case OFB_VLAN_PCP::type():
         vlanPcp_ = item.value<OFB_VLAN_PCP>();
@@ -143,18 +143,19 @@ void MatchPacketBuilder::addEthernet(ByteList *msg) const {
   eth.dst = ethDst_;
   eth.src = ethSrc_;
 
-  if (vlanVid_ == OFPVID_NONE) {
+  UInt16 vlanVid = vlanVid_;
+  if (vlanVid == OFPVID_NONE) {
     eth.type = ethType_;
     msg->add(&eth, sizeof(eth));
 
   } else {
-    pkt::VlanHdr vlan;
-    vlan.tci = UInt16_narrow_cast((vlanPcp_ << 13) | (vlanVid_ & 0x0fff));
-    vlan.ethType = ethType_;
+    pkt::VlanHdr vlanHdr;
+    vlanHdr.tci = UInt16_narrow_cast((vlanPcp_ << 13) | (vlanVid & 0x0fff));
+    vlanHdr.ethType = ethType_;
 
     eth.type = DATALINK_8021Q;
     msg->add(&eth, sizeof(eth));
-    msg->add(&vlan, sizeof(vlan));
+    msg->add(&vlanHdr, sizeof(vlanHdr));
   }
 }
 

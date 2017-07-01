@@ -1,5 +1,6 @@
 _file
-_pkt_decode
+_pkt
+_pkt_data
 _text
 action
 actions
@@ -27,9 +28,9 @@ bundle_id
 burst_size
 byte_count
 bytes_in_count
+cacert
 capabilities
 cert
-cert_auth
 code
 collisions
 command
@@ -121,6 +122,7 @@ port_status_slave
 ports
 prec_level
 priority
+privkey
 properties
 property
 queue_id

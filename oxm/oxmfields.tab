@@ -5,7 +5,7 @@ OFB_METADATA	0x8000	2	8	Big64	true		Metadata
 OFB_ETH_DST	0x8000	3	6	MacAddress	true		Ethernet Destination
 OFB_ETH_SRC	0x8000	4	6	MacAddress	true		Ethernet Source
 OFB_ETH_TYPE	0x8000	5	2	Big16	false		Ethernet Type
-OFB_VLAN_VID	0x8000	6	2	Big16	true		VLAN ID (0=no tag, 0x1yyy=tag yyy)
+OFB_VLAN_VID	0x8000	6	2	VlanNumber	true		VLAN ID (0=no tag, 0x1yyy=tag yyy)
 OFB_VLAN_PCP	0x8000	7	1	Big8	false	OFB_VLAN_VID{0x1000} & OFB_VLAN_VID{0x1000}	VLAN Priority
 OFB_IP_DSCP	0x8000	8	1	Big8	false	OFB_ETH_TYPE{0x0800}, OFB_ETH_TYPE{0x86dd}	IPv4/v6 DSCP
 OFB_IP_ECN	0x8000	9	1	Big8	false	OFB_ETH_TYPE{0x0800}, OFB_ETH_TYPE{0x86dd}	IPv4/v6 ECN
