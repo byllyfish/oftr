@@ -157,6 +157,13 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
 
   ERR_clear_error();  // clear error stack for SSL_CTX_use_certificate()
 
+  // The first certificate in the file is special:
+  // 
+  // "X509_AUX is the name given to a certificate with extra info tagged on
+  // the end. Since these functions set how a certificate is trusted they should 
+  // only be used when the certificate comes from a reliable source such as 
+  // local storage." [Source: d2i_X509_AUX comment in x_x509.c]
+
   MemBio bio{certData};
   MemX509 mainCert{PEM_read_bio_X509_AUX(bio.get(), nullptr, nullptr, nullptr)};
 
@@ -245,6 +252,7 @@ std::error_code Identity::loadVerifier(SSL_CTX *ctx,
   MemBio bio{verifyData};
   X509_STORE *store = ::SSL_CTX_get_cert_store(ctx);
   log::fatal_if_null(store);
+  int count = 0;
 
   while (true) {
     MemX509 caCert{PEM_read_bio_X509(bio.get(), nullptr, nullptr, nullptr)};
@@ -262,16 +270,20 @@ std::error_code Identity::loadVerifier(SSL_CTX *ctx,
       log_debug("loadVerifier failed: SSL_CTX_add_client_CA");
       return sslError(::ERR_get_error());
     }
+
+    ++count;
   }
 
-  // When the while loop ends, it's usually just EOF.
-  uint32_t err = ERR_peek_last_error();
-  assert(err);
-
-  if (ERR_GET_LIB(err) == ERR_LIB_PEM &&
-      ERR_GET_REASON(err) == PEM_R_NO_START_LINE) {
-    ERR_clear_error();
-    return {};
+  if (count > 0) {
+    // When the while loop ends, it's usually just EOF. We expect to read at 
+    // least one cert.
+    uint32_t err = ERR_peek_last_error();
+    assert(err);
+    if (ERR_GET_LIB(err) == ERR_LIB_PEM &&
+        ERR_GET_REASON(err) == PEM_R_NO_START_LINE) {
+      ERR_clear_error();
+      return {};
+    }
   }
 
   // Return the error.
