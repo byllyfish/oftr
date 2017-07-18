@@ -25,8 +25,13 @@ class ControllerMaxLen {
   bool operator==(const ControllerMaxLen &rhs) const {
     return maxlen_ == rhs.maxlen_;
   }
+
   bool operator!=(const ControllerMaxLen &rhs) const { return !(*this == rhs); }
 
+  bool operator==(const OFPControllerMaxLen &rhs) const {
+    return maxlen_ == rhs;
+  }
+  
  private:
   Big16 maxlen_;
 
