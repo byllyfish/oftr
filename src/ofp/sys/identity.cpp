@@ -242,25 +242,40 @@ std::error_code Identity::loadVerifier(SSL_CTX *ctx,
                                        const std::string &verifyData) {
   ::ERR_clear_error();
 
-  MemX509 caCert{verifyData};
-
-  if (!caCert) {
-    return sslError(::ERR_get_error());
-  }
-
+  MemBio bio{verifyData};
   X509_STORE *store = ::SSL_CTX_get_cert_store(ctx);
   log::fatal_if_null(store);
 
-  if (::X509_STORE_add_cert(store, caCert.get()) != 1) {
-    return sslError(::ERR_get_error());
+  while (true) {
+    MemX509 caCert{PEM_read_bio_X509(bio.get(), nullptr, nullptr, nullptr)};
+    if (!caCert) {
+      break;
+    }
+
+    if (::X509_STORE_add_cert(store, caCert.get()) != 1) {
+      log_debug("loadVerifier failed: X509_STORE_add_cert");
+      return sslError(::ERR_get_error());
+    }
+
+    // Add CA certificate name to our client CA list.
+    if (::SSL_CTX_add_client_CA(ctx, caCert.get()) != 1) {
+      log_debug("loadVerifier failed: SSL_CTX_add_client_CA");
+      return sslError(::ERR_get_error());
+    }
   }
 
-  // Add CA certificate name to our client CA list.
-  if (::SSL_CTX_add_client_CA(ctx, caCert.get()) != 1) {
-    return sslError(::ERR_get_error());
+  // When the while loop ends, it's usually just EOF.
+  uint32_t err = ERR_peek_last_error();
+  assert(err);
+
+  if (ERR_GET_LIB(err) == ERR_LIB_PEM &&
+      ERR_GET_REASON(err) == PEM_R_NO_START_LINE) {
+    ERR_clear_error();
+    return {};
   }
 
-  return {};
+  // Return the error.
+  return sslError(::ERR_get_error());
 }
 
 void Identity::prepareVerifier(SSL_CTX *ctx) {
