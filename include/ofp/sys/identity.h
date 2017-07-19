@@ -16,7 +16,6 @@ class Connection;
 class Identity {
  public:
   explicit Identity(const std::string &certData, const std::string &privKey,
-                    const std::string &keyPassphrase,
                     const std::string &verifyData, std::error_code &error);
   ~Identity();
 
@@ -56,14 +55,12 @@ class Identity {
 
   std::error_code initContext(SSL_CTX *ctx, const std::string &certData,
                               const std::string &privKey,
-                              const std::string &keyPassphrase,
                               const std::string &verifyData);
 
   static std::error_code loadCertificateChain(SSL_CTX *ctx,
                                               const std::string &certData);
   static std::error_code loadPrivateKey(SSL_CTX *ctx,
-                                        const std::string &keyData,
-                                        const std::string &keyPassphrase);
+                                        const std::string &keyData);
   static std::error_code loadVerifier(SSL_CTX *ctx,
                                       const std::string &verifyData);
 

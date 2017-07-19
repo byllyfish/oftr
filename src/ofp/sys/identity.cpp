@@ -45,7 +45,6 @@ void Identity::SetConnectionPtr(SSL *ssl, Connection *conn) {
 }
 
 Identity::Identity(const std::string &certData, const std::string &privKey,
-                   const std::string &keyPassphrase,
                    const std::string &verifyData, std::error_code &error)
     : tls_{asio::ssl::context_base::tlsv12},
       dtls_{::SSL_CTX_new(::DTLSv1_method()), ::SSL_CTX_free} {
@@ -54,14 +53,12 @@ Identity::Identity(const std::string &certData, const std::string &privKey,
   SetIdentityPtr(dtls_.get(), this);
 
   // Initialize the TLS context.
-  error = initContext(tls_.native_handle(), certData, privKey, keyPassphrase,
-                      verifyData);
+  error = initContext(tls_.native_handle(), certData, privKey, verifyData);
   if (error)
     return;
 
   // Initialize the DTLS context identically.
-  error =
-      initContext(dtls_.get(), certData, privKey, keyPassphrase, verifyData);
+  error = initContext(dtls_.get(), certData, privKey, verifyData);
   if (error)
     return;
 
@@ -102,7 +99,6 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
 
 std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
                                       const std::string &privKey,
-                                      const std::string &keyPassphrase,
                                       const std::string &verifyData) {
   prepareOptions(ctx);
   prepareSessions(ctx);
@@ -115,7 +111,7 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
     return result;
   }
 
-  result = loadPrivateKey(ctx, privKey, keyPassphrase);
+  result = loadPrivateKey(ctx, privKey);
   if (result) {
     log_debug("Identity: loadPrivateKey failed", result);
     return result;
@@ -211,22 +207,20 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
 
 /// Load private key from a PEM file.
 std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
-                                         const std::string &keyData,
-                                         const std::string &keyPassphrase) {
+                                         const std::string &keyData) {
   ::ERR_clear_error();
 
   MemBio bio{keyData};
 
-  auto passwordCallback = [](char *buf, int size, int rwflag, void *u) -> int {
-    char *pw = static_cast<char *>(u);
-    log::fatal_if_null(pw);
-    size_t result = BUF_strlcpy(buf, pw, Unsigned_cast(size));
-    return static_cast<int>(result);
-  };
+  //auto passwordCallback = [](char *buf, int size, int rwflag, void *u) -> int {
+  //  char *pw = static_cast<char *>(u);
+  //  log::fatal_if_null(pw);
+  //  size_t result = BUF_strlcpy(buf, pw, Unsigned_cast(size));
+  //  return static_cast<int>(result);
+  //};
 
   std::unique_ptr<EVP_PKEY, void (*)(EVP_PKEY *)> privateKey{
-      ::PEM_read_bio_PrivateKey(bio.get(), nullptr, passwordCallback,
-                                RemoveConst_cast(keyPassphrase.c_str())),
+      ::PEM_read_bio_PrivateKey(bio.get(), nullptr, nullptr, nullptr),
       EVP_PKEY_free};
 
   if (!privateKey) {

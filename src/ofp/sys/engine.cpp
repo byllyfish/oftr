@@ -162,10 +162,9 @@ size_t Engine::closeAll() {
 
 UInt64 Engine::addIdentity(const std::string &certData,
                            const std::string &privKey,
-                           const std::string &keyPassphrase,
                            const std::string &verifier,
                            std::error_code &error) {
-  auto idPtr = MakeUniquePtr<Identity>(certData, privKey, keyPassphrase,
+  auto idPtr = MakeUniquePtr<Identity>(certData, privKey,
                                        verifier, error);
   if (error)
     return 0;

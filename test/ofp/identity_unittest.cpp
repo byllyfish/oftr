@@ -67,7 +67,7 @@ jW5RCAwwl078sGl746tcY30=
 
 TEST(identity, empty) {
   std::error_code err;
-  sys::Identity identity{"", "", "", "", err};
+  sys::Identity identity{"", "", "", err};
 
   log_debug("identity error", err);
   asio::error_code expected{ERR_LIB_PEM, asio::error::get_ssl_category()};
@@ -76,7 +76,7 @@ TEST(identity, empty) {
 
 TEST(identity, invalid_pem) {
   std::error_code err;
-  sys::Identity identity{"x", "", "", "", err};
+  sys::Identity identity{"x", "", "", err};
 
   log_debug("identity error", err);
   asio::error_code expected{ERR_LIB_PEM, asio::error::get_ssl_category()};
@@ -85,7 +85,7 @@ TEST(identity, invalid_pem) {
 
 TEST(identity, cert_only_no_private_key) {
   std::error_code err;
-  sys::Identity identity{kGarbageCertificate, "", "", "", err};
+  sys::Identity identity{kGarbageCertificate, "", "", err};
 
   log_debug("identity error", err);
   asio::error_code expected{ERR_PACK(ERR_LIB_PEM, PEM_R_NO_START_LINE),
@@ -95,7 +95,7 @@ TEST(identity, cert_only_no_private_key) {
 
 TEST(identity, cert_with_private_key_no_ca) {
   std::error_code err;
-  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey, "", "", err};
+  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey, "", err};
 
   log_debug("identity error", err);
   asio::error_code expected{ERR_PACK(ERR_LIB_PEM, PEM_R_NO_START_LINE),
@@ -105,7 +105,7 @@ TEST(identity, cert_with_private_key_no_ca) {
 
 TEST(identity, cert_with_private_key) {
   std::error_code err;
-  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey, "",
+  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey,
                          kGarbageCertificate, err};
 
   log_debug("identity error", err);
