@@ -68,21 +68,27 @@ Identity::Identity(const std::string &certData, const std::string &privKey,
 }
 
 Identity::~Identity() {
+#if IDENTITY_SESSIONS_ENABLED
   for (auto &item : clientSessions_) {
     SSL_SESSION_free(item.second);
   }
+#endif // IDENTITY_SESSIONS_ENABLED
 }
 
 SSL_SESSION *Identity::findClientSession(const IPv6Endpoint &remoteEndpt) {
+#if IDENTITY_SESSIONS_ENABLED
   auto iter = clientSessions_.find(remoteEndpt);
   if (iter == clientSessions_.end())
     return nullptr;
-
   return iter->second;
+#else
+  return nullptr;
+#endif // !IDENTITY_SESSIONS_ENABLED
 }
 
 void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
                                  SSL_SESSION *session) {
+#if IDENTITY_SESSIONS_ENABLED
   if (!remoteEndpt.valid()) {
     log_warning("Identity::saveClientSession: invalid endpoint detected");
     return;
@@ -95,6 +101,7 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
   if (prevSession) {
     SSL_SESSION_free(prevSession);
   }
+#endif // IDENTITY_SESSIONS_ENABLED
 }
 
 std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
@@ -135,10 +142,12 @@ void Identity::prepareOptions(SSL_CTX *ctx) {
 }
 
 void Identity::prepareSessions(SSL_CTX *ctx) {
+#if IDENTITY_SESSIONS_ENABLED
   uint8_t id[] = "ofpx";
   SSL_CTX_set_session_id_context(ctx, id, sizeof(id) - 1);
   SSL_CTX_set_timeout(ctx, 60 * 5);
   SSL_CTX_set_session_cache_mode(ctx, SSL_SESS_CACHE_SERVER);
+#endif // IDENTITY_SESSIONS_ENABLED
 }
 
 inline std::error_code sslError(uint32_t err) {
@@ -211,13 +220,6 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
   ::ERR_clear_error();
 
   MemBio bio{keyData};
-
-  //auto passwordCallback = [](char *buf, int size, int rwflag, void *u) -> int {
-  //  char *pw = static_cast<char *>(u);
-  //  log::fatal_if_null(pw);
-  //  size_t result = BUF_strlcpy(buf, pw, Unsigned_cast(size));
-  //  return static_cast<int>(result);
-  //};
 
   std::unique_ptr<EVP_PKEY, void (*)(EVP_PKEY *)> privateKey{
       ::PEM_read_bio_PrivateKey(bio.get(), nullptr, nullptr, nullptr),

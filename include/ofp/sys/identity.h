@@ -11,6 +11,9 @@
 namespace ofp {
 namespace sys {
 
+// TLS session support is currently disabled.
+#define IDENTITY_SESSIONS_ENABLED    0
+
 class Connection;
 
 class Identity {
@@ -49,9 +52,11 @@ class Identity {
   /// Subject DN of this identities certificate.
   std::string subjectName_;
 
+#if IDENTITY_SESSIONS_ENABLED
   /// Map used to store client sessions by IP endpoint. Used for session
   /// resumption in the client.
   std::unordered_map<IPv6Endpoint, SSL_SESSION *> clientSessions_;
+#endif // IDENTITY_SESSIONS_ENABLED
 
   std::error_code initContext(SSL_CTX *ctx, const std::string &certData,
                               const std::string &privKey,
