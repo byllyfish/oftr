@@ -2,12 +2,12 @@
 .\"     Title: oftr-jsonrpc
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 06/28/2017
+.\"      Date: 07/20/2017
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "OFTR\-JSONRPC" "1" "06/28/2017" "\ \&" "\ \&"
+.TH "OFTR\-JSONRPC" "1" "07/20/2017" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -868,7 +868,6 @@ params:
   cert: String
   cacert: String
   privkey: String
-  password: !opt String
 .fi
 .if n \{\
 .RE
@@ -884,12 +883,7 @@ PEM certificate chain data\&.
 Trusted PEM root certificate\&. One certificate, not a list\&.
 .RE
 .sp
-\fBprivkey\fR: PEM private key, possibly encrypted with a password\&.
-.PP
-\fBpassword\fR
-.RS 4
-Password for PEM private key, if needed\&. (Optional)
-.RE
+\fBprivkey\fR: PEM private key\&.
 .RE
 .sp
 .it 1 an-trap
@@ -928,7 +922,7 @@ Unique, non\-zero identifier representing the TLS identity\&.
 .sp
 Use the OFP\&.ADD_IDENTITY command to add a SSL/TLS identity for use in encrypting connections\&. The reply contains the unique tls_id to pass to OFP\&.CONNECT and OFP\&.LISTEN commands\&.
 .sp
-The cacert parameter contains the certificate authority used to authenticate the certificate chain presented by the other end of the connection\&.
+The cacert parameter contains the certificate authority used to authenticate the certificate chain presented by the other end of the connection\&. The cacert may be multiple certificates concatenated together\&.
 .RE
 .SH "RPC NOTIFICATIONS"
 .SS "OFP\&.MESSAGE"
