@@ -7,8 +7,21 @@
 
 using namespace ofp;
 
-ByteRange EchoRequest::echoData() const {
-  return SafeByteRange(this, header_.length(), sizeof(Header));
+// A Pass-Thru echo request is ignored by OFTR's connection handler. It begins
+// with "__OFTR__".
+
+const ByteRange EchoRequest::kPassThruData = ByteRange{"__OFTR__", 8};
+const ByteRange EchoRequest::kKeepAliveData = ByteRange{"??OFTR??", 8};
+
+bool EchoRequest::isPassThru() const {
+  ByteRange data = SafeByteRange(this, header_.length(), sizeof(Header), 8);
+  return data == kPassThruData;
+}
+
+void EchoRequestBuilder::setKeepAlive() {
+  msg_.header_.setXid(EchoRequest::kKeepAliveXID);
+  setEchoData(EchoRequest::kKeepAliveData.data(),
+              EchoRequest::kKeepAliveData.size());
 }
 
 UInt32 EchoRequestBuilder::send(Writable *channel) {

@@ -16,6 +16,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/datapathid_unittest.cpp
 	ofp/durationsec_unittest.cpp
 	ofp/decoder_unittest.cpp
+	ofp/echo_unittest.cpp
 	ofp/encoder_unittest.cpp
 	ofp/encoderfail_unittest.cpp
 	ofp/macaddress_unittest.cpp

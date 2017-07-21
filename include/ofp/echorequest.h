@@ -12,7 +12,14 @@ namespace ofp {
 class EchoRequest
     : public ProtocolMsg<EchoRequest, OFPT_ECHO_REQUEST, 8, 65535, false> {
  public:
-  ByteRange echoData() const;
+  static const UInt32 kKeepAliveXID = 0xFBD0FF86;
+  static const ByteRange kKeepAliveData;
+  static const ByteRange kPassThruData;
+
+  ByteRange echoData() const {
+    return SafeByteRange(this, header_.length(), sizeof(Header));
+  }
+  bool isPassThru() const;
 
   bool validateInput(Validation *context) const { return true; }
 
@@ -30,6 +37,7 @@ class EchoRequestBuilder {
   explicit EchoRequestBuilder(UInt32 xid = 0) { msg_.header_.setXid(xid); }
 
   void setEchoData(const void *data, size_t length) { data_.set(data, length); }
+  void setKeepAlive();
 
   UInt32 send(Writable *channel);
 

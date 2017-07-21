@@ -114,7 +114,6 @@ packet_in_count
 packet_in_master
 packet_in_slave
 params
-password
 peer
 port_no
 port_status_master

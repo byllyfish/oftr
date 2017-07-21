@@ -45,7 +45,6 @@ void Identity::SetConnectionPtr(SSL *ssl, Connection *conn) {
 }
 
 Identity::Identity(const std::string &certData, const std::string &privKey,
-                   const std::string &keyPassphrase,
                    const std::string &verifyData, std::error_code &error)
     : tls_{asio::ssl::context_base::tlsv12},
       dtls_{::SSL_CTX_new(::DTLSv1_method()), ::SSL_CTX_free} {
@@ -54,14 +53,12 @@ Identity::Identity(const std::string &certData, const std::string &privKey,
   SetIdentityPtr(dtls_.get(), this);
 
   // Initialize the TLS context.
-  error = initContext(tls_.native_handle(), certData, privKey, keyPassphrase,
-                      verifyData);
+  error = initContext(tls_.native_handle(), certData, privKey, verifyData);
   if (error)
     return;
 
   // Initialize the DTLS context identically.
-  error =
-      initContext(dtls_.get(), certData, privKey, keyPassphrase, verifyData);
+  error = initContext(dtls_.get(), certData, privKey, verifyData);
   if (error)
     return;
 
@@ -71,21 +68,27 @@ Identity::Identity(const std::string &certData, const std::string &privKey,
 }
 
 Identity::~Identity() {
+#if IDENTITY_SESSIONS_ENABLED
   for (auto &item : clientSessions_) {
     SSL_SESSION_free(item.second);
   }
+#endif  // IDENTITY_SESSIONS_ENABLED
 }
 
 SSL_SESSION *Identity::findClientSession(const IPv6Endpoint &remoteEndpt) {
+#if IDENTITY_SESSIONS_ENABLED
   auto iter = clientSessions_.find(remoteEndpt);
   if (iter == clientSessions_.end())
     return nullptr;
-
   return iter->second;
+#else
+  return nullptr;
+#endif  // !IDENTITY_SESSIONS_ENABLED
 }
 
 void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
                                  SSL_SESSION *session) {
+#if IDENTITY_SESSIONS_ENABLED
   if (!remoteEndpt.valid()) {
     log_warning("Identity::saveClientSession: invalid endpoint detected");
     return;
@@ -98,11 +101,11 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
   if (prevSession) {
     SSL_SESSION_free(prevSession);
   }
+#endif  // IDENTITY_SESSIONS_ENABLED
 }
 
 std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
                                       const std::string &privKey,
-                                      const std::string &keyPassphrase,
                                       const std::string &verifyData) {
   prepareOptions(ctx);
   prepareSessions(ctx);
@@ -115,7 +118,7 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
     return result;
   }
 
-  result = loadPrivateKey(ctx, privKey, keyPassphrase);
+  result = loadPrivateKey(ctx, privKey);
   if (result) {
     log_debug("Identity: loadPrivateKey failed", result);
     return result;
@@ -139,10 +142,12 @@ void Identity::prepareOptions(SSL_CTX *ctx) {
 }
 
 void Identity::prepareSessions(SSL_CTX *ctx) {
+#if IDENTITY_SESSIONS_ENABLED
   uint8_t id[] = "ofpx";
   SSL_CTX_set_session_id_context(ctx, id, sizeof(id) - 1);
   SSL_CTX_set_timeout(ctx, 60 * 5);
   SSL_CTX_set_session_cache_mode(ctx, SSL_SESS_CACHE_SERVER);
+#endif  // IDENTITY_SESSIONS_ENABLED
 }
 
 inline std::error_code sslError(uint32_t err) {
@@ -156,6 +161,13 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
   // in ssl_rsa.c
 
   ERR_clear_error();  // clear error stack for SSL_CTX_use_certificate()
+
+  // The first certificate in the file is special:
+  //
+  // "X509_AUX is the name given to a certificate with extra info tagged on
+  // the end. Since these functions set how a certificate is trusted they should
+  // only be used when the certificate comes from a reliable source such as
+  // local storage." [Source: d2i_X509_AUX comment in x_x509.c]
 
   MemBio bio{certData};
   MemX509 mainCert{PEM_read_bio_X509_AUX(bio.get(), nullptr, nullptr, nullptr)};
@@ -204,22 +216,13 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
 
 /// Load private key from a PEM file.
 std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
-                                         const std::string &keyData,
-                                         const std::string &keyPassphrase) {
+                                         const std::string &keyData) {
   ::ERR_clear_error();
 
   MemBio bio{keyData};
 
-  auto passwordCallback = [](char *buf, int size, int rwflag, void *u) -> int {
-    char *pw = static_cast<char *>(u);
-    log::fatal_if_null(pw);
-    size_t result = BUF_strlcpy(buf, pw, Unsigned_cast(size));
-    return static_cast<int>(result);
-  };
-
   std::unique_ptr<EVP_PKEY, void (*)(EVP_PKEY *)> privateKey{
-      ::PEM_read_bio_PrivateKey(bio.get(), nullptr, passwordCallback,
-                                RemoveConst_cast(keyPassphrase.c_str())),
+      ::PEM_read_bio_PrivateKey(bio.get(), nullptr, nullptr, nullptr),
       EVP_PKEY_free};
 
   if (!privateKey) {
@@ -242,25 +245,45 @@ std::error_code Identity::loadVerifier(SSL_CTX *ctx,
                                        const std::string &verifyData) {
   ::ERR_clear_error();
 
-  MemX509 caCert{verifyData};
-
-  if (!caCert) {
-    return sslError(::ERR_get_error());
-  }
-
+  MemBio bio{verifyData};
   X509_STORE *store = ::SSL_CTX_get_cert_store(ctx);
   log::fatal_if_null(store);
+  int count = 0;
 
-  if (::X509_STORE_add_cert(store, caCert.get()) != 1) {
-    return sslError(::ERR_get_error());
+  while (true) {
+    MemX509 caCert{PEM_read_bio_X509(bio.get(), nullptr, nullptr, nullptr)};
+    if (!caCert) {
+      break;
+    }
+
+    if (::X509_STORE_add_cert(store, caCert.get()) != 1) {
+      log_debug("loadVerifier failed: X509_STORE_add_cert");
+      return sslError(::ERR_get_error());
+    }
+
+    // Add CA certificate name to our client CA list.
+    if (::SSL_CTX_add_client_CA(ctx, caCert.get()) != 1) {
+      log_debug("loadVerifier failed: SSL_CTX_add_client_CA");
+      return sslError(::ERR_get_error());
+    }
+
+    ++count;
   }
 
-  // Add CA certificate name to our client CA list.
-  if (::SSL_CTX_add_client_CA(ctx, caCert.get()) != 1) {
-    return sslError(::ERR_get_error());
+  if (count > 0) {
+    // When the while loop ends, it's usually just EOF. We expect to read at
+    // least one cert.
+    uint32_t err = ERR_peek_last_error();
+    assert(err);
+    if (ERR_GET_LIB(err) == ERR_LIB_PEM &&
+        ERR_GET_REASON(err) == PEM_R_NO_START_LINE) {
+      ERR_clear_error();
+      return {};
+    }
   }
 
-  return {};
+  // Return the error.
+  return sslError(::ERR_get_error());
 }
 
 void Identity::prepareVerifier(SSL_CTX *ctx) {

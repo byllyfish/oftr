@@ -109,7 +109,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	PACKET_OUT.v1	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 1	PACKET_OUT.v1	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 1	PACKET_OUT.v1	msg.actions.0.action	OUTPUT	True			
-1	PACKET_OUT.v1	msg.actions.0.max_len	NO_BUFFER	True			
+1	PACKET_OUT.v1	msg.actions.0.max_len	NO_BUFFER	False	msg.actions.0.max_len=MAX		
 1	PACKET_OUT.v1	msg.actions.0.port_no	CONTROLLER	True			
 1	PACKET_OUT.v1	msg.buffer_id	NO_BUFFER	False			
 1	PACKET_OUT.v1	msg.data	binary	False	msg.data=''		True
@@ -128,7 +128,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	FLOW_MOD.v1	msg.instructions.0.actions	array	True			
 1	FLOW_MOD.v1	msg.instructions.0.actions.0	object	False	msg.instructions.0=object,msg.instructions.0.actions=array,msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port_no=CONTROLLER,msg.instructions.0.instruction=APPLY_ACTIONS,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		
 1	FLOW_MOD.v1	msg.instructions.0.actions.0.action	OUTPUT	True			
-1	FLOW_MOD.v1	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
+1	FLOW_MOD.v1	msg.instructions.0.actions.0.max_len	NO_BUFFER	False	msg.instructions.0.actions.0.max_len=MAX,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		
 1	FLOW_MOD.v1	msg.instructions.0.actions.0.port_no	CONTROLLER	True			
 1	FLOW_MOD.v1	msg.instructions.0.instruction	APPLY_ACTIONS	True			
 1	FLOW_MOD.v1	msg.match	array	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0,msg.table_id=0		
@@ -218,7 +218,7 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.FLOW.v1	msg.0.instructions.0.actions	array	True			
 1	REPLY.FLOW.v1	msg.0.instructions.0.actions.0	object	False	msg.0.flags.0=SEND_FLOW_REM,msg.0.instructions.0=object,msg.0.instructions.0.actions=array,msg.0.instructions.0.actions.0=object,msg.0.instructions.0.actions.0.action=OUTPUT,msg.0.instructions.0.actions.0.max_len=NO_BUFFER,msg.0.instructions.0.actions.0.port_no=CONTROLLER,msg.0.instructions.0.instruction=APPLY_ACTIONS,msg.0.match.0=object,msg.0.match.0.field=ETH_DST,msg.0.match.0.mask=macaddress,msg.0.match.0.value=macaddress		
 1	REPLY.FLOW.v1	msg.0.instructions.0.actions.0.action	OUTPUT	True			
-1	REPLY.FLOW.v1	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	True			
+1	REPLY.FLOW.v1	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	False	msg.0.flags.0=SEND_FLOW_REM,msg.0.instructions.0.actions.0.max_len=MAX,msg.0.match.0=object,msg.0.match.0.field=ETH_DST,msg.0.match.0.mask=macaddress,msg.0.match.0.value=macaddress		
 1	REPLY.FLOW.v1	msg.0.instructions.0.actions.0.port_no	CONTROLLER	True			
 1	REPLY.FLOW.v1	msg.0.instructions.0.instruction	APPLY_ACTIONS	True			
 1	REPLY.FLOW.v1	msg.0.match	array	True			
@@ -751,7 +751,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	PACKET_OUT.v2	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 2	PACKET_OUT.v2	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 2	PACKET_OUT.v2	msg.actions.0.action	OUTPUT	True			
-2	PACKET_OUT.v2	msg.actions.0.max_len	NO_BUFFER	True			
+2	PACKET_OUT.v2	msg.actions.0.max_len	NO_BUFFER	False	msg.actions.0.max_len=MAX		
 2	PACKET_OUT.v2	msg.actions.0.port_no	CONTROLLER	True			
 2	PACKET_OUT.v2	msg.buffer_id	NO_BUFFER	False			
 2	PACKET_OUT.v2	msg.data	binary	False	msg.data=''		True
@@ -770,7 +770,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	FLOW_MOD.v2	msg.instructions.0.actions	array	True			
 2	FLOW_MOD.v2	msg.instructions.0.actions.0	object	False	msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port_no=CONTROLLER,msg.match.0.mask=macaddress		
 2	FLOW_MOD.v2	msg.instructions.0.actions.0.action	OUTPUT	True			
-2	FLOW_MOD.v2	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
+2	FLOW_MOD.v2	msg.instructions.0.actions.0.max_len	NO_BUFFER	False	msg.instructions.0.actions.0.max_len=MAX,msg.match.0.mask=macaddress		
 2	FLOW_MOD.v2	msg.instructions.0.actions.0.port_no	CONTROLLER	True			
 2	FLOW_MOD.v2	msg.instructions.0.instruction	APPLY_ACTIONS	True			
 2	FLOW_MOD.v2	msg.match	array	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
@@ -788,7 +788,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	GROUP_MOD.v2	msg.buckets.0.actions	array	True			
 2	GROUP_MOD.v2	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions.0=object,msg.buckets.0.actions.0.action=OUTPUT,msg.buckets.0.actions.0.max_len=NO_BUFFER,msg.buckets.0.actions.0.port_no=CONTROLLER		
 2	GROUP_MOD.v2	msg.buckets.0.actions.0.action	OUTPUT	True			
-2	GROUP_MOD.v2	msg.buckets.0.actions.0.max_len	NO_BUFFER	True			
+2	GROUP_MOD.v2	msg.buckets.0.actions.0.max_len	NO_BUFFER	False	msg.buckets.0.actions.0.max_len=MAX		
 2	GROUP_MOD.v2	msg.buckets.0.actions.0.port_no	CONTROLLER	True			
 2	GROUP_MOD.v2	msg.buckets.0.watch_group	ANY	False			
 2	GROUP_MOD.v2	msg.buckets.0.watch_port	CONTROLLER	False	msg.buckets.0.watch_port=ANY		
@@ -860,7 +860,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.FLOW.v2	msg.0.instructions.0.actions	array	True			
 2	REPLY.FLOW.v2	msg.0.instructions.0.actions.0	object	False	msg.0.instructions.0.actions.0=object,msg.0.instructions.0.actions.0.action=OUTPUT,msg.0.instructions.0.actions.0.max_len=NO_BUFFER,msg.0.instructions.0.actions.0.port_no=CONTROLLER		
 2	REPLY.FLOW.v2	msg.0.instructions.0.actions.0.action	OUTPUT	True			
-2	REPLY.FLOW.v2	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	True			
+2	REPLY.FLOW.v2	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	False	msg.0.instructions.0.actions.0.max_len=MAX		
 2	REPLY.FLOW.v2	msg.0.instructions.0.actions.0.port_no	CONTROLLER	True			
 2	REPLY.FLOW.v2	msg.0.instructions.0.instruction	APPLY_ACTIONS	True			
 2	REPLY.FLOW.v2	msg.0.match	array	True			
@@ -960,7 +960,7 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions	array	True			
 2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port_no=CONTROLLER		
 2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0.action	OUTPUT	True			
-2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	False	msg.0.buckets.0.actions.0.max_len=MAX		
 2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.actions.0.port_no	CONTROLLER	True			
 2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.watch_group	ANY	False			
 2	REPLY.GROUP_DESC.v2	msg.0.buckets.0.watch_port	CONTROLLER	False	msg.0.buckets.0.watch_port=ANY		
@@ -1393,7 +1393,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	PACKET_OUT.v3	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 3	PACKET_OUT.v3	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 3	PACKET_OUT.v3	msg.actions.0.action	OUTPUT	True			
-3	PACKET_OUT.v3	msg.actions.0.max_len	NO_BUFFER	True			
+3	PACKET_OUT.v3	msg.actions.0.max_len	NO_BUFFER	False	msg.actions.0.max_len=MAX		
 3	PACKET_OUT.v3	msg.actions.0.port_no	CONTROLLER	True			
 3	PACKET_OUT.v3	msg.buffer_id	NO_BUFFER	False			
 3	PACKET_OUT.v3	msg.data	binary	False	msg.data=''		True
@@ -1412,7 +1412,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	FLOW_MOD.v3	msg.instructions.0.actions	array	True			
 3	FLOW_MOD.v3	msg.instructions.0.actions.0	object	False	msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port_no=CONTROLLER		
 3	FLOW_MOD.v3	msg.instructions.0.actions.0.action	OUTPUT	True			
-3	FLOW_MOD.v3	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
+3	FLOW_MOD.v3	msg.instructions.0.actions.0.max_len	NO_BUFFER	False	msg.instructions.0.actions.0.max_len=MAX		
 3	FLOW_MOD.v3	msg.instructions.0.actions.0.port_no	CONTROLLER	True			
 3	FLOW_MOD.v3	msg.instructions.0.instruction	APPLY_ACTIONS	True			
 3	FLOW_MOD.v3	msg.match	array	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
@@ -1430,7 +1430,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	GROUP_MOD.v3	msg.buckets.0.actions	array	True			
 3	GROUP_MOD.v3	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions.0=object,msg.buckets.0.actions.0.action=OUTPUT,msg.buckets.0.actions.0.max_len=NO_BUFFER,msg.buckets.0.actions.0.port_no=CONTROLLER		
 3	GROUP_MOD.v3	msg.buckets.0.actions.0.action	OUTPUT	True			
-3	GROUP_MOD.v3	msg.buckets.0.actions.0.max_len	NO_BUFFER	True			
+3	GROUP_MOD.v3	msg.buckets.0.actions.0.max_len	NO_BUFFER	False	msg.buckets.0.actions.0.max_len=MAX		
 3	GROUP_MOD.v3	msg.buckets.0.actions.0.port_no	CONTROLLER	True			
 3	GROUP_MOD.v3	msg.buckets.0.watch_group	ANY	False			
 3	GROUP_MOD.v3	msg.buckets.0.watch_port	CONTROLLER	False	msg.buckets.0.watch_port=ANY		
@@ -1502,7 +1502,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.FLOW.v3	msg.0.instructions.0.actions	array	True			
 3	REPLY.FLOW.v3	msg.0.instructions.0.actions.0	object	False	msg.0.instructions.0.actions.0=object,msg.0.instructions.0.actions.0.action=OUTPUT,msg.0.instructions.0.actions.0.max_len=NO_BUFFER,msg.0.instructions.0.actions.0.port_no=CONTROLLER		
 3	REPLY.FLOW.v3	msg.0.instructions.0.actions.0.action	OUTPUT	True			
-3	REPLY.FLOW.v3	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	True			
+3	REPLY.FLOW.v3	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	False	msg.0.instructions.0.actions.0.max_len=MAX		
 3	REPLY.FLOW.v3	msg.0.instructions.0.actions.0.port_no	CONTROLLER	True			
 3	REPLY.FLOW.v3	msg.0.instructions.0.instruction	APPLY_ACTIONS	True			
 3	REPLY.FLOW.v3	msg.0.match	array	True			
@@ -1602,7 +1602,7 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions	array	True			
 3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port_no=CONTROLLER		
 3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0.action	OUTPUT	True			
-3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	False	msg.0.buckets.0.actions.0.max_len=MAX		
 3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.actions.0.port_no	CONTROLLER	True			
 3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.watch_group	ANY	False			
 3	REPLY.GROUP_DESC.v3	msg.0.buckets.0.watch_port	CONTROLLER	False	msg.0.buckets.0.watch_port=ANY		
@@ -2035,7 +2035,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	PACKET_OUT.v4	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 4	PACKET_OUT.v4	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 4	PACKET_OUT.v4	msg.actions.0.action	OUTPUT	True			
-4	PACKET_OUT.v4	msg.actions.0.max_len	NO_BUFFER	True			
+4	PACKET_OUT.v4	msg.actions.0.max_len	NO_BUFFER	False	msg.actions.0.max_len=MAX		
 4	PACKET_OUT.v4	msg.actions.0.port_no	CONTROLLER	True			
 4	PACKET_OUT.v4	msg.buffer_id	NO_BUFFER	False			
 4	PACKET_OUT.v4	msg.data	binary	False	msg.data=''		True
@@ -2054,7 +2054,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	FLOW_MOD.v4	msg.instructions.0.actions	array	True			
 4	FLOW_MOD.v4	msg.instructions.0.actions.0	object	False	msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port_no=CONTROLLER		
 4	FLOW_MOD.v4	msg.instructions.0.actions.0.action	OUTPUT	True			
-4	FLOW_MOD.v4	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
+4	FLOW_MOD.v4	msg.instructions.0.actions.0.max_len	NO_BUFFER	False	msg.instructions.0.actions.0.max_len=MAX		
 4	FLOW_MOD.v4	msg.instructions.0.actions.0.port_no	CONTROLLER	True			
 4	FLOW_MOD.v4	msg.instructions.0.instruction	APPLY_ACTIONS	True			
 4	FLOW_MOD.v4	msg.match	array	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
@@ -2072,7 +2072,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	GROUP_MOD.v4	msg.buckets.0.actions	array	True			
 4	GROUP_MOD.v4	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions.0=object,msg.buckets.0.actions.0.action=OUTPUT,msg.buckets.0.actions.0.max_len=NO_BUFFER,msg.buckets.0.actions.0.port_no=CONTROLLER		
 4	GROUP_MOD.v4	msg.buckets.0.actions.0.action	OUTPUT	True			
-4	GROUP_MOD.v4	msg.buckets.0.actions.0.max_len	NO_BUFFER	True			
+4	GROUP_MOD.v4	msg.buckets.0.actions.0.max_len	NO_BUFFER	False	msg.buckets.0.actions.0.max_len=MAX		
 4	GROUP_MOD.v4	msg.buckets.0.actions.0.port_no	CONTROLLER	True			
 4	GROUP_MOD.v4	msg.buckets.0.watch_group	ANY	False			
 4	GROUP_MOD.v4	msg.buckets.0.watch_port	CONTROLLER	False	msg.buckets.0.watch_port=ANY		
@@ -2144,7 +2144,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.FLOW.v4	msg.0.instructions.0.actions	array	True			
 4	REPLY.FLOW.v4	msg.0.instructions.0.actions.0	object	False	msg.0.instructions.0.actions.0=object,msg.0.instructions.0.actions.0.action=OUTPUT,msg.0.instructions.0.actions.0.max_len=NO_BUFFER,msg.0.instructions.0.actions.0.port_no=CONTROLLER		
 4	REPLY.FLOW.v4	msg.0.instructions.0.actions.0.action	OUTPUT	True			
-4	REPLY.FLOW.v4	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	True			
+4	REPLY.FLOW.v4	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	False	msg.0.instructions.0.actions.0.max_len=MAX		
 4	REPLY.FLOW.v4	msg.0.instructions.0.actions.0.port_no	CONTROLLER	True			
 4	REPLY.FLOW.v4	msg.0.instructions.0.instruction	APPLY_ACTIONS	True			
 4	REPLY.FLOW.v4	msg.0.match	array	True			
@@ -2244,7 +2244,7 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions	array	True			
 4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port_no=CONTROLLER		
 4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0.action	OUTPUT	True			
-4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	False	msg.0.buckets.0.actions.0.max_len=MAX		
 4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.actions.0.port_no	CONTROLLER	True			
 4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.watch_group	ANY	False			
 4	REPLY.GROUP_DESC.v4	msg.0.buckets.0.watch_port	CONTROLLER	False	msg.0.buckets.0.watch_port=ANY		
@@ -2677,7 +2677,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	PACKET_OUT.v5	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 5	PACKET_OUT.v5	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 5	PACKET_OUT.v5	msg.actions.0.action	OUTPUT	True			
-5	PACKET_OUT.v5	msg.actions.0.max_len	NO_BUFFER	True			
+5	PACKET_OUT.v5	msg.actions.0.max_len	NO_BUFFER	False	msg.actions.0.max_len=MAX		
 5	PACKET_OUT.v5	msg.actions.0.port_no	CONTROLLER	True			
 5	PACKET_OUT.v5	msg.buffer_id	NO_BUFFER	False			
 5	PACKET_OUT.v5	msg.data	binary	False	msg.data=''		True
@@ -2696,7 +2696,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	FLOW_MOD.v5	msg.instructions.0.actions	array	True			
 5	FLOW_MOD.v5	msg.instructions.0.actions.0	object	False	msg.instructions.0.actions.0=object,msg.instructions.0.actions.0.action=OUTPUT,msg.instructions.0.actions.0.max_len=NO_BUFFER,msg.instructions.0.actions.0.port_no=CONTROLLER		
 5	FLOW_MOD.v5	msg.instructions.0.actions.0.action	OUTPUT	True			
-5	FLOW_MOD.v5	msg.instructions.0.actions.0.max_len	NO_BUFFER	True			
+5	FLOW_MOD.v5	msg.instructions.0.actions.0.max_len	NO_BUFFER	False	msg.instructions.0.actions.0.max_len=MAX		
 5	FLOW_MOD.v5	msg.instructions.0.actions.0.port_no	CONTROLLER	True			
 5	FLOW_MOD.v5	msg.instructions.0.instruction	APPLY_ACTIONS	True			
 5	FLOW_MOD.v5	msg.match	array	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
@@ -2714,7 +2714,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	GROUP_MOD.v5	msg.buckets.0.actions	array	True			
 5	GROUP_MOD.v5	msg.buckets.0.actions.0	object	False	msg.buckets.0.actions.0=object,msg.buckets.0.actions.0.action=OUTPUT,msg.buckets.0.actions.0.max_len=NO_BUFFER,msg.buckets.0.actions.0.port_no=CONTROLLER		
 5	GROUP_MOD.v5	msg.buckets.0.actions.0.action	OUTPUT	True			
-5	GROUP_MOD.v5	msg.buckets.0.actions.0.max_len	NO_BUFFER	True			
+5	GROUP_MOD.v5	msg.buckets.0.actions.0.max_len	NO_BUFFER	False	msg.buckets.0.actions.0.max_len=MAX		
 5	GROUP_MOD.v5	msg.buckets.0.actions.0.port_no	CONTROLLER	True			
 5	GROUP_MOD.v5	msg.buckets.0.watch_group	ANY	False			
 5	GROUP_MOD.v5	msg.buckets.0.watch_port	CONTROLLER	False	msg.buckets.0.watch_port=ANY		
@@ -2786,7 +2786,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.FLOW.v5	msg.0.instructions.0.actions	array	True			
 5	REPLY.FLOW.v5	msg.0.instructions.0.actions.0	object	False	msg.0.instructions.0.actions.0=object,msg.0.instructions.0.actions.0.action=OUTPUT,msg.0.instructions.0.actions.0.max_len=NO_BUFFER,msg.0.instructions.0.actions.0.port_no=CONTROLLER		
 5	REPLY.FLOW.v5	msg.0.instructions.0.actions.0.action	OUTPUT	True			
-5	REPLY.FLOW.v5	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	True			
+5	REPLY.FLOW.v5	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	False	msg.0.instructions.0.actions.0.max_len=MAX		
 5	REPLY.FLOW.v5	msg.0.instructions.0.actions.0.port_no	CONTROLLER	True			
 5	REPLY.FLOW.v5	msg.0.instructions.0.instruction	APPLY_ACTIONS	True			
 5	REPLY.FLOW.v5	msg.0.match	array	True			
@@ -2886,7 +2886,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions	array	True			
 5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0	object	False	msg.0.buckets.0.actions.0=object,msg.0.buckets.0.actions.0.action=OUTPUT,msg.0.buckets.0.actions.0.max_len=NO_BUFFER,msg.0.buckets.0.actions.0.port_no=CONTROLLER		
 5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0.action	OUTPUT	True			
-5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	True			
+5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0.max_len	NO_BUFFER	False	msg.0.buckets.0.actions.0.max_len=MAX		
 5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.actions.0.port_no	CONTROLLER	True			
 5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.watch_group	ANY	False			
 5	REPLY.GROUP_DESC.v5	msg.0.buckets.0.watch_port	CONTROLLER	False	msg.0.buckets.0.watch_port=ANY		
@@ -3085,7 +3085,7 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.FLOW_MONITOR.v5	msg.0.instructions.0.actions	array	True			
 5	REPLY.FLOW_MONITOR.v5	msg.0.instructions.0.actions.0	object	False	msg.0.instructions.0.actions.0=object,msg.0.instructions.0.actions.0.action=OUTPUT,msg.0.instructions.0.actions.0.max_len=NO_BUFFER,msg.0.instructions.0.actions.0.port_no=CONTROLLER		
 5	REPLY.FLOW_MONITOR.v5	msg.0.instructions.0.actions.0.action	OUTPUT	True			
-5	REPLY.FLOW_MONITOR.v5	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	True			
+5	REPLY.FLOW_MONITOR.v5	msg.0.instructions.0.actions.0.max_len	NO_BUFFER	False	msg.0.instructions.0.actions.0.max_len=MAX		
 5	REPLY.FLOW_MONITOR.v5	msg.0.instructions.0.actions.0.port_no	CONTROLLER	True			
 5	REPLY.FLOW_MONITOR.v5	msg.0.instructions.0.instruction	APPLY_ACTIONS	True			
 5	REPLY.FLOW_MONITOR.v5	msg.0.match	array	True			
