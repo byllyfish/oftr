@@ -12,7 +12,9 @@ namespace ofp {
 class EchoReply
     : public ProtocolMsg<EchoReply, OFPT_ECHO_REPLY, 8, 65535, false> {
  public:
-  ByteRange echoData() const { return SafeByteRange(this, header_.length(), sizeof(Header)); }
+  ByteRange echoData() const {
+    return SafeByteRange(this, header_.length(), sizeof(Header));
+  }
   bool isKeepAlive() const;
 
   bool validateInput(Validation *context) const { return true; }

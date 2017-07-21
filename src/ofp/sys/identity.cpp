@@ -72,7 +72,7 @@ Identity::~Identity() {
   for (auto &item : clientSessions_) {
     SSL_SESSION_free(item.second);
   }
-#endif // IDENTITY_SESSIONS_ENABLED
+#endif  // IDENTITY_SESSIONS_ENABLED
 }
 
 SSL_SESSION *Identity::findClientSession(const IPv6Endpoint &remoteEndpt) {
@@ -83,7 +83,7 @@ SSL_SESSION *Identity::findClientSession(const IPv6Endpoint &remoteEndpt) {
   return iter->second;
 #else
   return nullptr;
-#endif // !IDENTITY_SESSIONS_ENABLED
+#endif  // !IDENTITY_SESSIONS_ENABLED
 }
 
 void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
@@ -101,7 +101,7 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
   if (prevSession) {
     SSL_SESSION_free(prevSession);
   }
-#endif // IDENTITY_SESSIONS_ENABLED
+#endif  // IDENTITY_SESSIONS_ENABLED
 }
 
 std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
@@ -147,7 +147,7 @@ void Identity::prepareSessions(SSL_CTX *ctx) {
   SSL_CTX_set_session_id_context(ctx, id, sizeof(id) - 1);
   SSL_CTX_set_timeout(ctx, 60 * 5);
   SSL_CTX_set_session_cache_mode(ctx, SSL_SESS_CACHE_SERVER);
-#endif // IDENTITY_SESSIONS_ENABLED
+#endif  // IDENTITY_SESSIONS_ENABLED
 }
 
 inline std::error_code sslError(uint32_t err) {
@@ -163,10 +163,10 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
   ERR_clear_error();  // clear error stack for SSL_CTX_use_certificate()
 
   // The first certificate in the file is special:
-  // 
+  //
   // "X509_AUX is the name given to a certificate with extra info tagged on
-  // the end. Since these functions set how a certificate is trusted they should 
-  // only be used when the certificate comes from a reliable source such as 
+  // the end. Since these functions set how a certificate is trusted they should
+  // only be used when the certificate comes from a reliable source such as
   // local storage." [Source: d2i_X509_AUX comment in x_x509.c]
 
   MemBio bio{certData};
@@ -271,7 +271,7 @@ std::error_code Identity::loadVerifier(SSL_CTX *ctx,
   }
 
   if (count > 0) {
-    // When the while loop ends, it's usually just EOF. We expect to read at 
+    // When the while loop ends, it's usually just EOF. We expect to read at
     // least one cert.
     uint32_t err = ERR_peek_last_error();
     assert(err);

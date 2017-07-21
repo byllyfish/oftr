@@ -2,14 +2,15 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/echoreply.h"
+#include "ofp/echorequest.h"
 #include "ofp/message.h"
 #include "ofp/writable.h"
-#include "ofp/echorequest.h"
 
 using namespace ofp;
 
 bool EchoReply::isKeepAlive() const {
-  return header_.xid() == EchoRequest::kKeepAliveXID && echoData() == EchoRequest::kKeepAliveData;
+  return header_.xid() == EchoRequest::kKeepAliveXID &&
+         echoData() == EchoRequest::kKeepAliveData;
 }
 
 EchoReplyBuilder::EchoReplyBuilder(UInt32 xid) {

@@ -16,7 +16,9 @@ class EchoRequest
   static const ByteRange kKeepAliveData;
   static const ByteRange kPassThruData;
 
-  ByteRange echoData() const { return SafeByteRange(this, header_.length(), sizeof(Header)); }
+  ByteRange echoData() const {
+    return SafeByteRange(this, header_.length(), sizeof(Header));
+  }
   bool isPassThru() const;
 
   bool validateInput(Validation *context) const { return true; }

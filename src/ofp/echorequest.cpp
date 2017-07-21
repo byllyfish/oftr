@@ -20,7 +20,8 @@ bool EchoRequest::isPassThru() const {
 
 void EchoRequestBuilder::setKeepAlive() {
   msg_.header_.setXid(EchoRequest::kKeepAliveXID);
-  setEchoData(EchoRequest::kKeepAliveData.data(), EchoRequest::kKeepAliveData.size());
+  setEchoData(EchoRequest::kKeepAliveData.data(),
+              EchoRequest::kKeepAliveData.size());
 }
 
 UInt32 EchoRequestBuilder::send(Writable *channel) {

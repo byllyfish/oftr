@@ -67,7 +67,7 @@ void trace_rpc_(const char *type, UInt64 id, const void *data, size_t length) {
   if (length > 0 && msg[length - 1] == '\0')
     --length;
 
-  // If the message contains a private key, we need to obscure the private 
+  // If the message contains a private key, we need to obscure the private
   // information.
   llvm::StringRef str{msg, length};
   if (str.contains("OFP.ADD_IDENTITY")) {
@@ -75,8 +75,7 @@ void trace_rpc_(const char *type, UInt64 id, const void *data, size_t length) {
   }
 
   detail::write_(Level::Trace, type, length, "bytes",
-                 std::make_pair("connid", id), '\n',
-                 str);
+                 std::make_pair("connid", id), '\n', str);
 }
 
 }  // namespace detail
