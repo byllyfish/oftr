@@ -59,9 +59,7 @@ void SecurityCheck::beforeHandshake<SSL>(Connection *conn, SSL *ssl,
   SSL_set_verify(ssl, verifyMode, tls_verify_callback);
 
   if (isClient && !IsDTLS(ssl)) {
-    // Check if there is a client session we can resume. This is a static method
-    // so we have to retrieve the Identity object from the SSL_CTX.
-
+    // Check if there is a client session we can resume.
     SSL_SESSION *session = identity->findClientSession(conn->remoteEndpoint());
     if (session) {
       SSL_set_session(ssl, session);

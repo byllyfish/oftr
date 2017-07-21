@@ -77,7 +77,7 @@ action: POP_PBB
 const char *const kOutputSchema = R"""({Action/OUTPUT}
 action: OUTPUT
 port_no: PortNumber
-max_len: ControllerMaxLen
+max_len: !opt ControllerMaxLen
 )""";
 
 const char *const kSetMPLSTTLSchema = R"""({Action/SET_MPLS_TTL}
@@ -355,7 +355,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         PortNumber port;
         ControllerMaxLen maxlen;
         io.mapRequired("port_no", port);
-        io.mapRequired("max_len", maxlen);
+        io.mapOptional("max_len", maxlen, OFPCML_MAX);
         AT_OUTPUT action{port, maxlen};
         list.add(action);
         break;
