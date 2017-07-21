@@ -344,15 +344,12 @@ using Transport Layer Security (TLS).
       cert: String
       cacert: String
       privkey: String
-      password: !opt String
 
 *cert*:: PEM certificate chain data.
 
 *cacert*:: Trusted PEM root certificate. One certificate, not a list.
 
-*privkey*: PEM private key, possibly encrypted with a password.
-
-*password*:: Password for PEM private key, if needed. (Optional)
+*privkey*: PEM private key.
 
 ==== Reply
 
@@ -369,7 +366,8 @@ connections. The reply contains the unique `tls_id` to pass to OFP.CONNECT and
 OFP.LISTEN commands.
 
 The `cacert` parameter contains the certificate authority used to authenticate the 
-certificate chain presented by the other end of the connection.
+certificate chain presented by the other end of the connection. The cacert may
+be multiple certificates concatenated together.
 
 == RPC Notifications
 

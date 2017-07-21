@@ -127,6 +127,8 @@ class Connection : public Channel {
   UInt8 auxiliaryId_ = 0;
   TimePoint timeReadStarted_;
   Milliseconds keepAliveTimeout_;
+
+  bool echoMessageHandled(Message *message);
 };
 
 OFP_END_IGNORE_PADDING

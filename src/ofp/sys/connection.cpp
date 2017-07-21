@@ -11,12 +11,10 @@ using namespace ofp;
 using namespace ofp::sys;
 
 const Milliseconds kKeepAliveDefaultTimeout = 10000_ms;
-const UInt32 kKeepAliveEchoXID = 0xFBD0FF86;
-const ByteRange kKeepAliveEchoData{"Bueller?", 8};
 
 Connection::Connection(Engine *engine, DefaultHandshake *handshake)
     : engine_{engine},
-      listener_{handshake},  // handshake_{handshake},
+      listener_{handshake},
       mainConn_{this},
       keepAliveTimeout_{kKeepAliveDefaultTimeout} {
   connId_ = engine_->registerConnection(this);
@@ -99,23 +97,8 @@ void Connection::postMessage(Message *message) {
   log::trace_msg("Read", message->source()->connectionId(), message->data(),
                  message->size());
 
-  // Once Hello's have been exchanged, handle incoming echo requests
-  // automatically. Change the type to echo reply and send it right back.
-  if (message->type() == OFPT_ECHO_REQUEST && version() >= OFP_VERSION_1) {
-    message->mutableHeader()->setType(OFPT_ECHO_REPLY);
-    write(message->data(), message->size());
-    flush();
-    return;  // all done!
-  }
-
-  // Ignore incoming echo replies that originate from our "keep-alive" echo
-  // requests sent when the connection is idle.
-  if (message->type() == OFPT_ECHO_REPLY &&
-      message->xid() == kKeepAliveEchoXID) {
-    const EchoReply *reply = EchoReply::cast(message);
-    if (reply && reply->echoData() == kKeepAliveEchoData) {
-      return;  // all done!
-    }
+  if (version() >= OFP_VERSION_1 && echoMessageHandled(message)) {
+    return;
   }
 
   ChannelListener *listener = mainConn_->listener_;
@@ -166,8 +149,8 @@ void Connection::tickle(TimePoint now) {
     shutdown();
   } else if (!(flags() & kChannelIdle)) {
     setFlags(flags() | kChannelIdle);
-    EchoRequestBuilder echoReq{kKeepAliveEchoXID};
-    echoReq.setEchoData(kKeepAliveEchoData.data(), kKeepAliveEchoData.size());
+    EchoRequestBuilder echoReq{0};
+    echoReq.setKeepAlive();
     echoReq.send(this);
   }
 }
@@ -219,4 +202,31 @@ void Connection::setFlags(UInt64 securityId, ChannelOptions options) {
   }
 
   setFlags(newFlags);
+}
+
+bool Connection::echoMessageHandled(Message *message) {
+  const UInt8 type = message->type();
+
+  if (type == OFPT_ECHO_REQUEST) {
+    const EchoRequest *request = EchoRequest::cast(message);
+    if (request && request->isPassThru()) {
+      // Do not handle pass-thru echo requests.
+      return false;
+    }
+    // Change the type to echo reply and send it right back.
+    message->mutableHeader()->setType(OFPT_ECHO_REPLY);
+    write(message->data(), message->size());
+    flush();
+    return true;
+  }
+
+  if (type == OFPT_ECHO_REPLY) {
+    const EchoReply *reply = EchoReply::cast(message);
+    if (reply && reply->isKeepAlive()) {
+      // Handle keep-alive replies by doing nothing.
+      return true;
+    }
+  }
+
+  return false;
 }

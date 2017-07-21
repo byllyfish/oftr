@@ -2,13 +2,15 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/echoreply.h"
+#include "ofp/echorequest.h"
 #include "ofp/message.h"
 #include "ofp/writable.h"
 
 using namespace ofp;
 
-ByteRange EchoReply::echoData() const {
-  return SafeByteRange(this, header_.length(), sizeof(Header));
+bool EchoReply::isKeepAlive() const {
+  return header_.xid() == EchoRequest::kKeepAliveXID &&
+         echoData() == EchoRequest::kKeepAliveData;
 }
 
 EchoReplyBuilder::EchoReplyBuilder(UInt32 xid) {

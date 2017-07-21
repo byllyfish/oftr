@@ -14,6 +14,7 @@ struct TestContainer {
 };
 
 LLVM_YAML_IS_SEQUENCE_VECTOR(TestStruct)
+LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(std::string)
 
 namespace llvm {  // <namespace llvm>
 namespace yaml {  // <namespace yaml>
@@ -438,4 +439,47 @@ TEST(yamlio, test_invalid_octal) {
   yin >> t;
 
   EXPECT_TRUE(yin.error());
+}
+
+TEST(yamlio, test_multiline_flow_list) {
+  const char *input = R"""(---
+  [ x , 
+    y
+    ,
+    z  
+  z
+  ]
+...
+)""";
+
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
+  llvm::yaml::dumpTokens(input, oss);
+
+  std::string result = R"""(Stream-Start: 
+Document-Start: ---
+Flow-Sequence-Start: [
+Scalar: x
+Flow-Entry: ,
+Scalar: y
+Flow-Entry: ,
+Scalar: z  
+  z
+Flow-Sequence-End: ]
+Document-End: ...
+Stream-End: 
+)""";
+
+  EXPECT_EQ(oss.str(), result);
+
+  std::vector<std::string> t;
+  llvm::yaml::Input yin(input);
+  EXPECT_FALSE(yin.error());
+  yin >> t;
+
+  EXPECT_FALSE(yin.error());
+  EXPECT_EQ(t.size(), 3);
+  EXPECT_EQ(t[0], "x");
+  EXPECT_EQ(t[1], "y");
+  EXPECT_EQ(t[2], "z  \n  z");
 }

@@ -1,5 +1,17 @@
 = Changelog
 
+== Version 0.32 (20 July 2017)
+
+- Update asio from upstream.
+- If an OpenFlow echo request's data begins with "__OFTR__", the jsonrpc server will not automatically respond.
+- Disable support for SSL client sessions until it can be fully tested.
+- Remove password attribute from OFP.ADD_IDENTITY RPC command.
+- "max_len" in OUTPUT action now defaults to "MAX".
+- Load multiple SSL certificates from a cacert file, not just the first one.
+- Elide security information when logging the OFP.ADD_IDENTITY RPC command.
+- Fix parsing bug in YAML multi-line flow lists.
+- Update boringssl submodule.
+
 == Version 0.31 (30 June 2017)
 
 - Changed OFP.CLOSE rpc command so it will only close one connection.

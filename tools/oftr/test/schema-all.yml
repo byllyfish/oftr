@@ -65,7 +65,6 @@ Rpc/OFP.ADD_IDENTITY:
     cert: String
     cacert: String
     privkey: String
-    password: !opt String
   result: !reply
     tls_id: UInt64
   
@@ -1468,7 +1467,7 @@ Action/POP_PBB:
 Action/OUTPUT: 
   action: OUTPUT
   port_no: PortNumber
-  max_len: ControllerMaxLen
+  max_len: !opt ControllerMaxLen
   
 Action/SET_MPLS_TTL: 
   action: SET_MPLS_TTL

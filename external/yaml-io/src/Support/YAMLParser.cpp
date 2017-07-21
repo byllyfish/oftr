@@ -1364,6 +1364,12 @@ bool Scanner::scanPlainScalar() {
   Token T;
   T.Kind = Token::TK_Scalar;
   T.Range = StringRef(Start, Current - Start);
+
+  if (FlowLevel) {
+    // Make sure that plain scalars don't have trailing white space.
+    T.Range = T.Range.rtrim(" \n\r");
+  }
+
   TokenQueue.push_back(T);
 
   // Plain scalars can be simple keys.
