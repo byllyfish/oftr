@@ -1,4 +1,4 @@
-FROM alpine:3.5
+FROM alpine:3.6
 
 # Usage:
 #
@@ -15,12 +15,8 @@ FROM alpine:3.5
 
 MAINTAINER William W. Fisher "william.w.fisher@gmail.com"
 
-# oftr needs libgcc, libstdc++, and libpcap.
-
-RUN apk add --no-cache libgcc libstdc++ libpcap
-
 # Set up build dependencies, then build and install oftr. Clean up when we
-# are done.
+# are done. N.B. oftr needs libgcc, libstdc++, and libpcap to run.
 
 RUN set -ex \
     && apk add --no-cache --virtual .build-deps  \
@@ -40,6 +36,7 @@ RUN set -ex \
     && cd oftr/Build \
     && cmake .. \
     && CTEST_OUTPUT_ON_FAILURE=1 make all test install/strip \
+    && apk add --virtual .oftr-rundeps libgcc libstdc++ libpcap \
     && apk del .build-deps \
     && rm -rf /oftr
 
