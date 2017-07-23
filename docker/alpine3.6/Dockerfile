@@ -36,9 +36,9 @@ RUN set -ex \
     && cd oftr/Build \
     && cmake .. \
     && CTEST_OUTPUT_ON_FAILURE=1 make all test install/strip \
+    && rm -rf /oftr \
     && apk add --virtual .oftr-rundeps libgcc libstdc++ libpcap \
-    && apk del .build-deps \
-    && rm -rf /oftr
+    && apk del .build-deps
 
 EXPOSE 6633 6653
 
