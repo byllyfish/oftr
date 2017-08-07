@@ -404,6 +404,9 @@ Write reassembled TCP streams to this directory (for debugging)\&. It is an erro
 .RS 4
 Skip payload from TCP streams (for debugging)\&. This option makes sure that every byte of data is consumed immediately\&.
 .RE
+.SS "Stream Reassembly Notes"
+.sp
+If the first segment of a new flow is not a SYN packet, the sequence number at the beginning of the data specifies the intitial sequence number\&. Earlier segments that arrive out of order are ignored\&. If an unfinished flow is logically restarted with a SYN TCP packet, any unconsumed data from a partial OpenFlow message is discarded\&. IP fragments are not supported\&.
 .SH "OFTR JSONRPC"
 .sp
 \fBoftr jsonrpc\fR [\fIOPTIONS\fR]
