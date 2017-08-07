@@ -21,7 +21,7 @@ inline asio::ssl::context *tcpContext(Engine *engine, UInt64 securityId) {
 #if LIBOFP_ENABLE_OPENSSL
   assert(securityId != 0);
   Identity *identity = engine->findIdentity(securityId);
-  log::fatal_if_null(identity, LOG_LINE());
+  log::fatal_if_null(identity, "tcpContext");
   return identity->tlsContext();
 #else
   return PlaintextContext();

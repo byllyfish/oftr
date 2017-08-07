@@ -12,7 +12,7 @@ DTLS_Adapter::DTLS_Adapter(SSL_CTX *ctx, DeliverFunc sendCallback,
       receiveCallback_{receiveCallback},
       userData_{userData} {
   ssl_ = SSL_new(ctx);
-  log::fatal_if_null(ssl_, LOG_LINE());
+  log::fatal_if_null(ssl_, "DTLS_Adapter");
 
   // TODO(bfish): Figure out why DTLSv1_2_method() doesn't work? DTLS Handshake
   // doesn't complete normally!

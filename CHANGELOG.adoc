@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.33 (7 August 2017)
+
+- Add various hardening compiler build options.
+- Remove use of __FILE__ macro.
+- Improve docker files.
+- Update boringssl and googletest submodules.
+
 == Version 0.32 (20 July 2017)
 
 - Update asio from upstream.

@@ -19,7 +19,7 @@ inline SSL_CTX *udpContext(UDP_Server *server, UInt64 securityId) {
 #if LIBOFP_ENABLE_OPENSSL
   assert(securityId != 0);
   Identity *identity = server->engine()->findIdentity(securityId);
-  log::fatal_if_null(identity, LOG_LINE());
+  log::fatal_if_null(identity, "udpContext");
   return identity->dtlsContext();
 #else
   return nullptr;
