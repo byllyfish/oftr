@@ -121,13 +121,6 @@ inline bool fatal_if_false(bool value, const Args &... args) {
   return !value ? fatal("fatal_if_false", args...), value : value;
 }
 
-// Use the LOG_LINE() macro to log source code file and line number.
-// ie. a runtime assert can be written as:
-//
-//     log::fatal_if_false(condition, LOG_LINE());
-
-#define LOG_LINE() std::make_pair(__FILE__, __LINE__)
-
 template <class Type>
 std::string hex(Type n) {
   return RawDataToHex(&n, sizeof(n));

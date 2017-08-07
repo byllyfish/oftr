@@ -43,7 +43,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.32.0)
+set(Libofp_VERSION 0.33.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -152,11 +152,18 @@ if(MSVC)
   set(LIBOFP_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14")
 else()
   set(LIBOFP_CPP_STD "-std=c++14")
-  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.3)
-    set(LIBOFP_CPP_STD "-std=c++1y")
+  set(LIBOFP_HARDENING "-fstack-protector-strong -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security")
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9)
+      set(LIBOFP_HARDENING "-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security")
+    endif()
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.3)
+      set(LIBOFP_CPP_STD "-std=c++1y")
+    endif()
   endif()
-  set(LIBOFP_C_FLAGS "${CMAKE_C_FLAGS} -fstrict-aliasing -fvisibility=hidden")
-  set(LIBOFP_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing -fno-rtti -fno-exceptions ${LIBOFP_CPP_STD} -fvisibility=hidden")
+  set(LIBOFP_C_FLAGS "${CMAKE_C_FLAGS} -fstrict-aliasing ${LIBOFP_HARDENING} -fvisibility=hidden")
+  set(LIBOFP_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing ${LIBOFP_HARDENING} -fno-rtti -fno-exceptions ${LIBOFP_CPP_STD} -fvisibility=hidden")
+  set(LIBOFP_LD_FLAGS "-Wl,-z,relro -Wl,-z,now")   # hardening linker flags
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -530,7 +537,12 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_SYSTEM_WARNINGS}")
 
 add_subdirectory(external/yaml-io)
 if(LIBOFP_ENABLE_OPENSSL)
+  # Boringssl uses the __FILE__ predefined macro in "openssl/err.h". Redefine
+  # __FILE__ to __func__ just for boringssl.
+  set(SAVED_C_FLAGS "${CMAKE_C_FLAGS}")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-builtin-macro-redefined -U__FILE__ -D__FILE__=__func__")
   add_subdirectory(external/boringssl)
+  set(CMAKE_C_FLAGS "${SAVED_C_FLAGS}")
 endif()
 
 # Modify flags for compiling our code. Here, we change the warning flags to
@@ -538,7 +550,7 @@ endif()
 
 set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE} ${LIBOFP_FSANITIZE}")
 set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE} ${LIBOFP_FSANITIZE}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_COVERAGE} ${LIBOFP_FSANITIZE}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LIBOFP_COVERAGE} ${LIBOFP_FSANITIZE} ${LIBOFP_LDFLAGS}")
 
 message(STATUS "LIBOFP_C_FLAGS: ${LIBOFP_C_FLAGS}")
 message(STATUS "LIBOFP_CXX_FLAGS: ${LIBOFP_CXX_FLAGS}")
