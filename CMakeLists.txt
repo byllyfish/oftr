@@ -538,7 +538,7 @@ if(LIBOFP_ENABLE_OPENSSL)
   # Boringssl uses the __FILE__ predefined macro in "openssl/err.h". Redefine
   # __FILE__ to __func__ just for boringssl.
   set(SAVED_C_FLAGS "${CMAKE_C_FLAGS}")
-  set(SAVED_CXX_FLAGS "${CMAKE_CXX_FLAGS")
+  set(SAVED_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-builtin-macro-redefined -U__FILE__ -D__FILE__=__func__")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-builtin-macro-redefined -U__FILE__ -D__FILE__=__func__")
   add_subdirectory(external/boringssl)
