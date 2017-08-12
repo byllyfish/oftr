@@ -46,8 +46,9 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
 
   void rpcAlert(Channel *channel, const std::string &alert,
                 const ByteRange &data, const Timestamp &time, UInt32 xid = 0);
-  void rpcAlert(const DatapathID &datapathId, UInt64 connId, const std::string &alert,
-                const ByteRange &data, const Timestamp &time, UInt32 xid = 0);
+  void rpcAlert(const DatapathID &datapathId, UInt64 connId,
+                const std::string &alert, const ByteRange &data,
+                const Timestamp &time, UInt32 xid = 0);
 
   void handleEvent(const std::string &eventText);
 

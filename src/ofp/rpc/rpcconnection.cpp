@@ -95,8 +95,9 @@ void RpcConnection::rpcAlert(Channel *channel, const std::string &alert,
   rpcAlert(datapathId, connId, alert, data, time, xid);
 }
 
-void RpcConnection::rpcAlert(const DatapathID &datapathId, UInt64 connId, const std::string &alert,
-                const ByteRange &data, const Timestamp &time, UInt32 xid) {
+void RpcConnection::rpcAlert(const DatapathID &datapathId, UInt64 connId,
+                             const std::string &alert, const ByteRange &data,
+                             const Timestamp &time, UInt32 xid) {
   // Send `CHANNEL_ALERT` notification event.
   RpcAlert messageAlert;
   messageAlert.params.type = "CHANNEL_ALERT";
