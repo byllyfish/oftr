@@ -536,14 +536,8 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_SYSTEM_WARNINGS}")
 add_subdirectory(external/yaml-io)
 if(LIBOFP_ENABLE_OPENSSL)
   # Boringssl uses the __FILE__ predefined macro in "openssl/err.h". Redefine
-  # __FILE__ to __func__ just for boringssl.
-  set(SAVED_C_FLAGS "${CMAKE_C_FLAGS}")
-  set(SAVED_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-builtin-macro-redefined -U__FILE__ -D__FILE__=__func__")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-builtin-macro-redefined -U__FILE__ -D__FILE__=__func__")
+  # __FILE__ to __func__ just for boringssl. (TODO)
   add_subdirectory(external/boringssl)
-  set(CMAKE_C_FLAGS "${SAVED_C_FLAGS}")
-  set(CMAKE_CXX_FLAGS "${SAVED_CXX_FLAGS}")
 endif()
 
 # Modify flags for compiling our code. Here, we change the warning flags to
