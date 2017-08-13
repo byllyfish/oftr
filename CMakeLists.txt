@@ -414,12 +414,20 @@ endif()
 #   00000001000201c0 T _libofp_decode
 #   000000010001ff60 T _libofp_encode
 #   000000010001fc80 T _libofp_version
-
-if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
-  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -flto")
-  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -flto")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto")
-endif()
+#
+# GCC also requires more changes to use gcc-ar, gcc-ranlib and possibly
+# -pthread, -Wno-error=odr options. (CURRENTLY DISABLE -FLTO)
+#
+#if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+#  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -pthread -flto")
+#  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -pthread -flto -Wno-error=odr")
+#  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread -flto")
+#  set(CMAKE_AR "gcc-ar")
+#  set(CMAKE_NM "gcc-nm")
+#  set(CMAKE_RANLIB "gcc-ranlib")
+#  set(CMAKE_C_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
+#  set(CMAKE_C_ARCHIVE_FINISH true)
+#endif()
 
 # Compile with code coverage support.
 
