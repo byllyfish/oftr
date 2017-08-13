@@ -408,7 +408,7 @@ params: !notify
   type: CHANNEL_ALERT
   time: Timestamp
   conn_id: UInt64
-  datapath_id: DatapathID
+  datapath_id: !optout DatapathID
   xid: UInt32
   alert: String
   data: HexData
@@ -680,7 +680,7 @@ struct MappingTraits<ofp::rpc::RpcAlert::Params> {
     io.mapRequired("type", params.type);
     io.mapRequired("time", params.time);
     io.mapRequired("conn_id", params.connId);
-    io.mapRequired("datapath_id", params.datapathId);
+    io.mapOptional("datapath_id", params.datapathId, ofp::DatapathID{});
     io.mapRequired("xid", params.xid);
     io.mapRequired("alert", params.alert);
     io.mapRequired("data", params.data);
