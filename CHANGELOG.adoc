@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.34 (13 August 2017)
+
+- IPV6_ND_TARGET, IPV6_ND_SLL and IPV6_ND_TLL now support masks.
+- CHANNEL_ALERT message may now omit datapath_id. Fix case where datapath_id was set to ''.
+- Undo change that removed use of __FILE__ macro from C files.
+- Update boringssl and googletest submodules.
+
 == Version 0.33 (7 August 2017)
 
 - Add various hardening compiler build options.

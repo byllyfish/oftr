@@ -43,7 +43,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.33.0)
+set(Libofp_VERSION 0.34.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -415,13 +415,18 @@ endif()
 #   000000010001ff60 T _libofp_encode
 #   000000010001fc80 T _libofp_version
 #
-# TODO(bfish): Enable this at some point... These symbols are still being
-# stripped on OSX.
+# GCC also requires more changes to use gcc-ar, gcc-ranlib and possibly
+# -pthread, -Wno-error=odr options. (CURRENTLY DISABLE -FLTO)
 #
-#if(CMAKE_BUILD_TYPE MATCHES "Release")
-#  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -flto")
-#  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -flto")
-#  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto")
+#if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+#  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -pthread -flto")
+#  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -pthread -flto -Wno-error=odr")
+#  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread -flto")
+#  set(CMAKE_AR "gcc-ar")
+#  set(CMAKE_NM "gcc-nm")
+#  set(CMAKE_RANLIB "gcc-ranlib")
+#  set(CMAKE_C_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
+#  set(CMAKE_C_ARCHIVE_FINISH true)
 #endif()
 
 # Compile with code coverage support.
@@ -536,11 +541,8 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_SYSTEM_WARNINGS}")
 add_subdirectory(external/yaml-io)
 if(LIBOFP_ENABLE_OPENSSL)
   # Boringssl uses the __FILE__ predefined macro in "openssl/err.h". Redefine
-  # __FILE__ to __func__ just for boringssl.
-  set(SAVED_C_FLAGS "${CMAKE_C_FLAGS}")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-builtin-macro-redefined -U__FILE__ -D__FILE__=__func__")
+  # __FILE__ to __func__ just for boringssl. (TODO)
   add_subdirectory(external/boringssl)
-  set(CMAKE_C_FLAGS "${SAVED_C_FLAGS}")
 endif()
 
 # Modify flags for compiling our code. Here, we change the warning flags to
