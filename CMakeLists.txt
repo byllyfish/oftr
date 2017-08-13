@@ -414,15 +414,12 @@ endif()
 #   00000001000201c0 T _libofp_decode
 #   000000010001ff60 T _libofp_encode
 #   000000010001fc80 T _libofp_version
-#
-# TODO(bfish): Enable this at some point... These symbols are still being
-# stripped on OSX.
-#
-#if(CMAKE_BUILD_TYPE MATCHES "Release")
-#  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -flto")
-#  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -flto")
-#  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto")
-#endif()
+
+if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+  set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -flto")
+  set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -flto")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto")
+endif()
 
 # Compile with code coverage support.
 

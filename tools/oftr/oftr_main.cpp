@@ -14,7 +14,6 @@
 #if HAVE_LIBPCAP
 #include <pcap/pcap.h>
 #endif
-#include "./libofp.h"
 #include "./oftr_help.h"
 #include "llvm/Support/Host.h"
 
@@ -35,12 +34,9 @@ static const SubprogramEntry programs[] = {
 
 static void print_usage(llvm::raw_ostream &out);
 static void print_version();
-static void force_link_api();
 
 int main(int argc, const char *const *argv) {
   if (argc < 2) {
-    if (argc == 0)
-      force_link_api();
     print_usage(llvm::errs());
     return 1;
   }
@@ -131,17 +127,4 @@ void print_version() {
   // Print libpcap version.
   os << "  Using: " << pcap_lib_version() << '\n';
 #endif  // HAVE_LIBPCAP
-}
-
-void force_link_api() {
-  libofp_buffer buf = {nullptr, 0};
-  libofp_version(&buf);
-  libofp_buffer_free(&buf);
-
-  libofp_encode(&buf, "", 0);
-  libofp_buffer_free(&buf);
-
-  libofp_buffer empty = {nullptr, 0};
-  libofp_decode(&buf, &empty, 0);
-  libofp_buffer_free(&buf);
 }

@@ -37,6 +37,7 @@ extern "C" {
 #endif
 
 #define LIBOFP_EXPORT __attribute__((visibility("default")))
+#define LIBOFP_USED __attribute__((used))
 
 typedef struct {
   void *data;
@@ -46,7 +47,7 @@ typedef struct {
 /// Retrieve the library version number.
 ///
 /// Client is responsible for calling `libofp_buffer_free` on result buffer.
-LIBOFP_EXPORT void libofp_version(libofp_buffer *result);
+LIBOFP_EXPORT void libofp_version(libofp_buffer *result) LIBOFP_USED;
 
 /// Translate a YAML string to a binary OpenFlow message.
 ///
@@ -55,7 +56,7 @@ LIBOFP_EXPORT void libofp_version(libofp_buffer *result);
 ///
 /// Client is responsible for calling `libofp_buffer_free` on result buffer.
 LIBOFP_EXPORT int libofp_encode(libofp_buffer *result, const char *yaml_input,
-                                uint32_t flags);
+                                uint32_t flags) LIBOFP_USED;
 
 /// Translate a binary OpenFlow message to YAML.
 ///
@@ -64,10 +65,10 @@ LIBOFP_EXPORT int libofp_encode(libofp_buffer *result, const char *yaml_input,
 ///
 /// Client is responsible for calling `libofp_buffer_free` on result buffer.
 LIBOFP_EXPORT int libofp_decode(libofp_buffer *result,
-                                const libofp_buffer *buffer, uint32_t flags);
+                                const libofp_buffer *buffer, uint32_t flags) LIBOFP_USED;
 
 /// Dispose of `buffer` object returned by library functions.
-LIBOFP_EXPORT void libofp_buffer_free(libofp_buffer *buffer);
+LIBOFP_EXPORT void libofp_buffer_free(libofp_buffer *buffer) LIBOFP_USED;
 
 #ifdef __cplusplus
 }  // extern C
