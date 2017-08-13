@@ -65,7 +65,8 @@ LIBOFP_EXPORT int libofp_encode(libofp_buffer *result, const char *yaml_input,
 ///
 /// Client is responsible for calling `libofp_buffer_free` on result buffer.
 LIBOFP_EXPORT int libofp_decode(libofp_buffer *result,
-                                const libofp_buffer *buffer, uint32_t flags) LIBOFP_USED;
+                                const libofp_buffer *buffer,
+                                uint32_t flags) LIBOFP_USED;
 
 /// Dispose of `buffer` object returned by library functions.
 LIBOFP_EXPORT void libofp_buffer_free(libofp_buffer *buffer) LIBOFP_USED;
