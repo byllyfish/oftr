@@ -88,7 +88,7 @@ Rpc/OFP.MESSAGE:
     type: CHANNEL_ALERT
     time: Timestamp
     conn_id: UInt64
-    datapath_id: DatapathID
+    datapath_id: !optout DatapathID
     xid: UInt32
     alert: String
     data: HexData
@@ -1838,14 +1838,17 @@ Field/ICMPV6_CODE:
 Field/IPV6_ND_TARGET: 
   field: IPV6_ND_TARGET
   value: IPv6Address
+  mask: !optout IPv6Address
   
 Field/IPV6_ND_SLL: 
   field: IPV6_ND_SLL
   value: MacAddress
+  mask: !optout MacAddress
   
 Field/IPV6_ND_TLL: 
   field: IPV6_ND_TLL
   value: MacAddress
+  mask: !optout MacAddress
   
 Field/MPLS_LABEL: 
   field: MPLS_LABEL
