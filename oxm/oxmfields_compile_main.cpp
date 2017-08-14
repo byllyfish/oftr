@@ -291,7 +291,7 @@ static void WriteOXMTypeInfo(OXMType type, UInt32 experimenter, bool maskSupport
       std::strncmp("ONF_", nameStr, 4) == 0) {
     nameStr += 4;
   }
-  std::cout << "{ \"" << nameStr << "\", " << prereqs << ", " << type << ", " << experimenter << ", " << maskSupported << ", \"" << typeStr << "\", \"" << descriptionStr << "\"},\n";
+  std::cout << "{ \"" << nameStr << "\", " << prereqs << ", " << type << ", " << experimenter << ", \"" << typeStr << "\", \"" << descriptionStr << "\"},\n";
 }
 
 int main() {
@@ -390,5 +390,5 @@ extern const OXMTypeInfo OXMTypeInfoArray[];
 extern const size_t OXMTypeInfoArraySize;
 }
 const ofp::OXMTypeInfo ofp::OXMTypeInfoArray[] = {
-    {"none", nullptr, 0, 0, false, "none", "none"}};
+    {"none", nullptr, 0, 0, "none", "none"}};
 const size_t ofp::OXMTypeInfoArraySize = 0;
