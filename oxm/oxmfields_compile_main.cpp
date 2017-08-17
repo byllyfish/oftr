@@ -269,7 +269,7 @@ using namespace ofp;
 
 // We need to define this array to get the linker to compile this tool.
 const ofp::OXMTypeInfo ofp::OXMTypeInfoArray[] = {
-	{"none", nullptr, 0, 0, false, "none", "none"}
+	{"none", nullptr, 0, 0, "none", "none"}
 };
 const size_t ofp::OXMTypeInfoArraySize = 0;
 
