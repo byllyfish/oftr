@@ -1529,18 +1529,18 @@ Action/NX_REG_LOAD:
 MeterBand/DROP: 
   type: DROP
   rate: UInt32
-  burst_size: UInt32
+  burst_size: !opt UInt32    # default=0
   
 MeterBand/DSCP_REMARK: 
   type: DSCP_REMARK
   rate: UInt32
-  burst_size: UInt32
-  prec_level: UInt8
+  burst_size: !opt UInt32    # default=0
+  prec_level: !opt UInt8     # default=0
   
 MeterBand/EXPERIMENTER: 
   type: EXPERIMENTER
   rate: UInt32
-  burst_size: UInt32
+  burst_size: !opt UInt32   # default=0
   experimenter: UInt32
   
 Struct/Bucket: 
