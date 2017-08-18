@@ -21,5 +21,11 @@ $LIBOFP_MEMCHECK $LIBOFP help -schema-lexicon > schema-lexicon.txt
 echo "Compare schema-lexicon.txt to $CURRENT_SOURCE_DIR/schema-lexicon.txt"
 diff "$CURRENT_TEST_DIR/schema-lexicon.txt" "$CURRENT_SOURCE_DIR/schema-lexicon.txt"
 
+echo "Generate schema-fields"
+$LIBOFP_MEMCHECK $LIBOFP help --field-table > schema-fields.txt
+
+echo "Compare schema-fields.txt to $CURRENT_SOURCE_DIR/schema-fields.txt"
+diff "$CURRENT_TEST_DIR/schema-fields.txt" "$CURRENT_SOURCE_DIR/schema-fields.txt"
+
 echo "Done."
 exit 0

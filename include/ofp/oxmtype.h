@@ -110,7 +110,6 @@ struct OXMTypeInfo {
   const OXMRange *prerequisites;
   UInt32 value32;
   UInt32 experimenter;
-  bool isMaskSupported;
   const char *type;
   const char *description;
 };
