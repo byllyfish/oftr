@@ -1529,18 +1529,18 @@ Action/NX_REG_LOAD:
 MeterBand/DROP: 
   type: DROP
   rate: UInt32
-  burst_size: UInt32
+  burst_size: !opt UInt32    # default=0
   
 MeterBand/DSCP_REMARK: 
   type: DSCP_REMARK
   rate: UInt32
-  burst_size: UInt32
-  prec_level: UInt8
+  burst_size: !opt UInt32    # default=0
+  prec_level: !opt UInt8     # default=0
   
 MeterBand/EXPERIMENTER: 
   type: EXPERIMENTER
   rate: UInt32
-  burst_size: UInt32
+  burst_size: !opt UInt32   # default=0
   experimenter: UInt32
   
 Struct/Bucket: 
@@ -1701,10 +1701,12 @@ Flag/MeterFlags: KBPS | PKTPS | BURST | STATS | Hex32
 Field/IN_PORT: 
   field: IN_PORT
   value: PortNumber
+  mask: !optout PortNumber
   
 Field/IN_PHY_PORT: 
   field: IN_PHY_PORT
   value: UInt32
+  mask: !optout UInt32
   
 Field/METADATA: 
   field: METADATA
@@ -1724,6 +1726,7 @@ Field/ETH_SRC:
 Field/ETH_TYPE: 
   field: ETH_TYPE
   value: UInt16
+  mask: !optout UInt16
   
 Field/VLAN_VID: 
   field: VLAN_VID
@@ -1733,18 +1736,22 @@ Field/VLAN_VID:
 Field/VLAN_PCP: 
   field: VLAN_PCP
   value: UInt8
+  mask: !optout UInt8
   
 Field/IP_DSCP: 
   field: IP_DSCP
   value: UInt8
+  mask: !optout UInt8
   
 Field/IP_ECN: 
   field: IP_ECN
   value: UInt8
+  mask: !optout UInt8
   
 Field/IP_PROTO: 
   field: IP_PROTO
   value: UInt8
+  mask: !optout UInt8
   
 Field/IPV4_SRC: 
   field: IPV4_SRC
@@ -1759,38 +1766,47 @@ Field/IPV4_DST:
 Field/TCP_SRC: 
   field: TCP_SRC
   value: UInt16
+  mask: !optout UInt16
   
 Field/TCP_DST: 
   field: TCP_DST
   value: UInt16
+  mask: !optout UInt16
   
 Field/UDP_SRC: 
   field: UDP_SRC
   value: UInt16
+  mask: !optout UInt16
   
 Field/UDP_DST: 
   field: UDP_DST
   value: UInt16
+  mask: !optout UInt16
   
 Field/SCTP_SRC: 
   field: SCTP_SRC
   value: UInt16
+  mask: !optout UInt16
   
 Field/SCTP_DST: 
   field: SCTP_DST
   value: UInt16
+  mask: !optout UInt16
   
 Field/ICMPV4_TYPE: 
   field: ICMPV4_TYPE
   value: UInt8
+  mask: !optout UInt8
   
 Field/ICMPV4_CODE: 
   field: ICMPV4_CODE
   value: UInt8
+  mask: !optout UInt8
   
 Field/ARP_OP: 
   field: ARP_OP
   value: UInt16
+  mask: !optout UInt16
   
 Field/ARP_SPA: 
   field: ARP_SPA
@@ -1830,10 +1846,12 @@ Field/IPV6_FLABEL:
 Field/ICMPV6_TYPE: 
   field: ICMPV6_TYPE
   value: UInt8
+  mask: !optout UInt8
   
 Field/ICMPV6_CODE: 
   field: ICMPV6_CODE
   value: UInt8
+  mask: !optout UInt8
   
 Field/IPV6_ND_TARGET: 
   field: IPV6_ND_TARGET
@@ -1853,14 +1871,17 @@ Field/IPV6_ND_TLL:
 Field/MPLS_LABEL: 
   field: MPLS_LABEL
   value: UInt32
+  mask: !optout UInt32
   
 Field/MPLS_TC: 
   field: MPLS_TC
   value: UInt8
+  mask: !optout UInt8
   
 Field/MPLS_BOS: 
   field: MPLS_BOS
   value: UInt8
+  mask: !optout UInt8
   
 Field/PBB_ISID: 
   field: PBB_ISID
@@ -1880,6 +1901,7 @@ Field/IPV6_EXTHDR:
 Field/PBB_UCA: 
   field: PBB_UCA
   value: UInt8
+  mask: !optout UInt8
   
 Field/PKT_REG0: 
   field: PKT_REG0
@@ -1979,6 +2001,7 @@ Field/NX_IP_FRAG:
 Field/NX_IP_TTL: 
   field: NX_IP_TTL
   value: UInt8
+  mask: !optout UInt8
   
 Field/NX_TCP_FLAGS: 
   field: NX_TCP_FLAGS
@@ -2008,22 +2031,27 @@ Field/NX_TUN_GBP_FLAGS:
 Field/X_LLDP_CHASSIS_ID: 
   field: X_LLDP_CHASSIS_ID
   value: LLDPChassisID
+  mask: !optout LLDPChassisID
   
 Field/X_LLDP_PORT_ID: 
   field: X_LLDP_PORT_ID
   value: LLDPPortID
+  mask: !optout LLDPPortID
   
 Field/X_LLDP_TTL: 
   field: X_LLDP_TTL
   value: UInt16
+  mask: !optout UInt16
   
 Field/X_PKT_POS: 
   field: X_PKT_POS
   value: UInt16
+  mask: !optout UInt16
   
 Field/X_IPV6_ND_RES: 
   field: X_IPV6_ND_RES
   value: UInt32
+  mask: !optout UInt32
   
 Field/X_EXPERIMENTER_01: 
   field: X_EXPERIMENTER_01
@@ -2033,22 +2061,27 @@ Field/X_EXPERIMENTER_01:
 Field/DURATION: 
   field: DURATION
   value: DurationSec
+  mask: !optout DurationSec
   
 Field/IDLE_TIME: 
   field: IDLE_TIME
   value: DurationSec
+  mask: !optout DurationSec
   
 Field/FLOW_COUNT: 
   field: FLOW_COUNT
   value: UInt32
+  mask: !optout UInt32
   
 Field/PACKET_COUNT: 
   field: PACKET_COUNT
   value: UInt64
+  mask: !optout UInt64
   
 Field/BYTE_COUNT: 
   field: BYTE_COUNT
   value: UInt64
+  mask: !optout UInt64
   
 Builtin/UInt8: <builtin>
 
