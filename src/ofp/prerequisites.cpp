@@ -137,17 +137,6 @@ bool Prerequisites::checkAll(const OXMRange &oxm, FailureReason *reason) {
 
     assert(typeInfo != nullptr);
 
-    if (type.hasMask()) {
-      // The oxm type has a mask. Check if it's allowed to have one.
-      if (!typeInfo->isMaskSupported) {
-        log_info("Invalid mask for ", log::hex(type));
-        *reason = kInvalidMaskPresent;
-        goto FAILURE;
-      }
-    }
-
-    assert(!type.hasMask() || typeInfo->isMaskSupported);
-
     // Check if oxm type has prerequisites, and if so, check them all.
     if (typeInfo->prerequisites != nullptr) {
       Prerequisites preqs{typeInfo->prerequisites};

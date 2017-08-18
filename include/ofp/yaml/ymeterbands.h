@@ -20,20 +20,20 @@ namespace yaml {
 const char *const kMeterBandDropSchema = R"""({MeterBand/DROP}
 type: DROP
 rate: UInt32
-burst_size: UInt32
+burst_size: !opt UInt32    # default=0
 )""";
 
 const char *const kMeterBandDscpRemarkSchema = R"""({MeterBand/DSCP_REMARK}
 type: DSCP_REMARK
 rate: UInt32
-burst_size: UInt32
-prec_level: UInt8
+burst_size: !opt UInt32    # default=0
+prec_level: !opt UInt8     # default=0
 )""";
 
 const char *const kMeterBandExperimenterSchema = R"""({MeterBand/EXPERIMENTER}
 type: EXPERIMENTER
 rate: UInt32
-burst_size: UInt32
+burst_size: !opt UInt32   # default=0
 experimenter: UInt32
 )""";
 
@@ -94,7 +94,7 @@ struct MappingTraits<ofp::detail::MeterBandInserter> {
       case MeterBandDrop::type(): {
         UInt32 rate, burstSize;
         io.mapRequired("rate", rate);
-        io.mapRequired("burst_size", burstSize);
+        io.mapOptional("burst_size", burstSize, 0);
         list.add(MeterBandDrop{rate, burstSize});
         break;
       }
@@ -102,15 +102,15 @@ struct MappingTraits<ofp::detail::MeterBandInserter> {
         UInt32 rate, burstSize;
         UInt8 precLevel;
         io.mapRequired("rate", rate);
-        io.mapRequired("burst_size", burstSize);
-        io.mapRequired("prec_level", precLevel);
+        io.mapOptional("burst_size", burstSize, 0);
+        io.mapOptional("prec_level", precLevel, 0);
         list.add(MeterBandDscpRemark{rate, burstSize, precLevel});
         break;
       }
       case MeterBandExperimenter::type(): {
         UInt32 rate, burstSize, experimenter;
         io.mapRequired("rate", rate);
-        io.mapRequired("burst_size", burstSize);
+        io.mapOptional("burst_size", burstSize, 0);
         io.mapRequired("experimenter", experimenter);
         list.add(MeterBandExperimenter{rate, burstSize, experimenter});
         break;

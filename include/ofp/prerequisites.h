@@ -16,7 +16,6 @@ class Prerequisites {
   enum FailureReason {
     kUnresolvedAmbiguity = 1,
     kConflictingPrerequisites,
-    kInvalidMaskPresent,
     kMissingPrerequisite,
     kDuplicateFieldsDetected
   };
