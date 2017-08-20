@@ -260,6 +260,14 @@ TEST(matchbuilder, OFB_IN_PORT_alt1) {
   EXPECT_FALSE(match.validate());
 }
 
+TEST(matchbuilder, OFB_UDP_SRC_masked) {
+  MatchBuilder match;
+  match.add(OFB_ETH_TYPE{0x0800});
+  match.add(OFB_UDP_SRC{1024}, OFB_UDP_SRC{1024});
+  EXPECT_HEX("80000A02:0800 80001401:11 80001F04:0400:0400", match.data(), match.size());
+  EXPECT_TRUE(match.validate());
+}
+
 TEST(matchbuilder, OFB_ETH_SRC) {
   MatchBuilder match;
 
