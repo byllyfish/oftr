@@ -16,6 +16,7 @@ template <OXMInternalID ID, UInt16 Class, UInt8 Field, class ValueType,
           UInt16 Size, bool Mask, const OXMRange *Prereqs = nullptr>
 class OXMValue {
  public:
+  // TODO(bfish): Remove Mask.
   // TODO(bfish): Size is redundant; same as ValueType's size.
   static_assert(Class != 0xFFFF ? Size == sizeof(ValueType)
                                 : Size == sizeof(ValueType) + 4,
@@ -26,7 +27,6 @@ class OXMValue {
   constexpr static OXMInternalID internalId() { return ID; }
   constexpr static OXMType type() { return OXMType{Class, Field, Size}; }
   constexpr static OXMType typeWithMask() { return type().withMask(); }
-  constexpr static bool maskSupported() { return Mask; }
   static inline const OXMRange *prerequisites() { return Prereqs; }
 
   /* implicit NOLINT */ OXMValue(NativeType value) : value_{value} {}

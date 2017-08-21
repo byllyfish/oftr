@@ -13,7 +13,6 @@ TEST(oxmfields, OFB_TCP_DST) {
   EXPECT_EQ(80, tcpdst);
   EXPECT_EQ(0x80001c02, OFB_TCP_DST::type().oxmNative());
   EXPECT_EQ(2, sizeof(OFB_TCP_DST));
-  EXPECT_FALSE(OFB_TCP_DST::maskSupported());
 
   OXMType types[] = {OFB_ETH_TYPE::type(), OFB_ETH_TYPE::type(),
                      OFB_IP_PROTO::type()};
@@ -63,5 +62,4 @@ TEST(oxmfields, NXM_NX_TCP_FLAGS) {
   EXPECT_EQ(0x0102, tcpflags);
   EXPECT_EQ(0x00014402, NXM_NX_TCP_FLAGS::type().oxmNative());
   EXPECT_EQ(2, sizeof(NXM_NX_TCP_FLAGS));
-  EXPECT_TRUE(NXM_NX_TCP_FLAGS::maskSupported());
 }
