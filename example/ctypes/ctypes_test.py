@@ -1,4 +1,4 @@
-from ctypes import *
+from ctypes import c_char_p, c_void_p, c_size_t, c_uint32, cast, cdll, string_at, POINTER, Structure
 import binascii
 import re
 import sys
