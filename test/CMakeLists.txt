@@ -99,6 +99,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/demux/flowcache_unittest.cpp
 	ofp/demux/flowstate_unittest.cpp
 	ofp/demux/segmentcache_unittest.cpp
+	"${CMAKE_SOURCE_DIR}/src/ofp/libofp.cpp"
 )
 
 if(LIBOFP_ENABLE_JSONRPC)
