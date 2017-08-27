@@ -26,8 +26,8 @@
 // call `libofp_buffer_free` to free the buffer when you are done -- even when
 // there is an error.
 
-#ifndef TOOLS_OFTR_LIBOFP_H_
-#define TOOLS_OFTR_LIBOFP_H_
+#ifndef OFP_LIBOFP_H_
+#define OFP_LIBOFP_H_
 
 #include <stddef.h>
 #include <stdint.h>
@@ -115,4 +115,4 @@ LIBOFP_EXPORT int32_t oftr_call(uint32_t opcode, const char *input,
 }  // extern C
 #endif
 
-#endif  // TOOLS_OFTR_LIBOFP_H_
+#endif  // OFP_LIBOFP_H_
