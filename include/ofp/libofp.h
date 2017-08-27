@@ -71,16 +71,15 @@ LIBOFP_EXPORT int libofp_decode(libofp_buffer *result,
 /// Dispose of `buffer` object returned by library functions.
 LIBOFP_EXPORT void libofp_buffer_free(libofp_buffer *buffer) LIBOFP_USED;
 
-
-#define OFTR_VERSION   0
-#define OFTR_ENCODE    1
-#define OFTR_DECODE    2
+#define OFTR_VERSION 0
+#define OFTR_ENCODE 1
+#define OFTR_DECODE 2
 
 /// Invoke a library function synchronously.
-/// 
+///
 /// The result is copied into the specified output buffer and the size of the
 /// result is returned.
-/// 
+///
 /// Params:
 ///   opcode: Of this 32-bit quantity, the least significant byte specifies
 ///      the operation (opcode & 0xFF). Depending on the operation, the other
@@ -92,7 +91,7 @@ LIBOFP_EXPORT void libofp_buffer_free(libofp_buffer *buffer) LIBOFP_USED;
 ///   input_len: Input buffer size
 ///   output: Mutable output buffer
 ///   output_len: Output buffer size
-///   
+///
 /// Returns:
 ///   >= 0           Actual size of output buffer (must be <= output_len)
 ///   -1             Error: Invalid arguments
@@ -101,20 +100,16 @@ LIBOFP_EXPORT void libofp_buffer_free(libofp_buffer *buffer) LIBOFP_USED;
 ///                         with error message (<= output_len).
 ///   < -output_len  Error: Take absolute value to obtain necessary output
 ///                         buffer size (> output_len).
-/// 
+///
 /// Limits:
 ///    Input and output buffer sizes must be <= 2^30-1 (1 GB).
-///    
-/// Note: 
+///
+/// Note:
 ///    Text output is NOT zero-terminated.
 
-LIBOFP_EXPORT int32_t oftr_call(
-    uint32_t opcode, 
-    const char *input, 
-    size_t input_len,
-    char *output, 
-    size_t output_len) LIBOFP_USED;
-
+LIBOFP_EXPORT int32_t oftr_call(uint32_t opcode, const char *input,
+                                size_t input_len, char *output,
+                                size_t output_len) LIBOFP_USED;
 
 #ifdef __cplusplus
 }  // extern C

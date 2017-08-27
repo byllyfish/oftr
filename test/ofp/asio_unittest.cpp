@@ -29,7 +29,7 @@ TEST(asio, async_connect_v4) {
 }
 
 static bool isConnectionRefusedOrNetworkUnreachable(asio::error_code &err) {
-  // (2017-08-21) On Alpine Linux 3.6.2 the result can also be EADDRNOTAVAIL 
+  // (2017-08-21) On Alpine Linux 3.6.2 the result can also be EADDRNOTAVAIL
   // when IPv6 loopback not enabled.
   return (err == asio::error::connection_refused) ||
          (err == asio::error::network_unreachable) ||
