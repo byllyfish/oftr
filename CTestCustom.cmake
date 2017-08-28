@@ -16,5 +16,5 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
 
 # Ignore ctypes test on alpine linux.
 if(EXISTS "/etc/alpine-release")
-  set(CTEST_CUSTOM_TESTS_IGNORE python-ctypes)
+#  set(CTEST_CUSTOM_TESTS_IGNORE python-ctypes)
 endif()
