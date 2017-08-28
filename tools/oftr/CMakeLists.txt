@@ -5,7 +5,7 @@ set(OFTR_SOURCES
   oftr_decode.cpp
   oftr_help.cpp
   oftr_util.cpp
-  libofp.cpp
+  "${CMAKE_SOURCE_DIR}/src/ofp/libofp.cpp"
 )
 
 if(LIBOFP_ENABLE_JSONRPC)

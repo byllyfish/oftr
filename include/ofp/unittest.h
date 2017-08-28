@@ -42,4 +42,10 @@ inline std::string hexclean(const char *data) {
     EXPECT_EQ(hex_tmp__, ofp::RawDataToHex(data, length)); \
   }
 
+#define EXPECT_ASCII(ascii_str, data, length)    \
+  {                                              \
+    std::string tmp__{ascii_str};                \
+    EXPECT_EQ(tmp__, std::string(data, length)); \
+  }
+
 #endif  // OFP_UNITTEST_H_

@@ -28,6 +28,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/flowremovedv6_unittest.cpp
 	ofp/hash_unittest.cpp
 	ofp/instructionrange_unittest.cpp
+	ofp/libofp_unittest.cpp
 	ofp/lldpvalue_unittest.cpp
 	ofp/log_unittest.cpp
 	ofp/macaddress_unittest.cpp
@@ -98,6 +99,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/demux/flowcache_unittest.cpp
 	ofp/demux/flowstate_unittest.cpp
 	ofp/demux/segmentcache_unittest.cpp
+	"${CMAKE_SOURCE_DIR}/src/ofp/libofp.cpp"
 )
 
 if(LIBOFP_ENABLE_JSONRPC)

@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.36 (28 August 2017)
+
+- All fields are now allwed to have masks. (Bug fixed)
+- Handle address_not_available error on Alpine linux.
+- Add oftr_call function to library API.
+- Update boringssl and googletest submodules.
+
 == Version 0.35 (17 August 2017)
 
 - All fields are now allowed to have masks.
