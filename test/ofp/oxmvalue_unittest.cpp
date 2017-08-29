@@ -29,7 +29,6 @@ TEST(OXMValue, ofb_in_port) {
   UInt32 nativeValue = BigEndianFromNative(0x80000002);
   EXPECT_EQ(nativeValue, ofb_in_port::type());
   EXPECT_EQ(2, sizeof(ofb_in_port));
-  EXPECT_FALSE(ofb_in_port::maskSupported());
 
   EXPECT_EQ(cast(0), port.internalId());
   EXPECT_EQ(ofb_in_port::type(), port.type());
@@ -50,7 +49,6 @@ TEST(OXMValue, ofb_vlan_vid) {
 
   UInt32 nativeValue = BigEndianFromNative(0x80000c02);
   EXPECT_EQ(nativeValue, ofb_vlan_vid::type());
-  EXPECT_TRUE(ofb_vlan_vid::maskSupported());
 }
 
 TEST(OXMValue, use_in_switch_stmt) {

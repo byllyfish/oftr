@@ -35,7 +35,6 @@ class MatchBuilder {
 
   template <class ValueType>
   void add(ValueType value, ValueType mask) {
-    assert(ValueType::maskSupported());
     Prerequisites::insertAll(&list_, ValueType::prerequisites());
     if (!Prerequisites::substitute(&list_, ValueType::type(), &value, &mask,
                                    sizeof(value))) {

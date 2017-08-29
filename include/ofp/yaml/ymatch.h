@@ -67,13 +67,7 @@ class MatchBuilderInserter {
 
     if (optMask.hasValue()) {
       if (checkPrereqs_) {
-        if (!ValueType::maskSupported()) {
-          // TODO(bfish) better error message
-          io_.setError("Mask is not supported.");
-          log_info("Match is not supported:", type_);
-        } else {
-          builder_.add(ValueType{value}, ValueType{*optMask});
-        }
+        builder_.add(ValueType{value}, ValueType{*optMask});
       } else {
         builder_.addUnchecked(ValueType{value}, ValueType{*optMask});
       }

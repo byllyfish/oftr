@@ -24,14 +24,13 @@ RUN set -ex \
         g++ \
         make \
         cmake \
-        git \
         go \
         perl \
         python \
         linux-headers \
         bash \
         libpcap-dev \
-    && git clone --depth=1 -b develop --single-branch --recursive https://github.com/byllyfish/oftr.git \
+    && git clone --depth=1 --single-branch --recursive https://github.com/byllyfish/oftr.git \
     && mkdir oftr/Build \
     && cd oftr/Build \
     && cmake .. \
