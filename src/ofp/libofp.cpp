@@ -106,7 +106,10 @@ static int32_t buf_copy(char *output, size_t output_len, const void *data,
   }
 
   assert(len <= output_len);
-  std::memcpy(output, data, len);
+
+  if (len > 0) {
+    std::memcpy(output, data, len);
+  }
 
   if (error) {
     return -result;
