@@ -17,6 +17,7 @@
 #include "ofp/yaml/yoxmfulltype.h"
 #include "ofp/yaml/yportnumber.h"
 #include "ofp/yaml/yvlannumber.h"
+#include "ofp/yaml/seterror.h"
 
 namespace ofp {
 namespace detail {
@@ -157,6 +158,11 @@ struct SequenceTraits<ofp::MatchBuilder> {
   }
 
   static StringRef validate(IO &io, ofp::MatchBuilder &match) {
+    if (ofp::yaml::ErrorFound(io)) {
+      // Don't add another error if there is already one.
+      return "";
+    }
+
     ofp::yaml::Encoder *encoder = ofp::yaml::GetEncoderFromContext(io);
     if (encoder && encoder->matchPrereqsChecked()) {
       ofp::Prerequisites::FailureReason reason;
