@@ -227,6 +227,7 @@ set(LIBOFP_SOURCES
   src/ofp/message.cpp
   src/ofp/metermod.cpp
   src/ofp/mpdesc.cpp
+  src/ofp/mpaggregatestatsreplyv6.cpp
   src/ofp/mpexperimenter.cpp
   src/ofp/mpgroupdesc.cpp
   src/ofp/mpgroupfeatures.cpp

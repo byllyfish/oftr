@@ -15,6 +15,8 @@ class MemoryChannel;
 class MultipartReply : public ProtocolMsg<MultipartReply, OFPT_MULTIPART_REPLY,
                                           16, 65535, false> {
  public:
+  UInt8 version() const { return header_.version(); }
+
   OFPMultipartType replyType() const { return type_; }
   OFPMultipartFlags replyFlags() const { return flags_; }
 

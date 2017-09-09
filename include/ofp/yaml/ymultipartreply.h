@@ -258,6 +258,8 @@ struct MappingTraits<ofp::MultipartReply> {
                      ofp::OFPMultipartType type, const char *key) {
     using namespace ofp;
 
+    const UInt8 version = msg.version();
+
     switch (type) {
       case OFPMP_DESC: {
         MPDesc *desc = RemoveConst_cast(msg.body_cast<MPDesc>());
@@ -272,10 +274,17 @@ struct MappingTraits<ofp::MultipartReply> {
         break;
       }
       case OFPMP_AGGREGATE: {
-        MPAggregateStatsReply *reply =
-            RemoveConst_cast(msg.body_cast<MPAggregateStatsReply>());
-        if (reply) {
-          io.mapRequired(key, *reply);
+        if (version >= OFP_VERSION_6) {
+          MPAggregateStatsReplyV6 *reply = RemoveConst_cast(msg.body_cast<MPAggregateStatsReplyV6>());
+          if (reply) {
+            io.mapRequired(key, *reply);
+          }
+        } else {
+          MPAggregateStatsReply *reply =
+              RemoveConst_cast(msg.body_cast<MPAggregateStatsReply>());
+          if (reply) {
+            io.mapRequired(key, *reply);
+          }
         }
         break;
       }
@@ -390,6 +399,8 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
                      ofp::OFPMultipartType type, const char *key) {
     using namespace ofp;
 
+    const UInt8 version = msg.version();
+
     switch (type) {
       case OFPMP_DESC: {
         MPDescBuilder desc;
@@ -400,7 +411,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       }
       case OFPMP_FLOW: {
         ofp::detail::MPReplyBuilderSeq<MPFlowStatsReplyBuilder> seq{
-            msg.version()};
+            version};
         io.mapRequired(key, seq);
         seq.close();
         sendMultipleParts(io, msg, seq.data(), seq.size(),
@@ -408,14 +419,22 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_AGGREGATE: {
-        MPAggregateStatsReplyBuilder reply;
-        io.mapRequired(key, reply);
-        // FIXME - write reply into channel.
-        msg.setReplyBody(&reply, sizeof(reply));
+        if (version >= OFP_VERSION_6) {
+          MPAggregateStatsReplyV6Builder reply6;
+          io.mapRequired(key, reply6);
+          MemoryChannel channel{version};
+          reply6.write(&channel);
+          msg.setReplyBody(channel.data(), channel.size());
+        } else {
+          MPAggregateStatsReplyBuilder reply;
+          io.mapRequired(key, reply);
+          // FIXME - write reply into channel.
+          msg.setReplyBody(&reply, sizeof(reply));
+        }
         break;
       }
       case OFPMP_TABLE: {
-        ofp::detail::MPReplyBuilderSeq<MPTableStatsBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPTableStatsBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         sendMultipleParts(io, msg, seq.data(), seq.size(),
@@ -423,7 +442,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_PORT_STATS: {
-        ofp::detail::MPReplyBuilderSeq<MPPortStatsBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPPortStatsBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         sendMultipleParts(io, msg, seq.data(), seq.size(),
@@ -431,7 +450,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_QUEUE: {
-        ofp::detail::MPReplyBuilderSeq<MPQueueStatsBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPQueueStatsBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         sendMultipleParts(io, msg, seq.data(), seq.size(),
@@ -439,7 +458,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_PORT_DESC: {
-        ofp::detail::MPReplyBuilderSeq<PortBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<PortBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         sendMultipleParts(io, msg, seq.data(), seq.size(),
@@ -447,7 +466,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_GROUP_DESC: {
-        ofp::detail::MPReplyBuilderSeq<MPGroupDescBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPGroupDescBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         sendMultipleParts(io, msg, seq.data(), seq.size(),
@@ -462,7 +481,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_METER_CONFIG: {
-        ofp::detail::MPReplyBuilderSeq<MPMeterConfigBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPMeterConfigBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         sendMultipleParts(io, msg, seq.data(), seq.size(),
@@ -470,7 +489,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_METER: {
-        ofp::detail::MPReplyBuilderSeq<MPMeterStatsBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPMeterStatsBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
@@ -485,28 +504,28 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       }
       case OFPMP_TABLE_FEATURES: {
         ofp::detail::MPReplyBuilderSeq<MPTableFeaturesBuilder> seq{
-            msg.version()};
+            version};
         io.mapRequired(key, seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
         break;
       }
       case OFPMP_TABLE_DESC: {
-        ofp::detail::MPReplyBuilderSeq<TableDescBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<TableDescBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
         break;
       }
       case OFPMP_QUEUE_DESC: {
-        ofp::detail::MPReplyBuilderSeq<QueueDescBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<QueueDescBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
         break;
       }
       case OFPMP_GROUP: {
-        ofp::detail::MPReplyBuilderSeq<MPGroupStatsBuilder> seq{msg.version()};
+        ofp::detail::MPReplyBuilderSeq<MPGroupStatsBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
@@ -514,7 +533,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       }
       case OFPMP_FLOW_MONITOR: {
         ofp::detail::MPReplyBuilderSeq<MPFlowMonitorReplyBuilder> seq{
-            msg.version()};
+            version};
         io.mapRequired(key, seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
@@ -523,7 +542,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
       case OFPMP_EXPERIMENTER: {
         MPExperimenterBuilder exper;
         io.mapRequired(key, exper);
-        MemoryChannel channel{msg.version()};
+        MemoryChannel channel{version};
         exper.write(&channel);
         msg.setReplyBody(channel.data(), channel.size());
         break;

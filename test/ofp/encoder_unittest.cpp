@@ -762,6 +762,25 @@ TEST(encoder, ofmp_aggregatereply_v1) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, ofmp_aggregatereply_v6) {
+  const char *input = R"""(
+    type: REPLY.AGGREGATE
+    version: 6
+    xid: 0x11111111
+    msg:
+      packet_count: 0x3333333333333330
+      byte_count: 0x4444444444444440
+      flow_count: 0x55555550
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x38, encoder.size());
+  EXPECT_HEX(
+      "061300381111111100020000000000000000002480020808333333333333333080020A084444444444444440800206045555555000000000",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, ofmp_tablestats_v4) {
   const char *input = R"""(
     type: MULTIPART_REPLY
