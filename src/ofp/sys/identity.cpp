@@ -45,7 +45,7 @@ void Identity::SetConnectionPtr(SSL *ssl, Connection *conn) {
 }
 
 Identity::Identity(const std::string &certData, const std::string &privKey,
-                   const std::string &verifyData, std::error_code &error)
+                   const std::string &verifyData, const std::string &version, const std::string &ciphers, std::error_code &error)
     : tls_{asio::ssl::context_base::tlsv12},
       dtls_{::SSL_CTX_new(::DTLSv1_method()), ::SSL_CTX_free} {
   // Allow for retrieving this Identity object given just an SSL context.
@@ -53,12 +53,12 @@ Identity::Identity(const std::string &certData, const std::string &privKey,
   SetIdentityPtr(dtls_.get(), this);
 
   // Initialize the TLS context.
-  error = initContext(tls_.native_handle(), certData, privKey, verifyData);
+  error = initContext(tls_.native_handle(), certData, privKey, verifyData, version, ciphers);
   if (error)
     return;
 
-  // Initialize the DTLS context identically.
-  error = initContext(dtls_.get(), certData, privKey, verifyData);
+  // Initialize the DTLS context identically (except for version).
+  error = initContext(dtls_.get(), certData, privKey, verifyData, "", ciphers);
   if (error)
     return;
 
@@ -73,6 +73,14 @@ Identity::~Identity() {
     SSL_SESSION_free(item.second);
   }
 #endif  // IDENTITY_SESSIONS_ENABLED
+}
+
+UInt16 Identity::minProtoVersion() {
+  return tls_.native_handle()->conf_min_version;
+}
+
+UInt16 Identity::maxProtoVersion() {
+  return tls_.native_handle()->conf_max_version;
 }
 
 SSL_SESSION *Identity::findClientSession(const IPv6Endpoint &remoteEndpt) {
@@ -106,13 +114,24 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
 
 std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
                                       const std::string &privKey,
-                                      const std::string &verifyData) {
-  prepareOptions(ctx);
+                                      const std::string &verifyData, const std::string &version, const std::string &ciphers) {
+  std::error_code result = prepareOptions(ctx, ciphers);
+  if (result) {
+    log_debug("Identity: prepareOptions failed", result);
+    return result;
+  }
+
+  result = prepareVersion(ctx, version);
+  if (result) {
+    log_debug("Identity: prepareVersion failed", result);
+    return result;
+  }
+
   prepareSessions(ctx);
   prepareVerifier(ctx);
   prepareDTLSCookies(ctx);
 
-  std::error_code result = loadCertificateChain(ctx, certData);
+  result = loadCertificateChain(ctx, certData);
   if (result) {
     log_debug("Identity: loadCertificateChain failed", result);
     return result;
@@ -132,13 +151,86 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
   return result;
 }
 
-void Identity::prepareOptions(SSL_CTX *ctx) {
+std::error_code Identity::prepareOptions(SSL_CTX *ctx, const std::string &ciphers) {
   (void)SSL_CTX_clear_options(ctx, SSL_OP_LEGACY_SERVER_CONNECT);
   auto options = SSL_CTX_set_options(
       ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TICKET);
 
-  if (options)
+  if (options) {
     log_debug("Identity::prepareContextOptions: options", log::hex(options));
+  }
+
+  if (!ciphers.empty() && !SSL_CTX_set_strict_cipher_list(ctx, ciphers.c_str())) {
+    log_warning("SSL_CTX_set_strict_cipher_list failed:", ciphers);
+    return std::make_error_code(std::errc::invalid_argument);
+  }
+
+  return {};
+}
+
+
+struct VersionInfo {
+  const char *name;
+  UInt16 version;
+};
+
+static const VersionInfo sVersionInfo[] = {
+  { "TLS1.0", TLS1_VERSION   },
+  { "TLS1.1", TLS1_1_VERSION },
+  { "TLS1.2", TLS1_2_VERSION },
+  { "TLS1.3", TLS1_3_VERSION }
+};
+
+static UInt16 sParseVersionCode(llvm::StringRef vers) {
+  for (size_t i = 0; i < ArrayLength(sVersionInfo); ++i) {
+    if (vers.equals_lower(sVersionInfo[i].name)) {
+      return sVersionInfo[i].version;
+    }
+  }
+
+  return 0;
+}
+
+std::error_code Identity::prepareVersion(SSL_CTX *ctx, const std::string &version) {
+  // `version` can be a single version: "TLS1.2" or a range "TLS1.0-TLS1.2".
+  // If `version` is empty, ignore it.
+  if (version.empty()) {
+    return {};
+  }
+
+  llvm::StringRef s{version};
+  auto pair = s.split('-');
+
+  UInt16 vers_min = sParseVersionCode(pair.first);
+  if (!vers_min) {
+    log_warning("Identity::prepareVersion: invalid version", pair.first);
+    return std::make_error_code(std::errc::invalid_argument);
+  }
+
+  UInt16 vers_max = vers_min;
+  if (!pair.second.empty()) {
+    // Version range.
+    vers_max = sParseVersionCode(pair.second);
+    if (!vers_max) {
+      log_warning("Identity::prepareVersion: invalid version", pair.second);
+      return std::make_error_code(std::errc::invalid_argument);
+    }
+  }
+
+  assert(vers_min > 0);
+  assert(vers_max > 0);
+
+  if (!SSL_CTX_set_min_proto_version(ctx, vers_min)) {
+    log_warning("Identity::prepareVersion: SSL_CTX_set_min_version failed:", vers_min);
+    return std::make_error_code(std::errc::invalid_argument);
+  }
+
+  if (!SSL_CTX_set_max_proto_version(ctx, vers_max)) {
+    log_warning("Identity::prepareVersion: SSL_CTX_set_max_version failed:", vers_max);
+    return std::make_error_code(std::errc::invalid_argument);
+  }
+
+  return {};
 }
 
 void Identity::prepareSessions(SSL_CTX *ctx) {

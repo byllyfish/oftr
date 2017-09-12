@@ -31,6 +31,7 @@ bytes_in_count
 cacert
 capabilities
 cert
+ciphers
 code
 collisions
 command
