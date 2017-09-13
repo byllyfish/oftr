@@ -7,9 +7,11 @@
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
 
-#if !defined(NDEBUG)
   // The key thing is to set up logging to stderr before running the tests.
+#if !defined(NDEBUG)
   ofp::log::configure(ofp::log::Level::Debug);
+#else
+  ofp::log::configure(ofp::log::Level::Fatal);
 #endif 
   
   return RUN_ALL_TESTS();
