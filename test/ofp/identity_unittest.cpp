@@ -122,7 +122,8 @@ TEST(identity, cert_with_invalid_cipher) {
                          kGarbageCertificate, "", "x", err};
 
   log_debug("identity error", err);
-  EXPECT_EQ(std::errc::invalid_argument, err);
+  std::error_code expected = std::make_error_code(std::errc::invalid_argument);
+  EXPECT_EQ(expected, err);
 }
 
 TEST(identity, cert_with_valid_cipher) {
@@ -144,7 +145,8 @@ TEST(identity, cert_with_invalid_version) {
                          kGarbageCertificate, "TLX1.9", "", err};
 
   log_debug("identity error", err);
-  EXPECT_EQ(std::errc::invalid_argument, err);
+  std::error_code expected = std::make_error_code(std::errc::invalid_argument);
+  EXPECT_EQ(expected, err);
 }
 
 TEST(identity, cert_with_valid_version) {
