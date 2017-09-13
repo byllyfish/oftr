@@ -1,10 +1,9 @@
 #include "ofp/mpaggregatestatsreplyv6.h"
 #include "ofp/oxmfields.h"
-#include "ofp/writable.h"
 #include "ofp/validation.h"
+#include "ofp/writable.h"
 
 using namespace ofp;
-
 
 UInt64 MPAggregateStatsReplyV6::packetCount() const {
   return statHeader()->oxmRange().get<OXS_PACKET_COUNT>();

@@ -9,6 +9,7 @@
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/seterror.h"
 #include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/ybytelist.h"
 #include "ofp/yaml/ybyteorder.h"
@@ -17,7 +18,6 @@
 #include "ofp/yaml/yoxmfulltype.h"
 #include "ofp/yaml/yportnumber.h"
 #include "ofp/yaml/yvlannumber.h"
-#include "ofp/yaml/seterror.h"
 
 namespace ofp {
 namespace detail {

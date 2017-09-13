@@ -610,7 +610,6 @@ TEST(encoderfail, packetout_data) {
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
 
-
 TEST(encoderfail, flowmod_with_mask) {
   const char *input = R"""(
     type: FLOW_MOD
@@ -640,7 +639,8 @@ TEST(encoderfail, flowmod_with_mask) {
   Encoder encoder{input};
 
   EXPECT_EQ(
-      "YAML:14:18: error: invalid number\n          value: 1024/1024\n                 ^~~~~~~~~\n",
+      "YAML:14:18: error: invalid number\n          value: 1024/1024\n         "
+      "        ^~~~~~~~~\n",
       encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());

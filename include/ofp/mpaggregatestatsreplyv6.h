@@ -19,7 +19,7 @@ class MPAggregateStatsReplyV6 {
   UInt32 flowCount() const;
 
   Stat stat() const;
-  
+
   bool validateInput(Validation *context) const;
 
  private:
@@ -52,4 +52,4 @@ class MPAggregateStatsReplyV6Builder {
 
 }  // namespace ofp
 
-#endif // OFP_MPAGGREGATESTATSREPLYV6_H_
+#endif  // OFP_MPAGGREGATESTATSREPLYV6_H_

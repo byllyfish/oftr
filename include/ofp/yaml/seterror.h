@@ -18,16 +18,15 @@ void SetFlagError(llvm::yaml::IO &io, llvm::StringRef name,
                   const std::string &flagSchema);
 
 /// Return true if input io has an error.
-/// 
-/// This is a kludge (downcast). We need to know if the io object encountered 
-/// an error but the IO class doesn't support this. We need to reach into the 
+///
+/// This is a kludge (downcast). We need to know if the io object encountered
+/// an error but the IO class doesn't support this. We need to reach into the
 /// Input subclass to check for the error. (FIXME: bfish)
 inline bool ErrorFound(llvm::yaml::IO &io) {
   assert(!io.outputting());
   llvm::yaml::Input *yin = static_cast<llvm::yaml::Input *>(&io);
   return static_cast<bool>(yin->error());
 }
-
 
 }  // namespace yaml
 }  // namespace ofp

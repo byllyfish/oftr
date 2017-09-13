@@ -95,7 +95,8 @@ TEST(identity, cert_only_no_private_key) {
 
 TEST(identity, cert_with_private_key_no_ca) {
   std::error_code err;
-  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey, "", "", "", err};
+  sys::Identity identity{
+      kGarbageCertificate, kGarbagePrivateKey, "", "", "", err};
 
   log_debug("identity error", err);
   asio::error_code expected{ERR_PACK(ERR_LIB_PEM, PEM_R_NO_START_LINE),
@@ -105,21 +106,28 @@ TEST(identity, cert_with_private_key_no_ca) {
 
 TEST(identity, cert_with_private_key) {
   std::error_code err;
-  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey,
-                         kGarbageCertificate, "", "", err};
+  sys::Identity identity{kGarbageCertificate,
+                         kGarbagePrivateKey,
+                         kGarbageCertificate,
+                         "",
+                         "",
+                         err};
 
   asio::error_code expected;
   EXPECT_EQ(expected, err);
 
   EXPECT_EQ(identity.minProtoVersion(), TLS1_2_VERSION);
   EXPECT_EQ(identity.maxProtoVersion(), TLS1_2_VERSION);
-
 }
 
 TEST(identity, cert_with_invalid_cipher) {
   std::error_code err;
-  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey,
-                         kGarbageCertificate, "", "x", err};
+  sys::Identity identity{kGarbageCertificate,
+                         kGarbagePrivateKey,
+                         kGarbageCertificate,
+                         "",
+                         "x",
+                         err};
 
   log_debug("identity error", err);
   std::error_code expected = std::make_error_code(std::errc::invalid_argument);
@@ -129,8 +137,12 @@ TEST(identity, cert_with_invalid_cipher) {
 TEST(identity, cert_with_valid_cipher) {
   const char *ciphers = "DEFAULT:+ALL:!SHA1";
   std::error_code err;
-  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey,
-                         kGarbageCertificate, "", ciphers, err};
+  sys::Identity identity{kGarbageCertificate,
+                         kGarbagePrivateKey,
+                         kGarbageCertificate,
+                         "",
+                         ciphers,
+                         err};
 
   asio::error_code expected;
   EXPECT_EQ(expected, err);
@@ -141,8 +153,12 @@ TEST(identity, cert_with_valid_cipher) {
 
 TEST(identity, cert_with_invalid_version) {
   std::error_code err;
-  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey,
-                         kGarbageCertificate, "TLX1.9", "", err};
+  sys::Identity identity{kGarbageCertificate,
+                         kGarbagePrivateKey,
+                         kGarbageCertificate,
+                         "TLX1.9",
+                         "",
+                         err};
 
   log_debug("identity error", err);
   std::error_code expected = std::make_error_code(std::errc::invalid_argument);
@@ -151,8 +167,12 @@ TEST(identity, cert_with_invalid_version) {
 
 TEST(identity, cert_with_valid_version) {
   std::error_code err;
-  sys::Identity identity{kGarbageCertificate, kGarbagePrivateKey,
-                         kGarbageCertificate, "TLS1.1-tls1.2", "", err};
+  sys::Identity identity{kGarbageCertificate,
+                         kGarbagePrivateKey,
+                         kGarbageCertificate,
+                         "TLS1.1-tls1.2",
+                         "",
+                         err};
 
   asio::error_code expected;
   EXPECT_EQ(expected, err);

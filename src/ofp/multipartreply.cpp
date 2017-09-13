@@ -40,7 +40,8 @@ bool MultipartReply::validateInput(Validation *context) const {
           replyBody(), OFP_VERSION_1);
     case OFPMP_AGGREGATE:
       if (vers >= OFP_VERSION_6) {
-        return context->validate<MPAggregateStatsReplyV6>(replyBody(), OFP_VERSION_6);
+        return context->validate<MPAggregateStatsReplyV6>(replyBody(),
+                                                          OFP_VERSION_6);
       }
       return context->validate<MPAggregateStatsReply>(replyBody(),
                                                       OFP_VERSION_1);

@@ -19,7 +19,8 @@ class Connection;
 class Identity {
  public:
   explicit Identity(const std::string &certData, const std::string &privKey,
-                    const std::string &verifyData, const std::string &version, const std::string &ciphers, std::error_code &error);
+                    const std::string &verifyData, const std::string &version,
+                    const std::string &ciphers, std::error_code &error);
   ~Identity();
 
   UInt64 securityId() const { return securityId_; }
@@ -62,7 +63,9 @@ class Identity {
 
   std::error_code initContext(SSL_CTX *ctx, const std::string &certData,
                               const std::string &privKey,
-                              const std::string &verifyData, const std::string &version, const std::string &ciphers);
+                              const std::string &verifyData,
+                              const std::string &version,
+                              const std::string &ciphers);
 
   static std::error_code loadCertificateChain(SSL_CTX *ctx,
                                               const std::string &certData);
@@ -71,8 +74,10 @@ class Identity {
   static std::error_code loadVerifier(SSL_CTX *ctx,
                                       const std::string &verifyData);
 
-  static std::error_code prepareOptions(SSL_CTX *ctx, const std::string &ciphers);
-  static std::error_code prepareVersion(SSL_CTX *ctx, const std::string &version);
+  static std::error_code prepareOptions(SSL_CTX *ctx,
+                                        const std::string &ciphers);
+  static std::error_code prepareVersion(SSL_CTX *ctx,
+                                        const std::string &version);
   static void prepareSessions(SSL_CTX *ctx);
   static void prepareVerifier(SSL_CTX *ctx);
   static void prepareDTLSCookies(SSL_CTX *ctx);

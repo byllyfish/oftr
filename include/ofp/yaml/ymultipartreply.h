@@ -275,7 +275,8 @@ struct MappingTraits<ofp::MultipartReply> {
       }
       case OFPMP_AGGREGATE: {
         if (version >= OFP_VERSION_6) {
-          MPAggregateStatsReplyV6 *reply = RemoveConst_cast(msg.body_cast<MPAggregateStatsReplyV6>());
+          MPAggregateStatsReplyV6 *reply =
+              RemoveConst_cast(msg.body_cast<MPAggregateStatsReplyV6>());
           if (reply) {
             io.mapRequired(key, *reply);
           }
@@ -410,8 +411,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_FLOW: {
-        ofp::detail::MPReplyBuilderSeq<MPFlowStatsReplyBuilder> seq{
-            version};
+        ofp::detail::MPReplyBuilderSeq<MPFlowStatsReplyBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         sendMultipleParts(io, msg, seq.data(), seq.size(),
@@ -503,8 +503,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_TABLE_FEATURES: {
-        ofp::detail::MPReplyBuilderSeq<MPTableFeaturesBuilder> seq{
-            version};
+        ofp::detail::MPReplyBuilderSeq<MPTableFeaturesBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
@@ -532,8 +531,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         break;
       }
       case OFPMP_FLOW_MONITOR: {
-        ofp::detail::MPReplyBuilderSeq<MPFlowMonitorReplyBuilder> seq{
-            version};
+        ofp::detail::MPReplyBuilderSeq<MPFlowMonitorReplyBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
         msg.setReplyBody(seq.data(), seq.size());
