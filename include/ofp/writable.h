@@ -25,6 +25,8 @@ class Writable {
     write(data, length);
     write(&pad, padSize);
   }
+
+  virtual bool mustFlush() const { return true; }
 };
 
 }  // namespace ofp

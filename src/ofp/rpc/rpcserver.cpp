@@ -183,7 +183,7 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
     channel->write(params.data(), params.size());
 
     // Flush the message (unless NO_FLUSH flag is specified)
-    if (!(params.flags() & OFP_NO_FLUSH)) {
+    if (!(params.flags() & OFP_NO_FLUSH) || channel->mustFlush()) {
       channel->flush();
     } else {
       log_debug("onRpcSend: NO_FLUSH",

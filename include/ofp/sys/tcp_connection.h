@@ -46,12 +46,18 @@ class TCP_Connection
   }
 
   void flush() override;
+  bool mustFlush() const override { return socket_.buf_size() > kFlushLimit; }
   void shutdown(bool reset = false) override;
 
  private:
   Message message_;
   Buffered<SocketType> socket_;
   handler_allocator allocator_;
+
+  enum {
+    // Bytes allowed before we must flush buffer.
+    kFlushLimit = 16383
+  };
 
   void asyncReadHeader();
   void asyncReadMessage(size_t length);
