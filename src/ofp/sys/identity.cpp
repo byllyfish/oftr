@@ -174,10 +174,14 @@ std::error_code Identity::prepareOptions(SSL_CTX *ctx,
   return {};
 }
 
+OFP_BEGIN_IGNORE_PADDING
+
 struct VersionInfo {
   const char *name;
   UInt16 version;
 };
+
+OFP_END_IGNORE_PADDING
 
 static const VersionInfo sVersionInfo[] = {{"TLS1.0", TLS1_VERSION},
                                            {"TLS1.1", TLS1_1_VERSION},
