@@ -235,6 +235,14 @@ T *RemoveConst_cast(const T *v) {
 /// \return hexadecimal string
 std::string RawDataToHex(const void *data, size_t length);
 
+/// Convert raw buffer to a hexadecimal string (upper case). The resulting
+/// string contains only hexadecimal characters, no delimiters.
+///
+/// \param  data pointer to input buffer
+/// \param  length size of input buffer
+/// \param  os output stream
+void RawDataToHex(const void *data, size_t length, llvm::raw_ostream &os);
+
 /// Convert raw buffer to a hexadecimal string (upper case).
 ///
 /// The resulting string is formatted according to `delimiter` and `word`. The
