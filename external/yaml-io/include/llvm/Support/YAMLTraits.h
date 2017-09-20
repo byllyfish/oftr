@@ -881,8 +881,8 @@ template <typename T>
 typename std::enable_if<has_ScalarTraits<T>::value && !has_ScalarJsonTraits<T>::value,void>::type
 yamlize(IO &io, T &Val, bool, EmptyContext &Ctx) {
   if ( io.outputting() ) {
-    std::string Storage;
-    llvm::raw_string_ostream Buffer(Storage);
+    llvm::SmallString<128> Storage;
+    llvm::raw_svector_ostream Buffer(Storage);
     ScalarTraits<T>::output(Val, io.getContext(), Buffer);
     StringRef Str = Buffer.str();
     io.scalarString(Str, ScalarTraits<T>::mustQuote(Str));
