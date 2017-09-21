@@ -127,8 +127,9 @@ static_assert(IsConvertible<ByteRange, ByteList>(), "Expected conversion.");
 
 inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
                                      const ByteList &value) {
-  return os << "[ByteList size=" << value.size()
-            << " data=" << RawDataToHex(value.data(), value.size()) << "]";
+  os << "[ByteList size=" << value.size() << " data=";
+  RawDataToHex(value.data(), value.size(), os);
+  return os << ']';
 }
 
 }  // namespace ofp

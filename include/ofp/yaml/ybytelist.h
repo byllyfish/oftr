@@ -34,7 +34,7 @@ template <>
 struct ScalarTraits<ofp::ByteRange> {
   static void output(const ofp::ByteRange &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << ofp::RawDataToHex(value.data(), value.size());
+    ofp::RawDataToHex(value.data(), value.size(), out);
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::ByteRange &value) {
@@ -50,7 +50,7 @@ template <>
 struct ScalarTraits<ofp::ByteList> {
   static void output(const ofp::ByteList &value, void *ctxt,
                      llvm::raw_ostream &out) {
-    out << ofp::RawDataToHex(value.data(), value.size());
+    ofp::RawDataToHex(value.data(), value.size(), out);
   }
 
   static StringRef input(StringRef scalar, void *ctxt, ofp::ByteList &value) {

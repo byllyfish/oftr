@@ -54,3 +54,13 @@ TEST(byterange, equal) {
 
   EXPECT_EQ(empty1, empty2);
 }
+
+TEST(byterange, stream) {
+  ByteRange range{"1234", 4};
+
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
+
+  oss << range;
+  EXPECT_EQ("[ByteRange size=4 data=31323334]", oss.str());
+}
