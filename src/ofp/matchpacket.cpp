@@ -55,7 +55,7 @@ void MatchPacket::decode(const UInt8 *pkt, size_t length) {
 
   // If all the data is not accounted for, report offset using X_PKT_POS.
   if (offset_ < length) {
-    match_.add(X_PKT_POS{UInt16_narrow_cast(offset_)});
+    match_.addUnchecked(X_PKT_POS{UInt16_narrow_cast(offset_)});
   }
 }
 
@@ -67,8 +67,8 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
     return;
   }
 
-  match_.add(OFB_ETH_DST(eth->dst));
-  match_.add(OFB_ETH_SRC(eth->src));
+  match_.addUnchecked(OFB_ETH_DST(eth->dst));
+  match_.addUnchecked(OFB_ETH_SRC(eth->src));
 
   pkt += sizeof(pkt::Ethernet);
   length -= sizeof(pkt::Ethernet);
@@ -80,13 +80,13 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
     auto vlan = pkt::VlanHdr::cast(pkt, length);
     if (!vlan) {
       // Missing complete vlan header?
-      match_.add(OFB_ETH_TYPE(ethType));
+      match_.addUnchecked(OFB_ETH_TYPE(ethType));
       return;
     }
 
     // N.B. Continue the OpenFlow tradition of setting the OFPVID_PRESENT bit.
-    match_.add(OFB_VLAN_VID((vlan->tci & 0x0FFF) | OFPVID_PRESENT));
-    match_.add(OFB_VLAN_PCP(vlan->tci >> 13));
+    match_.addUnchecked(OFB_VLAN_VID((vlan->tci & 0x0FFF) | OFPVID_PRESENT));
+    match_.addUnchecked(OFB_VLAN_PCP(vlan->tci >> 13));
     ethType = vlan->ethType;
 
     pkt += sizeof(pkt::VlanHdr);
@@ -94,7 +94,7 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
     offset_ += sizeof(pkt::VlanHdr);
   }
 
-  match_.add(OFB_ETH_TYPE(ethType));
+  match_.addUnchecked(OFB_ETH_TYPE(ethType));
 
   switch (ethType) {
     case DATALINK_ARP:
@@ -132,11 +132,11 @@ void MatchPacket::decodeARP(const UInt8 *pkt, size_t length) {
     return;
   }
 
-  match_.add(OFB_ARP_OP(arp->op));
-  match_.add(OFB_ARP_SPA(arp->spa));
-  match_.add(OFB_ARP_TPA(arp->tpa));
-  match_.add(OFB_ARP_SHA(arp->sha));
-  match_.add(OFB_ARP_THA(arp->tha));
+  match_.addUnchecked(OFB_ARP_OP(arp->op));
+  match_.addUnchecked(OFB_ARP_SPA(arp->spa));
+  match_.addUnchecked(OFB_ARP_TPA(arp->tpa));
+  match_.addUnchecked(OFB_ARP_SHA(arp->sha));
+  match_.addUnchecked(OFB_ARP_THA(arp->tha));
 
   offset_ += sizeof(pkt::Arp);
 
@@ -188,18 +188,18 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   UInt8 dscp = ip->tos >> 2;
   UInt8 ecn = ip->tos & 0x03;
 
-  match_.add(OFB_IP_DSCP{dscp});
-  match_.add(OFB_IP_ECN{ecn});
-  match_.add(OFB_IP_PROTO{ip->proto});
-  match_.add(OFB_IPV4_SRC{ip->src});
-  match_.add(OFB_IPV4_DST{ip->dst});
+  match_.addUnchecked(OFB_IP_DSCP{dscp});
+  match_.addUnchecked(OFB_IP_ECN{ecn});
+  match_.addUnchecked(OFB_IP_PROTO{ip->proto});
+  match_.addUnchecked(OFB_IPV4_SRC{ip->src});
+  match_.addUnchecked(OFB_IPV4_DST{ip->dst});
 
   UInt16 frag = ip->frag & 0x3fff;  // ignore DF bit
   if (frag) {
-    match_.add(NXM_NX_IP_FRAG{pkt::nxmFragmentType(frag)});
+    match_.addUnchecked(NXM_NX_IP_FRAG{pkt::nxmFragmentType(frag)});
   }
 
-  match_.add(NXM_NX_IP_TTL{ip->ttl});
+  match_.addUnchecked(NXM_NX_IP_TTL{ip->ttl});
 
   pkt += hdrLen;
   length -= hdrLen;
@@ -248,12 +248,12 @@ void MatchPacket::decodeIPv6(const UInt8 *pkt, size_t length) {
   UInt8 dscp = trafCls >> 2;
   UInt8 ecn = trafCls & 0x03;
 
-  match_.add(OFB_IP_DSCP{dscp});
-  match_.add(OFB_IP_ECN{ecn});
-  match_.add(NXM_NX_IP_TTL{ip->hopLimit});
-  match_.add(OFB_IPV6_SRC{ip->src});
-  match_.add(OFB_IPV6_DST{ip->dst});
-  match_.add(OFB_IPV6_FLABEL{flowLabel});
+  match_.addUnchecked(OFB_IP_DSCP{dscp});
+  match_.addUnchecked(OFB_IP_ECN{ecn});
+  match_.addUnchecked(NXM_NX_IP_TTL{ip->hopLimit});
+  match_.addUnchecked(OFB_IPV6_SRC{ip->src});
+  match_.addUnchecked(OFB_IPV6_DST{ip->dst});
+  match_.addUnchecked(OFB_IPV6_FLABEL{flowLabel});
 
   pkt += sizeof(pkt::IPv6Hdr);
   length -= sizeof(pkt::IPv6Hdr);
@@ -269,9 +269,9 @@ void MatchPacket::decodeTCP(const UInt8 *pkt, size_t length) {
   }
 
   UInt16 flags = tcp->flags & 0x0FFF;
-  match_.add(OFB_TCP_SRC{tcp->srcPort});
-  match_.add(OFB_TCP_DST{tcp->dstPort});
-  match_.add(NXM_NX_TCP_FLAGS{flags});
+  match_.addUnchecked(OFB_TCP_SRC{tcp->srcPort});
+  match_.addUnchecked(OFB_TCP_DST{tcp->dstPort});
+  match_.addUnchecked(NXM_NX_TCP_FLAGS{flags});
 
   offset_ += sizeof(pkt::TCPHdr);
 }
@@ -282,8 +282,8 @@ void MatchPacket::decodeUDP(const UInt8 *pkt, size_t length) {
     return;
   }
 
-  match_.add(OFB_UDP_SRC{udp->srcPort});
-  match_.add(OFB_UDP_DST{udp->dstPort});
+  match_.addUnchecked(OFB_UDP_SRC{udp->srcPort});
+  match_.addUnchecked(OFB_UDP_DST{udp->dstPort});
 
   offset_ += sizeof(pkt::UDPHdr);
 }
@@ -326,7 +326,7 @@ void MatchPacket::decodeIPv6_NextHdr(const UInt8 *pkt, size_t length,
     hdrFlags = (hdrFlags & 0x0ffff) | OFPIEH_DEST;
   }
 
-  match_.add(OFB_IPV6_EXTHDR{static_cast<OFPIPv6ExtHdrFlags>(hdrFlags)});
+  match_.addUnchecked(OFB_IPV6_EXTHDR{static_cast<OFPIPv6ExtHdrFlags>(hdrFlags)});
 }
 
 void MatchPacket::decodeICMPv4(const UInt8 *pkt, size_t length) {
@@ -335,8 +335,8 @@ void MatchPacket::decodeICMPv4(const UInt8 *pkt, size_t length) {
     return;
   }
 
-  match_.add(OFB_ICMPV4_TYPE{icmp->type});
-  match_.add(OFB_ICMPV4_CODE{icmp->code});
+  match_.addUnchecked(OFB_ICMPV4_TYPE{icmp->type});
+  match_.addUnchecked(OFB_ICMPV4_CODE{icmp->code});
 
   offset_ += sizeof(pkt::ICMPHdr);
 }
@@ -347,8 +347,8 @@ void MatchPacket::decodeICMPv6(const UInt8 *pkt, size_t length) {
     return;
   }
 
-  match_.add(OFB_ICMPV6_TYPE{icmp->type});
-  match_.add(OFB_ICMPV6_CODE{icmp->code});
+  match_.addUnchecked(OFB_ICMPV6_TYPE{icmp->type});
+  match_.addUnchecked(OFB_ICMPV6_CODE{icmp->code});
 
   pkt += sizeof(pkt::ICMPHdr);
   length -= sizeof(pkt::ICMPHdr);
@@ -377,11 +377,11 @@ void MatchPacket::decodeICMPv6_ND(const UInt8 *pkt, size_t length,
   if (icmpv6Type == ICMPV6_TYPE_NEIGHBOR_ADVERTISE) {
     // The reserved bits are only meaningful in ND Advertise.
     Big32 reserved = Big32_unaligned(pkt);
-    match_.add(X_IPV6_ND_RES{reserved});
+    match_.addUnchecked(X_IPV6_ND_RES{reserved});
   }
 
   const IPv6Address *addr = Interpret_cast<IPv6Address>(pkt + 4);
-  match_.add(OFB_IPV6_ND_TARGET{*addr});
+  match_.addUnchecked(OFB_IPV6_ND_TARGET{*addr});
 
   pkt += 20;
   length -= 20;
@@ -394,13 +394,13 @@ void MatchPacket::decodeICMPv6_ND(const UInt8 *pkt, size_t length,
   if (icmpv6Type == ICMPV6_TYPE_NEIGHBOR_SOLICIT) {
     const MacAddress *mac = findLLOption(pkt, length, ICMPV6_OPTION_SLL);
     if (mac) {
-      match_.add(OFB_IPV6_ND_SLL{*mac});
+      match_.addUnchecked(OFB_IPV6_ND_SLL{*mac});
       offset_ += length;
     }
   } else if (icmpv6Type == ICMPV6_TYPE_NEIGHBOR_ADVERTISE) {
     const MacAddress *mac = findLLOption(pkt, length, ICMPV6_OPTION_TLL);
     if (mac) {
-      match_.add(OFB_IPV6_ND_TLL{*mac});
+      match_.addUnchecked(OFB_IPV6_ND_TLL{*mac});
       offset_ += length;
     }
   }
@@ -428,15 +428,15 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
         return;  // all done; ignore anything else
 
       case pkt::LLDPTlv::CHASSIS_ID:
-        match_.add(X_LLDP_CHASSIS_ID{lldp->value()});
+        match_.addUnchecked(X_LLDP_CHASSIS_ID{lldp->value()});
         break;
 
       case pkt::LLDPTlv::PORT_ID:
-        match_.add(X_LLDP_PORT_ID{lldp->value()});
+        match_.addUnchecked(X_LLDP_PORT_ID{lldp->value()});
         break;
 
       case pkt::LLDPTlv::TTL:
-        match_.add(X_LLDP_TTL{lldp->value16()});
+        match_.addUnchecked(X_LLDP_TTL{lldp->value16()});
         break;
     }
 
