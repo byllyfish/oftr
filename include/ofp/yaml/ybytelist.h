@@ -28,7 +28,7 @@ class JsonByteRange {
   ofp::ByteRange value;
 };
 
-std::string primitive_to_json(JsonByteRange r);
+void primitive_to_json(JsonByteRange r, llvm::raw_ostream &os);
 
 template <>
 struct ScalarTraits<ofp::ByteRange> {

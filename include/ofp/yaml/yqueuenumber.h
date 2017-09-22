@@ -53,17 +53,13 @@ struct ScalarTraits<ofp::QueueNumber> {
 };
 
 template <>
-inline std::string primitive_to_json(ofp::QueueNumber value) {
+inline void primitive_to_json(ofp::QueueNumber value, llvm::raw_ostream &os) {
   llvm::StringRef scalar;
   auto queueNum = static_cast<ofp::OFPQueueNo>(value);
   if (ScalarTraits<ofp::QueueNumber>::converter.convert(queueNum, &scalar)) {
-    std::string result = "\"";
-    result += scalar;
-    result += '\"';
-    return result;
+    os << '"' << scalar << '"';
   } else {
-    // Output QueueNumber in hexadecimal.
-    return std::to_string(queueNum);
+    os << queueNum;
   }
 }
 

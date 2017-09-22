@@ -52,17 +52,13 @@ struct ScalarTraits<ofp::PortNumber> {
 };
 
 template <>
-inline std::string primitive_to_json(ofp::PortNumber value) {
+inline void primitive_to_json(ofp::PortNumber value, llvm::raw_ostream &os) {
   llvm::StringRef scalar;
   auto portNum = static_cast<ofp::OFPPortNo>(value);
   if (ScalarTraits<ofp::PortNumber>::converter.convert(portNum, &scalar)) {
-    std::string result = "\"";
-    result += scalar;
-    result += '\"';
-    return result;
+    os << '"' << scalar << '"';
   } else {
-    // Output PortNumber in hexadecimal.
-    return std::to_string(portNum);
+    os << portNum;
   }
 }
 

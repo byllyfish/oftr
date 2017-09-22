@@ -46,11 +46,11 @@ struct ScalarTraits<ofp::VlanNumber> {
 };
 
 template <>
-inline std::string primitive_to_json(ofp::VlanNumber value) {
+inline void primitive_to_json(ofp::VlanNumber value, llvm::raw_ostream &os) {
 #if VLAN_FORMAT_DISPLAY
-  return std::to_string(value.displayCode());
+  os << value.displayCode();
 #else
-  return std::to_string(value.value());
+  os << value.value();
 #endif
 }
 

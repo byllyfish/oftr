@@ -54,17 +54,13 @@ struct ScalarTraits<ofp::ControllerMaxLen> {
 };
 
 template <>
-inline std::string primitive_to_json(ofp::ControllerMaxLen value) {
+inline void primitive_to_json(ofp::ControllerMaxLen value, llvm::raw_ostream &os) {
   llvm::StringRef scalar;
   auto maxLen = static_cast<ofp::OFPControllerMaxLen>(value);
   if (ScalarTraits<ofp::ControllerMaxLen>::converter.convert(maxLen, &scalar)) {
-    std::string result = "\"";
-    result += scalar;
-    result += '\"';
-    return result;
+    os << '"' << scalar << '"';
   } else {
-    // Output ControllerMaxLen in hexadecimal.
-    return std::to_string(maxLen);
+    os << maxLen;
   }
 }
 
