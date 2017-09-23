@@ -67,7 +67,7 @@ class OXMType {
   OXMInternalID internalID_IgnoreLength() const;
   OXMInternalID internalID_Experimenter(Big32 experimenter) const;
 
-  bool parse(const std::string &s);
+  bool parse(llvm::StringRef s);
   std::string toString() const { return detail::ToString(*this); }
 
   constexpr OXMType zeroLength() const { return OXMType(value32_ & ~End8Bits); }

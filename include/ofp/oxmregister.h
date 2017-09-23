@@ -30,7 +30,7 @@ class OXMRegister {
   explicit OXMRegister(OXMType type, UInt16 offset, UInt16 nbits)
       : type_{type}, offset_{offset}, nbits_{nbits} {}
 
-  explicit OXMRegister(const std::string &s) { (void)parse(s); }
+  explicit OXMRegister(llvm::StringRef s) { (void)parse(s); }
 
   OXMType type() const { return type_; }
   UInt16 nbits() const { return nbits_; }
@@ -39,7 +39,7 @@ class OXMRegister {
 
   bool valid() const;
 
-  bool parse(const std::string &s);
+  bool parse(llvm::StringRef s);
   std::string toString() const { return detail::ToString(*this); }
 
  private:

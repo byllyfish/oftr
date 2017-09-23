@@ -5,7 +5,7 @@
 
 using namespace ofp;
 
-bool OXMFullType::parse(const std::string &s) {
+bool OXMFullType::parse(llvm::StringRef s) {
   // TODO(bfish): make faster
   for (size_t i = 0; i < OXMTypeInfoArraySize; ++i) {
     if (s == OXMTypeInfoArray[i].name) {

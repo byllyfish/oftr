@@ -11,8 +11,8 @@ bool OXMRegister::valid() const {
   return (nbits_ > 0) && (offset_ + nbits_ <= maxBits());
 }
 
-bool OXMRegister::parse(const std::string &s) {
-  llvm::StringRef reg = llvm::StringRef{s}.trim();
+bool OXMRegister::parse(llvm::StringRef s) {
+  llvm::StringRef reg = s.trim();
 
   size_t pos = reg.find('[');
   if (pos == llvm::StringRef::npos) {
