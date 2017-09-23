@@ -54,7 +54,8 @@ struct ScalarTraits<ofp::ControllerMaxLen> {
 };
 
 template <>
-inline void primitive_to_json(ofp::ControllerMaxLen value, llvm::raw_ostream &os) {
+inline void primitive_to_json(ofp::ControllerMaxLen value,
+                              llvm::raw_ostream &os) {
   llvm::StringRef scalar;
   auto maxLen = static_cast<ofp::OFPControllerMaxLen>(value);
   if (ScalarTraits<ofp::ControllerMaxLen>::converter.convert(maxLen, &scalar)) {

@@ -112,7 +112,7 @@ void ofp::RawDataToHex(const void *data, size_t length, llvm::raw_ostream &os) {
     *out++ = ToHexUpperCase(*pos >> 4);
     *out++ = ToHexUpperCase(*pos++ & 0x0F);
   }
-  os.write(buf, 2*left);
+  os.write(buf, 2 * left);
 }
 
 std::string ofp::RawDataToHex(const void *data, size_t len, char delimiter,

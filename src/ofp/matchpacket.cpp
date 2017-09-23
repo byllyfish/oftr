@@ -326,7 +326,8 @@ void MatchPacket::decodeIPv6_NextHdr(const UInt8 *pkt, size_t length,
     hdrFlags = (hdrFlags & 0x0ffff) | OFPIEH_DEST;
   }
 
-  match_.addUnchecked(OFB_IPV6_EXTHDR{static_cast<OFPIPv6ExtHdrFlags>(hdrFlags)});
+  match_.addUnchecked(
+      OFB_IPV6_EXTHDR{static_cast<OFPIPv6ExtHdrFlags>(hdrFlags)});
 }
 
 void MatchPacket::decodeICMPv4(const UInt8 *pkt, size_t length) {

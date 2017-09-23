@@ -10,7 +10,6 @@ using namespace ofp;
 static const size_t kMaxAddrStrLen = asio::detail::max_addr_v4_str_len;
 static_assert(kMaxAddrStrLen >= 16, "Unexpectedly small buffer");
 
-
 IPv4Address::IPv4Address(llvm::StringRef s) {
   if (!parse(s)) {
     clear();
@@ -88,8 +87,8 @@ bool IPv4Address::parse(llvm::StringRef s) {
   buf[s.size()] = 0;
 
   std::error_code err;
-  int result = asio::detail::socket_ops::inet_pton(
-      ASIO_OS_DEF(AF_INET), buf, addr_.data(), 0, err);
+  int result = asio::detail::socket_ops::inet_pton(ASIO_OS_DEF(AF_INET), buf,
+                                                   addr_.data(), 0, err);
 
   if (result == 0) {
     // inet_pton() on Linux does not accept zero-padded IPv4 addresses like

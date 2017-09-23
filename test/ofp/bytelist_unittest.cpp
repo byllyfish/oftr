@@ -122,4 +122,3 @@ TEST(bytelist, stream) {
   oss << list;
   EXPECT_EQ("[ByteList size=4 data=31323334]", oss.str());
 }
-
