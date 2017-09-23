@@ -1,5 +1,15 @@
 = Changelog
 
+== Version 0.37 (23 September 2017)
+
+- Add support for specifying version and ciphers in OFP.ADD_IDENTITY rpc call.
+- Implement AggregateStats reply message for OpenFlow 1.5.
+- Add PacketIn and FlowMod benchmarks; optimize performance.
+- When using NO_FLUSH flag, don't allow buffer to grow unbounded.
+- Reduce unit test logging in release build.
+- Work-around for test failure on Alpine 3.6.
+- Fix coverity error.
+
 == Version 0.36 (28 August 2017)
 
 - All fields are now allowed to have masks. (Bug fixed)
