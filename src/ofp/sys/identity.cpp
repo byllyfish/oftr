@@ -165,10 +165,19 @@ std::error_code Identity::prepareOptions(SSL_CTX *ctx,
     log_debug("Identity::prepareContextOptions: options", log::hex(options));
   }
 
-  if (!ciphers.empty() &&
-      !SSL_CTX_set_strict_cipher_list(ctx, ciphers.c_str())) {
-    log_warning("SSL_CTX_set_strict_cipher_list failed:", ciphers);
-    return std::make_error_code(std::errc::invalid_argument);
+  if (!ciphers.empty()) {
+    // Try SSL_CTX_set_strict_cipher_list API first because it will fail when
+    // it encounters something it doesn't understand. This gives us the 
+    // opportunity to issue a warning.
+    if (!SSL_CTX_set_strict_cipher_list(ctx, ciphers.c_str())) {
+      log_warning("SSL_CTX_set_strict_cipher_list failed:", ciphers);
+
+      // To make the software easier to use, fall back on the legacy API.
+      if (!SSL_CTX_set_cipher_list(ctx, ciphers.c_str())) {
+        log_error("SSL_CTX_set_cipher_list failed:", ciphers);
+        return std::make_error_code(std::errc::invalid_argument);
+      }
+    }
   }
 
   return {};
