@@ -53,6 +53,8 @@ class Buffered : private StreamType {
     buffer_[bufferIdx_].add(data, length);
   }
 
+  size_t buf_size() const { return buffer_[bufferIdx_].size(); }
+
   template <class CompletionHandler>
   void buf_flush(UInt64 id, CompletionHandler &&handler);
 

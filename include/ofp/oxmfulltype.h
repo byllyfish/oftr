@@ -38,7 +38,7 @@ class OXMFullType {
     return idx < OXMTypeInfoArraySize ? &OXMTypeInfoArray[idx] : nullptr;
   }
 
-  bool parse(const std::string &s);
+  bool parse(llvm::StringRef s);
 
   static std::vector<llvm::StringRef> listAll();
 

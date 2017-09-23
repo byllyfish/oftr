@@ -26,7 +26,7 @@ static const ActionTypeInfo sActionInfo[] = {
     {ActionType{OFPAT_SET_FIELD, 0}, "SET_FIELD", 0, 0},
     {ActionType{OFPAT_EXPERIMENTER, 0}, "EXPERIMENTER", 0, 0}};
 
-bool ActionType::parse(const std::string &s) {
+bool ActionType::parse(llvm::StringRef s) {
   for (const auto &i : sActionInfo) {
     if (s == i.name) {
       value32_ = i.type.value32_;

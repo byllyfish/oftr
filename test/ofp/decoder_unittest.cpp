@@ -458,6 +458,16 @@ TEST(decoder, ofmp_aggregatereply_v1) {
       "0x4444444444444440\n  flow_count:      0x55555550\n...\n");
 }
 
+TEST(decoder, ofmp_aggregatereply_v6) {
+  testDecodeEncode(
+      "061300381111111100020000000000000000002480020808333333333333333080020A08"
+      "4444444444444440800206045555555000000000",
+      "---\ntype:            REPLY.AGGREGATE\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x06\nmsg:             \n  "
+      "packet_count:    0x3333333333333330\n  byte_count:      "
+      "0x4444444444444440\n  flow_count:      0x55555550\n...\n");
+}
+
 TEST(decoder, ofmp_tablestats_v4) {
   testDecodeEncode(
       "041300401111111100032222000000003300000044444440555555555555555066666666"

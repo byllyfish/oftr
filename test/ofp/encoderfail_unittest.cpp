@@ -609,3 +609,39 @@ TEST(encoderfail, packetout_data) {
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
+
+TEST(encoderfail, flowmod_with_mask) {
+  const char *input = R"""(
+    type: FLOW_MOD
+    msg:
+      out_port: 0
+      instructions: []
+      hard_timeout: 0
+      idle_timeout: 0
+      table_id: 0
+      cookie: 1524372928
+      out_group: 0
+      flags: [0]
+      match:
+        - field: TCP_DST
+          value: 1024/1024
+        - field: ETH_TYPE
+          value: 2048
+        - field: IP_PROTO
+          value: 6
+        - field: IN_PORT
+          value: 1
+      priority: 9097
+      command: ADD
+    version: 4
+  )""";
+
+  Encoder encoder{input};
+
+  EXPECT_EQ(
+      "YAML:14:18: error: invalid number\n          value: 1024/1024\n         "
+      "        ^~~~~~~~~\n",
+      encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+}

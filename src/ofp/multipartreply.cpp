@@ -5,6 +5,7 @@
 #include "ofp/memorychannel.h"
 #include "ofp/message.h"
 #include "ofp/mpaggregatestatsreply.h"
+#include "ofp/mpaggregatestatsreplyv6.h"
 #include "ofp/mpdesc.h"
 #include "ofp/mpexperimenter.h"
 #include "ofp/mpflowmonitorreply.h"
@@ -29,6 +30,8 @@ using namespace ofp;
 bool MultipartReply::validateInput(Validation *context) const {
   context->setLengthRemaining(replyBodySize());
 
+  const UInt8 vers = version();
+
   switch (replyType()) {
     case OFPMP_DESC:
       return context->validate<MPDesc>(replyBody(), OFP_VERSION_1);
@@ -36,11 +39,14 @@ bool MultipartReply::validateInput(Validation *context) const {
       return context->validateArrayVariableSize<MPFlowStatsReply>(
           replyBody(), OFP_VERSION_1);
     case OFPMP_AGGREGATE:
+      if (vers >= OFP_VERSION_6) {
+        return context->validate<MPAggregateStatsReplyV6>(replyBody(),
+                                                          OFP_VERSION_6);
+      }
       return context->validate<MPAggregateStatsReply>(replyBody(),
                                                       OFP_VERSION_1);
     case OFPMP_TABLE: {
       // We do NOT support OFPMP_TABLE_STATS for OF versions 1.1 and 1.2.
-      UInt8 vers = header_.version();
       if (vers == OFP_VERSION_2 || vers == OFP_VERSION_3) {
         context->multipartTypeIsNotSupportedForVersion();
         return false;

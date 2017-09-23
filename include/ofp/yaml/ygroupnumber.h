@@ -53,17 +53,13 @@ struct ScalarTraits<ofp::GroupNumber> {
 };
 
 template <>
-inline std::string primitive_to_json(ofp::GroupNumber value) {
+inline void primitive_to_json(ofp::GroupNumber value, llvm::raw_ostream &os) {
   llvm::StringRef scalar;
   auto groupNum = static_cast<ofp::OFPGroupNo>(value);
   if (ScalarTraits<ofp::GroupNumber>::converter.convert(groupNum, &scalar)) {
-    std::string result = "\"";
-    result += scalar;
-    result += '\"';
-    return result;
+    os << '"' << scalar << '"';
   } else {
-    // Output GroupNumber in hexadecimal.
-    return std::to_string(groupNum);
+    os << groupNum;
   }
 }
 

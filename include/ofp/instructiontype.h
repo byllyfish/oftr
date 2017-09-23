@@ -27,7 +27,7 @@ class InstructionType {
   bool operator!=(const InstructionType &rhs) const { return !operator==(rhs); }
 
   const InstructionTypeInfo *lookupInfo() const;
-  bool parse(const std::string &s);
+  bool parse(llvm::StringRef s);
   void setNative(UInt16 value) {
     type_ = static_cast<OFPInstructionType>(value);
   }

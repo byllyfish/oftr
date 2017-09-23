@@ -32,6 +32,7 @@ class MemoryChannel : public Writable {
   }
 
   void flush() override { flushed_ = true; }
+  bool mustFlush() const override { return false; }
 
   UInt32 nextXid() override { return nextXid_++; }
 

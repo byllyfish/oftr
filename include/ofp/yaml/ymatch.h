@@ -9,6 +9,7 @@
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/seterror.h"
 #include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/ybytelist.h"
 #include "ofp/yaml/ybyteorder.h"
@@ -157,6 +158,11 @@ struct SequenceTraits<ofp::MatchBuilder> {
   }
 
   static StringRef validate(IO &io, ofp::MatchBuilder &match) {
+    if (ofp::yaml::ErrorFound(io)) {
+      // Don't add another error if there is already one.
+      return "";
+    }
+
     ofp::yaml::Encoder *encoder = ofp::yaml::GetEncoderFromContext(io);
     if (encoder && encoder->matchPrereqsChecked()) {
       ofp::Prerequisites::FailureReason reason;
