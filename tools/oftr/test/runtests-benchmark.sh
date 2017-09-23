@@ -23,9 +23,11 @@ done
 # Benchmark encoding JSON to OpenFlow, with specific emphasis on FlowMod, 
 # PortMod, GroupMod and BarrierRequest messages.
 
+echo "Benchmark decoding flowmod msgs to JSON (N.B. while being decompressed)"
 # First, construct the benchmark file: bench_flowmod.json
-gzcat $CURRENT_SOURCE_DIR/bench_flowmod.bin.gz | time $LIBOFP decode -j > bench_flowmod.json
+gunzip -c $CURRENT_SOURCE_DIR/bench_flowmod.bin.gz | time $LIBOFP decode -j > bench_flowmod.json
 
+echo "Benchmark encoding flowmod msgs from JSON to binary"
 time $LIBOFP encode -js bench_flowmod.json
 
 
