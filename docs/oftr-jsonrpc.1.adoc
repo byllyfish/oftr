@@ -344,12 +344,18 @@ using Transport Layer Security (TLS).
       cert: String
       cacert: String
       privkey: String
+      version: !opt String
+      ciphers: !opt String
 
 *cert*:: PEM certificate chain data.
 
-*cacert*:: Trusted PEM root certificate. One certificate, not a list.
+*cacert*:: Trusted PEM root certificate(s).
 
-*privkey*: PEM private key.
+*privkey*: PEM private key associated with given `cert`.
+
+*version*: Supported TLS versions (optional). 
+
+*ciphers*: OpenSSL cipher list (optional).
 
 ==== Reply
 
@@ -368,6 +374,13 @@ OFP.LISTEN commands.
 The `cacert` parameter contains the certificate authority used to authenticate the 
 certificate chain presented by the other end of the connection. The cacert may
 be multiple certificates concatenated together.
+
+The `version` parameter is the supported TLS version. This may be specified as a
+single version "TLS1.2" or a range "TLS1.0-TLS1.2". Supported constants are TLS1.0,
+TLS1.1, TLS1.2, and TLS1.3. Leaving the version empty specifies the default, TLS 1.2.
+
+The `ciphers` parameter is the OpenSSL cipher list for TLS up through version 1.2.
+Use this to pass in a cipher list in OpenSSL cipher list format.
 
 == RPC Notifications
 
