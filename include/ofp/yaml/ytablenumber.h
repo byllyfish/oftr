@@ -53,17 +53,13 @@ struct ScalarTraits<ofp::TableNumber> {
 };
 
 template <>
-inline std::string primitive_to_json(ofp::TableNumber value) {
+inline void primitive_to_json(ofp::TableNumber value, llvm::raw_ostream &os) {
   llvm::StringRef scalar;
   auto tableNum = static_cast<ofp::OFPTableNo>(value);
   if (ScalarTraits<ofp::TableNumber>::converter.convert(tableNum, &scalar)) {
-    std::string result = "\"";
-    result += scalar;
-    result += '\"';
-    return result;
+    os << '"' << scalar << '"';
   } else {
-    // Output TableNumber in hexadecimal.
-    return std::to_string(tableNum);
+    os << static_cast<unsigned>(tableNum);
   }
 }
 

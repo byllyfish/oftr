@@ -47,6 +47,37 @@ TEST(types, RawDataToHex) {
   EXPECT_EQ("== hex too big ==", RawDataToHex(s.data(), 0x80000001UL));
 }
 
+TEST(types, RawDataToHex_Stream) {
+  std::string s{"abcdef"};
+
+  {
+    std::string buf;
+    llvm::raw_string_ostream oss{buf};
+
+    RawDataToHex(s.data(), 0, oss);
+    EXPECT_EQ("", oss.str());
+    RawDataToHex(s.data(), s.length(), oss);
+    EXPECT_EQ("616263646566", oss.str());
+  }
+
+  for (unsigned i = 0; i < 10; ++i) {
+    std::string buf;
+    llvm::raw_string_ostream oss{buf};
+
+    s += s;
+    RawDataToHex(s.data(), s.length(), oss);
+    EXPECT_EQ(s.length() * 2, oss.str().size());
+  }
+
+  {
+    std::string buf;
+    llvm::raw_string_ostream oss{buf};
+
+    RawDataToHex(s.data(), 0x80000001UL, oss);
+    EXPECT_EQ("== hex too big ==", oss.str());
+  }
+}
+
 TEST(types, RawDataToHex2) {
   std::string s{"abcdef"};
   EXPECT_EQ("61-62-63-64-65-66", RawDataToHex(s.data(), s.length(), '-'));

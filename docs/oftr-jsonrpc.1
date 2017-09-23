@@ -2,12 +2,12 @@
 .\"     Title: oftr-jsonrpc
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 08/07/2017
+.\"      Date: 09/23/2017
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "OFTR\-JSONRPC" "1" "08/07/2017" "\ \&" "\ \&"
+.TH "OFTR\-JSONRPC" "1" "09/23/2017" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -868,6 +868,8 @@ params:
   cert: String
   cacert: String
   privkey: String
+  version: !opt String
+  ciphers: !opt String
 .fi
 .if n \{\
 .RE
@@ -880,10 +882,14 @@ PEM certificate chain data\&.
 .PP
 \fBcacert\fR
 .RS 4
-Trusted PEM root certificate\&. One certificate, not a list\&.
+Trusted PEM root certificate(s)\&.
 .RE
 .sp
-\fBprivkey\fR: PEM private key\&.
+\fBprivkey\fR: PEM private key associated with given cert\&.
+.sp
+\fBversion\fR: Supported TLS versions (optional)\&.
+.sp
+\fBciphers\fR: OpenSSL cipher list (optional)\&.
 .RE
 .sp
 .it 1 an-trap
@@ -923,6 +929,10 @@ Unique, non\-zero identifier representing the TLS identity\&.
 Use the OFP\&.ADD_IDENTITY command to add a SSL/TLS identity for use in encrypting connections\&. The reply contains the unique tls_id to pass to OFP\&.CONNECT and OFP\&.LISTEN commands\&.
 .sp
 The cacert parameter contains the certificate authority used to authenticate the certificate chain presented by the other end of the connection\&. The cacert may be multiple certificates concatenated together\&.
+.sp
+The version parameter is the supported TLS version\&. This may be specified as a single version "TLS1\&.2" or a range "TLS1\&.0\-TLS1\&.2"\&. Supported constants are TLS1\&.0, TLS1\&.1, TLS1\&.2, and TLS1\&.3\&. Leaving the version empty specifies the default, TLS 1\&.2\&.
+.sp
+The ciphers parameter is the OpenSSL cipher list for TLS up through version 1\&.2\&. Use this to pass in a cipher list in OpenSSL cipher list format\&.
 .RE
 .SH "RPC NOTIFICATIONS"
 .SS "OFP\&.MESSAGE"

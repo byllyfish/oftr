@@ -124,7 +124,7 @@ TEST(outputjson, testStruct) {
   yout << s;
 
   const char *expected =
-      R"""({"a":-54,"b":"it works","c":true,"d":12345678,"e":3.141593,"f":281474976710655})""";
+      R"""({"a":-54,"b":"it works","c":true,"d":12345678,"e":3.141593e+00,"f":281474976710655})""";
 
   EXPECT_TRUE(result.empty());
 

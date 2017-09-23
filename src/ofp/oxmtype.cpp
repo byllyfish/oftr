@@ -86,7 +86,7 @@ OXMInternalID OXMType::internalID_Experimenter(Big32 experimenter) const {
   return OXMInternalID::UNKNOWN;
 }
 
-bool OXMType::parse(const std::string &s) {
+bool OXMType::parse(llvm::StringRef s) {
   // TODO(bfish): make faster
   for (size_t i = 0; i < OXMTypeInfoArraySize; ++i) {
     if (s == OXMTypeInfoArray[i].name) {

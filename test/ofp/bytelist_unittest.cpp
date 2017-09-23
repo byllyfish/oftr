@@ -111,3 +111,14 @@ TEST(bytelist, remove) {
   EXPECT_EQ(list.size(), 3);
   EXPECT_HEX("313334", list.data(), list.size());
 }
+
+TEST(bytelist, stream) {
+  ByteList list;
+  list.add("1234", 4);
+
+  std::string buf;
+  llvm::raw_string_ostream oss{buf};
+
+  oss << list;
+  EXPECT_EQ("[ByteList size=4 data=31323334]", oss.str());
+}

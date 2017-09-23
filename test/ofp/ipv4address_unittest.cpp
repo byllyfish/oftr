@@ -25,9 +25,8 @@ TEST(ipv4address, paddedTest) {
   EXPECT_TRUE(addr.parse("00.00002.003.000"));
   EXPECT_EQ("0.2.3.0", addr.toString());
 
-  EXPECT_TRUE(addr.parse("000000.00000.0000.000"));
-  EXPECT_EQ("0.0.0.0", addr.toString());
-  EXPECT_FALSE(addr.valid());
+  // This is longer than 15 chars.
+  EXPECT_FALSE(addr.parse("000000.00000.0000.000"));
 }
 
 TEST(ipv4address, mask) {
@@ -128,10 +127,21 @@ TEST(ipv4address, invalid2) {
 TEST(ipv4address, stream) {
   IPv4Address ip{"127.0.0.1"};
 
-  std::string buf;
-  llvm::raw_string_ostream oss{buf};
-  oss << ip;
-  EXPECT_EQ("127.0.0.1", oss.str());
+  {
+    std::string buf;
+    llvm::raw_string_ostream oss{buf};
+    oss << ip;
+    EXPECT_EQ("127.0.0.1", oss.str());
+  }
+
+  ip.parse("255.255.255.255");
+
+  {
+    std::string buf;
+    llvm::raw_string_ostream oss{buf};
+    oss << ip;
+    EXPECT_EQ("255.255.255.255", oss.str());
+  }
 }
 
 TEST(ipv4address, relational) {

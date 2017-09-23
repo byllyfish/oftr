@@ -231,6 +231,10 @@ struct RpcAddIdentity {
     std::string cacert;
     /// Private key for certificate in `cert`.
     std::string privkey;
+    /// TLS Protocol version.
+    std::string version;
+    /// Supported ciphers.
+    std::string ciphers;
   };
 
   RpcID id;
@@ -385,6 +389,8 @@ params: !request
   cert: String
   cacert: String
   privkey: String
+  version: !opt String
+  ciphers: !opt String
 result: !reply
   tls_id: UInt64
 
@@ -504,6 +510,8 @@ struct MappingTraits<ofp::rpc::RpcAddIdentity::Params> {
     io.mapRequired("cert", params.cert);
     io.mapRequired("cacert", params.cacert);
     io.mapRequired("privkey", params.privkey);
+    io.mapOptional("version", params.version);
+    io.mapOptional("ciphers", params.ciphers);
   }
 };
 

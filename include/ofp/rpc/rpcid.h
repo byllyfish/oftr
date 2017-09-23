@@ -71,10 +71,13 @@ struct ScalarTraits<ofp::rpc::RpcID> {
 };
 
 template <>
-inline std::string primitive_to_json(ofp::rpc::RpcID value) {
-  return value.is_null()
-             ? "null"
-             : value.is_missing() ? "\"\"" : std::to_string(value.value());
+inline void primitive_to_json(ofp::rpc::RpcID value, llvm::raw_ostream &os) {
+  if (value.is_null())
+    os << "null";
+  else if (value.is_missing())
+    os << "\"\"";
+  else
+    os << value.value();
 }
 
 }  // namespace yaml

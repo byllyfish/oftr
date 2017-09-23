@@ -841,13 +841,18 @@ yamlize(IO &io, T &Val, bool, EmptyContext &Ctx) {
 }
 
 template<typename T>
-inline std::string primitive_to_json(T value) {
-  return std::to_string(value);
+inline void primitive_to_json(T value, llvm::raw_ostream &os) {
+  os << value;
 }
 
 template<>
-inline std::string primitive_to_json(bool value) {
-  return value ? "true" : "false";
+inline void primitive_to_json(bool value, llvm::raw_ostream &os) {
+  os << (value ? "true" : "false");
+}
+
+template<>
+inline void primitive_to_json(uint8_t value, llvm::raw_ostream &os) {
+  os << static_cast<unsigned>(value);
 }
 
 template<typename T>
@@ -857,8 +862,11 @@ yamlize(IO &io, T &Val, bool, EmptyContext &Ctx) {
     // Handle integer types differently on output to Json.
     if (io.outputtingJson()) {
       typename ScalarTraits<T>::json_type u = Val;
-      std::string Storage = primitive_to_json(u);
-      io.scalarJson(Storage);
+      llvm::SmallString<128> Storage;
+      llvm::raw_svector_ostream Buffer(Storage);
+      primitive_to_json(u, Buffer);
+      StringRef Str = Buffer.str();
+      io.scalarJson(Str);
     } else {
       llvm::SmallString<128> Storage;
       llvm::raw_svector_ostream Buffer(Storage);
@@ -881,8 +889,8 @@ template <typename T>
 typename std::enable_if<has_ScalarTraits<T>::value && !has_ScalarJsonTraits<T>::value,void>::type
 yamlize(IO &io, T &Val, bool, EmptyContext &Ctx) {
   if ( io.outputting() ) {
-    std::string Storage;
-    llvm::raw_string_ostream Buffer(Storage);
+    llvm::SmallString<128> Storage;
+    llvm::raw_svector_ostream Buffer(Storage);
     ScalarTraits<T>::output(Val, io.getContext(), Buffer);
     StringRef Str = Buffer.str();
     io.scalarString(Str, ScalarTraits<T>::mustQuote(Str));

@@ -17,7 +17,7 @@ class IPv4Address {
 
   IPv4Address() : addr_{} {}
   explicit IPv4Address(const ArrayType &a) : addr_(a) {}
-  /* implicit NOLINT */ IPv4Address(const std::string &s);
+  /* implicit NOLINT */ IPv4Address(llvm::StringRef s);
 
   static IPv4Address mask(unsigned prefix);
 
@@ -30,7 +30,7 @@ class IPv4Address {
 
   void setAllOnes() { addr_.fill(0xFF); }
 
-  bool parse(const std::string &s);
+  bool parse(llvm::StringRef s);
   void clear() { addr_.fill(0); }
 
   std::string toString() const { return detail::ToString(*this); }

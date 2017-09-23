@@ -87,6 +87,34 @@ std::string ofp::RawDataToHex(const void *data, size_t len) {
   return result;
 }
 
+void ofp::RawDataToHex(const void *data, size_t length, llvm::raw_ostream &os) {
+  if (length > kTwoGigabytes) {
+    os << "== hex too big ==";
+    return;
+  }
+
+  const UInt8 *pos = static_cast<const UInt8 *>(data);
+  size_t left = length;
+
+  char buf[256];
+  while (left >= 128) {
+    char *out = buf;
+    for (unsigned i = 0; i < 128; ++i) {
+      *out++ = ToHexUpperCase(*pos >> 4);
+      *out++ = ToHexUpperCase(*pos++ & 0x0F);
+    }
+    os.write(buf, 256);
+    left -= 128;
+  }
+
+  char *out = buf;
+  for (unsigned i = 0; i < left; ++i) {
+    *out++ = ToHexUpperCase(*pos >> 4);
+    *out++ = ToHexUpperCase(*pos++ & 0x0F);
+  }
+  os.write(buf, 2 * left);
+}
+
 std::string ofp::RawDataToHex(const void *data, size_t len, char delimiter,
                               int word) {
   if (len >= kTwoGigabytes) {

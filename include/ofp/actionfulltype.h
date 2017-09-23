@@ -25,7 +25,7 @@ class ActionFullType {
   UInt32 experimenter() const { return experimenter_; }
   UInt16 subtype() const { return subtype_; }
 
-  bool parse(const std::string &s);
+  bool parse(llvm::StringRef s);
 
   const ActionTypeInfo *lookupInfo() const;
 

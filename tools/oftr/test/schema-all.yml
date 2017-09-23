@@ -65,6 +65,8 @@ Rpc/OFP.ADD_IDENTITY:
     cert: String
     cacert: String
     privkey: String
+    version: !opt String
+    ciphers: !opt String
   result: !reply
     tls_id: UInt64
   
