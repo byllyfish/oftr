@@ -167,7 +167,7 @@ std::error_code Identity::prepareOptions(SSL_CTX *ctx,
 
   if (!ciphers.empty()) {
     // Try SSL_CTX_set_strict_cipher_list API first because it will fail when
-    // it encounters something it doesn't understand. This gives us the 
+    // it encounters something it doesn't understand. This gives us the
     // opportunity to issue a warning.
     if (!SSL_CTX_set_strict_cipher_list(ctx, ciphers.c_str())) {
       log_warning("SSL_CTX_set_strict_cipher_list failed:", ciphers);
