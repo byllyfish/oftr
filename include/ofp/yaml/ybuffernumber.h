@@ -53,17 +53,13 @@ struct ScalarTraits<ofp::BufferNumber> {
 };
 
 template <>
-inline std::string primitive_to_json(ofp::BufferNumber value) {
+inline void primitive_to_json(ofp::BufferNumber value, llvm::raw_ostream &os) {
   llvm::StringRef scalar;
   auto bufferId = static_cast<ofp::OFPBufferNo>(value);
   if (ScalarTraits<ofp::BufferNumber>::converter.convert(bufferId, &scalar)) {
-    std::string result = "\"";
-    result += scalar;
-    result += '\"';
-    return result;
+    os << '"' << scalar << '"';
   } else {
-    // Output BufferNumber in hexadecimal.
-    return std::to_string(bufferId);
+    os << bufferId;
   }
 }
 

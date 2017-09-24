@@ -16,7 +16,7 @@ static const InstructionTypeInfo sInstructionInfo[] = {
     {IT_EXPERIMENTER::type(), "EXPERIMENTER"},
 };
 
-bool InstructionType::parse(const std::string &s) {
+bool InstructionType::parse(llvm::StringRef s) {
   for (const auto &i : sInstructionInfo) {
     if (s == i.name) {
       type_ = i.type.type_;

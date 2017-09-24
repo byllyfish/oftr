@@ -13,7 +13,7 @@ static const ActionTypeInfo sActionFullInfo[] = {
      nx::AT_REGLOAD::subtype()},
 };
 
-bool ActionFullType::parse(const std::string &s) {
+bool ActionFullType::parse(llvm::StringRef s) {
   // Try to parse action as a standard action.
   if (type_.parse(s)) {
     experimenter_ = 0;

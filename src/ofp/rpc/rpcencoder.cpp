@@ -3,16 +3,13 @@
 
 #include "ofp/rpc/rpcencoder.h"
 #include "ofp/rpc/rpcconnection.h"
+#include "ofp/yaml/seterror.h"
 
 using namespace ofp;
 using namespace ofp::rpc;
 
-static bool errorFound(llvm::yaml::IO &io) {
-  // This is a kludge. We need to know if the io object encountered an error
-  // but the IO class doesn't support this. We need to reach into the Input
-  // subclass to check for the error.
-  llvm::yaml::Input *yin = static_cast<llvm::yaml::Input *>(&io);
-  return static_cast<bool>(yin->error());
+inline bool errorFound(llvm::yaml::IO &io) {
+  return ofp::yaml::ErrorFound(io);
 }
 
 RpcEncoder::RpcEncoder(const std::string &input, RpcConnection *conn,

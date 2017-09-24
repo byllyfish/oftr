@@ -53,17 +53,13 @@ struct ScalarTraits<ofp::MeterNumber> {
 };
 
 template <>
-inline std::string primitive_to_json(ofp::MeterNumber value) {
+inline void primitive_to_json(ofp::MeterNumber value, llvm::raw_ostream &os) {
   llvm::StringRef scalar;
   auto meterNum = static_cast<ofp::OFPMeterNo>(value);
   if (ScalarTraits<ofp::MeterNumber>::converter.convert(meterNum, &scalar)) {
-    std::string result = "\"";
-    result += scalar;
-    result += '\"';
-    return result;
+    os << '"' << scalar << '"';
   } else {
-    // Output MeterNumber in hexadecimal.
-    return std::to_string(meterNum);
+    os << meterNum;
   }
 }
 

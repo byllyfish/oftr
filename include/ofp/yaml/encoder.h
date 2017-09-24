@@ -42,10 +42,7 @@ class Encoder {
 
   bool matchPrereqsChecked() const { return matchPrereqsChecked_; }
 
-  const std::string &error() {
-    errorStream_.str();
-    return error_;
-  }
+  const std::string &error() { return errorStream_.str(); }
 
   MemoryChannel *memoryChannel() { return &channel_; }
 

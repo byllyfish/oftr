@@ -183,7 +183,7 @@ void RpcServer::onRpcSend(RpcConnection *conn, RpcSend *send) {
     channel->write(params.data(), params.size());
 
     // Flush the message (unless NO_FLUSH flag is specified)
-    if (!(params.flags() & OFP_NO_FLUSH)) {
+    if (!(params.flags() & OFP_NO_FLUSH) || channel->mustFlush()) {
       channel->flush();
     } else {
       log_debug("onRpcSend: NO_FLUSH",
@@ -258,7 +258,8 @@ void RpcServer::onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add) {
 
 #if LIBOFP_ENABLE_OPENSSL
   UInt64 securityId = engine_->addIdentity(
-      add->params.cert, add->params.privkey, add->params.cacert, err);
+      add->params.cert, add->params.privkey, add->params.cacert,
+      add->params.version, add->params.ciphers, err);
 
   // Nuke security parameters.
   std::memset(&add->params.privkey[0], '\0', add->params.privkey.size());

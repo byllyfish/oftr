@@ -14,18 +14,17 @@ bool GLOBAL_ARG_MongoDBCompatible = false;
 namespace llvm {
 namespace yaml {
 
-std::string primitive_to_json(JsonByteRange r) {
-  std::string buf;
-  llvm::raw_string_ostream oss{buf};
+void primitive_to_json(JsonByteRange r, llvm::raw_ostream &os) {
   if (ofp::GLOBAL_ARG_MongoDBCompatible) {
-    oss << "{\"$binary\":\""
-        << ofp::RawDataToBase64(r.value.data(), r.value.size())
-        << "\",\"$type\":\"00\"}";
+    os << "{\"$binary\":\""
+       << ofp::RawDataToBase64(r.value.data(), r.value.size())
+       << "\",\"$type\":\"00\"}";
   } else {
     // N.B. We are responsible for adding quotes.
-    oss << '"' << ofp::RawDataToHex(r.value.data(), r.value.size()) << '"';
+    os << '"';
+    ofp::RawDataToHex(r.value.data(), r.value.size(), os);
+    os << '"';
   }
-  return oss.str();
 }
 
 }  // namespace yaml

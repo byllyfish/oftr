@@ -43,7 +43,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.36.0)
+set(Libofp_VERSION 0.37.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -227,6 +227,7 @@ set(LIBOFP_SOURCES
   src/ofp/message.cpp
   src/ofp/metermod.cpp
   src/ofp/mpdesc.cpp
+  src/ofp/mpaggregatestatsreplyv6.cpp
   src/ofp/mpexperimenter.cpp
   src/ofp/mpgroupdesc.cpp
   src/ofp/mpgroupfeatures.cpp
