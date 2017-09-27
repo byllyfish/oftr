@@ -115,19 +115,20 @@ bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
     return false;
   }
 
-  bool result = false;
-
-  if (!datapathId.empty()) {
-    datapathId_ = datapathId;
-    auxiliaryId_ = auxiliaryId;
-    result = engine()->registerDatapath(this);
-    if (result) {
-      log_info("Assign datapath", datapathId, "aux",
-               static_cast<int>(auxiliaryId),
-               std::make_pair("conn_id", connectionId()));
-    }
+  if (datapathId.empty()) {
+    log_error("Datapath is not allowed to be all zeros", std::make_pair("connid", connectionId()));
+    return false;
   }
 
+  datapathId_ = datapathId;
+  auxiliaryId_ = auxiliaryId;
+  
+  bool result = engine()->registerDatapath(this);
+  if (result) {
+    log_info("Assign datapath", datapathId, "aux",
+             static_cast<int>(auxiliaryId),
+             std::make_pair("conn_id", connectionId()));
+  }
   return result;
 }
 

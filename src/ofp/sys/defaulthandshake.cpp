@@ -166,6 +166,7 @@ void DefaultHandshake::onFeaturesReply(const Message *message) {
     }
 
   } else {
+    log_debug("DefaultHandshake::onFeaturesReply: postDatapath failed");
     channel_->shutdown();
   }
 }
