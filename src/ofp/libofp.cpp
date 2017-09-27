@@ -101,15 +101,12 @@ static int32_t buf_copy(char *output, size_t output_len, const void *data,
   }
 
   int32_t result = static_cast<int32_t>(len);
-  if (len > output_len) {
+  if (len > output_len || !output) {
     return -result;
   }
 
   assert(len <= output_len);
-
-  if (len > 0) {
-    std::memcpy(output, data, len);
-  }
+  std::memcpy(output, data, len);
 
   if (error) {
     return -result;
