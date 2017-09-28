@@ -5,6 +5,9 @@
 #include "ofp/rpc/rpcevents.h"
 #include "ofp/sys/asio_utils.h"
 #include "ofp/sys/engine.h"
+#include "ofp/timestamp.h"
+#include <sys/time.h>
+#include <sys/resource.h>
 
 using ofp::rpc::RpcConnectionStdio;
 
