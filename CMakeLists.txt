@@ -595,6 +595,7 @@ if(LIBOFP_ENABLE_JSONRPC)
   add_subdirectory(example/python)
   add_subdirectory(example/flowbench)
   add_subdirectory(example/ctypes)
+  add_subdirectory(example/cbenchreply)
 endif()
 
 #-------------------------------------------------------------------------------
