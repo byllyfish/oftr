@@ -66,8 +66,8 @@ int main(int argc, char **argv) {
 
   std::error_code err;
   (void)driver.listen(ChannelOptions::FEATURES_REQ, 0,
-                      IPv6Endpoint{OFPGetDefaultPort()},
-                      ProtocolVersions::All, CBenchReplyController::Factory, err);
+                      IPv6Endpoint{OFPGetDefaultPort()}, ProtocolVersions::All,
+                      CBenchReplyController::Factory, err);
 
   if (err) {
     log_error("cbenchreply controller: driver.listen failed:", err);

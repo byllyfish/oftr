@@ -51,7 +51,8 @@ void JsonRpc::runStdio() {
   const Milliseconds metricInterval{metricInterval_};
 
   Driver driver;
-  rpc::RpcServer server{&driver, ::dup(STDIN_FILENO), ::dup(STDOUT_FILENO), metricInterval};
+  rpc::RpcServer server{&driver, ::dup(STDIN_FILENO), ::dup(STDOUT_FILENO),
+                        metricInterval};
   driver.installSignalHandlers([&server]() { server.close(); });
   driver.run();
 }

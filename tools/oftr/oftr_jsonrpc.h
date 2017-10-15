@@ -29,7 +29,10 @@ class JsonRpc : public Subprogram {
 
  private:
   // --- Command-line Arguments ---
-  cl::opt<unsigned> metricInterval_{"metric-interval", cl::desc("Log RPC metrics at specified interval (msec)"), cl::ValueRequired};
+  cl::opt<unsigned> metricInterval_{
+      "metric-interval",
+      cl::desc("Log RPC metrics at specified interval (msec)"),
+      cl::ValueRequired};
 
   void setMaxOpenFiles();
   void runStdio();

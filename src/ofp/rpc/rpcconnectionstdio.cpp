@@ -2,12 +2,12 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcconnectionstdio.h"
+#include <sys/resource.h>
+#include <sys/time.h>
 #include "ofp/rpc/rpcevents.h"
 #include "ofp/sys/asio_utils.h"
 #include "ofp/sys/engine.h"
 #include "ofp/timestamp.h"
-#include <sys/time.h>
-#include <sys/resource.h>
 
 using ofp::rpc::RpcConnectionStdio;
 
@@ -124,17 +124,20 @@ void RpcConnectionStdio::logMetrics() {
   struct rusage usage;
   ::getrusage(RUSAGE_SELF, &usage);
 
-  Timestamp utime{Unsigned_cast(usage.ru_utime.tv_sec), Unsigned_cast(usage.ru_utime.tv_usec * 1000)};
-  Timestamp stime{Unsigned_cast(usage.ru_stime.tv_sec), Unsigned_cast(usage.ru_stime.tv_usec * 1000)};
+  Timestamp utime{Unsigned_cast(usage.ru_utime.tv_sec),
+                  Unsigned_cast(usage.ru_utime.tv_usec * 1000)};
+  Timestamp stime{Unsigned_cast(usage.ru_stime.tv_sec),
+                  Unsigned_cast(usage.ru_stime.tv_usec * 1000)};
 
-  // Use task_info for "resident_size"?
+// Use task_info for "resident_size"?
 #if defined(LIBOFP_TARGET_DARWIN)
-  long kbytes = usage.ru_maxrss/1024;   // convert to kbytes
+  long kbytes = usage.ru_maxrss / 1024;  // convert to kbytes
 #else
-  long kbytes = usage.ru_maxrss;      // already in kbytes
+  long kbytes = usage.ru_maxrss;  // already in kbytes
 #endif
 
   // TODO(bfish): Include SO_NREAD and SO_NWRITE?
 
-  log_info("Metrics", txEvents_, rxEvents_, txBytes_, rxBytes_, outgoing_[0].size(), outgoing_[1].size(), utime, stime, kbytes);
+  log_info("Metrics", txEvents_, rxEvents_, txBytes_, rxBytes_,
+           outgoing_[0].size(), outgoing_[1].size(), utime, stime, kbytes);
 }

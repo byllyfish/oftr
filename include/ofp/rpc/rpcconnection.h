@@ -58,7 +58,7 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
   UInt32 rxEvents_ = 0;
   UInt64 txBytes_ = 0;
   UInt64 rxBytes_ = 0;
-  
+
   virtual void write(llvm::StringRef msg, bool eom = true) = 0;
   virtual void asyncRead() = 0;
 
