@@ -131,9 +131,9 @@ void RpcConnectionStdio::logMetrics() {
 
 // Use task_info for "resident_size"?
 #if defined(LIBOFP_TARGET_DARWIN)
-  long kbytes = usage.ru_maxrss / 1024;  // convert to kbytes
+  int64_t kbytes = usage.ru_maxrss / 1024;  // convert to kbytes
 #else
-  long kbytes = usage.ru_maxrss;  // already in kbytes
+  int64_t kbytes = usage.ru_maxrss;  // already in kbytes
 #endif
 
   // TODO(bfish): Include SO_NREAD and SO_NWRITE?
