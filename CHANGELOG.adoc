@@ -1,5 +1,13 @@
 = Changelog
 
+== Version 0.37 (15 October 2017)
+
+- Log an error when we block a datapath_id of all zeroes.
+- Add "metric-interval" command line argument to jsonrpc tool.
+- Add the "cbenchreply" example.
+- Change MatchPacket warning log messages to debug messages.
+- Update boringssl and googletest modules.
+
 == Version 0.37 (23 September 2017)
 
 - Add support for specifying version and ciphers in OFP.ADD_IDENTITY rpc call.
