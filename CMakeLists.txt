@@ -401,7 +401,10 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
-  set(LIBOFP_FSANITIZE "-fsanitize=address,undefined -fsanitize-undefined-trap-on-error")
+  #set(LIBOFP_FSANITIZE "-fsanitize=address,undefined -fsanitize-undefined-trap-on-error")
+  # [FIXME] Clang 9.0.0.9000037 in latest XCode is erroring in asyncConnect() when using
+  # undefined sanitizer, apparently inside asio callback (via lambda function).
+  set(LIBOFP_FSANITIZE "-fsanitize=address")
 else()
   set(LIBOFP_FSANITIZE "")
 endif()
