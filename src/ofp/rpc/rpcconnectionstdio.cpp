@@ -124,10 +124,10 @@ void RpcConnectionStdio::logMetrics() {
   struct rusage usage;
   ::getrusage(RUSAGE_SELF, &usage);
 
-  Timestamp utime{Unsigned_cast(usage.ru_utime.tv_sec),
-                  Unsigned_cast(usage.ru_utime.tv_usec * 1000)};
-  Timestamp stime{Unsigned_cast(usage.ru_stime.tv_sec),
-                  Unsigned_cast(usage.ru_stime.tv_usec * 1000)};
+  Timestamp utime(Unsigned_cast(usage.ru_utime.tv_sec),
+                  Unsigned_cast(usage.ru_utime.tv_usec * 1000));
+  Timestamp stime(Unsigned_cast(usage.ru_stime.tv_sec),
+                  Unsigned_cast(usage.ru_stime.tv_usec * 1000));
 
 // Use task_info for "resident_size"?
 #if defined(LIBOFP_TARGET_DARWIN)
