@@ -23,18 +23,22 @@ class RpcConnectionStdio final : public RpcConnection {
  protected:
   void write(llvm::StringRef msg, bool eom = true) override;
   void asyncRead() override;
-  void asyncWrite();
 
  private:
   asio::posix::stream_descriptor input_;
   asio::posix::stream_descriptor output_;
   asio::streambuf streambuf_;
+  asio::steady_timer metricTimer_;
 
   // Use a two buffer strategy for async-writes. We queue up data in one
   // buffer while we're in the process of writing the other buffer.
   ByteList outgoing_[2];
   int outgoingIdx_ = 0;
   bool writing_ = false;
+
+  void asyncWrite();
+  void asyncMetrics(Milliseconds interval);
+  void logMetrics();
 };
 
 OFP_END_IGNORE_PADDING

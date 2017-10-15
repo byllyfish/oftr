@@ -80,9 +80,9 @@ Here is the resulting RoleRequest message:
 
 * By default, a property is required unless it has the !opt or !optout tag.
 
-* !opt means the property may be omitted on input, but is always output in the canonical output.
+* !opt means the property may be omitted on input, but is always present in the canonical output.
 
-* !optout means the property may be omitted, even in the canonical output. Client software should test for it.
+* !optout means the property may be omitted, even in the canonical output. Client software should test for its presence.
 
 * Types with multiple sub-choices are named at the top level with a '/'. For example, there are multiple 'Message', 'Instruction', 'Action' types.
 

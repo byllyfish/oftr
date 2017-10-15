@@ -2,12 +2,12 @@
 .\"     Title: oftr-schema
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 09/23/2017
+.\"      Date: 10/15/2017
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "OFTR\-SCHEMA" "1" "09/23/2017" "\ \&" "\ \&"
+.TH "OFTR\-SCHEMA" "1" "10/15/2017" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -177,7 +177,7 @@ By default, a property is required unless it has the !opt or !optout tag\&.
 .sp -1
 .IP \(bu 2.3
 .\}
-!opt means the property may be omitted on input, but is always output in the canonical output\&.
+!opt means the property may be omitted on input, but is always present in the canonical output\&.
 .RE
 .sp
 .RS 4
@@ -188,7 +188,7 @@ By default, a property is required unless it has the !opt or !optout tag\&.
 .sp -1
 .IP \(bu 2.3
 .\}
-!optout means the property may be omitted, even in the canonical output\&. Client software should test for it\&.
+!optout means the property may be omitted, even in the canonical output\&. Client software should test for its presence\&.
 .RE
 .sp
 .RS 4

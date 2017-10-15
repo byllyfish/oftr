@@ -2,8 +2,12 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcconnectionstdio.h"
+#include <sys/resource.h>
+#include <sys/time.h>
 #include "ofp/rpc/rpcevents.h"
 #include "ofp/sys/asio_utils.h"
+#include "ofp/sys/engine.h"
+#include "ofp/timestamp.h"
 
 using ofp::rpc::RpcConnectionStdio;
 
@@ -13,10 +17,14 @@ RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
     : RpcConnection{server},
       input_{std::move(input)},
       output_{std::move(output)},
-      streambuf_{RPC_MAX_MESSAGE_SIZE} {}
+      streambuf_{RPC_MAX_MESSAGE_SIZE},
+      metricTimer_{server->engine()->io()} {}
 
 void RpcConnectionStdio::write(llvm::StringRef msg, bool eom) {
-  outgoing_[outgoingIdx_].add(msg.data(), msg.size());
+  ++txEvents_;
+  const size_t msgSize = msg.size();
+  txBytes_ += msgSize;
+  outgoing_[outgoingIdx_].add(msg.data(), msgSize);
   if (eom && !writing_) {
     asyncWrite();
   }
@@ -30,6 +38,12 @@ void RpcConnectionStdio::close() {
 void RpcConnectionStdio::asyncAccept() {
   // Start first async read.
   asyncRead();
+
+  // Start optional metrics timer.
+  Milliseconds metricInterval = server_->metricInterval();
+  if (metricInterval != 0_ms) {
+    asyncMetrics(metricInterval);
+  }
 }
 
 void RpcConnectionStdio::asyncRead() {
@@ -90,4 +104,40 @@ void RpcConnectionStdio::asyncWrite() {
           }
         }
       });
+}
+
+void RpcConnectionStdio::asyncMetrics(Milliseconds interval) {
+  logMetrics();
+
+  asio::error_code error;
+  metricTimer_.expires_after(interval, error);
+  assert(!error);
+
+  metricTimer_.async_wait([this, interval](const asio::error_code &err) {
+    if (!err) {
+      asyncMetrics(interval);
+    }
+  });
+}
+
+void RpcConnectionStdio::logMetrics() {
+  struct rusage usage;
+  ::getrusage(RUSAGE_SELF, &usage);
+
+  Timestamp utime(Unsigned_cast(usage.ru_utime.tv_sec),
+                  Unsigned_cast(usage.ru_utime.tv_usec * 1000));
+  Timestamp stime(Unsigned_cast(usage.ru_stime.tv_sec),
+                  Unsigned_cast(usage.ru_stime.tv_usec * 1000));
+
+// Use task_info for "resident_size"?
+#if defined(LIBOFP_TARGET_DARWIN)
+  int64_t kbytes = usage.ru_maxrss / 1024;  // convert to kbytes
+#else
+  int64_t kbytes = usage.ru_maxrss;  // already in kbytes
+#endif
+
+  // TODO(bfish): Include SO_NREAD and SO_NWRITE?
+
+  log_info("Metrics", txEvents_, rxEvents_, txBytes_, rxBytes_,
+           outgoing_[0].size(), outgoing_[1].size(), utime, stime, kbytes);
 }
