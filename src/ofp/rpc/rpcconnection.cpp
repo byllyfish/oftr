@@ -111,6 +111,9 @@ void RpcConnection::rpcAlert(const DatapathID &datapathId, UInt64 connId,
 }
 
 void RpcConnection::handleEvent(const std::string &eventText) {
+  ++rxEvents_;
+  rxBytes_ += eventText.size() + 1;  // include delimiter char
+
   RpcEncoder encoder{eventText, this,
                      [this](UInt64 connId, const DatapathID &datapathId) {
                        return server_->findDatapath(connId, datapathId);

@@ -115,7 +115,7 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
       break;
 
     default:
-      log_warning("MatchPacket: Unknown ethernet type", eth->type);
+      log_debug("MatchPacket: Unknown ethernet type", eth->type);
       break;
   }
 }
@@ -224,7 +224,7 @@ void MatchPacket::decodeIPv4_NextHdr(const UInt8 *pkt, size_t length,
       break;
 
     default:
-      log_warning("MatchPacket: Unknown IPv4 protocol", nextHdr);
+      log_debug("MatchPacket: Unknown IPv4 protocol", nextHdr);
       break;
   }
 }
@@ -525,7 +525,7 @@ UInt8 MatchPacket::nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt,
       break;
 
     default:
-      log_warning("MatchPacket: Unrecognized IPv6 nextHeader", currHdr);
+      log_debug("MatchPacket: Unrecognized IPv6 nextHeader", currHdr);
       return pkt::IPv6Ext_NoNextHeader;
   }
 

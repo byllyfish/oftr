@@ -30,8 +30,6 @@ class Identity {
   SSL_CTX *dtlsContext() { return dtls_.get(); }
 
   std::string subjectName() const { return subjectName_; }
-  UInt16 minProtoVersion();
-  UInt16 maxProtoVersion();
 
   SSL_SESSION *findClientSession(const IPv6Endpoint &remoteEndpt);
   void saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *session);

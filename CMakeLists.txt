@@ -43,7 +43,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.37.0)
+set(Libofp_VERSION 0.38.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -401,7 +401,10 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
-  set(LIBOFP_FSANITIZE "-fsanitize=address,undefined -fsanitize-undefined-trap-on-error")
+  #set(LIBOFP_FSANITIZE "-fsanitize=address,undefined -fsanitize-undefined-trap-on-error")
+  # [FIXME] Clang 9.0.0.9000037 in latest XCode is erroring in asyncConnect() when using
+  # undefined sanitizer, apparently inside asio callback (via lambda function).
+  set(LIBOFP_FSANITIZE "-fsanitize=address")
 else()
   set(LIBOFP_FSANITIZE "")
 endif()
@@ -597,6 +600,7 @@ if(LIBOFP_ENABLE_JSONRPC)
   add_subdirectory(example/python)
   add_subdirectory(example/flowbench)
   add_subdirectory(example/ctypes)
+  add_subdirectory(example/cbenchreply)
 endif()
 
 #-------------------------------------------------------------------------------

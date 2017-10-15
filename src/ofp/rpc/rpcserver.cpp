@@ -15,8 +15,10 @@ using ofp::sys::TCP_Server;
 using namespace ofp;
 
 RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
-                     Channel *defaultChannel)
-    : engine_{driver->engine()}, defaultChannel_{defaultChannel} {
+                     Milliseconds metricInterval, Channel *defaultChannel)
+    : engine_{driver->engine()},
+      defaultChannel_{defaultChannel},
+      metricInterval_{metricInterval} {
   log::fatal_if_false(inputFD >= 0, "inputFD >= 0");
   log::fatal_if_false(outputFD >= 0, "outputFD >= 0");
 

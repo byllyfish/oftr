@@ -34,7 +34,7 @@ OFP_BEGIN_IGNORE_PADDING
 class RpcServer {
  public:
   RpcServer(Driver *driver, int inputFD, int outputFD,
-            Channel *defaultChannel = nullptr);
+            Milliseconds metricInterval, Channel *defaultChannel = nullptr);
   ~RpcServer();
 
   /// Close the control connection.
@@ -59,12 +59,14 @@ class RpcServer {
 
   Channel *findDatapath(UInt64 connId, const DatapathID &datapathId);
 
-  sys::Engine *engine() { return engine_; }
+  sys::Engine *engine() const { return engine_; }
+  Milliseconds metricInterval() const { return metricInterval_; }
 
  private:
   sys::Engine *engine_;
   RpcConnection *oneConn_ = nullptr;
   Channel *defaultChannel_ = nullptr;
+  Milliseconds metricInterval_ = 0_ms;
 
   static void connectResponse(RpcConnection *conn, RpcID id, UInt64 connId,
                               const std::error_code &err);
