@@ -12,6 +12,8 @@ namespace ofpx {
 //
 // Run a JSON-RPC server. By default, the control connection comes from stdio.
 //
+//   --metric-interval=0     Log RPC metrics at specified interval (msec)
+//
 // Usage:
 //
 // To run JSON-RPC server over stdin and stdout:
@@ -27,7 +29,10 @@ class JsonRpc : public Subprogram {
 
  private:
   // --- Command-line Arguments ---
-  // None
+  cl::opt<unsigned> metricInterval_{
+      "metric-interval",
+      cl::desc("Log RPC metrics at specified interval (msec)"),
+      cl::ValueRequired};
 
   void setMaxOpenFiles();
   void runStdio();

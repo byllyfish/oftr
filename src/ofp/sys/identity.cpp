@@ -77,14 +77,6 @@ Identity::~Identity() {
 #endif  // IDENTITY_SESSIONS_ENABLED
 }
 
-UInt16 Identity::minProtoVersion() {
-  return tls_.native_handle()->conf_min_version;
-}
-
-UInt16 Identity::maxProtoVersion() {
-  return tls_.native_handle()->conf_max_version;
-}
-
 SSL_SESSION *Identity::findClientSession(const IPv6Endpoint &remoteEndpt) {
 #if IDENTITY_SESSIONS_ENABLED
   auto iter = clientSessions_.find(remoteEndpt);
