@@ -1,6 +1,6 @@
 = Changelog
 
-== Version 0.37 (15 October 2017)
+== Version 0.38 (15 October 2017)
 
 - Log an error when we block a datapath_id of all zeroes.
 - Add "metric-interval" command line argument to jsonrpc tool.
