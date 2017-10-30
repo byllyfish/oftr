@@ -346,6 +346,7 @@ if(LIBOFP_ENABLE_LIBPCAP)
     src/ofp/demux/messagesource.cpp
     src/ofp/demux/pktsink.cpp
     src/ofp/demux/pktsource.cpp
+    src/ofp/demux/pktfilter.cpp
     src/ofp/demux/messageconvert.cpp
   )
 endif()
