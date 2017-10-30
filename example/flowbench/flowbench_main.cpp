@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
       flowMod(&channel, inPort, i, dst, src, outPort);
 
       // Make sure the benchmarked operation is NOT optimized out.
-      junk += std::accumulate(channel.begin(), channel.end(), 0);
+      junk += std::accumulate(channel.begin(), channel.end(), 0UL);
       channel.clear();
     }
 
