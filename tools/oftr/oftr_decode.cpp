@@ -526,11 +526,11 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
   if (invertCheck_) {
     // There was no problem decoding the message, but we are expecting the data
     // to be invalid (because we are fuzz testing). Report this as an error.
-
-    llvm::errs() << "Filename: " << currentFilename_ << '\n';
-    llvm::errs()
-        << "Error: Decode succeeded when --invert-check flag is specified.\n";
-    llvm::errs() << *originalMessage << '\n';
+    if (!silentError_) {
+      llvm::errs() << "Filename: " << currentFilename_ << '\n';
+      llvm::errs() << "Error: Decode succeeded when --invert-check flag is specified.\n";
+      llvm::errs() << *originalMessage << '\n';
+    }
     return ExitStatus::DecodeSucceeded;
   }
 
