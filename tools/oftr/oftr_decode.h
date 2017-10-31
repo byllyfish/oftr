@@ -11,6 +11,7 @@
 
 #if HAVE_LIBPCAP
 #include "ofp/demux/pktsink.h"
+#include "ofp/demux/pktfilter.h"
 #else
 namespace ofp {
 namespace demux {
@@ -55,6 +56,7 @@ namespace ofpx {
 //   --pcap-convert-packetin  Convert captured packets to PacketIn messages.
 //   --msg-include=<types> Output these OpenFlow message types (glob).
 //   --msg-exclude=<types> Don't output these OpenFlow message types (glob).
+//   --pkt-filter=<filter> Output these PacketIn/PacketOut messages.
 //   --timestamp=none|secs Show timestamp in all decodes.
 //
 // Usage:
@@ -103,8 +105,9 @@ class Decode : public Subprogram {
   ofp::UInt64 nextSessionId_ = 0;
 
   std::unique_ptr<ofp::demux::PktSink> pktSinkFile_;
-  std::vector<std::string> includeFilter_;
-  std::vector<std::string> excludeFilter_;
+  std::vector<std::string> msgIncludeFilter_;
+  std::vector<std::string> msgExcludeFilter_;
+  ofp::demux::PktFilter pktIncludeFilter_;
 
   bool validateCommandLineArguments();
 
@@ -122,6 +125,7 @@ class Decode : public Subprogram {
   static void parseMsgFilter(const std::string &input,
                              std::vector<std::string> *filter);
   bool isMsgTypeAllowed(const ofp::Message *message) const;
+  bool isPktDataAllowed(const ofp::Message *message) const;
   bool equalMessages(ofp::ByteRange origData, ofp::ByteRange newData) const;
 
   static bool parseIndexLine(const llvm::StringRef &line, size_t *pos,
@@ -194,6 +198,9 @@ class Decode : public Subprogram {
   cl::opt<std::string> msgExclude_{
       "msg-exclude",
       cl::desc("Don't output these OpenFlow message types (glob)"),
+      cl::ValueRequired};
+  cl::opt<std::string> pktFilter_{
+      "pkt-filter", cl::desc("Output these PacketIn/PacketOut messages (pcap-filter)"),
       cl::ValueRequired};
   cl::OptionCategory pcapCategory_{"Packet Capture Options"};
   cl::opt<std::string> pcapDevice_{

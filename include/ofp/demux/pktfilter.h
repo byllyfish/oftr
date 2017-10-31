@@ -18,8 +18,8 @@ public:
 
     bool setFilter(const std::string &filter);
 
-    bool match(ByteRange data) { return match(data, data.size()); }
-    bool match(ByteRange data, size_t totalLen);
+    bool match(ByteRange data) const { return match(data, data.size()); }
+    bool match(ByteRange data, size_t totalLen) const;
 
 private:
     struct bpf_program prog_;

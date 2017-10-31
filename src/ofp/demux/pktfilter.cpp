@@ -33,10 +33,9 @@ bool PktFilter::setFilter(const std::string &filter) {
 }
 
 
-bool PktFilter::match(ByteRange data, size_t totalLen) {
-    assert(progExists_);
-    
-    // use pcap_offline_filter function instead? or bpf_filter?
+bool PktFilter::match(ByteRange data, size_t totalLen) const {
+    if (!progExists_)
+        return true;
     
     struct pcap_pkthdr hdr;
     hdr.ts.tv_sec = 0;
