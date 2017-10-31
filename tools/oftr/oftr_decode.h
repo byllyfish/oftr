@@ -41,6 +41,7 @@ namespace ofpx {
 //   --verify-output (-V)  Verify output by translating it back to binary.
 //   --use-findx           Use metadata from tcpflow '.findx' files.
 //   --pkt-decode          Include _pkt in PacketIn/PacketOut decodes.
+//   --pkt-filter=<filter> Filter packets inside PacketIn/PacketOut messages.
 //   --pkt-write-file=<file> Write data from PacketIn/PacketOut messages to
 //   .pcap file.
 //   --show-filename       Show the file name in all decodes.
@@ -56,7 +57,6 @@ namespace ofpx {
 //   --pcap-convert-packetin  Convert captured packets to PacketIn messages.
 //   --msg-include=<types> Output these OpenFlow message types (glob).
 //   --msg-exclude=<types> Don't output these OpenFlow message types (glob).
-//   --pkt-filter=<filter> Filter packets inside PacketIn/PacketOut messages.
 //   --timestamp=none|secs Show timestamp in all decodes.
 //
 // Usage:
