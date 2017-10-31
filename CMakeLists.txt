@@ -667,3 +667,14 @@ add_custom_target(clang-tidy
   COMMENT "Checking all libofp code with clang-tidy" VERBATIM
 )
 
+
+# Run unit tests for boringssl.
+
+add_test(
+  NAME boringssl-all-tests 
+  COMMAND go run util/all_tests.go -build-dir "${CMAKE_BINARY_DIR}/external/boringssl/"
+  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/external/boringssl"
+)
+set_tests_properties(boringssl-all-tests PROPERTIES TIMEOUT 30)
+
+
