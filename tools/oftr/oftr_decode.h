@@ -56,7 +56,7 @@ namespace ofpx {
 //   --pcap-convert-packetin  Convert captured packets to PacketIn messages.
 //   --msg-include=<types> Output these OpenFlow message types (glob).
 //   --msg-exclude=<types> Don't output these OpenFlow message types (glob).
-//   --pkt-filter=<filter> Output these PacketIn/PacketOut messages.
+//   --pkt-filter=<filter> Filter packets inside PacketIn/PacketOut messages.
 //   --timestamp=none|secs Show timestamp in all decodes.
 //
 // Usage:
@@ -200,7 +200,7 @@ class Decode : public Subprogram {
       cl::desc("Don't output these OpenFlow message types (glob)"),
       cl::ValueRequired};
   cl::opt<std::string> pktFilter_{
-      "pkt-filter", cl::desc("Output these PacketIn/PacketOut messages (pcap-filter)"),
+      "pkt-filter", cl::desc("Filter packets inside PacketIn/PacketOut messages (BPF)"),
       cl::ValueRequired};
   cl::OptionCategory pcapCategory_{"Packet Capture Options"};
   cl::opt<std::string> pcapDevice_{
@@ -219,7 +219,7 @@ class Decode : public Subprogram {
       cl::desc("Write reassembled TCP streams to directory (for debugging)"),
       cl::cat(pcapCategory_), cl::ValueRequired, cl::Hidden};
   cl::opt<std::string> pcapFilter_{
-      "pcap-filter", cl::desc("Filter for packet capture"),
+      "pcap-filter", cl::desc("Filter for packet capture (BPF)"),
       cl::cat(pcapCategory_), cl::init("tcp port 6653 or 6633")};
   cl::opt<bool> pcapSkipPayload_{
       "pcap-skip-payload",
