@@ -3719,3 +3719,59 @@ TEST(encoder, flowmod_fuzz) {
       "00190010800008060102030405060000",
       encoder.data(), encoder.size());
 }
+
+TEST(encoder, packetin_icmp4_frag1) {
+  const char *input = R"""(
+    type:            PACKET_IN
+    xid:             0x00000000
+    version:         0x04
+    msg:             
+      buffer_id:       NO_BUFFER
+      total_len:       0x05EE
+      in_port:         0x00000001
+      in_phy_port:     0x00000001
+      metadata:        0x0000000000000000
+      reason:          APPLY_ACTION
+      table_id:        0x06
+      cookie:          0x00000000FFFFFFFF
+      match:           
+        - field:           IN_PORT
+          value:           0x00000001
+      data:            0E00000000010AC2BB024296810000640800450005DC0518200040013AA70A0000010A6400FE080014572C2400059DA8FC590000000046D5060000000000101112131415161718191A1B1C1D1E1F202122232425
+  )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(126, encoder.size());
+  EXPECT_HEX(
+      "040A007E00000000FFFFFFFF05EE010600000000FFFFFFFF0001000C80000004000000010000000000000E00000000010AC2BB024296810000640800450005DC0518200040013AA70A0000010A6400FE080014572C2400059DA8FC590000000046D5060000000000101112131415161718191A1B1C1D1E1F202122232425",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, packetin_icmp4_frag2) {
+  const char *input = R"""(
+    type:            PACKET_IN
+    xid:             0x00000000
+    version:         0x04
+    msg:             
+      buffer_id:       NO_BUFFER
+      total_len:       0x002A
+      in_port:         0x00000001
+      in_phy_port:     0x00000001
+      metadata:        0x0000000000000000
+      reason:          APPLY_ACTION
+      table_id:        0x06
+      cookie:          0x00000000FFFFFFFF
+      match:           
+        - field:           IN_PORT
+          value:           0x00000001
+      data:            0E00000000010AC2BB02429681000064080045000018051800B940015FB20A0000010A6400FEC0C1C2C3
+  )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(84, encoder.size());
+  EXPECT_HEX(
+      "040A005400000000FFFFFFFF002A010600000000FFFFFFFF0001000C80000004000000010000000000000E00000000010AC2BB02429681000064080045000018051800B940015FB20A0000010A6400FEC0C1C2C3",
+      encoder.data(), encoder.size());
+}

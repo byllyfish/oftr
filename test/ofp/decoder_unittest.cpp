@@ -8,7 +8,7 @@
 using namespace ofp;
 using namespace yaml;
 
-static void testDecodeEncode(const char *hex, const char *yaml) {
+static void testDecodeEncode(const char *hex, const char *yaml, bool pktMatch=false) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
@@ -16,7 +16,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
 
   {
     // YAML test
-    Decoder decoder{&msg};
+    Decoder decoder{&msg, false, pktMatch};
 
     EXPECT_EQ("", decoder.error());
     EXPECT_EQ(yaml, decoder.result().str());
@@ -29,7 +29,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
 
   {
     // JSON roundtrip test
-    Decoder decoder{&msg, true};
+    Decoder decoder{&msg, true, pktMatch};
     EXPECT_EQ("", decoder.error());
 
     Encoder encoder{decoder.result()};
@@ -43,7 +43,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
     if (msg.size() > sizeof(Header)) {
       msg.shrink(msg.size() - 1);
       msg.mutableHeader()->setLength(msg.size());
-      Decoder decoder{&msg, true};
+      Decoder decoder{&msg, true, pktMatch};
 
       // For the following message types, removing the last byte still yields a
       // valid message.
@@ -2145,4 +2145,12 @@ TEST(decoder, portstatus_fuzz) {
       "050c00480000000000090000000000000000006400380000000000000000000000000000"
       "00000000000000000000000000000000000753000000000000000000000000000000000"
       "0");
+}
+
+TEST(decoder, packetin_icmp4_frag1) {
+  testDecodeEncode("040A007E00000000FFFFFFFF05EE010600000000FFFFFFFF0001000C80000004000000010000000000000E00000000010AC2BB024296810000640800450005DC0518200040013AA70A0000010A6400FE080014572C2400059DA8FC590000000046D5060000000000101112131415161718191A1B1C1D1E1F202122232425", "---\ntype:            PACKET_IN\nxid:             0x00000000\nversion:         0x04\nmsg:             \n  buffer_id:       NO_BUFFER\n  total_len:       0x05EE\n  in_port:         0x00000001\n  in_phy_port:     0x00000001\n  metadata:        0x0000000000000000\n  reason:          APPLY_ACTION\n  table_id:        0x06\n  cookie:          0x00000000FFFFFFFF\n  match:           \n    - field:           IN_PORT\n      value:           0x00000001\n  data:            0E00000000010AC2BB024296810000640800450005DC0518200040013AA70A0000010A6400FE080014572C2400059DA8FC590000000046D5060000000000101112131415161718191A1B1C1D1E1F202122232425\n  _pkt:            \n    - field:           ETH_DST\n      value:           '0e:00:00:00:00:01'\n    - field:           ETH_SRC\n      value:           '0a:c2:bb:02:42:96'\n    - field:           VLAN_VID\n      value:           0x1064\n    - field:           VLAN_PCP\n      value:           0x00\n    - field:           ETH_TYPE\n      value:           0x0800\n    - field:           IP_DSCP\n      value:           0x00\n    - field:           IP_ECN\n      value:           0x00\n    - field:           IP_PROTO\n      value:           0x01\n    - field:           IPV4_SRC\n      value:           10.0.0.1\n    - field:           IPV4_DST\n      value:           10.100.0.254\n    - field:           NX_IP_FRAG\n      value:           0x01\n    - field:           NX_IP_TTL\n      value:           0x40\n    - field:           ICMPV4_TYPE\n      value:           0x08\n    - field:           ICMPV4_CODE\n      value:           0x00\n    - field:           X_PKT_POS\n      value:           0x002A\n...\n", true);
+}
+
+TEST(decoder, packetin_icmp4_frag2) {
+  testDecodeEncode("040A005400000000FFFFFFFF002A010600000000FFFFFFFF0001000C80000004000000010000000000000E00000000010AC2BB02429681000064080045000018051800B940015FB20A0000010A6400FEC0C1C2C3", "---\ntype:            PACKET_IN\nxid:             0x00000000\nversion:         0x04\nmsg:             \n  buffer_id:       NO_BUFFER\n  total_len:       0x002A\n  in_port:         0x00000001\n  in_phy_port:     0x00000001\n  metadata:        0x0000000000000000\n  reason:          APPLY_ACTION\n  table_id:        0x06\n  cookie:          0x00000000FFFFFFFF\n  match:           \n    - field:           IN_PORT\n      value:           0x00000001\n  data:            0E00000000010AC2BB02429681000064080045000018051800B940015FB20A0000010A6400FEC0C1C2C3\n  _pkt:            \n    - field:           ETH_DST\n      value:           '0e:00:00:00:00:01'\n    - field:           ETH_SRC\n      value:           '0a:c2:bb:02:42:96'\n    - field:           VLAN_VID\n      value:           0x1064\n    - field:           VLAN_PCP\n      value:           0x00\n    - field:           ETH_TYPE\n      value:           0x0800\n    - field:           IP_DSCP\n      value:           0x00\n    - field:           IP_ECN\n      value:           0x00\n    - field:           IP_PROTO\n      value:           0x01\n    - field:           IPV4_SRC\n      value:           10.0.0.1\n    - field:           IPV4_DST\n      value:           10.100.0.254\n    - field:           NX_IP_FRAG\n      value:           0x03\n    - field:           NX_IP_TTL\n      value:           0x40\n    - field:           X_PKT_POS\n      value:           0x0026\n...\n", true);
 }

@@ -195,8 +195,10 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   match_.addUnchecked(OFB_IPV4_DST{ip->dst});
 
   UInt16 frag = ip->frag & 0x3fff;  // ignore DF bit
+  UInt8 nxFragType = NXM_FRAG_TYPE_NONE;
   if (frag) {
-    match_.addUnchecked(NXM_NX_IP_FRAG{pkt::nxmFragmentType(frag)});
+    nxFragType = pkt::nxmFragmentType(frag);
+    match_.addUnchecked(NXM_NX_IP_FRAG{nxFragType});
   }
 
   match_.addUnchecked(NXM_NX_IP_TTL{ip->ttl});
@@ -204,6 +206,12 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   pkt += hdrLen;
   length -= hdrLen;
   offset_ += hdrLen;
+
+  // Stop decoding the packet here if the IPv4 packet is fragmented and this
+  // is a "later" fragment.
+  if (nxFragType & NXM_FRAG_TYPE_LATER) {
+    return;
+  }
 
   decodeIPv4_NextHdr(pkt, length, ip->proto);
 }
