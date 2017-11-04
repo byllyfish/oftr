@@ -1925,6 +1925,26 @@ Field/PKT_REG3:
   value: UInt64
   mask: !optout UInt64
   
+Field/PKT_REG4: 
+  field: PKT_REG4
+  value: UInt64
+  mask: !optout UInt64
+  
+Field/PKT_REG5: 
+  field: PKT_REG5
+  value: UInt64
+  mask: !optout UInt64
+  
+Field/PKT_REG6: 
+  field: PKT_REG6
+  value: UInt64
+  mask: !optout UInt64
+  
+Field/PKT_REG7: 
+  field: PKT_REG7
+  value: UInt64
+  mask: !optout UInt64
+  
 Field/NX_ETH_DST: 
   field: NX_ETH_DST
   value: MacAddress

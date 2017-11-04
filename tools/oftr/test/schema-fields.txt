@@ -45,6 +45,10 @@ PKT_REG0          | UInt64        | 0x80010008            | Packet Register 0
 PKT_REG1          | UInt64        | 0x80010208            | Packet Register 1
 PKT_REG2          | UInt64        | 0x80010408            | Packet Register 2
 PKT_REG3          | UInt64        | 0x80010608            | Packet Register 3
+PKT_REG4          | UInt64        | 0x80010808            | Packet Register 4
+PKT_REG5          | UInt64        | 0x80010a08            | Packet Register 5
+PKT_REG6          | UInt64        | 0x80010c08            | Packet Register 6
+PKT_REG7          | UInt64        | 0x80010e08            | Packet Register 7
 NX_ETH_DST        | MacAddress    | 0x00000206            | (Nicira) Ethernet Destination
 NX_ETH_SRC        | MacAddress    | 0x00000406            | (Nicira) Ethernet Source
 NX_ARP_SPA        | IPv4Address   | 0x00002004            | (Nicira) ARP Source IPv4 Address
