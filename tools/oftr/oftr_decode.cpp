@@ -495,7 +495,8 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
     return ExitStatus::Success;
   }
 
-  const bool hasPkt = (message->type() == ofp::OFPT_PACKET_IN || message->type() == ofp::OFPT_PACKET_OUT);
+  const bool hasPkt = (message->type() == ofp::OFPT_PACKET_IN ||
+                       message->type() == ofp::OFPT_PACKET_OUT);
   if (hasPkt && !isPktDataAllowed(message)) {
     // Ignore message based on packet_in/packet_out contents.
     log_debug("decodeOneMessage (packet message ignored)");
@@ -528,7 +529,8 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
     // to be invalid (because we are fuzz testing). Report this as an error.
     if (!silentError_) {
       llvm::errs() << "Filename: " << currentFilename_ << '\n';
-      llvm::errs() << "Error: Decode succeeded when --invert-check flag is specified.\n";
+      llvm::errs()
+          << "Error: Decode succeeded when --invert-check flag is specified.\n";
       llvm::errs() << *originalMessage << '\n';
     }
     return ExitStatus::DecodeSucceeded;
@@ -679,7 +681,8 @@ bool Decode::isPktDataAllowed(const ofp::Message *message) const {
   if (message->type() == OFPT_PACKET_IN) {
     const PacketIn *packetIn = message->castMessage<PacketIn>(&unused);
     if (packetIn) {
-      return pktIncludeFilter_.match(packetIn->enetFrame(), packetIn->totalLen());
+      return pktIncludeFilter_.match(packetIn->enetFrame(),
+                                     packetIn->totalLen());
     }
 
   } else if (message->type() == OFPT_PACKET_OUT) {

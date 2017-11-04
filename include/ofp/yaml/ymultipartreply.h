@@ -507,7 +507,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         io.mapRequired(key, seq);
         seq.close();
         sendMultipleParts(io, msg, seq.data(), seq.size(),
-          MPTableFeatures::MPVariableSizeOffset);
+                          MPTableFeatures::MPVariableSizeOffset);
         break;
       }
       case OFPMP_TABLE_DESC: {

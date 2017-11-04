@@ -269,8 +269,8 @@ bool PktSource::setFilter(const std::string &filter) {
 
   const int kOptimize = 1;
   struct bpf_program prog;
-  int result =
-      pcap_compile(pcap_, &prog, fullFilter.c_str(), kOptimize, PCAP_NETMASK_UNKNOWN);
+  int result = pcap_compile(pcap_, &prog, fullFilter.c_str(), kOptimize,
+                            PCAP_NETMASK_UNKNOWN);
   if (result < 0) {
     setError("pcap_compile", fullFilter, pcap_geterr(pcap_));
     return false;

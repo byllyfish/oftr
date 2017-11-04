@@ -10,8 +10,8 @@
 #include "ofp/timestamp.h"
 
 #if HAVE_LIBPCAP
-#include "ofp/demux/pktsink.h"
 #include "ofp/demux/pktfilter.h"
+#include "ofp/demux/pktsink.h"
 #else
 namespace ofp {
 namespace demux {
@@ -200,7 +200,8 @@ class Decode : public Subprogram {
       cl::desc("Don't output these OpenFlow message types (glob)"),
       cl::ValueRequired};
   cl::opt<std::string> pktFilter_{
-      "pkt-filter", cl::desc("Filter packets inside PacketIn/PacketOut messages (BPF)"),
+      "pkt-filter",
+      cl::desc("Filter packets inside PacketIn/PacketOut messages (BPF)"),
       cl::ValueRequired};
   cl::OptionCategory pcapCategory_{"Packet Capture Options"};
   cl::opt<std::string> pcapDevice_{
