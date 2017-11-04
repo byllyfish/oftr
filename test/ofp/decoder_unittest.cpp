@@ -2209,3 +2209,7 @@ TEST(decoder, packetin_icmp4_frag2) {
       " - field:           X_PKT_POS\n      value:           0x0026\n...\n",
       true);
 }
+
+TEST(decoder, flowmod_icmpv4) {
+  testDecodeEncode("040E004800000001000000000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF000000000001001480000A0208008000140101800026010000000000", "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:         0x04\nmsg:             \n  cookie:          0x0000000000000000\n  cookie_mask:     0x0000000000000000\n  table_id:        0x00\n  command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    0x0000\n  priority:        0x0000\n  buffer_id:       NO_BUFFER\n  out_port:        ANY\n  out_group:       ANY\n  flags:           [  ]\n  match:           \n    - field:           ETH_TYPE\n      value:           0x0800\n    - field:           IP_PROTO\n      value:           0x01\n    - field:           ICMPV4_TYPE\n      value:           0x00\n  instructions:    \n...\n");
+}

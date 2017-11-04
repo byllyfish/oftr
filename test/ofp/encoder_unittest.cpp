@@ -3780,3 +3780,26 @@ TEST(encoder, packetin_icmp4_frag2) {
       "0A0000010A6400FEC0C1C2C3",
       encoder.data(), encoder.size());
 }
+
+TEST(encoder, flowmod_icmpv4) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         4
+      xid:             1
+      msg:
+        table_id:        0
+        command:         ADD
+        match:
+          # ICMPV4_TYPE should be sufficient to determine all prereqs.         
+          - field:           ICMPV4_TYPE
+            value:           0
+        instructions:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(72, encoder.size());
+  EXPECT_HEX(
+      "040E004800000001000000000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF000000000001001480000A0208008000140101800026010000000000",
+      encoder.data(), encoder.size());
+}
