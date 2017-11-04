@@ -1,5 +1,13 @@
 = Changelog
 
+== Version 0.39 (4 November 2017)
+
+- Add "--pkt-filter" command line argument to filter messages based on PacketIn/PacketOut contents.
+- Fix decodes for later IPv4 fragments (offset > 0) so they don't include tcp/udp/icmp headers. 
+- Fix TableFeatures multipart reply generation.
+- Fix support for "--silent-error" so it works even when "--invert-check" is true.
+- Update boringssl and googletest modules.
+
 == Version 0.38 (15 October 2017)
 
 - Log an error when we block a datapath_id of all zeroes.
