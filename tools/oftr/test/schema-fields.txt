@@ -1,79 +1,79 @@
-Name              | Type          | Description
-------------------|---------------|-------------
-IN_PORT           | PortNumber    | Input Port
-IN_PHY_PORT       | UInt32        | Physical Input Port
-METADATA          | UInt64        | Metadata
-ETH_DST           | MacAddress    | Ethernet Destination
-ETH_SRC           | MacAddress    | Ethernet Source
-ETH_TYPE          | UInt16        | Ethernet Type
-VLAN_VID          | VlanNumber    | VLAN ID (0=no tag, 0x1yyy=tag yyy)
-VLAN_PCP          | UInt8         | VLAN Priority
-IP_DSCP           | UInt8         | IPv4/v6 DSCP
-IP_ECN            | UInt8         | IPv4/v6 ECN
-IP_PROTO          | UInt8         | IPv4/v6 Protocol
-IPV4_SRC          | IPv4Address   | IPv4 Source Address
-IPV4_DST          | IPv4Address   | IPv4 Destination Address
-TCP_SRC           | UInt16        | TCP Source Port
-TCP_DST           | UInt16        | TCP Destination Port
-UDP_SRC           | UInt16        | UDP Source Port
-UDP_DST           | UInt16        | UDP Destination Port
-SCTP_SRC          | UInt16        | SCTP Source Port
-SCTP_DST          | UInt16        | SCTP Destination Port
-ICMPV4_TYPE       | UInt8         | ICMPv4 Type
-ICMPV4_CODE       | UInt8         | ICMPv4 Code
-ARP_OP            | UInt16        | ARP Opcode
-ARP_SPA           | IPv4Address   | ARP Source IPv4 Address
-ARP_TPA           | IPv4Address   | ARP Target IPv4 Address
-ARP_SHA           | MacAddress    | ARP Source Ethernet Address
-ARP_THA           | MacAddress    | ARP Target Ethernet Address
-IPV6_SRC          | IPv6Address   | IPv6 Source Address
-IPV6_DST          | IPv6Address   | IPv6 Destination Address
-IPV6_FLABEL       | UInt32        | IPv6 Flow Label
-ICMPV6_TYPE       | UInt8         | ICMPv6 Type
-ICMPV6_CODE       | UInt8         | ICMPv6 Code
-IPV6_ND_TARGET    | IPv6Address   | ICMPv6 Neighbor Discovery Target IPv6
-IPV6_ND_SLL       | MacAddress    | ICMPv6 Neighbor Discovery Source Ethernet Address
-IPV6_ND_TLL       | MacAddress    | ICMPv6 Neighbor Discovery Target Ethernet Address
-MPLS_LABEL        | UInt32        | MPLS Label
-MPLS_TC           | UInt8         | MPLS Traffic Class
-MPLS_BOS          | UInt8         | MPLS Bottom of Stack
-PBB_ISID          | UInt24        | PBB I-SID
-TUNNEL_ID         | UInt64        | Tunnel ID
-IPV6_EXTHDR       | UInt16        | IPv6 Extension Header Pseudo-Field
-PBB_UCA           | UInt8         | PBB UCA
-PKT_REG0          | UInt64        | Packet Register 0
-PKT_REG1          | UInt64        | Packet Register 1
-PKT_REG2          | UInt64        | Packet Register 2
-PKT_REG3          | UInt64        | Packet Register 3
-NX_ETH_DST        | MacAddress    | (Nicira) Ethernet Destination
-NX_ETH_SRC        | MacAddress    | (Nicira) Ethernet Source
-NX_ARP_SPA        | IPv4Address   | (Nicira) ARP Source IPv4 Address
-NX_ARP_TPA        | IPv4Address   | (Nicira) ARP Target IPv4 Address
-NX_ARP_SHA        | MacAddress    | (Nicira) ARP Source Ethernet Address
-NX_ARP_THA        | MacAddress    | (Nicira) ARP Target Ethernet Address
-NX_REG0           | UInt32        | (Nicira) Register 0
-NX_REG1           | UInt32        | (Nicira) Register 1
-NX_REG2           | UInt32        | (Nicira) Register 2
-NX_REG3           | UInt32        | (Nicira) Register 3
-NX_REG4           | UInt32        | (Nicira) Register 4
-NX_REG5           | UInt32        | (Nicira) Register 5
-NX_REG6           | UInt32        | (Nicira) Register 6
-NX_REG7           | UInt32        | (Nicira) Register 7
-NX_IP_FRAG        | UInt8         | (Nicira) IPv4/v6 Fragment Bitmask
-NX_IP_TTL         | UInt8         | (Nicira) IPv4/v6 TTL/Hop Limit
-NX_TCP_FLAGS      | UInt16        | (Nicira) TCP Flags
-NX_TUN_IP4_SRC    | IPv4Address   | (Nicira) Tunnel IPv4 Source Field
-NX_TUN_IP4_DST    | IPv4Address   | (Nicira) Tunnel IPv4 Destination Field
-NX_TUN_GBP_ID     | UInt16        | (Nicira) VXLAN Group Policy ID
-NX_TUN_GBP_FLAGS  | UInt8         | (Nicira) VXLAN Group Policy flags
-X_LLDP_CHASSIS_ID | LLDPChassisID | (Internal) LLDP Chassis ID
-X_LLDP_PORT_ID    | LLDPPortID    | (Internal) LLDP Port ID
-X_LLDP_TTL        | UInt16        | (Internal) LLDP TTL
-X_PKT_POS         | UInt16        | (Internal) Last Position in Packet
-X_IPV6_ND_RES     | UInt32        | (Internal) ICMPv6 Neighbor Discovery Reserved
-X_EXPERIMENTER_01 | UInt16        | (Internal) Experimental Test Field
-DURATION          | DurationSec   | (OXS) Time flow entry has been alive
-IDLE_TIME         | DurationSec   | (OXS) Time flow entry has been idle
-FLOW_COUNT        | UInt32        | (OXS) Number of aggregated flow entries
-PACKET_COUNT      | UInt64        | (OXS) Number of packets matched by flow entry
-BYTE_COUNT        | UInt64        | (OXS) Number of bytes matched by flow entry
+Name              | Type          | OXM ID                | Description
+------------------|---------------|-----------------------|-------------
+IN_PORT           | PortNumber    | 0x80000004            | Input Port
+IN_PHY_PORT       | UInt32        | 0x80000204            | Physical Input Port
+METADATA          | UInt64        | 0x80000408            | Metadata
+ETH_DST           | MacAddress    | 0x80000606            | Ethernet Destination
+ETH_SRC           | MacAddress    | 0x80000806            | Ethernet Source
+ETH_TYPE          | UInt16        | 0x80000a02            | Ethernet Type
+VLAN_VID          | VlanNumber    | 0x80000c02            | VLAN ID (0=no tag, 0x1yyy=tag yyy)
+VLAN_PCP          | UInt8         | 0x80000e01            | VLAN Priority
+IP_DSCP           | UInt8         | 0x80001001            | IPv4/v6 DSCP
+IP_ECN            | UInt8         | 0x80001201            | IPv4/v6 ECN
+IP_PROTO          | UInt8         | 0x80001401            | IPv4/v6 Protocol
+IPV4_SRC          | IPv4Address   | 0x80001604            | IPv4 Source Address
+IPV4_DST          | IPv4Address   | 0x80001804            | IPv4 Destination Address
+TCP_SRC           | UInt16        | 0x80001a02            | TCP Source Port
+TCP_DST           | UInt16        | 0x80001c02            | TCP Destination Port
+UDP_SRC           | UInt16        | 0x80001e02            | UDP Source Port
+UDP_DST           | UInt16        | 0x80002002            | UDP Destination Port
+SCTP_SRC          | UInt16        | 0x80002202            | SCTP Source Port
+SCTP_DST          | UInt16        | 0x80002402            | SCTP Destination Port
+ICMPV4_TYPE       | UInt8         | 0x80002601            | ICMPv4 Type
+ICMPV4_CODE       | UInt8         | 0x80002801            | ICMPv4 Code
+ARP_OP            | UInt16        | 0x80002a02            | ARP Opcode
+ARP_SPA           | IPv4Address   | 0x80002c04            | ARP Source IPv4 Address
+ARP_TPA           | IPv4Address   | 0x80002e04            | ARP Target IPv4 Address
+ARP_SHA           | MacAddress    | 0x80003006            | ARP Source Ethernet Address
+ARP_THA           | MacAddress    | 0x80003206            | ARP Target Ethernet Address
+IPV6_SRC          | IPv6Address   | 0x80003410            | IPv6 Source Address
+IPV6_DST          | IPv6Address   | 0x80003610            | IPv6 Destination Address
+IPV6_FLABEL       | UInt32        | 0x80003804            | IPv6 Flow Label
+ICMPV6_TYPE       | UInt8         | 0x80003a01            | ICMPv6 Type
+ICMPV6_CODE       | UInt8         | 0x80003c01            | ICMPv6 Code
+IPV6_ND_TARGET    | IPv6Address   | 0x80003e10            | ICMPv6 Neighbor Discovery Target IPv6
+IPV6_ND_SLL       | MacAddress    | 0x80004006            | ICMPv6 Neighbor Discovery Source Ethernet Address
+IPV6_ND_TLL       | MacAddress    | 0x80004206            | ICMPv6 Neighbor Discovery Target Ethernet Address
+MPLS_LABEL        | UInt32        | 0x80004404            | MPLS Label
+MPLS_TC           | UInt8         | 0x80004601            | MPLS Traffic Class
+MPLS_BOS          | UInt8         | 0x80004801            | MPLS Bottom of Stack
+PBB_ISID          | UInt24        | 0x80004a03            | PBB I-SID
+TUNNEL_ID         | UInt64        | 0x80004c08            | Tunnel ID
+IPV6_EXTHDR       | UInt16        | 0x80004e02            | IPv6 Extension Header Pseudo-Field
+PBB_UCA           | UInt8         | 0x80005201            | PBB UCA
+PKT_REG0          | UInt64        | 0x80010008            | Packet Register 0
+PKT_REG1          | UInt64        | 0x80010208            | Packet Register 1
+PKT_REG2          | UInt64        | 0x80010408            | Packet Register 2
+PKT_REG3          | UInt64        | 0x80010608            | Packet Register 3
+NX_ETH_DST        | MacAddress    | 0x00000206            | (Nicira) Ethernet Destination
+NX_ETH_SRC        | MacAddress    | 0x00000406            | (Nicira) Ethernet Source
+NX_ARP_SPA        | IPv4Address   | 0x00002004            | (Nicira) ARP Source IPv4 Address
+NX_ARP_TPA        | IPv4Address   | 0x00002204            | (Nicira) ARP Target IPv4 Address
+NX_ARP_SHA        | MacAddress    | 0x00012206            | (Nicira) ARP Source Ethernet Address
+NX_ARP_THA        | MacAddress    | 0x00012406            | (Nicira) ARP Target Ethernet Address
+NX_REG0           | UInt32        | 0x00010004            | (Nicira) Register 0
+NX_REG1           | UInt32        | 0x00010204            | (Nicira) Register 1
+NX_REG2           | UInt32        | 0x00010404            | (Nicira) Register 2
+NX_REG3           | UInt32        | 0x00010604            | (Nicira) Register 3
+NX_REG4           | UInt32        | 0x00010804            | (Nicira) Register 4
+NX_REG5           | UInt32        | 0x00010a04            | (Nicira) Register 5
+NX_REG6           | UInt32        | 0x00010c04            | (Nicira) Register 6
+NX_REG7           | UInt32        | 0x00010e04            | (Nicira) Register 7
+NX_IP_FRAG        | UInt8         | 0x00013401            | (Nicira) IPv4/v6 Fragment Bitmask
+NX_IP_TTL         | UInt8         | 0x00013a01            | (Nicira) IPv4/v6 TTL/Hop Limit
+NX_TCP_FLAGS      | UInt16        | 0x00014402            | (Nicira) TCP Flags
+NX_TUN_IP4_SRC    | IPv4Address   | 0x00013e04            | (Nicira) Tunnel IPv4 Source Field
+NX_TUN_IP4_DST    | IPv4Address   | 0x00014004            | (Nicira) Tunnel IPv4 Destination Field
+NX_TUN_GBP_ID     | UInt16        | 0x00014c02            | (Nicira) VXLAN Group Policy ID
+NX_TUN_GBP_FLAGS  | UInt8         | 0x00014e01            | (Nicira) VXLAN Group Policy flags
+X_LLDP_CHASSIS_ID | LLDPChassisID | 0xffff0244.0x00ffffff | (Internal) LLDP Chassis ID
+X_LLDP_PORT_ID    | LLDPPortID    | 0xffff0444.0x00ffffff | (Internal) LLDP Port ID
+X_LLDP_TTL        | UInt16        | 0xffff0606.0x00ffffff | (Internal) LLDP TTL
+X_PKT_POS         | UInt16        | 0xffff0806.0x00ffffff | (Internal) Last Position in Packet
+X_IPV6_ND_RES     | UInt32        | 0xffff0a08.0x00ffffff | (Internal) ICMPv6 Neighbor Discovery Reserved
+X_EXPERIMENTER_01 | UInt16        | 0xffff0606.0x00fffffe | (Internal) Experimental Test Field
+DURATION          | DurationSec   | 0x80020008            | (OXS) Time flow entry has been alive
+IDLE_TIME         | DurationSec   | 0x80020208            | (OXS) Time flow entry has been idle
+FLOW_COUNT        | UInt32        | 0x80020604            | (OXS) Number of aggregated flow entries
+PACKET_COUNT      | UInt64        | 0x80020808            | (OXS) Number of packets matched by flow entry
+BYTE_COUNT        | UInt64        | 0x80020a08            | (OXS) Number of bytes matched by flow entry

@@ -77,6 +77,7 @@ class Help : public Subprogram {
   void dumpSchemaLexicon();
 
   static const char *translateFieldType(const char *type);
+  std::string translateFieldNum(ofp::UInt32 value32, ofp::UInt32 experimenter);
 
   // --- Command-line Arguments ---
   cl::opt<bool> fields_{"fields", cl::desc("List supported match fields.")};
