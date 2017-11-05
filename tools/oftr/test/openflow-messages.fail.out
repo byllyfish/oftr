@@ -19873,10 +19873,9 @@ version:         0x04
 _file:           external/openflow-messages/v1_3/rep/rep_18_000127.fail
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_18_000127.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REQUEST.TABLE_FEATURES
-^
-
+Error: Encode yielded different size data: 16 vs. 88
+[ByteRange size=16 data=0412001000007D8D000C000000000000]
+[ByteRange size=88 data=0412005800007D8D000C00000000000000406E00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000880002A02]
 Filename: external/openflow-messages/v1_3/rep/rep_18_000128.fail:
 Error: Only 87 bytes read of message body. Expected to read 88 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_000129.fail
@@ -20390,10 +20389,9 @@ version:         0x04
 _file:           external/openflow-messages/v1_3/rep/rep_18_00067.fail
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_18_00067.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REQUEST.TABLE_FEATURES
-^
-
+Error: Encode yielded different size data: 16 vs. 88
+[ByteRange size=16 data=0412001000007D8D000C000000000000]
+[ByteRange size=88 data=0412005800007D8D000C00000000000000405E00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250002000400000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00068.fail:
 Error: Only 79 bytes read of message body. Expected to read 80 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00069.fail
@@ -20407,10 +20405,9 @@ version:         0x04
 _file:           external/openflow-messages/v1_3/rep/rep_18_00070.fail
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_18_00070.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REQUEST.TABLE_FEATURES
-^
-
+Error: Encode yielded different size data: 16 vs. 88
+[ByteRange size=16 data=0412001000007D8D000C000000000000]
+[ByteRange size=88 data=0412005800007D8D000C00000000000000405F00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000200050E000000]
 Filename: external/openflow-messages/v1_3/rep/rep_18_00071.fail:
 Error: Only 79 bytes read of message body. Expected to read 80 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00072.fail
@@ -23307,10 +23304,9 @@ version:         0x04
 _file:           external/openflow-messages/v1_3_1/rep/rep_18_000127.fail
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000127.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REQUEST.TABLE_FEATURES
-^
-
+Error: Encode yielded different size data: 16 vs. 88
+[ByteRange size=16 data=0412001000007D8D000C000000000000]
+[ByteRange size=88 data=0412005800007D8D000C00000000000000406E00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000880002A02]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000128.fail:
 Error: Only 87 bytes read of message body. Expected to read 88 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_000129.fail
@@ -23824,10 +23820,9 @@ version:         0x04
 _file:           external/openflow-messages/v1_3_1/rep/rep_18_00067.fail
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00067.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REQUEST.TABLE_FEATURES
-^
-
+Error: Encode yielded different size data: 16 vs. 88
+[ByteRange size=16 data=0412001000007D8D000C000000000000]
+[ByteRange size=88 data=0412005800007D8D000C00000000000000405E00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250002000400000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00068.fail:
 Error: Only 79 bytes read of message body. Expected to read 80 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00069.fail
@@ -23841,10 +23836,9 @@ version:         0x04
 _file:           external/openflow-messages/v1_3_1/rep/rep_18_00070.fail
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00070.fail
-Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REQUEST.TABLE_FEATURES
-^
-
+Error: Encode yielded different size data: 16 vs. 88
+[ByteRange size=16 data=0412001000007D8D000C000000000000]
+[ByteRange size=88 data=0412005800007D8D000C00000000000000405F00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000200050E000000]
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00071.fail:
 Error: Only 79 bytes read of message body. Expected to read 80 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00072.fail
