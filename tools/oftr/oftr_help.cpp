@@ -409,7 +409,7 @@ void Help::dumpFieldTable() {
   // Print the header line.
   std::cout << std::setw(nameWidth) << std::left << "Name"
             << " | " << std::setw(typeWidth) << std::left << "Type"
-            << " | " << std::setw(21) << "OXM ID" 
+            << " | " << std::setw(21) << "OXM ID"
             << " | "
             << "Description\n";
   std::cout << std::setfill('-');
@@ -426,8 +426,7 @@ void Help::dumpFieldTable() {
     auto oxmStr = translateFieldNum(info->value32, info->experimenter);
     std::cout << std::setw(nameWidth) << std::left << info->name << " | "
               << std::setw(typeWidth) << std::left << typeStr << " | "
-              << std::setw(21) << oxmStr << " | "
-              << info->description << '\n';
+              << std::setw(21) << oxmStr << " | " << info->description << '\n';
   }
 }
 
@@ -540,7 +539,8 @@ const char *Help::translateFieldType(const char *type) {
   return type;
 }
 
-std::string Help::translateFieldNum(ofp::UInt32 value32, ofp::UInt32 experimenter) {
+std::string Help::translateFieldNum(ofp::UInt32 value32,
+                                    ofp::UInt32 experimenter) {
   std::string buf;
   llvm::raw_string_ostream os{buf};
   value32 = ofp::detail::HostSwapByteOrder(value32);

@@ -2211,13 +2211,62 @@ TEST(decoder, packetin_icmp4_frag2) {
 }
 
 TEST(decoder, flowmod_icmpv4) {
-  testDecodeEncode("040E004800000001000000000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF000000000001001480000A0208008000140101800026010000000000", "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:         0x04\nmsg:             \n  cookie:          0x0000000000000000\n  cookie_mask:     0x0000000000000000\n  table_id:        0x00\n  command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    0x0000\n  priority:        0x0000\n  buffer_id:       NO_BUFFER\n  out_port:        ANY\n  out_group:       ANY\n  flags:           [  ]\n  match:           \n    - field:           ETH_TYPE\n      value:           0x0800\n    - field:           IP_PROTO\n      value:           0x01\n    - field:           ICMPV4_TYPE\n      value:           0x00\n  instructions:    \n...\n");
+  testDecodeEncode(
+      "040E004800000001000000000000000000000000000000000000000000000000FFFFFFFF"
+      "FFFFFFFFFFFFFFFF000000000001001480000A020800800014010180002601000000000"
+      "0",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:   "
+      "      0x04\nmsg:             \n  cookie:          0x0000000000000000\n  "
+      "cookie_mask:     0x0000000000000000\n  table_id:        0x00\n  "
+      "command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    "
+      "0x0000\n  priority:        0x0000\n  buffer_id:       NO_BUFFER\n  "
+      "out_port:        ANY\n  out_group:       ANY\n  flags:           [  ]\n "
+      " match:           \n    - field:           ETH_TYPE\n      value:       "
+      "    0x0800\n    - field:           IP_PROTO\n      value:           "
+      "0x01\n    - field:           ICMPV4_TYPE\n      value:           0x00\n "
+      " instructions:    \n...\n");
 }
 
 TEST(decoder, tablefeatures_empty) {
-  testDecodeEncode("0412001000000000000C000000000000", "---\ntype:            REQUEST.TABLE_FEATURES\nflags:           [  ]\nxid:             0x00000000\nversion:         0x04\nmsg:             \n...\n");
+  testDecodeEncode("0412001000000000000C000000000000",
+                   "---\ntype:            REQUEST.TABLE_FEATURES\nflags:       "
+                   "    [  ]\nxid:             0x00000000\nversion:         "
+                   "0x04\nmsg:             \n...\n");
 }
 
 TEST(decoder, tablefeatures_request) {
-  testDecodeEncode("0412018800000001000C0000000000000178000000000000506F72742041434C0000000000000000000000000000000000000000000000000000000000000000000000000000000000000003000000320000001800010004000300040004000400050004000600040002000B0102030405060700000000000004001C000000040011000400120004001600040017000400190004000000000006001C00000004001100040012000400160004001700040019000400000000000800348000000480000A028000070C8000090C80000C0280001401800019088000372080001E028000200280001A0280001C0200000000000A00348000000480000A02800006068000080680000C0280001401800018048000361080001E028000200280001A0280001C0200000000000C0030800006068000080680000C0280000E0180001001800016048000180480001A0280001C0280001E0280002002000E0030800006068000080680000C0280000E0180001001800016048000180480001A0280001C0280001E0280002002", "---\ntype:            REQUEST.TABLE_FEATURES\nflags:           [  ]\nxid:             0x00000001\nversion:         0x04\nmsg:             \n  - table_id:        0x00\n    name:            Port ACL\n    metadata_match:  0x0000000000000000\n    metadata_write:  0x0000000000000000\n    config:          [ '0x00000003' ]\n    max_entries:     0x00000032\n    instructions:    [ GOTO_TABLE, WRITE_ACTIONS, APPLY_ACTIONS, CLEAR_ACTIONS, \n                       METER ]\n    next_tables:     [ 1, 2, 3, 4, 5, 6, 7 ]\n    write_actions:   [ OUTPUT, PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, \n                       SET_FIELD ]\n    apply_actions:   [ OUTPUT, PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, \n                       SET_FIELD ]\n    match:           [ IN_PORT, ETH_TYPE, ETH_DST/, ETH_SRC/, VLAN_VID, \n                       IP_PROTO, IPV4_DST/, IPV6_DST/, UDP_SRC, UDP_DST, \n                       TCP_SRC, TCP_DST ]\n    wildcards:       [ IN_PORT, ETH_TYPE, ETH_DST, ETH_SRC, VLAN_VID, IP_PROTO, \n                       IPV4_DST, IPV6_DST, UDP_SRC, UDP_DST, TCP_SRC, TCP_DST ]\n    write_set_field: [ ETH_DST, ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, \n                       IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    apply_set_field: [ ETH_DST, ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, \n                       IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    properties:      \n...\n");
+  testDecodeEncode(
+      "0412018800000001000C0000000000000178000000000000506F72742041434C00000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000003000000320000001800010004000300040004000400050004000600040002000B"
+      "0102030405060700000000000004001C0000000400110004001200040016000400170004"
+      "00190004000000000006001C000000040011000400120004001600040017000400190004"
+      "00000000000800348000000480000A028000070C8000090C80000C028000140180001908"
+      "8000372080001E028000200280001A0280001C0200000000000A00348000000480000A02"
+      "800006068000080680000C0280001401800018048000361080001E028000200280001A02"
+      "80001C0200000000000C0030800006068000080680000C0280000E018000100180001604"
+      "8000180480001A0280001C0280001E0280002002000E0030800006068000080680000C02"
+      "80000E0180001001800016048000180480001A0280001C0280001E0280002002",
+      "---\ntype:            REQUEST.TABLE_FEATURES\nflags:           [  "
+      "]\nxid:             0x00000001\nversion:         0x04\nmsg:             "
+      "\n  - table_id:        0x00\n    name:            Port ACL\n    "
+      "metadata_match:  0x0000000000000000\n    metadata_write:  "
+      "0x0000000000000000\n    config:          [ '0x00000003' ]\n    "
+      "max_entries:     0x00000032\n    instructions:    [ GOTO_TABLE, "
+      "WRITE_ACTIONS, APPLY_ACTIONS, CLEAR_ACTIONS, \n                       "
+      "METER ]\n    next_tables:     [ 1, 2, 3, 4, 5, 6, 7 ]\n    "
+      "write_actions:   [ OUTPUT, PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, \n   "
+      "                    SET_FIELD ]\n    apply_actions:   [ OUTPUT, "
+      "PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, \n                       "
+      "SET_FIELD ]\n    match:           [ IN_PORT, ETH_TYPE, ETH_DST/, "
+      "ETH_SRC/, VLAN_VID, \n                       IP_PROTO, IPV4_DST/, "
+      "IPV6_DST/, UDP_SRC, UDP_DST, \n                       TCP_SRC, TCP_DST "
+      "]\n    wildcards:       [ IN_PORT, ETH_TYPE, ETH_DST, ETH_SRC, "
+      "VLAN_VID, IP_PROTO, \n                       IPV4_DST, IPV6_DST, "
+      "UDP_SRC, UDP_DST, TCP_SRC, TCP_DST ]\n    write_set_field: [ ETH_DST, "
+      "ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, \n                      "
+      " IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    apply_set_field: [ "
+      "ETH_DST, ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, \n             "
+      "          IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    "
+      "properties:      \n...\n");
 }
