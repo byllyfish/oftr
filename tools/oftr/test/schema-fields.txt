@@ -41,6 +41,9 @@ PBB_ISID          | UInt24        | 0x80004a03            | PBB I-SID
 TUNNEL_ID         | UInt64        | 0x80004c08            | Tunnel ID
 IPV6_EXTHDR       | UInt16        | 0x80004e02            | IPv6 Extension Header Pseudo-Field
 PBB_UCA           | UInt8         | 0x80005201            | PBB UCA
+TCP_FLAGS         | UInt16        | 0x80005402            | TCP Flags
+ACTSET_OUTPUT     | PortNumber    | 0x80005604            | Output Port from Action Set Metadata
+PACKET_TYPE       | UInt32        | 0x80005804            | Packet Type Value
 PKT_REG0          | UInt64        | 0x80010008            | Packet Register 0
 PKT_REG1          | UInt64        | 0x80010208            | Packet Register 1
 PKT_REG2          | UInt64        | 0x80010408            | Packet Register 2

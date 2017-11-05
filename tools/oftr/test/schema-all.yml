@@ -1905,6 +1905,21 @@ Field/PBB_UCA:
   value: UInt8
   mask: !optout UInt8
   
+Field/TCP_FLAGS: 
+  field: TCP_FLAGS
+  value: UInt16
+  mask: !optout UInt16
+  
+Field/ACTSET_OUTPUT: 
+  field: ACTSET_OUTPUT
+  value: PortNumber
+  mask: !optout PortNumber
+  
+Field/PACKET_TYPE: 
+  field: PACKET_TYPE
+  value: UInt32
+  mask: !optout UInt32
+  
 Field/PKT_REG0: 
   field: PKT_REG0
   value: UInt64

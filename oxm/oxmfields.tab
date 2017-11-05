@@ -40,6 +40,9 @@ OFB_PBB_ISID	0x8000	37	3	Big24	true	OFB_ETH_TYPE{0x88E7}	PBB I-SID
 OFB_TUNNEL_ID	0x8000	38	8	Big64	true		Tunnel ID
 OFB_IPV6_EXTHDR	0x8000	39	2	Big16	true	OFB_ETH_TYPE{0x86dd}	IPv6 Extension Header Pseudo-Field
 OFB_PBB_UCA	0x8000	41	1	Big8	false	OFB_ETH_TYPE{0x88E7}	PBB UCA
+OFB_TCP_FLAGS	0x8000	42	2	Big16	false	OFB_IP_PROTO{6}	TCP Flags
+OFB_ACTSET_OUTPUT	0x8000	43	4	PortNumber	false		Output Port from Action Set Metadata
+OFB_PACKET_TYPE	0x8000	44	4	Big32	false		Packet Type Value
 OFB_PKT_REG0	0x8001	0	8	Big64	true		Packet Register 0
 OFB_PKT_REG1	0x8001	1	8	Big64	true		Packet Register 1
 OFB_PKT_REG2	0x8001	2	8	Big64	true		Packet Register 2
@@ -48,7 +51,8 @@ OFB_PKT_REG4	0x8001	4	8	Big64	true		Packet Register 4
 OFB_PKT_REG5	0x8001	5	8	Big64	true		Packet Register 5
 OFB_PKT_REG6	0x8001	6	8	Big64	true		Packet Register 6
 OFB_PKT_REG7	0x8001	7	8	Big64	true		Packet Register 7
-# ONF_ONF_ACTSET_OUTPUT	0xFFFF	43.0x4F4E4600	8	PortNumber	false		(ONF) Egress port from action set
+#ONF_ONF_TCP_FLAGS	0xFFFF	42.0x4F4E4600	6	Big16	false		(ONF) TCP Flags
+#ONF_ONF_ACTSET_OUTPUT	0xFFFF	43.0x4F4E4600	8	PortNumber	false		(ONF) Egress Port from Action Set
 NXM_NX_ETH_DST	0x0000	1	6	MacAddress	true		(Nicira) Ethernet Destination
 NXM_NX_ETH_SRC	0x0000	2	6	MacAddress	true		(Nicira) Ethernet Source
 NXM_NX_ARP_SPA	0x0000	16	4	IPv4Address	true		(Nicira) ARP Source IPv4 Address
