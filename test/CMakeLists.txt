@@ -124,6 +124,7 @@ if(HAVE_LIBPCAP)
     set(LIBOFP_TEST_SOURCES
     	${LIBOFP_TEST_SOURCES}
     	ofp/demux/pktsink_unittest.cpp
+    	ofp/demux/pktfilter_unittest.cpp
     )
 endif()
 

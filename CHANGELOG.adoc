@@ -1,5 +1,17 @@
 = Changelog
 
+== Version 0.39 (5 November 2017)
+
+- Add "--pkt-filter" command line argument to filter messages based on PacketIn/PacketOut contents.
+- Fix decodes for later IPv4 fragments (offset > 0) so they don't include tcp/udp/icmp headers. 
+- Fix TableFeatures multipart reply generation.
+- ICMPV4_TYPE should be sufficient to determine prerequisites (issue #9).
+- TableFeatures request doesn't always need 'msg' (issue #7)
+- Include hexadecimal OXM ID's in "--field-table" output.
+- Add four more PKT_REGX fields and fields from OpenFlow 1.5 (issue #8)
+- Fix support for "--silent-error" so it works even when "--invert-check" is true.
+- Update boringssl and googletest modules.
+
 == Version 0.38 (15 October 2017)
 
 - Log an error when we block a datapath_id of all zeroes.
