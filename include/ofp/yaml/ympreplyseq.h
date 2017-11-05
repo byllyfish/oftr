@@ -95,6 +95,11 @@ class MPReplyBuilderSeq {
   const UInt8 *data() const { return channel_.data(); }
   size_t size() const { return channel_.size(); }
 
+  // Need begin/end so mapOptional("properties", ...) will compile.
+  // N.B. This code is never actually called.
+  constexpr int begin() const { return 0; }
+  constexpr int end() const { return 0; }
+
  private:
   MemoryChannel channel_;
   Type item_;

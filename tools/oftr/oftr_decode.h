@@ -10,6 +10,7 @@
 #include "ofp/timestamp.h"
 
 #if HAVE_LIBPCAP
+#include "ofp/demux/pktfilter.h"
 #include "ofp/demux/pktsink.h"
 #else
 namespace ofp {
@@ -40,6 +41,7 @@ namespace ofpx {
 //   --verify-output (-V)  Verify output by translating it back to binary.
 //   --use-findx           Use metadata from tcpflow '.findx' files.
 //   --pkt-decode          Include _pkt in PacketIn/PacketOut decodes.
+//   --pkt-filter=<filter> Filter packets inside PacketIn/PacketOut messages.
 //   --pkt-write-file=<file> Write data from PacketIn/PacketOut messages to
 //   .pcap file.
 //   --show-filename       Show the file name in all decodes.
@@ -103,8 +105,9 @@ class Decode : public Subprogram {
   ofp::UInt64 nextSessionId_ = 0;
 
   std::unique_ptr<ofp::demux::PktSink> pktSinkFile_;
-  std::vector<std::string> includeFilter_;
-  std::vector<std::string> excludeFilter_;
+  std::vector<std::string> msgIncludeFilter_;
+  std::vector<std::string> msgExcludeFilter_;
+  ofp::demux::PktFilter pktIncludeFilter_;
 
   bool validateCommandLineArguments();
 
@@ -122,6 +125,7 @@ class Decode : public Subprogram {
   static void parseMsgFilter(const std::string &input,
                              std::vector<std::string> *filter);
   bool isMsgTypeAllowed(const ofp::Message *message) const;
+  bool isPktDataAllowed(const ofp::Message *message) const;
   bool equalMessages(ofp::ByteRange origData, ofp::ByteRange newData) const;
 
   static bool parseIndexLine(const llvm::StringRef &line, size_t *pos,
@@ -195,6 +199,10 @@ class Decode : public Subprogram {
       "msg-exclude",
       cl::desc("Don't output these OpenFlow message types (glob)"),
       cl::ValueRequired};
+  cl::opt<std::string> pktFilter_{
+      "pkt-filter",
+      cl::desc("Filter packets inside PacketIn/PacketOut messages (BPF)"),
+      cl::ValueRequired};
   cl::OptionCategory pcapCategory_{"Packet Capture Options"};
   cl::opt<std::string> pcapDevice_{
       "pcap-device",
@@ -212,7 +220,7 @@ class Decode : public Subprogram {
       cl::desc("Write reassembled TCP streams to directory (for debugging)"),
       cl::cat(pcapCategory_), cl::ValueRequired, cl::Hidden};
   cl::opt<std::string> pcapFilter_{
-      "pcap-filter", cl::desc("Filter for packet capture"),
+      "pcap-filter", cl::desc("Filter for packet capture (BPF)"),
       cl::cat(pcapCategory_), cl::init("tcp port 6653 or 6633")};
   cl::opt<bool> pcapSkipPayload_{
       "pcap-skip-payload",

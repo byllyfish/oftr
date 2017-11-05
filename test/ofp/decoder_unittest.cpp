@@ -8,7 +8,8 @@
 using namespace ofp;
 using namespace yaml;
 
-static void testDecodeEncode(const char *hex, const char *yaml) {
+static void testDecodeEncode(const char *hex, const char *yaml,
+                             bool pktMatch = false) {
   auto s = HexToRawData(hex);
 
   Message msg{s.data(), s.size()};
@@ -16,7 +17,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
 
   {
     // YAML test
-    Decoder decoder{&msg};
+    Decoder decoder{&msg, false, pktMatch};
 
     EXPECT_EQ("", decoder.error());
     EXPECT_EQ(yaml, decoder.result().str());
@@ -29,7 +30,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
 
   {
     // JSON roundtrip test
-    Decoder decoder{&msg, true};
+    Decoder decoder{&msg, true, pktMatch};
     EXPECT_EQ("", decoder.error());
 
     Encoder encoder{decoder.result()};
@@ -43,7 +44,7 @@ static void testDecodeEncode(const char *hex, const char *yaml) {
     if (msg.size() > sizeof(Header)) {
       msg.shrink(msg.size() - 1);
       msg.mutableHeader()->setLength(msg.size());
-      Decoder decoder{&msg, true};
+      Decoder decoder{&msg, true, pktMatch};
 
       // For the following message types, removing the last byte still yields a
       // valid message.
@@ -2145,4 +2146,127 @@ TEST(decoder, portstatus_fuzz) {
       "050c00480000000000090000000000000000006400380000000000000000000000000000"
       "00000000000000000000000000000000000753000000000000000000000000000000000"
       "0");
+}
+
+TEST(decoder, packetin_icmp4_frag1) {
+  testDecodeEncode(
+      "040A007E00000000FFFFFFFF05EE010600000000FFFFFFFF0001000C8000000400000001"
+      "0000000000000E00000000010AC2BB024296810000640800450005DC0518200040013AA7"
+      "0A0000010A6400FE080014572C2400059DA8FC590000000046D506000000000010111213"
+      "1415161718191A1B1C1D1E1F202122232425",
+      "---\ntype:            PACKET_IN\nxid:             0x00000000\nversion:  "
+      "       0x04\nmsg:             \n  buffer_id:       NO_BUFFER\n  "
+      "total_len:       0x05EE\n  in_port:         0x00000001\n  in_phy_port:  "
+      "   0x00000001\n  metadata:        0x0000000000000000\n  reason:         "
+      " APPLY_ACTION\n  table_id:        0x06\n  cookie:          "
+      "0x00000000FFFFFFFF\n  match:           \n    - field:           "
+      "IN_PORT\n      value:           0x00000001\n  data:            "
+      "0E00000000010AC2BB024296810000640800450005DC0518200040013AA70A0000010A64"
+      "00FE080014572C2400059DA8FC590000000046D506000000000010111213141516171819"
+      "1A1B1C1D1E1F202122232425\n  _pkt:            \n    - field:           "
+      "ETH_DST\n      value:           '0e:00:00:00:00:01'\n    - field:       "
+      "    ETH_SRC\n      value:           '0a:c2:bb:02:42:96'\n    - field:   "
+      "        VLAN_VID\n      value:           0x1064\n    - field:           "
+      "VLAN_PCP\n      value:           0x00\n    - field:           "
+      "ETH_TYPE\n      value:           0x0800\n    - field:           "
+      "IP_DSCP\n      value:           0x00\n    - field:           IP_ECN\n   "
+      "   value:           0x00\n    - field:           IP_PROTO\n      value: "
+      "          0x01\n    - field:           IPV4_SRC\n      value:           "
+      "10.0.0.1\n    - field:           IPV4_DST\n      value:           "
+      "10.100.0.254\n    - field:           NX_IP_FRAG\n      value:           "
+      "0x01\n    - field:           NX_IP_TTL\n      value:           0x40\n   "
+      " - field:           ICMPV4_TYPE\n      value:           0x08\n    - "
+      "field:           ICMPV4_CODE\n      value:           0x00\n    - field: "
+      "          X_PKT_POS\n      value:           0x002A\n...\n",
+      true);
+}
+
+TEST(decoder, packetin_icmp4_frag2) {
+  testDecodeEncode(
+      "040A005400000000FFFFFFFF002A010600000000FFFFFFFF0001000C8000000400000001"
+      "0000000000000E00000000010AC2BB02429681000064080045000018051800B940015FB2"
+      "0A0000010A6400FEC0C1C2C3",
+      "---\ntype:            PACKET_IN\nxid:             0x00000000\nversion:  "
+      "       0x04\nmsg:             \n  buffer_id:       NO_BUFFER\n  "
+      "total_len:       0x002A\n  in_port:         0x00000001\n  in_phy_port:  "
+      "   0x00000001\n  metadata:        0x0000000000000000\n  reason:         "
+      " APPLY_ACTION\n  table_id:        0x06\n  cookie:          "
+      "0x00000000FFFFFFFF\n  match:           \n    - field:           "
+      "IN_PORT\n      value:           0x00000001\n  data:            "
+      "0E00000000010AC2BB02429681000064080045000018051800B940015FB20A0000010A64"
+      "00FEC0C1C2C3\n  _pkt:            \n    - field:           ETH_DST\n     "
+      " value:           '0e:00:00:00:00:01'\n    - field:           ETH_SRC\n "
+      "     value:           '0a:c2:bb:02:42:96'\n    - field:           "
+      "VLAN_VID\n      value:           0x1064\n    - field:           "
+      "VLAN_PCP\n      value:           0x00\n    - field:           "
+      "ETH_TYPE\n      value:           0x0800\n    - field:           "
+      "IP_DSCP\n      value:           0x00\n    - field:           IP_ECN\n   "
+      "   value:           0x00\n    - field:           IP_PROTO\n      value: "
+      "          0x01\n    - field:           IPV4_SRC\n      value:           "
+      "10.0.0.1\n    - field:           IPV4_DST\n      value:           "
+      "10.100.0.254\n    - field:           NX_IP_FRAG\n      value:           "
+      "0x03\n    - field:           NX_IP_TTL\n      value:           0x40\n   "
+      " - field:           X_PKT_POS\n      value:           0x0026\n...\n",
+      true);
+}
+
+TEST(decoder, flowmod_icmpv4) {
+  testDecodeEncode(
+      "040E004800000001000000000000000000000000000000000000000000000000FFFFFFFF"
+      "FFFFFFFFFFFFFFFF000000000001001480000A020800800014010180002601000000000"
+      "0",
+      "---\ntype:            FLOW_MOD\nxid:             0x00000001\nversion:   "
+      "      0x04\nmsg:             \n  cookie:          0x0000000000000000\n  "
+      "cookie_mask:     0x0000000000000000\n  table_id:        0x00\n  "
+      "command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    "
+      "0x0000\n  priority:        0x0000\n  buffer_id:       NO_BUFFER\n  "
+      "out_port:        ANY\n  out_group:       ANY\n  flags:           [  ]\n "
+      " match:           \n    - field:           ETH_TYPE\n      value:       "
+      "    0x0800\n    - field:           IP_PROTO\n      value:           "
+      "0x01\n    - field:           ICMPV4_TYPE\n      value:           0x00\n "
+      " instructions:    \n...\n");
+}
+
+TEST(decoder, tablefeatures_empty) {
+  testDecodeEncode("0412001000000000000C000000000000",
+                   "---\ntype:            REQUEST.TABLE_FEATURES\nflags:       "
+                   "    [  ]\nxid:             0x00000000\nversion:         "
+                   "0x04\nmsg:             \n...\n");
+}
+
+TEST(decoder, tablefeatures_request) {
+  testDecodeEncode(
+      "0412018800000001000C0000000000000178000000000000506F72742041434C00000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000003000000320000001800010004000300040004000400050004000600040002000B"
+      "0102030405060700000000000004001C0000000400110004001200040016000400170004"
+      "00190004000000000006001C000000040011000400120004001600040017000400190004"
+      "00000000000800348000000480000A028000070C8000090C80000C028000140180001908"
+      "8000372080001E028000200280001A0280001C0200000000000A00348000000480000A02"
+      "800006068000080680000C0280001401800018048000361080001E028000200280001A02"
+      "80001C0200000000000C0030800006068000080680000C0280000E018000100180001604"
+      "8000180480001A0280001C0280001E0280002002000E0030800006068000080680000C02"
+      "80000E0180001001800016048000180480001A0280001C0280001E0280002002",
+      "---\ntype:            REQUEST.TABLE_FEATURES\nflags:           [  "
+      "]\nxid:             0x00000001\nversion:         0x04\nmsg:             "
+      "\n  - table_id:        0x00\n    name:            Port ACL\n    "
+      "metadata_match:  0x0000000000000000\n    metadata_write:  "
+      "0x0000000000000000\n    config:          [ '0x00000003' ]\n    "
+      "max_entries:     0x00000032\n    instructions:    [ GOTO_TABLE, "
+      "WRITE_ACTIONS, APPLY_ACTIONS, CLEAR_ACTIONS, \n                       "
+      "METER ]\n    next_tables:     [ 1, 2, 3, 4, 5, 6, 7 ]\n    "
+      "write_actions:   [ OUTPUT, PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, \n   "
+      "                    SET_FIELD ]\n    apply_actions:   [ OUTPUT, "
+      "PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, \n                       "
+      "SET_FIELD ]\n    match:           [ IN_PORT, ETH_TYPE, ETH_DST/, "
+      "ETH_SRC/, VLAN_VID, \n                       IP_PROTO, IPV4_DST/, "
+      "IPV6_DST/, UDP_SRC, UDP_DST, \n                       TCP_SRC, TCP_DST "
+      "]\n    wildcards:       [ IN_PORT, ETH_TYPE, ETH_DST, ETH_SRC, "
+      "VLAN_VID, IP_PROTO, \n                       IPV4_DST, IPV6_DST, "
+      "UDP_SRC, UDP_DST, TCP_SRC, TCP_DST ]\n    write_set_field: [ ETH_DST, "
+      "ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, \n                      "
+      " IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    apply_set_field: [ "
+      "ETH_DST, ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, \n             "
+      "          IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    "
+      "properties:      \n...\n");
 }

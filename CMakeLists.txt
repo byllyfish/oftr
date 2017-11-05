@@ -43,7 +43,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.38.0)
+set(Libofp_VERSION 0.39.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -346,6 +346,7 @@ if(LIBOFP_ENABLE_LIBPCAP)
     src/ofp/demux/messagesource.cpp
     src/ofp/demux/pktsink.cpp
     src/ofp/demux/pktsource.cpp
+    src/ofp/demux/pktfilter.cpp
     src/ofp/demux/messageconvert.cpp
   )
 endif()
@@ -666,3 +667,14 @@ add_custom_target(clang-tidy
   COMMENT "Checking all libofp code with clang-tidy" VERBATIM
 )
 
+
+# Run unit tests for boringssl.
+
+if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+  add_test(
+    NAME boringssl-all-tests 
+    COMMAND go run util/all_tests.go -build-dir "${CMAKE_BINARY_DIR}/external/boringssl/"
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/external/boringssl"
+  )
+  set_tests_properties(boringssl-all-tests PROPERTIES TIMEOUT 30)
+endif()

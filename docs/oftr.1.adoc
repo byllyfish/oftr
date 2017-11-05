@@ -216,6 +216,12 @@ also represents stdin.
 *--pkt-decode*::
     Include _pkt in PacketIn/PacketOut decodes.
 
+*--pkt-filter*='FILTER'::
+    Specify the filter for packets inside PacketIn/PacketOut messages. The default filter is
+    '', which matches all packets. This option only controls output for PacketIn and PacketOut messages.
+    If you want to match a packet with a vlan tag, you need to include the special 'vlan' field. See 
+    `man pcap-filter` for more information on the tcpdump language.
+
 *--pkt-write-file*='FILE'::
     Write data from PacketIn/PacketOut messages to .pcap file.
 
@@ -354,7 +360,7 @@ All commands support options that control the verbosity of log messages.
 
 == SEE ALSO
 
-_oftr-jsonrpc_(1), _oftr-schema_(1)
+_oftr-jsonrpc_(1), _oftr-schema_(1), _pcap-filter_(7)
 
 
 == EXIT STATUS

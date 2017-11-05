@@ -23,6 +23,9 @@ class MemoryChannel : public Writable {
 
   size_t size() const { return buf_.size(); }
 
+  const UInt8 *begin() const { return buf_.begin(); }
+  const UInt8 *end() const { return buf_.end(); }
+
   UInt8 version() const override { return version_; }
 
   void setVersion(UInt8 version) { version_ = version; }

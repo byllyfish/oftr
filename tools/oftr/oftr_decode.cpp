@@ -117,8 +117,14 @@ bool Decode::validateCommandLineArguments() {
   }
 
   // Parse --msg-exclude and --msg-include filters.
-  parseMsgFilter(msgExclude_, &excludeFilter_);
-  parseMsgFilter(msgInclude_, &includeFilter_);
+  parseMsgFilter(msgExclude_, &msgExcludeFilter_);
+  parseMsgFilter(msgInclude_, &msgIncludeFilter_);
+
+  // Parse --pkt-filter filter for PacketIn's and PacketOut's.
+  if (!pktFilter_.empty() && !pktIncludeFilter_.setFilter(pktFilter_)) {
+    llvm::errs() << "Error: invalid pcap filter: " << pktFilter_ << '\n';
+    return false;
+  }
 
   return true;
 }
@@ -489,6 +495,14 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
     return ExitStatus::Success;
   }
 
+  const bool hasPkt = (message->type() == ofp::OFPT_PACKET_IN ||
+                       message->type() == ofp::OFPT_PACKET_OUT);
+  if (hasPkt && !isPktDataAllowed(message)) {
+    // Ignore message based on packet_in/packet_out contents.
+    log_debug("decodeOneMessage (packet message ignored)");
+    return ExitStatus::Success;
+  }
+
   log_debug("decodeOneMessage (normalized):", *message);
 
   ofp::yaml::Decoder decoder{message, json_, pktDecode_};
@@ -513,11 +527,12 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
   if (invertCheck_) {
     // There was no problem decoding the message, but we are expecting the data
     // to be invalid (because we are fuzz testing). Report this as an error.
-
-    llvm::errs() << "Filename: " << currentFilename_ << '\n';
-    llvm::errs()
-        << "Error: Decode succeeded when --invert-check flag is specified.\n";
-    llvm::errs() << *originalMessage << '\n';
+    if (!silentError_) {
+      llvm::errs() << "Filename: " << currentFilename_ << '\n';
+      llvm::errs()
+          << "Error: Decode succeeded when --invert-check flag is specified.\n";
+      llvm::errs() << *originalMessage << '\n';
+    }
     return ExitStatus::DecodeSucceeded;
   }
 
@@ -539,7 +554,7 @@ ExitStatus Decode::decodeOneMessage(const ofp::Message *message,
   }
 
   // Optionally, write data from PacketIn or PacketOut messages.
-  if (pktSinkFile_) {
+  if (pktSinkFile_ && hasPkt) {
     extractPacketDataToFile(message);
   }
 
@@ -628,7 +643,7 @@ static bool matchMessage(const char *pattern, const ofp::Message *message,
 /// Return true if we're allowed to output this message type.
 bool Decode::isMsgTypeAllowed(const ofp::Message *message) const {
   // No filters?  Allow everything.
-  if (excludeFilter_.empty() && includeFilter_.empty())
+  if (msgExcludeFilter_.empty() && msgIncludeFilter_.empty())
     return true;
 
   // Get message type as a string, exactly as we would output it.
@@ -639,22 +654,45 @@ bool Decode::isMsgTypeAllowed(const ofp::Message *message) const {
   auto msgType = os.str();
 
   // Check msgType against the exclude filter.
-  for (const auto &pattern : excludeFilter_) {
+  for (const auto &pattern : msgExcludeFilter_) {
     if (matchMessage(pattern.c_str(), message, msgType.c_str()))
       return false;
   }
 
   // Empty include filter means allow everything that's not excluded.
-  if (includeFilter_.empty())
+  if (msgIncludeFilter_.empty())
     return true;
 
   // Check msgType against the include filter.
-  for (const auto &pattern : includeFilter_) {
+  for (const auto &pattern : msgIncludeFilter_) {
     if (matchMessage(pattern.c_str(), message, msgType.c_str()))
       return true;
   }
 
   return false;
+}
+
+/// Return true if we're allowed to output this packet.
+bool Decode::isPktDataAllowed(const ofp::Message *message) const {
+  using namespace ofp;
+
+  OFPErrorCode unused;
+
+  if (message->type() == OFPT_PACKET_IN) {
+    const PacketIn *packetIn = message->castMessage<PacketIn>(&unused);
+    if (packetIn) {
+      return pktIncludeFilter_.match(packetIn->enetFrame(),
+                                     packetIn->totalLen());
+    }
+
+  } else if (message->type() == OFPT_PACKET_OUT) {
+    const PacketOut *packetOut = message->castMessage<PacketOut>(&unused);
+    if (packetOut) {
+      return pktIncludeFilter_.match(packetOut->enetFrame());
+    }
+  }
+
+  return true;
 }
 
 /// Return true if the two messages are equal.

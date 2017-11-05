@@ -98,5 +98,15 @@ $LIBOFP_MEMCHECK $LIBOFP decode --json-array --pcap-convert-packetin --pkt-decod
 echo "Compare $CURRENT_TEST_DIR/pcap-packetin.out to $CURRENT_SOURCE_DIR/pcap-packetin.out"
 diff "$CURRENT_TEST_DIR/pcap-packetin.out" "$CURRENT_SOURCE_DIR/pcap-packetin.out"
 
+# Decode OpenFlow message in `cap_single.pcap`; filter to PacketIn/PacketOut containing ARP packets.
+# Also, extract these arp packets to a separate arp.pcap file.
+
+echo "Run oftr decode with --pkt-filter='arp' on $CURRENT_SOURCE_DIR/cap_single.pcap"
+$LIBOFP_MEMCHECK $LIBOFP decode --json-array --msg-include='PACKET_*' --pkt-filter='arp' --pkt-decode --pkt-write-file='arp.pcap' "$CURRENT_SOURCE_DIR/cap_single.pcap" > "$CURRENT_TEST_DIR/cap_single.pcap.filtered"
+echo "Compare $CURRENT_TEST_DIR/cap_single.pcap.filtered to $CURRENT_SOURCE_DIR/cap_single.pcap.filtered"
+diff "$CURRENT_TEST_DIR/cap_single.pcap.filtered" "$CURRENT_SOURCE_DIR/cap_single.pcap.filtered"
+echo "Compare $CURRENT_TEST_DIR/arp.pcap to $CURRENT_SOURCE_DIR/arp.pcap"
+diff "$CURRENT_TEST_DIR/arp.pcap" "$CURRENT_SOURCE_DIR/arp.pcap"
+
 echo "Done."
 exit 0
