@@ -3719,3 +3719,150 @@ TEST(encoder, flowmod_fuzz) {
       "00190010800008060102030405060000",
       encoder.data(), encoder.size());
 }
+
+TEST(encoder, packetin_icmp4_frag1) {
+  const char *input = R"""(
+    type:            PACKET_IN
+    xid:             0x00000000
+    version:         0x04
+    msg:             
+      buffer_id:       NO_BUFFER
+      total_len:       0x05EE
+      in_port:         0x00000001
+      in_phy_port:     0x00000001
+      metadata:        0x0000000000000000
+      reason:          APPLY_ACTION
+      table_id:        0x06
+      cookie:          0x00000000FFFFFFFF
+      match:           
+        - field:           IN_PORT
+          value:           0x00000001
+      data:            0E00000000010AC2BB024296810000640800450005DC0518200040013AA70A0000010A6400FE080014572C2400059DA8FC590000000046D5060000000000101112131415161718191A1B1C1D1E1F202122232425
+  )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(126, encoder.size());
+  EXPECT_HEX(
+      "040A007E00000000FFFFFFFF05EE010600000000FFFFFFFF0001000C8000000400000001"
+      "0000000000000E00000000010AC2BB024296810000640800450005DC0518200040013AA7"
+      "0A0000010A6400FE080014572C2400059DA8FC590000000046D506000000000010111213"
+      "1415161718191A1B1C1D1E1F202122232425",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, packetin_icmp4_frag2) {
+  const char *input = R"""(
+    type:            PACKET_IN
+    xid:             0x00000000
+    version:         0x04
+    msg:             
+      buffer_id:       NO_BUFFER
+      total_len:       0x002A
+      in_port:         0x00000001
+      in_phy_port:     0x00000001
+      metadata:        0x0000000000000000
+      reason:          APPLY_ACTION
+      table_id:        0x06
+      cookie:          0x00000000FFFFFFFF
+      match:           
+        - field:           IN_PORT
+          value:           0x00000001
+      data:            0E00000000010AC2BB02429681000064080045000018051800B940015FB20A0000010A6400FEC0C1C2C3
+  )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(84, encoder.size());
+  EXPECT_HEX(
+      "040A005400000000FFFFFFFF002A010600000000FFFFFFFF0001000C8000000400000001"
+      "0000000000000E00000000010AC2BB02429681000064080045000018051800B940015FB2"
+      "0A0000010A6400FEC0C1C2C3",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, flowmod_icmpv4) {
+  const char *input = R"""(
+      type:            FLOW_MOD
+      version:         4
+      xid:             1
+      msg:
+        table_id:        0
+        command:         ADD
+        match:
+          # ICMPV4_TYPE should be sufficient to determine all prereqs.         
+          - field:           ICMPV4_TYPE
+            value:           0
+        instructions:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(72, encoder.size());
+  EXPECT_HEX(
+      "040E004800000001000000000000000000000000000000000000000000000000FFFFFFFF"
+      "FFFFFFFFFFFFFFFF000000000001001480000A020800800014010180002601000000000"
+      "0",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, tablefeatures_empty) {
+  const char *input = R"""(
+      type:            REQUEST.TABLE_FEATURES
+      version:         4
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(16, encoder.size());
+  EXPECT_HEX("0412001000000000000C000000000000", encoder.data(),
+             encoder.size());
+}
+
+TEST(encoder, tablefeatures_request) {
+  const char *input = R"""(
+      type:            REQUEST.TABLE_FEATURES
+      xid:             0x00000001
+      version:         0x04
+      msg:             
+        - table_id:        0x00
+          name:            Port ACL
+          metadata_match:  0x0000000000000000
+          metadata_write:  0x0000000000000000
+          config:          [ 0x03 ]
+          max_entries:     0x00000032
+          instructions:    [ GOTO_TABLE, WRITE_ACTIONS, APPLY_ACTIONS, CLEAR_ACTIONS, 
+                             METER ]
+          next_tables:     [ 1, 2, 3, 4, 5, 6, 7 ]
+          write_actions:   [ OUTPUT, PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, 
+                             SET_FIELD ]
+          apply_actions:   [ OUTPUT, PUSH_VLAN, POP_VLAN, GROUP, SET_NW_TTL, 
+                             SET_FIELD ]
+          match:           [ IN_PORT, ETH_TYPE, ETH_DST/, ETH_SRC/, VLAN_VID, 
+                             IP_PROTO, IPV4_DST/, IPV6_DST/, UDP_SRC, UDP_DST, 
+                             TCP_SRC, TCP_DST ]
+          wildcards:       [ IN_PORT, ETH_TYPE, ETH_DST, ETH_SRC, VLAN_VID, IP_PROTO, 
+                             IPV4_DST, IPV6_DST, UDP_SRC, UDP_DST, TCP_SRC, TCP_DST ]
+          write_set_field: [ ETH_DST, ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, 
+                             IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]
+          apply_set_field: [ ETH_DST, ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, 
+                             IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(392, encoder.size());
+  EXPECT_HEX(
+      "0412018800000001000C0000000000000178000000000000506F72742041434C00000000"
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000003000000320000001800010004000300040004000400050004000600040002000B"
+      "0102030405060700000000000004001C0000000400110004001200040016000400170004"
+      "00190004000000000006001C000000040011000400120004001600040017000400190004"
+      "00000000000800348000000480000A028000070C8000090C80000C028000140180001908"
+      "8000372080001E028000200280001A0280001C0200000000000A00348000000480000A02"
+      "800006068000080680000C0280001401800018048000361080001E028000200280001A02"
+      "80001C0200000000000C0030800006068000080680000C0280000E018000100180001604"
+      "8000180480001A0280001C0280001E0280002002000E0030800006068000080680000C02"
+      "80000E0180001001800016048000180480001A0280001C0280001E0280002002",
+      encoder.data(), encoder.size());
+}

@@ -69,10 +69,14 @@ int main(int argc, char **argv) {
             << " loops each" << std::endl;
 
   for (int trial = 0; trial <= kTrials; ++trial) {
+    volatile unsigned junk = 0;
     auto start = clock::now();
 
     for (unsigned i = 0; i < kLoops; ++i) {
       flowMod(&channel, inPort, i, dst, src, outPort);
+
+      // Make sure the benchmarked operation is NOT optimized out.
+      junk += std::accumulate(channel.begin(), channel.end(), 0UL);
       channel.clear();
     }
 
