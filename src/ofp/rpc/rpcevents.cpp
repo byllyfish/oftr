@@ -13,7 +13,6 @@ std::string toJsonString(Type *event) {
   llvm::raw_string_ostream rss(json);
   ofp::yaml::OutputJson yout{rss};
   yout << *event;
-  rss << ofp::rpc::RPC_EVENT_DELIMITER_CHAR;
   return rss.str();
 }
 

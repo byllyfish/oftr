@@ -20,12 +20,29 @@ RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
       streambuf_{RPC_MAX_MESSAGE_SIZE},
       metricTimer_{server->engine()->io()} {}
 
-void RpcConnectionStdio::write(llvm::StringRef msg, bool eom) {
+
+// For `OFP.MESSAGE` notification event.
+const llvm::StringRef kMsgPrefix{"{\"params\":", 10};
+const llvm::StringRef kMsgSuffix{",\"method\":\"OFP.MESSAGE\"}", 24};
+
+void RpcConnectionStdio::writeEvent(llvm::StringRef msg, bool ofp_message) {
   ++txEvents_;
-  const size_t msgSize = msg.size();
+
+  size_t msgSize = ofp_message ? msg.size() + 34 : msg.size();
   txBytes_ += msgSize;
-  outgoing_[outgoingIdx_].add(msg.data(), msgSize);
-  if (eom && !writing_) {
+
+  Big32 hdr = UInt32_narrow_cast(((msgSize + 4) << 8) | 0xA0);
+  outgoing_[outgoingIdx_].add(&hdr, sizeof(hdr));
+
+  if (ofp_message) {
+    outgoing_[outgoingIdx_].add(kMsgPrefix.data(), kMsgPrefix.size());
+    outgoing_[outgoingIdx_].add(msg.data(), msg.size());
+    outgoing_[outgoingIdx_].add(kMsgSuffix.data(), kMsgSuffix.size());
+  } else {
+    outgoing_[outgoingIdx_].add(msg.data(), msg.size());
+  }
+
+  if (!writing_) {
     asyncWrite();
   }
 }
@@ -37,7 +54,8 @@ void RpcConnectionStdio::close() {
 
 void RpcConnectionStdio::asyncAccept() {
   // Start first async read.
-  asyncRead();
+  //asyncRead();
+  asyncReadHeader();
 
   // Start optional metrics timer.
   Milliseconds metricInterval = server_->metricInterval();
@@ -74,6 +92,61 @@ void RpcConnectionStdio::asyncRead() {
           log_error("RpcConnectionStdio::asyncRead error", err);
         }
       });
+}
+
+void RpcConnectionStdio::asyncReadHeader() {
+  auto self(this->shared_from_this());
+
+  asio::async_read(
+      input_,
+      asio::buffer(&hdrBuf_, sizeof(hdrBuf_)),
+      make_custom_alloc_handler(
+          allocator_, [this, self](const asio::error_code &err, size_t length) {
+            log_debug("rpc::asyncReadHeader callback", err);
+            if (!err) {
+              assert(length == sizeof(hdrBuf_));
+            
+              UInt32 len = (hdrBuf_ >> 8);
+              if (len >= 4) {
+                asyncReadMessage(len - 4);
+              } else {
+                // Too short...
+                log_error("RPC invalid header length:", len);
+              }
+            } else {
+              assert(err);
+
+              log_error("RPC readHeader error", err);
+            }
+          }));
+}
+
+void RpcConnectionStdio::asyncReadMessage(size_t msgLength) {
+  auto self(this->shared_from_this());
+
+  log_debug("rpc::asyncReadMessage:", msgLength, "bytes");
+
+  eventBuf_.resize(msgLength);
+  asio::async_read(
+      input_,
+      asio::buffer(eventBuf_),
+      make_custom_alloc_handler(
+          allocator_, [this, self](const asio::error_code &err, size_t length) {
+            log_debug("rpc::asyncReadMessage callback", err, length);
+            if (!err) {
+              //assert(length == msgLength);
+              assert(eventBuf_.size() == length);
+
+              log::trace_rpc("Read RPC", 0, eventBuf_.data(), eventBuf_.size());
+              handleEvent(eventBuf_);
+              asyncReadHeader();
+
+            } else {
+              assert(err);
+
+              log_error("RPC readMessage error", err);
+            }
+          }));
 }
 
 void RpcConnectionStdio::asyncWrite() {

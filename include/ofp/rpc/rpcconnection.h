@@ -38,7 +38,7 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
 
   template <class Response>
   void rpcReply(Response *response) {
-    write(response->toJson());
+    writeEvent(response->toJson());
   }
 
   void onChannel(Channel *channel, const char *status);
@@ -59,7 +59,7 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
   UInt64 txBytes_ = 0;
   UInt64 rxBytes_ = 0;
 
-  virtual void write(llvm::StringRef msg, bool eom = true) = 0;
+  virtual void writeEvent(llvm::StringRef msg, bool ofp_message=false) = 0;
   virtual void asyncRead() = 0;
 
   void rpcRequestTooBig();

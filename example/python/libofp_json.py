@@ -8,6 +8,7 @@ import json
 import subprocess
 import os
 import sys
+import struct
 
 def getDefaultPort():
     try:
@@ -17,7 +18,7 @@ def getDefaultPort():
 
 
 DEFAULT_OPENFLOW_PORT = getDefaultPort()
-EVENT_DELIMITER = '\x00'
+
 
 class _JsonObject:
     def __init__(self, d):
@@ -94,7 +95,7 @@ class LibOFP(object):
         return self
 
     def next(self):
-        line = _read_until(self._sockInput, EVENT_DELIMITER)
+        line = _read_next(self._sockInput)
         if not line:
             raise StopIteration()
         return json.loads(line, object_hook=_JsonObject)
@@ -109,7 +110,7 @@ class LibOFP(object):
         if method == 'OFP.SEND' and 'xid' not in params:
             params['xid'] = self._xid
             self._xid += 1
-        self._write(json.dumps(rpc) + EVENT_DELIMITER)
+        self._write(json.dumps(rpc))
 
     def _sendListenRequest(self, openflowAddr):
         self._call('OFP.LISTEN', endpoint='[%s]:%d' % openflowAddr, options=['FEATURES_REQ'])
@@ -124,16 +125,15 @@ class LibOFP(object):
         assert msg.result.versions == [1, 2, 3, 4, 5, 6]
 
     def _write(self, msg):
-        self._sockOutput.write(msg)
+        hdr = struct.pack('>L', ((len(msg) + 4) << 8) | 0xA0)
+        self._sockOutput.write(hdr + msg)
 
 
 
-def _read_until(stream, delimiter):
-    """Read next line from stream.
+def _read_next(stream):
+    """Read next event from stream.
     """
-    buf = ''
-    while True:
-        ch = stream.read(1)
-        if not ch or ch == delimiter:
-            return buf
-        buf += ch
+    hdr, = struct.unpack('>L', stream.read(4))
+    result = stream.read((hdr >> 8) - 4)
+    print('>>> %s' % result)
+    return result
