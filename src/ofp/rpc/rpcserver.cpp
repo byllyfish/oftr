@@ -14,9 +14,9 @@ using ofp::rpc::RpcServer;
 using ofp::sys::TCP_Server;
 using namespace ofp;
 
-RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
+RpcServer::RpcServer(int inputFD, int outputFD,
                      Milliseconds metricInterval, Channel *defaultChannel)
-    : engine_{driver->engine()},
+    : engine_{driver_.engine()},
       defaultChannel_{defaultChannel},
       metricInterval_{metricInterval} {
   log::fatal_if_false(inputFD >= 0, "inputFD >= 0");
@@ -30,6 +30,8 @@ RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
 
   conn->asyncAccept();
   engine_->setAlertCallback(alertCallback, this);
+
+  driver_.installSignalHandlers([this]() { this->close(); });
 }
 
 RpcServer::~RpcServer() {

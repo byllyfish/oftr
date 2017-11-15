@@ -33,9 +33,12 @@ OFP_BEGIN_IGNORE_PADDING
 /// The driver is controlled using YAML messages.
 class RpcServer {
  public:
-  RpcServer(Driver *driver, int inputFD, int outputFD,
+  RpcServer(int inputFD, int outputFD,
             Milliseconds metricInterval, Channel *defaultChannel = nullptr);
   ~RpcServer();
+
+  /// Run the rpc server.
+  void run() { driver_.run(); }
 
   /// Close the control connection.
   void close();
@@ -63,6 +66,7 @@ class RpcServer {
   Milliseconds metricInterval() const { return metricInterval_; }
 
  private:
+  Driver driver_;
   sys::Engine *engine_;
   RpcConnection *oneConn_ = nullptr;
   Channel *defaultChannel_ = nullptr;
