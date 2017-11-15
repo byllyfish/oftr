@@ -17,7 +17,7 @@ class RpcChannelListener : public ChannelListener {
 
   void onChannelUp(Channel *channel) override;
   void onChannelDown(Channel *channel) override;
-  void onMessage(const Message *message) override;
+  void onMessage(Message *message) override;
 
  private:
   RpcServer *server_;

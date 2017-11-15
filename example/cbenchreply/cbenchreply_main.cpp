@@ -11,7 +11,7 @@ class CBenchReplyController : public ChannelListener {
     log_info("ChannelUp", channel->remoteEndpoint());
   }
 
-  void onMessage(const Message *message) override {
+  void onMessage(Message *message) override {
     if (message->type() != PacketIn::type()) {
       // Ignore everything except PacketIn msg.
       return;

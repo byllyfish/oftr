@@ -33,7 +33,7 @@ void SimpleChannelListener::onChannelUp(Channel *channel) {
   trackReply(xid, &SimpleChannelListener::onBarrierReply);
 }
 
-void SimpleChannelListener::onMessage(const Message *message) {
+void SimpleChannelListener::onMessage(Message *message) {
   switch (message->type()) {
     case PacketIn::type():
       if (auto msg = PacketIn::cast(message))
