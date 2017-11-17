@@ -106,7 +106,10 @@ void DefaultHandshake::onHello(const Message *message) {
                 std::make_pair("connid", channel_->connectionId()));
     channel_->engine()->alert(channel_, explanation, {header, sizeof(*header)});
 
-    message->replyError(OFPHFC_INCOMPATIBLE, explanation);
+    if (!wantFeatures()) {
+      // If we're not a controller, send an error back.
+      message->replyError(OFPHFC_INCOMPATIBLE, explanation);
+    }
     channel_->shutdown();
     return;
   }
@@ -119,7 +122,7 @@ void DefaultHandshake::onHello(const Message *message) {
            msg->protocolVersions().toString(),
            std::make_pair("connid", channel_->connectionId()));
 
-  if ((options_ & ChannelOptions::FEATURES_REQ) != 0) {
+  if (wantFeatures()) {
     channel_->setKeepAliveTimeout(kControllerKeepAliveTimeout);
 
     FeaturesRequestBuilder reply{};
@@ -137,7 +140,7 @@ void DefaultHandshake::onHello(const Message *message) {
 
 void DefaultHandshake::onFeaturesReply(Message *message) {
   // Only a controller should be receiving a features reply message.
-  if ((options_ & ChannelOptions::FEATURES_REQ) == 0) {
+  if (!wantFeatures()) {
     log_warning("DefaultHandshake: Unexpected FeaturesReply message");
     return;
   }

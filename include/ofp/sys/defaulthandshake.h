@@ -46,6 +46,8 @@ class DefaultHandshake : public ChannelListener {
 
   void installNewChannelListener(Message *message);
   void clearChannelListener();
+
+  bool wantFeatures() const { return (options_ & ChannelOptions::FEATURES_REQ) != 0; }
 };
 
 OFP_END_IGNORE_PADDING

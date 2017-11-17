@@ -21,6 +21,8 @@ namespace sys {
 class Connection;
 }  // namespace sys
 
+OFP_BEGIN_IGNORE_PADDING
+
 /// \brief Implements a protocol message buffer.
 class Message {
  public:
@@ -75,6 +77,8 @@ class Message {
   void setSource(sys::Connection *source) { channel_ = source; }
   void setInfo(MessageInfo *info) { info_ = info; }
   void setTime(const Timestamp &time) { time_ = time; }
+  // N.B. This does not set multipart flags...
+  void setMsgFlags(OFPMessageFlags msgFlags) { msgFlags_ = msgFlags; }
 
   const UInt8 *data() const { return buf_.data(); }
   size_t size() const { return buf_.size(); }
@@ -84,7 +88,8 @@ class Message {
   MessageType msgType() const { return MessageType{type(), subtype()}; }
   OFPType type() const { return header()->type(); }
   OFPMultipartType subtype() const;
-  OFPMultipartFlags flags() const;
+  OFPMultipartFlags multipartFlags() const;
+  OFPMessageFlags msgFlags() const { return msgFlags_ | multipartFlags(); }
   Channel *source() const;
   UInt32 xid() const { return header()->xid(); }
   UInt8 version() const { return header()->version(); }
@@ -97,10 +102,6 @@ class Message {
   void replyError(OFPErrorCode error,
                   const std::string &explanation = "") const;
 
-  // Used by the ProtocolMsg::cast(message) operator.
-  template <class MsgType>
-  const MsgType *castMessage(OFPErrorCode *error) const;
-
   void assign(const Message &message) { buf_ = message.buf_.toRange(); }
 
  private:
@@ -111,6 +112,11 @@ class Message {
   // MessageInfo stores extra information about the message's session (src,
   // dest, filename, etc.) It is *not* owned by the message object.
   MessageInfo *info_ = nullptr;
+  OFPMessageFlags msgFlags_ = OFP_DEFAULT_MESSAGE_FLAGS;
+
+  // Used by the ProtocolMsg::cast(message) operator.
+  template <class MsgType>
+  const MsgType *castMessage(OFPErrorCode *error) const;
 
   friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
                                        const Message &msg) {
@@ -118,7 +124,13 @@ class Message {
   }
 
   friend class Normalize;
+
+  template <class MsgClass, OFPType MsgType, size_t MsgMinLength,
+          size_t MsgMaxLength, bool MsgMultiple8>
+  friend class ProtocolMsg;
 };
+
+OFP_END_IGNORE_PADDING
 
 // Provides convenient implementation of message cast.
 template <class MsgType>

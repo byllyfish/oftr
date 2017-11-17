@@ -24,7 +24,7 @@ OFPMultipartType Message::subtype() const {
   return OFPMP_UNSUPPORTED;
 }
 
-OFPMultipartFlags Message::flags() const {
+OFPMultipartFlags Message::multipartFlags() const {
   OFPType mtype = type();
   if ((mtype == OFPT_MULTIPART_REQUEST || mtype == OFPT_MULTIPART_REPLY) &&
       buf_.size() >= 12) {
@@ -65,17 +65,6 @@ void Message::normalize() {
 
 void Message::replyError(OFPErrorCode error,
                          const std::string &explanation) const {
-  if (!channel_)
-    return;
-
-  // Don't reply to error if connection is owned by a controller.
-  if (channel_->flags() & sys::Connection::kDefaultController)
-    return;
-
-  // Never reply to an Error message with an Error.
-  if (type() == OFPT_ERROR)
-    return;
-
   ErrorBuilder errorBuilder{xid()};
   errorBuilder.setErrorCode(error);
   if (!explanation.empty()) {
