@@ -1,5 +1,8 @@
-#ifndef OFP_RPC_TABLEFILTER_H_
-#define OFP_RPC_TABLEFILTER_H_
+// Copyright (c) 2017 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
+#ifndef OFP_RPC_FILTERTABLE_H_
+#define OFP_RPC_FILTERTABLE_H_
 
 #include <vector>
 #include "ofp/rpc/filtertableentry.h"
@@ -23,4 +26,4 @@ class FilterTable {
 }  // namespace rpc
 }  // namespace ofp
 
-#endif  // OFP_RPC_TABLEFILTER_H_
+#endif  // OFP_RPC_FILTERTABLE_H_

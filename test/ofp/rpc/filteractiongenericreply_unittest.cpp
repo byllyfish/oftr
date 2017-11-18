@@ -1,3 +1,6 @@
+// Copyright (c) 2017 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #include "ofp/rpc/filteractiongenericreply.h"
 #include "ofp/message.h"
 #include "ofp/mockchannel.h"
