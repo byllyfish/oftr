@@ -10,7 +10,7 @@
 #include "ofp/normalize.h"
 #include "ofp/originalmatch.h"
 #include "ofp/portstatus.h"
-#include "ofp/sys/connection.h"
+#include "ofp/channel.h"
 
 using namespace ofp;
 
@@ -32,10 +32,6 @@ OFPMultipartFlags Message::multipartFlags() const {
     return static_cast<OFPMultipartFlags>(flags);
   }
   return OFPMPF_NONE;
-}
-
-Channel *Message::source() const {
-  return channel_;
 }
 
 bool Message::isRequestType() const {

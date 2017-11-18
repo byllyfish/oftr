@@ -1,4 +1,4 @@
-#include "ofp/rpc/rpcfiltertable.h"
+#include "ofp/rpc/filtertable.h"
 #include "ofp/message.h"
 #include "ofp/packetin.h"
 
@@ -15,7 +15,7 @@ using namespace ofp::rpc;
 // The filter action may modify the message to add flags (e.g. REPLIED, 
 // METERED, etc.)
 
-bool RpcFilterTable::apply(Message *message, bool *escalate) {
+bool FilterTable::apply(Message *message, bool *escalate) {
     // The filter table only works on PacketIn messages.
     if (message->type() != OFPT_PACKET_IN) {
         return false;
@@ -23,13 +23,15 @@ bool RpcFilterTable::apply(Message *message, bool *escalate) {
 
     const PacketIn *packetIn = PacketIn::cast(message);
     if (!packetIn) {
-        log_warning("RpcFilterTable::apply - unable to decode packetIn");
+        log_warning("FilterTable::apply - unable to decode packetIn");
         return false;
     }
 
     ByteRange data = packetIn->enetFrame();
+    PortNumber inPort = packetIn->inPort();
+
     for (auto &entry: table_) {
-        if (entry.apply(data, message, escalate)) {
+        if (entry.apply(data, inPort, message, escalate)) {
             return true;
         }
     }

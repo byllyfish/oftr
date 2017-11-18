@@ -8,7 +8,7 @@
 #include "ofp/datapathid.h"
 #include "ofp/driver.h"
 #include "ofp/rpc/rpcid.h"
-#include "ofp/rpc/rpcfiltertable.h"
+#include "ofp/rpc/filtertable.h"
 
 namespace ofp {
 
@@ -68,7 +68,7 @@ class RpcServer {
   RpcConnection *oneConn_ = nullptr;
   Channel *defaultChannel_ = nullptr;
   Milliseconds metricInterval_ = 0_ms;
-  RpcFilterTable filter_;
+  FilterTable filter_;
 
   static void connectResponse(RpcConnection *conn, RpcID id, UInt64 connId,
                               const std::error_code &err);

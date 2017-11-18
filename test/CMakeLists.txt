@@ -110,6 +110,7 @@ if(LIBOFP_ENABLE_JSONRPC)
 		ofp/driver_unittest.cpp
 		ofp/roundtrip_unittest.cpp
 		ofp/rpcencoder_unittest.cpp
+		ofp/rpc/filteractiongenericreply_unittest.cpp
 	)
 	if(LIBOFP_ENABLE_OPENSSL)
 		set(LIBOFP_TEST_SOURCES
