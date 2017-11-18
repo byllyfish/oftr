@@ -18,15 +18,16 @@ OFP_BEGIN_IGNORE_PADDING
 /// \brief A concrete class for a filter table entry.
 
 class FilterTableEntry {
-public:
-    bool setFilter(const std::string &filter);
+ public:
+  bool setFilter(const std::string &filter);
 
-    bool apply(ByteRange data, PortNumber inPort, Message *message, bool *escalate);
+  bool apply(ByteRange data, PortNumber inPort, Message *message,
+             bool *escalate);
 
-private:
-    demux::PktFilter pktFilter_;
-    FilterAction *action_ = nullptr;
-    bool escalate_ = false;
+ private:
+  demux::PktFilter pktFilter_;
+  FilterAction *action_ = nullptr;
+  bool escalate_ = false;
 };
 
 OFP_END_IGNORE_PADDING
@@ -34,4 +35,4 @@ OFP_END_IGNORE_PADDING
 }  // namespace rpc
 }  // namespace ofp
 
-#endif // OFP_RPC_FILTERTABLEENTRY_H_
+#endif  // OFP_RPC_FILTERTABLEENTRY_H_

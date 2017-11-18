@@ -13,14 +13,14 @@ namespace rpc {
 class RpcServer;
 
 class FilterTable {
-public:
-    bool apply(Message *message, bool *escalate);
+ public:
+  bool apply(Message *message, bool *escalate);
 
-private:
-    std::vector<FilterTableEntry> table_;
+ private:
+  std::vector<FilterTableEntry> table_;
 };
 
 }  // namespace rpc
 }  // namespace ofp
 
-#endif // OFP_RPC_TABLEFILTER_H_
+#endif  // OFP_RPC_TABLEFILTER_H_

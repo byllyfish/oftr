@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/message.h"
+#include "ofp/channel.h"
 #include "ofp/error.h"
 #include "ofp/experimenter.h"
 #include "ofp/flowmod.h"
@@ -10,7 +11,6 @@
 #include "ofp/normalize.h"
 #include "ofp/originalmatch.h"
 #include "ofp/portstatus.h"
-#include "ofp/channel.h"
 
 using namespace ofp;
 

@@ -11,13 +11,14 @@ class Message;
 namespace rpc {
 
 class FilterAction {
-public:
-    virtual ~FilterAction() { }
+ public:
+  virtual ~FilterAction() {}
 
-    virtual bool apply(ByteRange enetFrame, PortNumber inPort, Message *message) = 0;
+  virtual bool apply(ByteRange enetFrame, PortNumber inPort,
+                     Message *message) = 0;
 };
 
 }  // namespace rpc
 }  // namespace ofp
 
-#endif // OFP_RPC_FILTERACTION_H_
+#endif  // OFP_RPC_FILTERACTION_H_

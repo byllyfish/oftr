@@ -703,7 +703,9 @@ enum OFPMessageFlags : UInt32 {
 
   OFP_OTHER_MESSAGE_FLAGS = 0xFFFCFFFE
 };
-static_assert(0xFFFFFFFF == (OFP_OTHER_MESSAGE_FLAGS ^ OFP_MORE ^ OFP_NO_FLUSH ^ OFP_NO_ALERT), "Enum mis-define");
+static_assert(0xFFFFFFFF == (OFP_OTHER_MESSAGE_FLAGS ^ OFP_MORE ^ OFP_NO_FLUSH ^
+                             OFP_NO_ALERT),
+              "Enum mis-define");
 
 inline OFPMessageFlags operator|(OFPMessageFlags lhs, OFPMessageFlags rhs) {
   return static_cast<OFPMessageFlags>(static_cast<UInt32>(lhs) | rhs);

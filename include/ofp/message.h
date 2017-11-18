@@ -122,7 +122,7 @@ class Message {
   friend class Normalize;
 
   template <class MsgClass, OFPType MsgType, size_t MsgMinLength,
-          size_t MsgMaxLength, bool MsgMultiple8>
+            size_t MsgMaxLength, bool MsgMultiple8>
   friend class ProtocolMsg;
 };
 

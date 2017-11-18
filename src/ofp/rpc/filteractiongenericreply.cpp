@@ -1,12 +1,11 @@
 #include "ofp/rpc/filteractiongenericreply.h"
+#include "ofp/channel.h"
 #include "ofp/matchpacket.h"
 #include "ofp/matchpacketbuilder.h"
 #include "ofp/packetout.h"
-#include "ofp/channel.h"
 
 using namespace ofp;
 using namespace ofp::rpc;
-
 
 enum : UInt8 {
   ICMPV4_TYPE_ECHO_REQUEST = 8,
@@ -14,7 +13,8 @@ enum : UInt8 {
   ICMPV4_CODE_ECHO = 0,
 };
 
-bool FilterActionGenericReply::apply(ByteRange enetFrame, PortNumber inPort, Message *message) {
+bool FilterActionGenericReply::apply(ByteRange enetFrame, PortNumber inPort,
+                                     Message *message) {
   MatchPacket pkt{enetFrame};
 
   OXMRange oxm = pkt.toRange();
@@ -27,18 +27,21 @@ bool FilterActionGenericReply::apply(ByteRange enetFrame, PortNumber inPort, Mes
   return false;
 }
 
-
-bool FilterActionGenericReply::applyICMPv4(ByteRange enetFrame, PortNumber inPort, Message *message, OXMRange oxm) {
+bool FilterActionGenericReply::applyICMPv4(ByteRange enetFrame,
+                                           PortNumber inPort, Message *message,
+                                           OXMRange oxm) {
   // Verify the ICMPv4 type and code for an echo request.
   UInt8 icmpType = oxm.get<OFB_ICMPV4_TYPE>();
   if (icmpType != ICMPV4_TYPE_ECHO_REQUEST) {
-    log_warning("FilterActionGenericReply:applyICMPv4: invalid icmp type", icmpType);
+    log_warning("FilterActionGenericReply:applyICMPv4: invalid icmp type",
+                icmpType);
     return false;
   }
 
   UInt8 icmpCode = oxm.get<OFB_ICMPV4_CODE>();
   if (icmpCode != ICMPV4_CODE_ECHO) {
-    log_warning("FilterActionGenericReply:applyICMPv4: invalid icmp code", icmpCode);
+    log_warning("FilterActionGenericReply:applyICMPv4: invalid icmp code",
+                icmpCode);
     return false;
   }
 
@@ -51,12 +54,14 @@ bool FilterActionGenericReply::applyICMPv4(ByteRange enetFrame, PortNumber inPor
   return true;
 }
 
-bool FilterActionGenericReply::buildICMPv4(ByteRange enetFrame, OXMRange oxm, ByteList *reply) {
+bool FilterActionGenericReply::buildICMPv4(ByteRange enetFrame, OXMRange oxm,
+                                           ByteList *reply) {
   MacAddress ethSrc = oxm.get<OFB_ETH_DST>();
   MacAddress ethDst = oxm.get<OFB_ETH_SRC>();
 
   if (ethDst.isMulticast()) {
-    log_warning("FilterActionGenericReply::buildICMPv4: invalid eth_dst:", ethDst);
+    log_warning("FilterActionGenericReply::buildICMPv4: invalid eth_dst:",
+                ethDst);
     return false;
   }
 
@@ -88,11 +93,15 @@ bool FilterActionGenericReply::buildICMPv4(ByteRange enetFrame, OXMRange oxm, By
   return true;
 }
 
-bool FilterActionGenericReply::applyICMPv6(ByteRange enetFrame, PortNumber inPort, Message *message, OXMRange oxm) {
+bool FilterActionGenericReply::applyICMPv6(ByteRange enetFrame,
+                                           PortNumber inPort, Message *message,
+                                           OXMRange oxm) {
   return false;
 }
 
-void FilterActionGenericReply::sendPacketOut(const ByteList *data, PortNumber outPort, Message *message) {
+void FilterActionGenericReply::sendPacketOut(const ByteList *data,
+                                             PortNumber outPort,
+                                             Message *message) {
   ActionList actions;
   actions.add(AT_OUTPUT{outPort});
 
@@ -103,4 +112,3 @@ void FilterActionGenericReply::sendPacketOut(const ByteList *data, PortNumber ou
   packetOut.setEnetFrame(*data);
   packetOut.send(message->source());
 }
-

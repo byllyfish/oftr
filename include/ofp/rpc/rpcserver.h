@@ -7,8 +7,8 @@
 #include <map>
 #include "ofp/datapathid.h"
 #include "ofp/driver.h"
-#include "ofp/rpc/rpcid.h"
 #include "ofp/rpc/filtertable.h"
+#include "ofp/rpc/rpcid.h"
 
 namespace ofp {
 

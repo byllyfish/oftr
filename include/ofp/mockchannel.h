@@ -5,9 +5,9 @@
 #define OFP_MOCKCHANNEL_H_
 
 #include "ofp/bytelist.h"
+#include "ofp/channel.h"
 #include "ofp/constants.h"
 #include "ofp/padding.h"
-#include "ofp/channel.h"
 
 namespace ofp {
 
@@ -15,8 +15,7 @@ namespace ofp {
 
 class MockChannel : public Channel {
  public:
-  explicit MockChannel(UInt8 version = OFP_VERSION_LAST)
-      : version_{version} {}
+  explicit MockChannel(UInt8 version = OFP_VERSION_LAST) : version_{version} {}
 
   const UInt8 *data() const {
     assert(flushed_ || size() == 0);
@@ -47,7 +46,9 @@ class MockChannel : public Channel {
   UInt64 connectionId() const override { return 1; }
   DatapathID datapathId() const override { return {}; }
   UInt8 auxiliaryId() const override { return 0; }
-  ChannelTransport transport() const override { return ChannelTransport::TCP_Plaintext; }
+  ChannelTransport transport() const override {
+    return ChannelTransport::TCP_Plaintext;
+  }
   IPv6Endpoint remoteEndpoint() const override { return {}; }
   IPv6Endpoint localEndpoint() const override { return {}; }
   void shutdown(bool reset = false) override {}
