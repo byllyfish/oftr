@@ -7,7 +7,10 @@
 
 using namespace ofp::demux;
 
-PktFilter::PktFilter(PktFilter &&rhs) : prog_{rhs.prog_}, filter_{std::move(rhs.filter_)} {
+// In the following member-wise initialization, we need to use 
+// `prog_(rhs.prog_)`. Using braces results in a GCC-4.8.4 compiler error.
+
+PktFilter::PktFilter(PktFilter &&rhs) : prog_(rhs.prog_), filter_{std::move(rhs.filter_)} {
   rhs.prog_.bf_insns = nullptr;
   assert(rhs.filter_.empty());
 }
