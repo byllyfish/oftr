@@ -297,6 +297,18 @@ void RpcServer::onRpcDescription(RpcConnection *conn, RpcDescription *desc) {
   conn->rpcReply(&response);
 }
 
+void RpcServer::onRpcSetFilter(RpcConnection *conn, RpcSetFilter *set) {
+  // This code "moves" from the vector in the rpc parameter.
+  filter_.setFilters(std::move(set->params));
+
+  if (set->id.is_missing())
+    return;
+
+  RpcSetFilterResponse response{set->id};
+  response.result.count = UInt32_narrow_cast(filter_.size());
+  conn->rpcReply(&response);
+}
+
 void RpcServer::onChannelUp(Channel *channel) {
   if (oneConn_)
     oneConn_->onChannel(channel, "UP");

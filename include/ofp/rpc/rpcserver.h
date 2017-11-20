@@ -17,7 +17,6 @@ class ByteRange;
 namespace rpc {
 
 class RpcConnection;
-class RpcSession;
 
 struct RpcListen;
 struct RpcConnect;
@@ -26,6 +25,7 @@ struct RpcSend;
 struct RpcListConns;
 struct RpcAddIdentity;
 struct RpcDescription;
+struct RpcSetFilter;
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -52,6 +52,7 @@ class RpcServer {
   void onRpcListConns(RpcConnection *conn, RpcListConns *list);
   void onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add);
   void onRpcDescription(RpcConnection *conn, RpcDescription *desc);
+  void onRpcSetFilter(RpcConnection *conn, RpcSetFilter *set);
 
   // These methods are used to bridge RpcChannelListeners to RpcConnections.
   void onChannelUp(Channel *channel);

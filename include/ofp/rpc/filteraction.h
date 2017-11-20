@@ -6,6 +6,7 @@
 
 #include "ofp/byterange.h"
 #include "ofp/portnumber.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace ofp {
 
@@ -15,6 +16,11 @@ namespace rpc {
 
 class FilterAction {
  public:
+  enum Type {
+    NONE,
+    GENERIC_REPLY
+  };
+
   virtual ~FilterAction() {}
 
   virtual bool apply(ByteRange enetFrame, PortNumber inPort,
@@ -23,5 +29,19 @@ class FilterAction {
 
 }  // namespace rpc
 }  // namespace ofp
+
+namespace llvm {
+namespace yaml {
+
+template <>
+struct ScalarEnumerationTraits<ofp::rpc::FilterAction::Type> {
+  static void enumeration(IO &io, ofp::rpc::FilterAction::Type &value) {
+    io.enumCase(value, "NONE", ofp::rpc::FilterAction::NONE);
+    io.enumCase(value, "GENERIC_REPLY", ofp::rpc::FilterAction::GENERIC_REPLY);
+  }
+};
+
+}  // namespace yaml
+}  // namespace llvm
 
 #endif  // OFP_RPC_FILTERACTION_H_

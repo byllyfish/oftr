@@ -17,10 +17,19 @@ class RpcServer;
 
 class FilterTable {
  public:
+  FilterTable() = default;
+  
   bool apply(Message *message, bool *escalate);
+
+  size_t size() const { return table_.size(); }
+  
+  void setFilters(std::vector<FilterTableEntry> &&filters) { table_ = std::move(filters); }
 
  private:
   std::vector<FilterTableEntry> table_;
+
+  FilterTable(const FilterTable &) = delete;
+  FilterTable& operator=(const FilterTable &) = delete;
 };
 
 }  // namespace rpc

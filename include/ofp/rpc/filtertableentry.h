@@ -6,6 +6,7 @@
 
 #include "ofp/demux/pktfilter.h"
 #include "ofp/portnumber.h"
+#include "ofp/rpc/filteraction.h"
 
 namespace ofp {
 
@@ -14,7 +15,6 @@ class Message;
 namespace rpc {
 
 class RpcServer;
-class FilterAction;
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -22,14 +22,15 @@ OFP_BEGIN_IGNORE_PADDING
 
 class FilterTableEntry {
  public:
-  bool setFilter(const std::string &filter);
+  bool setFilter(const std::string &filter) { return pktFilter_.setFilter(filter); }
+  void setAction(std::unique_ptr<FilterAction> &&action) { action_ = std::move(action); }
 
   bool apply(ByteRange data, PortNumber inPort, Message *message,
              bool *escalate);
 
  private:
   demux::PktFilter pktFilter_;
-  FilterAction *action_ = nullptr;
+  std::unique_ptr<FilterAction> action_;
   bool escalate_ = false;
 };
 

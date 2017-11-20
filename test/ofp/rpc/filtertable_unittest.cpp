@@ -1,13 +1,10 @@
-// Copyright (c) 2017 William W. Fisher (at gmail dot com)
-// This file is distributed under the MIT License.
-
+#include "ofp/unittest.h"
+#include "ofp/rpc/filtertable.h"
 #include "ofp/rpc/filteractiongenericreply.h"
 #include "ofp/message.h"
-#include "ofp/mockchannel.h"
-#include "ofp/packetin.h"
-#include "ofp/unittest.h"
-#include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
+#include "ofp/yaml/decoder.h"
+#include "ofp/mockchannel.h"
 
 using namespace ofp;
 using namespace ofp::rpc;
@@ -19,6 +16,7 @@ static Message encodeMessage(llvm::StringRef yaml) {
 }
 
 static std::string decodeMessage(ByteRange data) {
+  assert(data.size() > 0);
   Message message{data.data(), data.size()};
   message.normalize();
 
@@ -26,7 +24,17 @@ static std::string decodeMessage(ByteRange data) {
   return decoder.result();
 }
 
-TEST(rpcfilteractiongenericreply, test) {
+TEST(filtertable, test) {
+  std::vector<FilterTableEntry> params;
+  params.emplace_back();
+  params.back().setFilter("vlan and icmp");
+  params.back().setAction(MakeUniquePtr<FilterActionGenericReply>());
+  
+  FilterTable filters;
+  filters.setFilters(std::move(params));
+  EXPECT_EQ(filters.size(), 1);
+  EXPECT_EQ(params.size(), 0);
+
   const char *input = R"""(
     type:            PACKET_IN
     xid:             0x00000000
@@ -53,15 +61,13 @@ TEST(rpcfilteractiongenericreply, test) {
   MockChannel outputChannel{OFP_VERSION_4};
   message.setSource(&outputChannel);
 
-  const PacketIn *packetIn = PacketIn::cast(&message);
-  ASSERT_TRUE(packetIn != nullptr);
-  ByteRange enetFrame = packetIn->enetFrame();
-  PortNumber inPort = packetIn->inPort();
-
-  FilterActionGenericReply action;
-  bool result = action.apply(enetFrame, inPort, &message);
+  // Test filter table here.
+  bool escalate = true;
+  bool result = filters.apply(&message, &escalate);
   EXPECT_TRUE(result);
+  EXPECT_TRUE(escalate);
 
+  ASSERT_TRUE(outputChannel.size() > 0);
   std::string output =
       decodeMessage({outputChannel.data(), outputChannel.size()});
   EXPECT_EQ(
