@@ -21,3 +21,24 @@
     ...
     fun:(below main)
 }
+
+{
+    Suppress leaking in openssl (CRYPTO_set_thread_local)
+    Memcheck:Leak
+    fun:malloc
+    fun:OPENSSL_malloc
+    fun:CRYPTO_set_thread_local
+    fun:err_get_state
+    fun:ERR_clear_error
+    ...
+}
+
+{
+    Suppress leaking in openssl (err_get_state)
+    Memcheck:Leak
+    fun:malloc
+    fun:OPENSSL_malloc
+    fun:err_get_state
+    fun:ERR_clear_error
+    ...
+}
