@@ -147,5 +147,5 @@ set_tests_properties(unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT
 if(LIBOFP_MEMCHECK)
 	separate_arguments(cmd UNIX_COMMAND "${LIBOFP_MEMCHECK} --leak-check=full ./ofp_unittest")
     add_test(NAME memcheck_unittests COMMAND ${cmd})
-    set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=16653")
+    set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=16653;LIBOFP_VALGRIND=1")
 endif()
