@@ -549,7 +549,7 @@ struct MappingTraits<ofp::rpc::FilterTableEntry> {
     std::string filter;
     io.mapRequired("filter", filter);
     if (!entry.setFilter(filter)) {
-      io.setError("Invalid pcap filter");
+      io.setError("invalid pcap filter");
     }
 
     FilterAction::Type actionType = FilterAction::NONE;
