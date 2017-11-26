@@ -12,8 +12,7 @@ using namespace ofp::rpc;
 // We apply the message against each table entry in order until one matches.
 //
 // For a filter entry F, F(M, escalate) returns true when the filter criteria
-// and
-// action matches the message. A filter entry that matches may modify the
+// and action matches the message. A filter entry that matches may modify the
 // 'escalate' flag to block the message from proceeding up the chain of command.
 // The filter action may modify the message to add flags (e.g. REPLIED,
 // METERED, etc.)
