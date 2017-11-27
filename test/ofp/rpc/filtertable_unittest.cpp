@@ -65,7 +65,7 @@ TEST(filtertable, test) {
   bool escalate = true;
   bool result = filters.apply(&message, &escalate);
   EXPECT_TRUE(result);
-  EXPECT_TRUE(escalate);
+  EXPECT_FALSE(escalate);
 
   ASSERT_TRUE(outputChannel.size() > 0);
   std::string output =
