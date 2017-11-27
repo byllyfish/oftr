@@ -328,6 +328,9 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/rpc/rpcserver.cpp
     src/ofp/rpc/rpcencoder.cpp
     src/ofp/rpc/rpcevents.cpp
+    src/ofp/rpc/filtertable.cpp
+    src/ofp/rpc/filtertableentry.cpp
+    src/ofp/rpc/filteractiongenericreply.cpp
   )
   if(LIBOFP_ENABLE_OPENSSL)
     set(LIBOFP_SOURCES

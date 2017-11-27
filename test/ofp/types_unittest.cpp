@@ -233,6 +233,10 @@ static void watchdogtimer() {
 OFP_BEGIN_IGNORE_USED_BUT_UNUSED
 
 TEST(types_DeathTest, watchdogtimer) {
+  // Don't run this test under valgrind; it just spews output.
+  if (std::getenv("LIBOFP_VALGRIND"))
+    return;
+
   // This macro generates a warning on clang. [-Wused-but-marked-unused]
   EXPECT_EXIT(watchdogtimer(), ::testing::ExitedWithCode(200),
               "watchdog_timer");

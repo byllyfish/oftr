@@ -676,17 +676,18 @@ bool Decode::isMsgTypeAllowed(const ofp::Message *message) const {
 bool Decode::isPktDataAllowed(const ofp::Message *message) const {
   using namespace ofp;
 
-  OFPErrorCode unused;
-
+  if (pktIncludeFilter_.empty())
+    return true;
+  
   if (message->type() == OFPT_PACKET_IN) {
-    const PacketIn *packetIn = message->castMessage<PacketIn>(&unused);
+    const PacketIn *packetIn = PacketIn::cast(message);
     if (packetIn) {
       return pktIncludeFilter_.match(packetIn->enetFrame(),
                                      packetIn->totalLen());
     }
 
   } else if (message->type() == OFPT_PACKET_OUT) {
-    const PacketOut *packetOut = message->castMessage<PacketOut>(&unused);
+    const PacketOut *packetOut = PacketOut::cast(message);
     if (packetOut) {
       return pktIncludeFilter_.match(packetOut->enetFrame());
     }
@@ -942,17 +943,15 @@ void Decode::extractPacketDataToFile(const ofp::Message *message) {
 #if HAVE_LIBPCAP
   using namespace ofp;
 
-  OFPErrorCode unused;
-
   if (message->type() == OFPT_PACKET_IN) {
-    const PacketIn *packetIn = message->castMessage<PacketIn>(&unused);
+    const PacketIn *packetIn = PacketIn::cast(message);
     if (packetIn) {
       pktSinkFile_->write(message->time(), packetIn->enetFrame(),
                           packetIn->totalLen());
     }
 
   } else if (message->type() == OFPT_PACKET_OUT) {
-    const PacketOut *packetOut = message->castMessage<PacketOut>(&unused);
+    const PacketOut *packetOut = PacketOut::cast(message);
     if (packetOut) {
       ByteRange enetFrame = packetOut->enetFrame();
       UInt32 totalLen = UInt32_narrow_cast(enetFrame.size());

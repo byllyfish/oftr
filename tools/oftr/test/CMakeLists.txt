@@ -53,4 +53,3 @@ set_tests_properties(oftr-benchmark PROPERTIES TIMEOUT 600)
 
 add_test(NAME oftr-jsonrpc COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-jsonrpc.sh)
 set_tests_properties(oftr-jsonrpc PROPERTIES TIMEOUT 10)
-

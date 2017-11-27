@@ -8,6 +8,8 @@
 #include "ofp/driver.h"
 #include "ofp/padding.h"
 #include "ofp/rpc/rpcid.h"
+#include "ofp/rpc/filtertableentry.h"
+#include "ofp/rpc/filteractiongenericreply.h"
 #include "ofp/yaml/encoder.h"
 #include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/ybytelist.h"
@@ -34,6 +36,7 @@ enum RpcMethod : UInt32 {
   METHOD_LIST_CONNS,    // OFP.LIST_CONNECTIONS
   METHOD_ADD_IDENTITY,  // OFP.ADD_IDENTITY
   METHOD_DESCRIPTION,   // OFP.DESCRIPTION
+  METHOD_SET_FILTER,    // OFP.SET_FILTER
   METHOD_UNSUPPORTED
 };
 
@@ -277,6 +280,28 @@ struct RpcSendResponse {
   Result result;
 };
 
+/// Represents a RPC request to set a packet filter (METHOD_SET_FILTER).
+struct RpcSetFilter {
+  explicit RpcSetFilter(RpcID ident) : id{ident} {}
+
+  RpcID id;
+  std::vector<FilterTableEntry> params;
+};
+
+/// Represents a RPC response to set packet filter (METHOD_SET_FILTER).
+struct RpcSetFilterResponse {
+  explicit RpcSetFilterResponse(RpcID ident) : id{ident} {}
+  std::string toJson();
+
+  struct Result {
+    /// Filter count.
+    UInt32 count = 0;
+  };
+
+  RpcID id;
+  Result result;
+};
+
 /// Represents a RPC notification about a channel (METHOD_MESSAGE subtype)
 struct RpcChannel {
   std::string toJson();
@@ -317,6 +342,7 @@ OFP_END_IGNORE_PADDING
 }  // namespace ofp
 
 LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::RpcConnectionStats)
+LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::FilterTableEntry)
 
 namespace llvm {
 namespace yaml {
@@ -516,6 +542,33 @@ struct MappingTraits<ofp::rpc::RpcAddIdentity::Params> {
 };
 
 template <>
+struct MappingTraits<ofp::rpc::FilterTableEntry> {
+  static void mapping(IO &io, ofp::rpc::FilterTableEntry &entry) {
+    using namespace ofp::rpc;
+
+    std::string filter;
+    io.mapRequired("filter", filter);
+    if (!entry.setFilter(filter)) {
+      io.setError("invalid pcap filter");
+    }
+
+    FilterAction::Type actionType = FilterAction::NONE;
+    io.mapRequired("action", actionType);
+
+    switch (actionType) {
+      case FilterAction::GENERIC_REPLY: {
+        auto action = ofp::MakeUniquePtr<FilterActionGenericReply>();
+        //io.mapRequired("params", *action);
+        entry.setAction(std::move(action));
+        break;
+      }
+      case FilterAction::NONE:
+        break;
+    }
+  }
+};
+
+template <>
 struct MappingTraits<ofp::rpc::RpcDescriptionResponse> {
   static void mapping(IO &io, ofp::rpc::RpcDescriptionResponse &response) {
     io.mapRequired("id", response.id);
@@ -633,6 +686,22 @@ template <>
 struct MappingTraits<ofp::rpc::RpcSendResponse::Result> {
   static void mapping(IO &io, ofp::rpc::RpcSendResponse::Result &result) {
     io.mapRequired("data", result.data);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::rpc::RpcSetFilterResponse> {
+  static void mapping(IO &io, ofp::rpc::RpcSetFilterResponse &response) {
+    io.mapRequired("id", response.id);
+    io.mapRequired("result", response.result);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::rpc::RpcSetFilterResponse::Result> {
+  static void mapping(IO &io,
+                      ofp::rpc::RpcSetFilterResponse::Result &result) {
+    io.mapRequired("count", result.count);
   }
 };
 

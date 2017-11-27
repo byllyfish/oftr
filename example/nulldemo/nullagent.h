@@ -28,7 +28,7 @@ class NullAgent : public ofp::ChannelListener {
     log_debug("NullAgent channel down.");
   }
 
-  void onMessage(const Message *message) override;
+  void onMessage(Message *message) override;
 
  private:
   void onSetConfig(const Message *message);
@@ -40,7 +40,7 @@ class NullAgent : public ofp::ChannelListener {
   void sendError(ofp::OFPErrorCode err, const Message *message);
 };
 
-void NullAgent::onMessage(const Message *message) {
+void NullAgent::onMessage(Message *message) {
   switch (message->type()) {
     case ofp::SetConfig::type():
       onSetConfig(message);

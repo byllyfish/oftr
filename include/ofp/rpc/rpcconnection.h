@@ -35,7 +35,8 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
   void onRpcListConns(RpcListConns *list);
   void onRpcAddIdentity(RpcAddIdentity *add);
   void onRpcDescription(RpcDescription *desc);
-
+  void onRpcSetFilter(RpcSetFilter *set);
+  
   template <class Response>
   void rpcReply(Response *response) {
     writeEvent(response->toJson());

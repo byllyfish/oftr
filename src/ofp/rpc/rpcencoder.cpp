@@ -108,6 +108,14 @@ void RpcEncoder::encodeParams(llvm::yaml::IO &io) {
       }
       break;
     }
+    case METHOD_SET_FILTER: {
+      RpcSetFilter set{id_};
+      io.mapRequired("params", set.params);
+      if (!errorFound(io)) {
+        conn_->onRpcSetFilter(&set);
+      }
+      break;
+    }
     default:
       break;
   }

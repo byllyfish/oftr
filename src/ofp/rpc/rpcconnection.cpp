@@ -10,6 +10,7 @@
 using namespace ofp;
 using namespace ofp::rpc;
 
+
 RpcConnection::RpcConnection(RpcServer *server) : server_{server} {
   server_->onConnect(this);
 }
@@ -44,6 +45,10 @@ void RpcConnection::onRpcAddIdentity(RpcAddIdentity *add) {
 
 void RpcConnection::onRpcDescription(RpcDescription *desc) {
   server_->onRpcDescription(this, desc);
+}
+
+void RpcConnection::onRpcSetFilter(RpcSetFilter *set) {
+  server_->onRpcSetFilter(this, set);
 }
 
 void RpcConnection::onChannel(Channel *channel, const char *status) {
