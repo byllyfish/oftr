@@ -11,10 +11,13 @@
 
 using ofp::rpc::RpcConnectionStdio;
 
+OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
+
 // For `OFP.MESSAGE` notification event.
 static const llvm::StringRef kMsgPrefix{"{\"params\":", 10};
 static const llvm::StringRef kMsgSuffix{",\"method\":\"OFP.MESSAGE\"}", 24};
 
+OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 
 RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
                                        asio::posix::stream_descriptor input,
@@ -31,8 +34,12 @@ void RpcConnectionStdio::writeEvent(llvm::StringRef msg, bool ofp_message) {
   size_t msgSize = ofp_message ? msg.size() + 34 : msg.size();
   txBytes_ += msgSize;
 
+  // TODO(bfish): Make sure the outgoing message doesn't exceed MAX msg size.
+
   if (binaryProtocol_) {
-    Big32 hdr = UInt32_narrow_cast(((msgSize + 4) << 8) | 0xA0);
+    // Add header.
+    size_t hdrlen = msgSize + sizeof(Big32);
+    Big32 hdr = UInt32_narrow_cast((hdrlen << 8) | RPC_EVENT_BINARY_TAG);
     outgoing_[outgoingIdx_].add(&hdr, sizeof(hdr));
   }
 
