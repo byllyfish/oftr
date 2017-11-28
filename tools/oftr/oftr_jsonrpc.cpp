@@ -51,6 +51,6 @@ void JsonRpc::runStdio() {
   const Milliseconds metricInterval{metricInterval_};
 
   rpc::RpcServer server{::dup(STDIN_FILENO), ::dup(STDOUT_FILENO),
-                        metricInterval};
+                        binaryProtocol_, metricInterval};
   server.run();
 }

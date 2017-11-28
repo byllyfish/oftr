@@ -74,8 +74,8 @@ class LibOFP(object):
         assert driverPath
 
         # Driver's path is specified, so launch the executable.
-        # Communicate with the driver using stdin and stdout (in line mode).
-        self._process = subprocess.Popen([driverPath, 'jsonrpc', '--loglevel=info'],
+        # Communicate with the driver using stdin and stdout (in binary mode).
+        self._process = subprocess.Popen([driverPath, 'jsonrpc', '--loglevel=info', '--binary-protocol'],
                         stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
         # Our input is the other process's stdout.

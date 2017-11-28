@@ -61,7 +61,6 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
   UInt64 rxBytes_ = 0;
 
   virtual void writeEvent(llvm::StringRef msg, bool ofp_message=false) = 0;
-  virtual void asyncRead() = 0;
 
   void rpcRequestTooBig();
 };

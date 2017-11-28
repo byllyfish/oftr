@@ -11,19 +11,19 @@
 
 using ofp::rpc::RpcConnectionStdio;
 
+// For `OFP.MESSAGE` notification event.
+static const llvm::StringRef kMsgPrefix{"{\"params\":", 10};
+static const llvm::StringRef kMsgSuffix{",\"method\":\"OFP.MESSAGE\"}", 24};
+
+
 RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
                                        asio::posix::stream_descriptor input,
-                                       asio::posix::stream_descriptor output)
+                                       asio::posix::stream_descriptor output, bool binaryProtocol)
     : RpcConnection{server},
       input_{std::move(input)},
       output_{std::move(output)},
       streambuf_{RPC_MAX_MESSAGE_SIZE},
-      metricTimer_{server->engine()->io()} {}
-
-
-// For `OFP.MESSAGE` notification event.
-const llvm::StringRef kMsgPrefix{"{\"params\":", 10};
-const llvm::StringRef kMsgSuffix{",\"method\":\"OFP.MESSAGE\"}", 24};
+      metricTimer_{server->engine()->io()}, binaryProtocol_{binaryProtocol} {}
 
 void RpcConnectionStdio::writeEvent(llvm::StringRef msg, bool ofp_message) {
   ++txEvents_;
@@ -31,8 +31,10 @@ void RpcConnectionStdio::writeEvent(llvm::StringRef msg, bool ofp_message) {
   size_t msgSize = ofp_message ? msg.size() + 34 : msg.size();
   txBytes_ += msgSize;
 
-  Big32 hdr = UInt32_narrow_cast(((msgSize + 4) << 8) | 0xA0);
-  outgoing_[outgoingIdx_].add(&hdr, sizeof(hdr));
+  if (binaryProtocol_) {
+    Big32 hdr = UInt32_narrow_cast(((msgSize + 4) << 8) | 0xA0);
+    outgoing_[outgoingIdx_].add(&hdr, sizeof(hdr));
+  }
 
   if (ofp_message) {
     outgoing_[outgoingIdx_].add(kMsgPrefix.data(), kMsgPrefix.size());
@@ -40,6 +42,11 @@ void RpcConnectionStdio::writeEvent(llvm::StringRef msg, bool ofp_message) {
     outgoing_[outgoingIdx_].add(kMsgSuffix.data(), kMsgSuffix.size());
   } else {
     outgoing_[outgoingIdx_].add(msg.data(), msg.size());
+  }
+
+  if (!binaryProtocol_) {
+    const UInt8 delimiter = RPC_EVENT_DELIMITER_CHAR;
+    outgoing_[outgoingIdx_].add(&delimiter, sizeof(delimiter));
   }
 
   if (!writing_) {
@@ -54,8 +61,11 @@ void RpcConnectionStdio::close() {
 
 void RpcConnectionStdio::asyncAccept() {
   // Start first async read.
-  //asyncRead();
-  asyncReadHeader();
+  if (binaryProtocol_) {
+    asyncReadHeader();
+  } else {
+    asyncReadLine();
+  }
 
   // Start optional metrics timer.
   Milliseconds metricInterval = server_->metricInterval();
@@ -64,7 +74,7 @@ void RpcConnectionStdio::asyncAccept() {
   }
 }
 
-void RpcConnectionStdio::asyncRead() {
+void RpcConnectionStdio::asyncReadLine() {
   auto self(shared_from_this());
 
   asio::async_read_until(
@@ -76,20 +86,20 @@ void RpcConnectionStdio::asyncRead() {
           std::getline(is, line, RPC_EVENT_DELIMITER_CHAR);
           log::trace_rpc("Read RPC", 0, line.data(), line.size());
           handleEvent(line);
-          asyncRead();
+          asyncReadLine();
         } else if (err == asio::error::not_found) {
-          log_error("RpcConnectionStdio::asyncRead: input too large",
+          log_error("RpcConnectionStdio::asyncReadLine: input too large",
                     RPC_MAX_MESSAGE_SIZE, err);
           rpcRequestTooBig();
         } else if (err == asio::error::eof) {
           // Log warning if there are unread bytes in the buffer.
           auto bytesUnread = streambuf_.size();
           if (bytesUnread > 0) {
-            log_warning("RpcConnectionStdio::asyncRead: unread bytes at eof",
+            log_warning("RpcConnectionStdio::asyncReadLine: unread bytes at eof",
                         bytesUnread);
           }
         } else if (err != asio::error::operation_aborted) {
-          log_error("RpcConnectionStdio::asyncRead error", err);
+          log_error("RpcConnectionStdio::asyncReadLine error", err);
         }
       });
 }

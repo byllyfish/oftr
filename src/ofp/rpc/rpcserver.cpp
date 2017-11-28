@@ -14,7 +14,7 @@ using ofp::rpc::RpcServer;
 using ofp::sys::TCP_Server;
 using namespace ofp;
 
-RpcServer::RpcServer(int inputFD, int outputFD,
+RpcServer::RpcServer(int inputFD, int outputFD, bool binaryProtocol,
                      Milliseconds metricInterval, Channel *defaultChannel)
     : engine_{driver_.engine()},
       defaultChannel_{defaultChannel},
@@ -26,7 +26,7 @@ RpcServer::RpcServer(int inputFD, int outputFD,
   // directly up to this connection.
   auto conn = std::make_shared<RpcConnectionStdio>(
       this, asio::posix::stream_descriptor{engine_->io(), inputFD},
-      asio::posix::stream_descriptor{engine_->io(), outputFD});
+      asio::posix::stream_descriptor{engine_->io(), outputFD}, binaryProtocol);
 
   conn->asyncAccept();
   engine_->setAlertCallback(alertCallback, this);
