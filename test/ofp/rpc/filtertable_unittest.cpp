@@ -1,3 +1,6 @@
+// Copyright (c) 2017 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #include "ofp/rpc/filtertable.h"
 #include "ofp/message.h"
 #include "ofp/mockchannel.h"
@@ -67,7 +70,7 @@ TEST(filtertable, test) {
   EXPECT_TRUE(result);
   EXPECT_FALSE(escalate);
 
-  ASSERT_TRUE(outputChannel.size() > 0);
+  ASSERT_GT(outputChannel.size(), 0);
   std::string output =
       decodeMessage({outputChannel.data(), outputChannel.size()});
   EXPECT_EQ(
