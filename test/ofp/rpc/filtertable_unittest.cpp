@@ -1,10 +1,10 @@
-#include "ofp/unittest.h"
 #include "ofp/rpc/filtertable.h"
-#include "ofp/rpc/filteractiongenericreply.h"
 #include "ofp/message.h"
-#include "ofp/yaml/encoder.h"
-#include "ofp/yaml/decoder.h"
 #include "ofp/mockchannel.h"
+#include "ofp/rpc/filteractiongenericreply.h"
+#include "ofp/unittest.h"
+#include "ofp/yaml/decoder.h"
+#include "ofp/yaml/encoder.h"
 
 using namespace ofp;
 using namespace ofp::rpc;
@@ -29,7 +29,7 @@ TEST(filtertable, test) {
   params.emplace_back();
   params.back().setFilter("vlan and icmp");
   params.back().setAction(MakeUniquePtr<FilterActionGenericReply>());
-  
+
   FilterTable filters;
   filters.setFilters(std::move(params));
   EXPECT_EQ(filters.size(), 1);

@@ -678,7 +678,7 @@ bool Decode::isPktDataAllowed(const ofp::Message *message) const {
 
   if (pktIncludeFilter_.empty())
     return true;
-  
+
   if (message->type() == OFPT_PACKET_IN) {
     const PacketIn *packetIn = PacketIn::cast(message);
     if (packetIn) {

@@ -7,10 +7,11 @@
 
 using namespace ofp::demux;
 
-// In the following member-wise initialization, we need to use 
+// In the following member-wise initialization, we need to use
 // `prog_(rhs.prog_)`. Using braces results in a GCC-4.8.4 compiler error.
 
-PktFilter::PktFilter(PktFilter &&rhs) : prog_(rhs.prog_), filter_{std::move(rhs.filter_)} {
+PktFilter::PktFilter(PktFilter &&rhs)
+    : prog_(rhs.prog_), filter_{std::move(rhs.filter_)} {
   rhs.prog_.bf_insns = nullptr;
   assert(rhs.filter_.empty());
 }
@@ -28,7 +29,7 @@ bool PktFilter::setFilter(const std::string &filter) {
   const int kSnapLen = 65535;
   const int kLinkType = DLT_EN10MB;
 
-  struct bpf_program newProg = { 0, nullptr };
+  struct bpf_program newProg = {0, nullptr};
   int ret = pcap_compile_nopcap(kSnapLen, kLinkType, &newProg, filter.c_str(),
                                 kOptimize, PCAP_NETMASK_UNKNOWN);
   if (ret < 0) {
@@ -46,7 +47,7 @@ bool PktFilter::setFilter(const std::string &filter) {
 
 bool PktFilter::match(ByteRange data, size_t totalLen) const {
   // Empty filter never matches.
-  if (empty()) 
+  if (empty())
     return false;
 
   struct pcap_pkthdr hdr;

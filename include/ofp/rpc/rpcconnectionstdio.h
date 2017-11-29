@@ -16,13 +16,14 @@ OFP_BEGIN_IGNORE_PADDING
 class RpcConnectionStdio final : public RpcConnection {
  public:
   RpcConnectionStdio(RpcServer *server, asio::posix::stream_descriptor input,
-                     asio::posix::stream_descriptor output, bool binaryProtocol);
+                     asio::posix::stream_descriptor output,
+                     bool binaryProtocol);
 
   void asyncAccept() override;
   void close() override;
 
  protected:
-  void writeEvent(llvm::StringRef msg, bool ofp_message=false) override;
+  void writeEvent(llvm::StringRef msg, bool ofp_message = false) override;
 
  private:
   asio::posix::stream_descriptor input_;

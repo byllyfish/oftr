@@ -7,9 +7,9 @@
 #include "ofp/datapathid.h"
 #include "ofp/driver.h"
 #include "ofp/padding.h"
-#include "ofp/rpc/rpcid.h"
-#include "ofp/rpc/filtertableentry.h"
 #include "ofp/rpc/filteractiongenericreply.h"
+#include "ofp/rpc/filtertableentry.h"
+#include "ofp/rpc/rpcid.h"
 #include "ofp/yaml/encoder.h"
 #include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/ybytelist.h"
@@ -561,7 +561,7 @@ struct MappingTraits<ofp::rpc::FilterTableEntry> {
     switch (actionType) {
       case FilterAction::GENERIC_REPLY: {
         auto action = ofp::MakeUniquePtr<FilterActionGenericReply>();
-        //io.mapRequired("params", *action);
+        // io.mapRequired("params", *action);
         entry.setAction(std::move(action));
         break;
       }
@@ -702,8 +702,7 @@ struct MappingTraits<ofp::rpc::RpcSetFilterResponse> {
 
 template <>
 struct MappingTraits<ofp::rpc::RpcSetFilterResponse::Result> {
-  static void mapping(IO &io,
-                      ofp::rpc::RpcSetFilterResponse::Result &result) {
+  static void mapping(IO &io, ofp::rpc::RpcSetFilterResponse::Result &result) {
     io.mapRequired("count", result.count);
   }
 };

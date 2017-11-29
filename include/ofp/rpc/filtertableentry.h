@@ -22,8 +22,12 @@ OFP_BEGIN_IGNORE_PADDING
 
 class FilterTableEntry {
  public:
-  bool setFilter(const std::string &filter) { return pktFilter_.setFilter(filter); }
-  void setAction(std::unique_ptr<FilterAction> &&action) { action_ = std::move(action); }
+  bool setFilter(const std::string &filter) {
+    return pktFilter_.setFilter(filter);
+  }
+  void setAction(std::unique_ptr<FilterAction> &&action) {
+    action_ = std::move(action);
+  }
 
   bool apply(ByteRange data, PortNumber inPort, Message *message,
              bool *escalate);

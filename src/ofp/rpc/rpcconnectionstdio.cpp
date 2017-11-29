@@ -21,12 +21,14 @@ OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 
 RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
                                        asio::posix::stream_descriptor input,
-                                       asio::posix::stream_descriptor output, bool binaryProtocol)
+                                       asio::posix::stream_descriptor output,
+                                       bool binaryProtocol)
     : RpcConnection{server},
       input_{std::move(input)},
       output_{std::move(output)},
       streambuf_{RPC_MAX_MESSAGE_SIZE},
-      metricTimer_{server->engine()->io()}, binaryProtocol_{binaryProtocol} {}
+      metricTimer_{server->engine()->io()},
+      binaryProtocol_{binaryProtocol} {}
 
 void RpcConnectionStdio::writeEvent(llvm::StringRef msg, bool ofp_message) {
   ++txEvents_;
@@ -102,8 +104,9 @@ void RpcConnectionStdio::asyncReadLine() {
           // Log warning if there are unread bytes in the buffer.
           auto bytesUnread = streambuf_.size();
           if (bytesUnread > 0) {
-            log_warning("RpcConnectionStdio::asyncReadLine: unread bytes at eof",
-                        bytesUnread);
+            log_warning(
+                "RpcConnectionStdio::asyncReadLine: unread bytes at eof",
+                bytesUnread);
           }
         } else if (err != asio::error::operation_aborted) {
           log_error("RpcConnectionStdio::asyncReadLine error", err);
@@ -115,14 +118,13 @@ void RpcConnectionStdio::asyncReadHeader() {
   auto self(this->shared_from_this());
 
   asio::async_read(
-      input_,
-      asio::buffer(&hdrBuf_, sizeof(hdrBuf_)),
+      input_, asio::buffer(&hdrBuf_, sizeof(hdrBuf_)),
       make_custom_alloc_handler(
           allocator_, [this, self](const asio::error_code &err, size_t length) {
             log_debug("rpc::asyncReadHeader callback", err);
             if (!err) {
               assert(length == sizeof(hdrBuf_));
-            
+
               UInt32 len = (hdrBuf_ >> 8);
               if (len >= 4) {
                 asyncReadMessage(len - 4);
@@ -145,13 +147,12 @@ void RpcConnectionStdio::asyncReadMessage(size_t msgLength) {
 
   eventBuf_.resize(msgLength);
   asio::async_read(
-      input_,
-      asio::buffer(eventBuf_),
+      input_, asio::buffer(eventBuf_),
       make_custom_alloc_handler(
           allocator_, [this, self](const asio::error_code &err, size_t length) {
             log_debug("rpc::asyncReadMessage callback", err, length);
             if (!err) {
-              //assert(length == msgLength);
+              // assert(length == msgLength);
               assert(eventBuf_.size() == length);
 
               log::trace_rpc("Read RPC", 0, eventBuf_.data(), eventBuf_.size());

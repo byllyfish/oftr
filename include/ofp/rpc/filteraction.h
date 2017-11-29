@@ -16,10 +16,7 @@ namespace rpc {
 
 class FilterAction {
  public:
-  enum Type {
-    NONE,
-    GENERIC_REPLY
-  };
+  enum Type { NONE, GENERIC_REPLY };
 
   virtual ~FilterAction() {}
 

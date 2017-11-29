@@ -10,7 +10,6 @@
 using namespace ofp;
 using namespace ofp::rpc;
 
-
 RpcConnection::RpcConnection(RpcServer *server) : server_{server} {
   server_->onConnect(this);
 }

@@ -32,7 +32,7 @@ class PktFilter {
   bool match(ByteRange data, size_t totalLen) const;
 
  private:
-  struct bpf_program prog_ = { 0, nullptr };
+  struct bpf_program prog_ = {0, nullptr};
   std::string filter_;
 
   PktFilter(const PktFilter &) = delete;

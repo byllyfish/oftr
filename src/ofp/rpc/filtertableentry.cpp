@@ -24,6 +24,6 @@ bool FilterTableEntry::apply(ByteRange data, PortNumber inPort,
   }
 
   *escalate = escalate_;
-  
+
   return true;
 }
