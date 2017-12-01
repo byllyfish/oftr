@@ -112,6 +112,7 @@ if(LIBOFP_ENABLE_JSONRPC)
 		ofp/rpcencoder_unittest.cpp
 		ofp/rpc/filteractiongenericreply_unittest.cpp
 		ofp/rpc/filtertable_unittest.cpp
+		ofp/rpc/ratelimiter_unittest.cpp
 	)
 	if(LIBOFP_ENABLE_OPENSSL)
 		set(LIBOFP_TEST_SOURCES

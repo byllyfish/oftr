@@ -162,3 +162,31 @@ TEST(timestamp, unix_time) {
     EXPECT_EQ(123456789101112 & 0xffffffff, Unsigned_cast(a.unix_time()));
   }
 }
+
+TEST(timestamp, plus_interval) {
+  Timestamp a{123456789, 123456789};
+  TimeInterval x{20, 0};
+
+  auto b = a + x;
+  EXPECT_EQ(123456789 + 20, b.seconds());
+  EXPECT_EQ(123456789, b.nanoseconds());
+
+  TimeInterval y{20, 20};
+  auto c = a + y;
+  EXPECT_EQ(123456789 + 20, c.seconds());
+  EXPECT_EQ(123456789 + 20, c.nanoseconds());  
+}
+
+TEST(timestamp, plus_double) {
+  Timestamp a{123456789, 123456789};
+
+  auto b = a + TimeInterval{20.0};
+  EXPECT_EQ(123456789 + 20, b.seconds());
+  EXPECT_EQ(123456789, b.nanoseconds());
+}
+
+TEST(timestamp, from_double) {
+  Timestamp a{3.141592653};
+  EXPECT_EQ(3, a.seconds());
+  EXPECT_EQ(141592653, a.nanoseconds());
+}

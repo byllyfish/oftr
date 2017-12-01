@@ -10,6 +10,12 @@
 
 using namespace ofp;
 
+OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
+
+const Timestamp Timestamp::kInfinity{MAX_TIME, NANO_UNITS-1};
+
+OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
+
 inline struct tm *my_gmtime_r(const time_t *t, struct tm *result) {
 #if defined(_WIN32)
   // N.B. Arguments reversed; returns errno_t.
@@ -141,6 +147,17 @@ void Timestamp::addSeconds(int seconds) {
   } else {
     time_.first -= Unsigned_cast(-seconds);
   }
+}
+
+Timestamp Timestamp::operator+(const Timestamp &rhs) const {
+  Timestamp result = *this;
+  result.time_.first += rhs.time_.first;
+  result.time_.second += rhs.time_.second;
+  if (result.time_.second >= NANO_UNITS) {
+    ++result.time_.first;
+    result.time_.second -= NANO_UNITS;
+  }
+  return result;
 }
 
 namespace ofp {

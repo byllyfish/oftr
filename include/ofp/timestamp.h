@@ -17,6 +17,13 @@ class Timestamp {
     assert(nanos < NANO_UNITS);
   }
 
+  explicit Timestamp(double ts) {
+    assert(ts >= 0.0);
+    double fracpart, intpart;
+    fracpart = std::modf(ts, &intpart);
+    time_ = {static_cast<UInt64>(intpart), static_cast<UInt32>(fracpart * NANO_UNITS)};
+  }
+
   time_t unix_time() const { return static_cast<time_t>(seconds()); }
   UInt64 seconds() const { return time_.first; }
   UInt32 nanoseconds() const { return time_.second; }
@@ -50,7 +57,12 @@ class Timestamp {
 
   void addSeconds(int seconds);
 
+  Timestamp operator+(const Timestamp &rhs) const;
+
+  static const Timestamp kInfinity;
+
  private:
+  static const UInt64 MAX_TIME = 0xFFFFFFFFFFFFFFFFUL;
   static const UInt32 NANO_UNITS = 1000000000;
 
   std::pair<UInt64, UInt32> time_;
@@ -60,6 +72,9 @@ class Timestamp {
 };
 
 OFP_END_IGNORE_PADDING
+
+// A time interval is implemented using the Timestamp class.
+using TimeInterval = Timestamp;
 
 }  // namespace ofp
 
