@@ -20,7 +20,7 @@ class FilterAction {
 
   virtual ~FilterAction() {}
 
-  virtual bool apply(ByteRange enetFrame, PortNumber inPort,
+  virtual bool apply(ByteRange enetFrame, PortNumber inPort, UInt64 metadata,
                      Message *message) = 0;
 };
 

@@ -52,7 +52,7 @@ TEST(ratelimiter, test_2_3) {
 }
 
 TEST(ratelimiter, test_always) {
-  RateLimiter limit{1, 1};
+  RateLimiter limit{true};
   Timestamp now = Timestamp::now();
 
   std::vector<bool> actual;
@@ -66,7 +66,7 @@ TEST(ratelimiter, test_always) {
 }
 
 TEST(ratelimiter, test_never) {
-  RateLimiter limit{0, 0xffffffff};
+  RateLimiter limit{false};
   Timestamp now = Timestamp::now();
 
   std::vector<bool> actual;
@@ -78,4 +78,44 @@ TEST(ratelimiter, test_never) {
   std::vector<bool> expected = {false, false, false, false,
                                 false, false, false, false};
   EXPECT_EQ(actual, expected);
+}
+
+TEST(ratelimiter, test_500_1s) {
+  RateLimiter limit{500, TimeInterval{1.0}};
+  Timestamp now = Timestamp::now();
+
+  double ts = 0.0;
+  size_t count = 0;
+  for (unsigned i = 0; i < 5000; ++i) {
+    if (limit.allow(now + TimeInterval{ts})) {
+      ++count;
+    }
+    ts += 0.001;
+  }
+
+  EXPECT_EQ(count, 2500);
+}
+
+TEST(ratelimiter, test_not_a_token_bucket) {
+  RateLimiter limit{5, TimeInterval{10.0}};
+  Timestamp now = Timestamp::now();
+
+  std::vector<bool> actual;
+  double events1[] = {0.0, 9.9, 9.9, 9.9, 9.9, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0};
+  for (auto ts : events1) {
+    actual.push_back(limit.allow(now + TimeInterval{ts}));
+  }
+
+  std::vector<bool> expected = {true, true,  true, true, true,
+                                true, true, true,  true, true, false};
+  EXPECT_EQ(actual, expected);
+}
+
+TEST(ratelimiter, copy) {
+  RateLimiter limit{5, TimeInterval{10.0}};
+  RateLimiter empty{false};
+
+  EXPECT_EQ(empty.n(), 0);
+  empty = limit;
+  EXPECT_EQ(empty.n(), 5);
 }

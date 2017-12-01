@@ -7,7 +7,7 @@
 
 using namespace ofp::rpc;
 
-bool FilterTableEntry::apply(ByteRange data, PortNumber inPort,
+bool FilterTableEntry::apply(ByteRange data, PortNumber inPort, UInt64 metadata,
                              Message *message, bool *escalate) {
   assert(message->type() == OFPT_PACKET_IN);
 
@@ -17,13 +17,13 @@ bool FilterTableEntry::apply(ByteRange data, PortNumber inPort,
   }
 
   if (action_) {
-    if (!action_->apply(data, inPort, message)) {
+    if (!action_->apply(data, inPort, metadata, message)) {
       log_debug("FilterTableEntry::apply - action doesn't match");
       return false;
     }
   }
 
-  *escalate = escalate_;
+  *escalate = escalate_.allow(message->time());
 
   return true;
 }

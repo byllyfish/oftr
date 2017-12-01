@@ -7,6 +7,7 @@
 #include "ofp/demux/pktfilter.h"
 #include "ofp/portnumber.h"
 #include "ofp/rpc/filteraction.h"
+#include "ofp/rpc/ratelimiter.h"
 
 namespace ofp {
 
@@ -22,20 +23,27 @@ OFP_BEGIN_IGNORE_PADDING
 
 class FilterTableEntry {
  public:
+  FilterTableEntry() : escalate_{false} {}
+
   bool setFilter(const std::string &filter) {
     return pktFilter_.setFilter(filter);
   }
+
   void setAction(std::unique_ptr<FilterAction> &&action) {
     action_ = std::move(action);
   }
 
-  bool apply(ByteRange data, PortNumber inPort, Message *message,
+  void setEscalate(const RateLimiter &limiter) {
+    escalate_ = limiter;
+  }
+
+  bool apply(ByteRange data, PortNumber inPort, UInt64 metadata, Message *message,
              bool *escalate);
 
  private:
   demux::PktFilter pktFilter_;
   std::unique_ptr<FilterAction> action_;
-  bool escalate_ = false;
+  RateLimiter escalate_;
 };
 
 OFP_END_IGNORE_PADDING

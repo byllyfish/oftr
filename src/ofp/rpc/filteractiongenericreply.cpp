@@ -17,7 +17,7 @@ enum : UInt8 {
 };
 
 bool FilterActionGenericReply::apply(ByteRange enetFrame, PortNumber inPort,
-                                     Message *message) {
+                                     UInt64 metadata, Message *message) {
   MatchPacket pkt{enetFrame};
 
   OXMRange oxm = pkt.toRange();

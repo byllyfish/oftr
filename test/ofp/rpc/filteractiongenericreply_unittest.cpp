@@ -57,9 +57,10 @@ TEST(rpcfilteractiongenericreply, test) {
   ASSERT_TRUE(packetIn != nullptr);
   ByteRange enetFrame = packetIn->enetFrame();
   PortNumber inPort = packetIn->inPort();
+  UInt64 metadata = packetIn->metadata();
 
   FilterActionGenericReply action;
-  bool result = action.apply(enetFrame, inPort, &message);
+  bool result = action.apply(enetFrame, inPort, metadata, &message);
   EXPECT_TRUE(result);
 
   std::string output =

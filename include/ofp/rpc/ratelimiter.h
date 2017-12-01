@@ -16,6 +16,10 @@ namespace rpc {
 ///
 ///   N out of P events every T seconds
 ///
+/// This is *not* a token bucket implementation. If you get the right sequence
+/// of events, you could have 2*N-1 event "burst". The first event starts the
+/// time interval that is measured.
+/// 
 /// Examples:
 ///    N=1 P=Inf T=1     -> Allow 1 event every second
 ///    N=5 P=Inf T=10    -> Allow 5 events every 10 seconds
@@ -49,12 +53,15 @@ class RateLimiter {
   explicit RateLimiter(UInt32 n, UInt32 p) : n_{n}, p_{p} {
     exp_ = Timestamp::kInfinity;
   }
+  explicit RateLimiter(bool allow) : RateLimiter(allow ? 1 : 0, allow ? 1 : 0xffffffff) {}
 
   UInt32 n() const { return n_; }
   UInt32 p() const { return p_; }
   TimeInterval t() const { return t_; }
 
   bool allow(Timestamp t) {
+    // TODO(bfish): Convert to token/leaky bucket implementation.
+    // Track last_ timestamp and use elapsed time to decrement nc_ here.
     if (t >= exp_) {
       exp_ = t + t_;
       nc_ = 1;
@@ -79,10 +86,10 @@ class RateLimiter {
 
  private:
   Timestamp exp_;
-  const TimeInterval t_;
+  TimeInterval t_;
   UInt32 nc_ = 0;
-  const UInt32 n_;
-  const UInt32 p_;
+  UInt32 n_;
+  UInt32 p_;
 };
 
 OFP_END_IGNORE_PADDING

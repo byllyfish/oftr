@@ -31,9 +31,10 @@ bool FilterTable::apply(Message *message, bool *escalate) {
 
   ByteRange data = packetIn->enetFrame();
   PortNumber inPort = packetIn->inPort();
+  UInt64 metadata = packetIn->metadata();
 
   for (auto &entry : table_) {
-    if (entry.apply(data, inPort, message, escalate)) {
+    if (entry.apply(data, inPort, metadata, message, escalate)) {
       return true;
     }
   }
