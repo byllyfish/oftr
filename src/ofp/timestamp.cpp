@@ -12,7 +12,7 @@ using namespace ofp;
 
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
-const Timestamp Timestamp::kInfinity{MAX_TIME, NANO_UNITS-1};
+const Timestamp Timestamp::kInfinity{MAX_TIME, NANO_UNITS - 1};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 

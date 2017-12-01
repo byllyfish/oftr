@@ -21,7 +21,8 @@ class Timestamp {
     assert(ts >= 0.0);
     double fracpart, intpart;
     fracpart = std::modf(ts, &intpart);
-    time_ = {static_cast<UInt64>(intpart), static_cast<UInt32>(fracpart * NANO_UNITS)};
+    time_ = {static_cast<UInt64>(intpart),
+             static_cast<UInt32>(fracpart * NANO_UNITS)};
   }
 
   time_t unix_time() const { return static_cast<time_t>(seconds()); }

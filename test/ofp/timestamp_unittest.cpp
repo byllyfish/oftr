@@ -174,7 +174,7 @@ TEST(timestamp, plus_interval) {
   TimeInterval y{20, 20};
   auto c = a + y;
   EXPECT_EQ(123456789 + 20, c.seconds());
-  EXPECT_EQ(123456789 + 20, c.nanoseconds());  
+  EXPECT_EQ(123456789 + 20, c.nanoseconds());
 }
 
 TEST(timestamp, plus_double) {
