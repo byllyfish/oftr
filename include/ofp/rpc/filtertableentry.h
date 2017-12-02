@@ -33,12 +33,10 @@ class FilterTableEntry {
     action_ = std::move(action);
   }
 
-  void setEscalate(const RateLimiter &limiter) {
-    escalate_ = limiter;
-  }
+  void setEscalate(const RateLimiter &limiter) { escalate_ = limiter; }
 
-  bool apply(ByteRange data, PortNumber inPort, UInt64 metadata, Message *message,
-             bool *escalate);
+  bool apply(ByteRange data, PortNumber inPort, UInt64 metadata,
+             Message *message, bool *escalate);
 
  private:
   demux::PktFilter pktFilter_;

@@ -101,13 +101,14 @@ TEST(ratelimiter, test_not_a_token_bucket) {
   Timestamp now = Timestamp::now();
 
   std::vector<bool> actual;
-  double events1[] = {0.0, 9.9, 9.9, 9.9, 9.9, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0};
+  double events1[] = {0.0,  9.9,  9.9,  9.9,  9.9, 10.0,
+                      10.0, 10.0, 10.0, 10.0, 10.0};
   for (auto ts : events1) {
     actual.push_back(limit.allow(now + TimeInterval{ts}));
   }
 
-  std::vector<bool> expected = {true, true,  true, true, true,
-                                true, true, true,  true, true, false};
+  std::vector<bool> expected = {true, true, true, true, true, true,
+                                true, true, true, true, false};
   EXPECT_EQ(actual, expected);
 }
 

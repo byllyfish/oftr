@@ -15,7 +15,8 @@ OFP_BEGIN_IGNORE_PADDING
 
 class FilterActionGenericReply : public FilterAction {
  public:
-  bool apply(ByteRange enetFrame, PortNumber inPort, UInt64 metadata, Message *message) override;
+  bool apply(ByteRange enetFrame, PortNumber inPort, UInt64 metadata,
+             Message *message) override;
 
  private:
   bool applyICMPv4(ByteRange enetFrame, PortNumber inPort, Message *message,
