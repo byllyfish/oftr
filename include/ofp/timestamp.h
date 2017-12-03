@@ -33,10 +33,10 @@ class Timestamp {
 
   double secondsSince(const Timestamp &ts) const;
 
-  bool parse(const std::string &s);
+  bool parse(llvm::StringRef s);
   bool valid() const { return !(time_.first == 0 && time_.second == 0); }
 
-  std::string toString() const;
+  std::string toString() const { return detail::ToString(*this); }
   std::string toStringUTC() const;
 
   static const size_t TS_BUFSIZE = 40;

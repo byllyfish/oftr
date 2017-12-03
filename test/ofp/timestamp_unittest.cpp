@@ -56,15 +56,28 @@ TEST(timestamp, parseValid) {
   EXPECT_TRUE(t.parse("1.100000000"));
   EXPECT_EQ(Timestamp(1, 100000000), t);
   EXPECT_EQ("1.100000000", t.toString());
+
+  EXPECT_TRUE(t.parse("0"));
+  EXPECT_EQ(Timestamp(0, 0), t);
+  EXPECT_EQ("0.000000000", t.toString());
+
+  EXPECT_TRUE(t.parse("1"));
+  EXPECT_EQ(Timestamp(1, 0), t);
+  EXPECT_EQ("1.000000000", t.toString());
+
+  EXPECT_TRUE(t.parse("2.0"));
+  EXPECT_EQ(Timestamp(2, 0), t);
+  EXPECT_EQ("2.000000000", t.toString());
+
+  EXPECT_TRUE(t.parse("123"));
+  EXPECT_EQ(Timestamp(123, 0), t);
+  EXPECT_EQ("123.000000000", t.toString());
 }
 
 TEST(timestamp, parseInvalid) {
   Timestamp t;
 
   EXPECT_FALSE(t.parse(""));
-  EXPECT_FALSE(t.parse("0"));
-  EXPECT_FALSE(t.parse("1"));
-  EXPECT_FALSE(t.parse("123"));
   EXPECT_FALSE(t.parse(".0"));
   EXPECT_FALSE(t.parse("0."));
   EXPECT_FALSE(t.parse(" 0.0"));

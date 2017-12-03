@@ -44,6 +44,12 @@ bool RateLimiter::parse(llvm::StringRef s) {
       log_debug("RateLimiter: Invalid t", s);
       return false;
     }
+    s = {};
+  }
+
+  if (!s.empty()) {
+    log_debug("RateLimiter: Remainder", s);
+    return false;
   }
 
   if (t.valid()) {
