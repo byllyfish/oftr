@@ -120,3 +120,22 @@ TEST(ratelimiter, copy) {
   empty = limit;
   EXPECT_EQ(empty.n(), 5);
 }
+
+TEST(ratelimiter, parse) {
+  RateLimiter limit{false};
+
+  EXPECT_TRUE(limit.parse("true"));
+  EXPECT_EQ(limit.toString(), "true");
+
+  EXPECT_TRUE(limit.parse("false"));
+  EXPECT_EQ(limit.toString(), "false");
+
+  EXPECT_TRUE(limit.parse("1/2.0"));
+  EXPECT_EQ(limit.toString(), "1/2.000000000");
+
+  EXPECT_TRUE(limit.parse("1:2"));
+  EXPECT_EQ(limit.toString(), "1:2");
+
+  EXPECT_TRUE(limit.parse("1:2/3.0"));
+  EXPECT_EQ(limit.toString(), "1:2/3.000000000");
+}

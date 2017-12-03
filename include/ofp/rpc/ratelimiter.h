@@ -61,8 +61,6 @@ class RateLimiter {
   TimeInterval t() const { return t_; }
 
   bool allow(Timestamp t) {
-    // TODO(bfish): Convert to token/leaky bucket implementation.
-    // Track last_ timestamp and use elapsed time to decrement nc_ here.
     if (t >= exp_) {
       exp_ = t + t_;
       nc_ = 1;
@@ -85,12 +83,18 @@ class RateLimiter {
     return true;
   }
 
+  bool parse(llvm::StringRef s);
+  std::string toString() const { return detail::ToString(*this); }
+
  private:
   Timestamp exp_;
   TimeInterval t_;
   UInt32 nc_ = 0;
   UInt32 n_;
   UInt32 p_;
+
+  friend llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
+                                       const RateLimiter &value);
 };
 
 OFP_END_IGNORE_PADDING
