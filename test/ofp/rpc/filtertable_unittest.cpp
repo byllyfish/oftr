@@ -69,7 +69,7 @@ TEST(filtertable, test) {
   bool result = filters.apply(&message, &escalate);
   EXPECT_TRUE(result);
   EXPECT_FALSE(escalate);
-  EXPECT_TRUE((message.msgFlags() & OFP_REPLIED) != 0);
+  EXPECT_NE(message.msgFlags() & OFP_REPLIED, 0);
 
   ASSERT_GT(outputChannel.size(), 0);
   std::string output =
