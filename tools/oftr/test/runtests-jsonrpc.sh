@@ -22,4 +22,12 @@ $LIBOFP_MEMCHECK $LIBOFP jsonrpc --binary-protocol < ${CURRENT_SOURCE_DIR}/jsonr
 echo "Compare jsonrpc-b.out to ${CURRENT_SOURCE_DIR}/jsonrpc-b.out"
 diff jsonrpc-b.out "${CURRENT_SOURCE_DIR}/jsonrpc-b.out"
 
+# Test the binary protocol using malformed (text) input.
+
+echo "Test binary RPC protocol using malformed (text) input"
+$LIBOFP_MEMCHECK $LIBOFP jsonrpc --binary-protocol < ${CURRENT_SOURCE_DIR}/jsonrpc-t.bin > jsonrpc-b-malformed.out
+
+echo "Compare jsonrpc-b-malformed.out to ${CURRENT_SOURCE_DIR}/jsonrpc-b-malformed.out"
+diff jsonrpc-b-malformed.out "${CURRENT_SOURCE_DIR}/jsonrpc-b-malformed.out"
+
 exit 0

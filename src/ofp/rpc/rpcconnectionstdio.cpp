@@ -99,7 +99,7 @@ void RpcConnectionStdio::asyncReadLine() {
         } else if (err == asio::error::not_found) {
           log_error("RpcConnectionStdio::asyncReadLine: input too large",
                     RPC_MAX_MESSAGE_SIZE, err);
-          rpcRequestTooBig();
+          rpcRequestInvalid("RPC request is too big");
         } else if (err == asio::error::eof) {
           // Log warning if there are unread bytes in the buffer.
           auto bytesUnread = streambuf_.size();
@@ -125,13 +125,20 @@ void RpcConnectionStdio::asyncReadHeader() {
             if (!err) {
               assert(length == sizeof(hdrBuf_));
 
-              UInt32 len = (hdrBuf_ >> 8);
-              if (len >= 4) {
-                asyncReadMessage(len - 4);
+              UInt32 tagLen = hdrBuf_;
+              UInt8 tag = tagLen & 0x00FFu;
+              UInt32 len = (tagLen >> 8);
+
+              if (tag != RPC_EVENT_BINARY_TAG || len < 4) {
+                log_error("RPC invalid header:", UInt32_cast(tag));
+                rpcRequestInvalid("RPC invalid header");
+              } else if (len > RPC_MAX_MESSAGE_SIZE) {
+                log_error("RPC request is too big:", len);
+                rpcRequestInvalid("RPC request is too big");
               } else {
-                // Too short...
-                log_error("RPC invalid header length:", len);
+                asyncReadMessage(len - 4);
               }
+
             } else {
               assert(err);
 
