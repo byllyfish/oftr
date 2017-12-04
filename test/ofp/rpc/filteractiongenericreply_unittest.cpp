@@ -59,9 +59,13 @@ TEST(rpcfilteractiongenericreply, test) {
   PortNumber inPort = packetIn->inPort();
   UInt64 metadata = packetIn->metadata();
 
+  EXPECT_TRUE((message.msgFlags() & OFP_REPLIED) == 0);
+
   FilterActionGenericReply action;
   bool result = action.apply(enetFrame, inPort, metadata, &message);
   EXPECT_TRUE(result);
+  
+  EXPECT_TRUE((message.msgFlags() & OFP_REPLIED) != 0);
 
   std::string output =
       decodeMessage({outputChannel.data(), outputChannel.size()});

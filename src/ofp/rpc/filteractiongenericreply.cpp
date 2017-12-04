@@ -105,6 +105,9 @@ bool FilterActionGenericReply::applyICMPv6(ByteRange enetFrame,
 void FilterActionGenericReply::sendPacketOut(const ByteList *data,
                                              PortNumber outPort,
                                              Message *message) {
+  // Set flag to indicate we replied.
+  message->setMsgFlags(message->msgFlags() | OFP_REPLIED);
+
   ActionList actions;
   actions.add(AT_OUTPUT{outPort});
 

@@ -700,11 +700,12 @@ enum OFPMessageFlags : UInt32 {
   OFP_MORE = static_cast<UInt32>(OFPMPF_MORE),
   OFP_NO_FLUSH = 1 << 16,
   OFP_NO_ALERT = 1 << 17,
+  OFP_REPLIED = 1 << 18,
 
-  OFP_OTHER_MESSAGE_FLAGS = 0xFFFCFFFE
+  OFP_OTHER_MESSAGE_FLAGS = 0xFFF8FFFE
 };
 static_assert(0xFFFFFFFF == (OFP_OTHER_MESSAGE_FLAGS ^ OFP_MORE ^ OFP_NO_FLUSH ^
-                             OFP_NO_ALERT),
+                             OFP_NO_ALERT ^ OFP_REPLIED),
               "Enum mis-define");
 
 inline OFPMessageFlags operator|(OFPMessageFlags lhs, OFPMessageFlags rhs) {
