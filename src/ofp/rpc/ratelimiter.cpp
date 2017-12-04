@@ -5,13 +5,13 @@ using namespace ofp::rpc;
 
 bool RateLimiter::parse(llvm::StringRef s) {
   // Parse a string of the form:
-  // 
+  //
   // "true"
   // "false"
   // "n/t"
   // "n:p"
   // "n:p/t"
-  
+
   if (s.equals_lower("true")) {
     *this = RateLimiter{true};
     return true;
@@ -86,4 +86,3 @@ llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const RateLimiter &value) {
 
 }  // namespace rpc
 }  // namespace ofp
-

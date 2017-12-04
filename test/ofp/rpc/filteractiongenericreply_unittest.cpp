@@ -64,7 +64,7 @@ TEST(rpcfilteractiongenericreply, test) {
   FilterActionGenericReply action;
   bool result = action.apply(enetFrame, inPort, metadata, &message);
   EXPECT_TRUE(result);
-  
+
   EXPECT_TRUE((message.msgFlags() & OFP_REPLIED) != 0);
 
   std::string output =
