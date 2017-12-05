@@ -65,9 +65,9 @@ struct MappingTraits<ofp::yaml::Decoder> {
       io.mapRequired("time", time);
     }
 
-    if (msgType.type() == OFPT_MULTIPART_REQUEST ||
+    OFPMessageFlags flags = decoder.msg_->msgFlags();
+    if (flags || msgType.type() == OFPT_MULTIPART_REQUEST ||
         msgType.type() == OFPT_MULTIPART_REPLY) {
-      OFPMultipartFlags flags = decoder.msg_->flags();
       io.mapRequired("flags", flags);
     }
 

@@ -1,5 +1,13 @@
 = Changelog
 
+== Version 0.40 (4 December 2017)
+
+- Add support to jsonrpc server for "--binary-protocol".
+- Fix memory bug related to RpcServer lifetime (unsafe memory access at shutdown).
+- Initial implementation of OFP.SET_FILTER RPC command with GENERIC_REPLY action.
+- Update boringssl and googletest modules.
+- Update asio version.
+
 == Version 0.39 (5 November 2017)
 
 - Add "--pkt-filter" command line argument to filter messages based on PacketIn/PacketOut contents.

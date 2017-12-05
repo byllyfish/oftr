@@ -33,7 +33,7 @@ class ChannelListener {
 
   virtual void onChannelUp(Channel *channel);
   virtual void onChannelDown(Channel *channel);
-  virtual void onMessage(const Message *message) = 0;
+  virtual void onMessage(Message *message) = 0;
 
   // When a controller identifies an incoming connection as an auxiliary
   // connection, the driver will transparently tie the auxiliary connection

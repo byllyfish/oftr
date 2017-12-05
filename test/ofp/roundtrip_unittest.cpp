@@ -44,7 +44,7 @@ class TestController : public ChannelListener {
               std::make_pair("connid", channel->connectionId()));
   }
 
-  void onMessage(const Message *message) override {
+  void onMessage(Message *message) override {
     log_debug("TestController::onMessage",
               std::make_pair("connid", message->source()->connectionId()));
     EXPECT_EQ(OFPT_FEATURES_REPLY, message->type());
@@ -89,7 +89,7 @@ class TestAgent : public ChannelListener {
               std::make_pair("connid", channel->connectionId()));
   }
 
-  void onMessage(const Message *message) override {
+  void onMessage(Message *message) override {
     log_debug("TestAgent::onMessage",
               std::make_pair("connid", message->source()->connectionId()));
     EXPECT_EQ(OFPT_FEATURES_REQUEST, message->type());

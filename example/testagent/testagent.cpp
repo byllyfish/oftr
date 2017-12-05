@@ -11,7 +11,7 @@ inline std::ostream &operator<<(std::ostream &os, llvm::StringRef s) {
 
 using namespace testagent;
 
-void TestAgent::onMessage(const Message *message) {
+void TestAgent::onMessage(Message *message) {
   bool writeNow = false;
 
   if (message->type() == OFPT_FEATURES_REQUEST) {
