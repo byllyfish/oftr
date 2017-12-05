@@ -13,7 +13,7 @@ class SimpleChannelListener : public ChannelListener {
  public:
   // ChannelListener overrides.
   void onChannelUp(Channel *channel) override;
-  void onMessage(const Message *message) override;
+  void onMessage(Message *message) override;
 
   // Forwards reply to correct handler for xid and removes xid entry.
   void onReply(const Message *message);

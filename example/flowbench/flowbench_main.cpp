@@ -61,8 +61,10 @@ int main(int argc, char **argv) {
   using clock = std::chrono::high_resolution_clock;
   using microseconds = std::chrono::microseconds;
 
+  // First optional argument is number of loops.
   const int kTrials = 5;
-  const unsigned kLoops = 1000000;
+  const unsigned kLoops =
+      (argc == 2) ? Unsigned_cast(std::atoi(argv[1])) : 1000000;
   std::vector<int64_t> results;
 
   std::cout << "Running FlowMod Benchmark: " << kTrials << " trials, " << kLoops

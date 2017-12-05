@@ -12,7 +12,7 @@ class NullController : public ChannelListener {
     log_debug(__PRETTY_FUNCTION__);
   }
 
-  void onMessage(const Message *message) override {}
+  void onMessage(Message *message) override {}
 
   static ChannelListener *Factory() { return new NullController; }
 };

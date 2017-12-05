@@ -56,15 +56,28 @@ TEST(timestamp, parseValid) {
   EXPECT_TRUE(t.parse("1.100000000"));
   EXPECT_EQ(Timestamp(1, 100000000), t);
   EXPECT_EQ("1.100000000", t.toString());
+
+  EXPECT_TRUE(t.parse("0"));
+  EXPECT_EQ(Timestamp(0, 0), t);
+  EXPECT_EQ("0.000000000", t.toString());
+
+  EXPECT_TRUE(t.parse("1"));
+  EXPECT_EQ(Timestamp(1, 0), t);
+  EXPECT_EQ("1.000000000", t.toString());
+
+  EXPECT_TRUE(t.parse("2.0"));
+  EXPECT_EQ(Timestamp(2, 0), t);
+  EXPECT_EQ("2.000000000", t.toString());
+
+  EXPECT_TRUE(t.parse("123"));
+  EXPECT_EQ(Timestamp(123, 0), t);
+  EXPECT_EQ("123.000000000", t.toString());
 }
 
 TEST(timestamp, parseInvalid) {
   Timestamp t;
 
   EXPECT_FALSE(t.parse(""));
-  EXPECT_FALSE(t.parse("0"));
-  EXPECT_FALSE(t.parse("1"));
-  EXPECT_FALSE(t.parse("123"));
   EXPECT_FALSE(t.parse(".0"));
   EXPECT_FALSE(t.parse("0."));
   EXPECT_FALSE(t.parse(" 0.0"));
@@ -161,4 +174,32 @@ TEST(timestamp, unix_time) {
   } else {
     EXPECT_EQ(123456789101112 & 0xffffffff, Unsigned_cast(a.unix_time()));
   }
+}
+
+TEST(timestamp, plus_interval) {
+  Timestamp a{123456789, 123456789};
+  TimeInterval x{20, 0};
+
+  auto b = a + x;
+  EXPECT_EQ(123456789 + 20, b.seconds());
+  EXPECT_EQ(123456789, b.nanoseconds());
+
+  TimeInterval y{20, 20};
+  auto c = a + y;
+  EXPECT_EQ(123456789 + 20, c.seconds());
+  EXPECT_EQ(123456789 + 20, c.nanoseconds());
+}
+
+TEST(timestamp, plus_double) {
+  Timestamp a{123456789, 123456789};
+
+  auto b = a + TimeInterval{20.0};
+  EXPECT_EQ(123456789 + 20, b.seconds());
+  EXPECT_EQ(123456789, b.nanoseconds());
+}
+
+TEST(timestamp, from_double) {
+  Timestamp a{3.141592653};
+  EXPECT_EQ(3, a.seconds());
+  EXPECT_EQ(141592653, a.nanoseconds());
 }

@@ -19,6 +19,6 @@ void RpcChannelListener::onChannelDown(Channel *channel) {
   server_->onChannelDown(channel_);
 }
 
-void RpcChannelListener::onMessage(const Message *message) {
+void RpcChannelListener::onMessage(Message *message) {
   server_->onMessage(channel_, message);
 }

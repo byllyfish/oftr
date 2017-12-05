@@ -6,6 +6,7 @@
 
 #include "ofp/rpc/rpcconnection.h"
 #include "ofp/sys/asio_utils.h"
+#include "ofp/sys/handler_allocator.h"
 
 namespace ofp {
 namespace rpc {
@@ -15,26 +16,34 @@ OFP_BEGIN_IGNORE_PADDING
 class RpcConnectionStdio final : public RpcConnection {
  public:
   RpcConnectionStdio(RpcServer *server, asio::posix::stream_descriptor input,
-                     asio::posix::stream_descriptor output);
+                     asio::posix::stream_descriptor output,
+                     bool binaryProtocol);
 
   void asyncAccept() override;
   void close() override;
 
  protected:
-  void write(llvm::StringRef msg, bool eom = true) override;
-  void asyncRead() override;
+  void writeEvent(llvm::StringRef msg, bool ofp_message = false) override;
 
  private:
   asio::posix::stream_descriptor input_;
   asio::posix::stream_descriptor output_;
   asio::streambuf streambuf_;
   asio::steady_timer metricTimer_;
+  Big32 hdrBuf_;
+  std::string eventBuf_;
+  sys::handler_allocator allocator_;
 
   // Use a two buffer strategy for async-writes. We queue up data in one
   // buffer while we're in the process of writing the other buffer.
   ByteList outgoing_[2];
   int outgoingIdx_ = 0;
   bool writing_ = false;
+  bool binaryProtocol_ = false;
+
+  void asyncReadLine();
+  void asyncReadHeader();
+  void asyncReadMessage(size_t msgLength);
 
   void asyncWrite();
   void asyncMetrics(Milliseconds interval);

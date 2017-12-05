@@ -7,6 +7,7 @@
 #include <map>
 #include "ofp/datapathid.h"
 #include "ofp/driver.h"
+#include "ofp/rpc/filtertable.h"
 #include "ofp/rpc/rpcid.h"
 
 namespace ofp {
@@ -16,7 +17,6 @@ class ByteRange;
 namespace rpc {
 
 class RpcConnection;
-class RpcSession;
 
 struct RpcListen;
 struct RpcConnect;
@@ -25,6 +25,7 @@ struct RpcSend;
 struct RpcListConns;
 struct RpcAddIdentity;
 struct RpcDescription;
+struct RpcSetFilter;
 
 OFP_BEGIN_IGNORE_PADDING
 
@@ -33,9 +34,12 @@ OFP_BEGIN_IGNORE_PADDING
 /// The driver is controlled using YAML messages.
 class RpcServer {
  public:
-  RpcServer(Driver *driver, int inputFD, int outputFD,
+  RpcServer(int inputFD, int outputFD, bool binaryProtocol,
             Milliseconds metricInterval, Channel *defaultChannel = nullptr);
   ~RpcServer();
+
+  /// Run the rpc server.
+  void run() { driver_.run(); }
 
   /// Close the control connection.
   void close();
@@ -51,11 +55,12 @@ class RpcServer {
   void onRpcListConns(RpcConnection *conn, RpcListConns *list);
   void onRpcAddIdentity(RpcConnection *conn, RpcAddIdentity *add);
   void onRpcDescription(RpcConnection *conn, RpcDescription *desc);
+  void onRpcSetFilter(RpcConnection *conn, RpcSetFilter *set);
 
   // These methods are used to bridge RpcChannelListeners to RpcConnections.
   void onChannelUp(Channel *channel);
   void onChannelDown(Channel *channel);
-  void onMessage(Channel *channel, const Message *message);
+  void onMessage(Channel *channel, Message *message);
 
   Channel *findDatapath(UInt64 connId, const DatapathID &datapathId);
 
@@ -63,10 +68,12 @@ class RpcServer {
   Milliseconds metricInterval() const { return metricInterval_; }
 
  private:
+  Driver driver_;
   sys::Engine *engine_;
   RpcConnection *oneConn_ = nullptr;
   Channel *defaultChannel_ = nullptr;
   Milliseconds metricInterval_ = 0_ms;
+  FilterTable filter_;
 
   static void connectResponse(RpcConnection *conn, RpcID id, UInt64 connId,
                               const std::error_code &err);

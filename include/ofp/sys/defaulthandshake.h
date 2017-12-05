@@ -23,7 +23,7 @@ class DefaultHandshake : public ChannelListener {
 
   void onChannelUp(Channel *channel) override;
   void onChannelDown(Channel *channel) override;
-  void onMessage(const Message *message) override;
+  void onMessage(Message *message) override;
   bool onTickle(Channel *channel, TimePoint now) override;
 
   ChannelOptions options() const { return options_; }
@@ -41,11 +41,15 @@ class DefaultHandshake : public ChannelListener {
   TimePoint timeStarted_;
 
   void onHello(const Message *message);
-  void onFeaturesReply(const Message *message);
+  void onFeaturesReply(Message *message);
   void onError(const Message *message);
 
-  void installNewChannelListener(const Message *message);
+  void installNewChannelListener(Message *message);
   void clearChannelListener();
+
+  bool wantFeatures() const {
+    return (options_ & ChannelOptions::FEATURES_REQ) != 0;
+  }
 };
 
 OFP_END_IGNORE_PADDING
