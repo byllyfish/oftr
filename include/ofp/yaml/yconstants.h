@@ -415,6 +415,7 @@ struct ScalarBitSetTraits<ofp::OFPMessageFlags> {
     OFP_YAML_BITCASE(OFP_, MORE);
     OFP_YAML_BITCASE(OFP_, NO_FLUSH);
     OFP_YAML_BITCASE(OFP_, NO_ALERT);
+    OFP_YAML_BITCASE(OFP_, REPLIED);
 
     io.bitSetCaseOther(value, ofp::OFP_OTHER_MESSAGE_FLAGS);
 

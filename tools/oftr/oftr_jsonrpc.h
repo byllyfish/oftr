@@ -29,6 +29,8 @@ class JsonRpc : public Subprogram {
 
  private:
   // --- Command-line Arguments ---
+  cl::opt<bool> binaryProtocol_{"binary-protocol",
+                                cl::desc("Use binary frame protocol")};
   cl::opt<unsigned> metricInterval_{
       "metric-interval",
       cl::desc("Log RPC metrics at specified interval (msec)"),

@@ -35,11 +35,7 @@ class ProtocolMsg {
   /// \returns Pointer to message memory as given class or nullptr.
   static const MsgClass *cast(const Message *message) {
     OFPErrorCode error;
-    auto msg = message->castMessage<MsgClass>(&error);
-    if (!msg) {
-      message->replyError(error);
-    }
-    return msg;
+    return message->castMessage<MsgClass>(&error);
   }
 
   /// \returns true if message length is potentially valid.

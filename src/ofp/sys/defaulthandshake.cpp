@@ -58,7 +58,7 @@ bool DefaultHandshake::onTickle(Channel *channel, TimePoint now) {
   return true;
 }
 
-void DefaultHandshake::onMessage(const Message *message) {
+void DefaultHandshake::onMessage(Message *message) {
   switch (message->type()) {
     case Hello::type():
       onHello(message);
@@ -106,7 +106,10 @@ void DefaultHandshake::onHello(const Message *message) {
                 std::make_pair("connid", channel_->connectionId()));
     channel_->engine()->alert(channel_, explanation, {header, sizeof(*header)});
 
-    message->replyError(OFPHFC_INCOMPATIBLE, explanation);
+    if (!wantFeatures()) {
+      // If we're not a controller, send an error back.
+      message->replyError(OFPHFC_INCOMPATIBLE, explanation);
+    }
     channel_->shutdown();
     return;
   }
@@ -119,7 +122,7 @@ void DefaultHandshake::onHello(const Message *message) {
            msg->protocolVersions().toString(),
            std::make_pair("connid", channel_->connectionId()));
 
-  if ((options_ & ChannelOptions::FEATURES_REQ) != 0) {
+  if (wantFeatures()) {
     channel_->setKeepAliveTimeout(kControllerKeepAliveTimeout);
 
     FeaturesRequestBuilder reply{};
@@ -135,9 +138,9 @@ void DefaultHandshake::onHello(const Message *message) {
   // but the other end supports a higher version number.
 }
 
-void DefaultHandshake::onFeaturesReply(const Message *message) {
+void DefaultHandshake::onFeaturesReply(Message *message) {
   // Only a controller should be receiving a features reply message.
-  if ((options_ & ChannelOptions::FEATURES_REQ) == 0) {
+  if (!wantFeatures()) {
     log_warning("DefaultHandshake: Unexpected FeaturesReply message");
     return;
   }
@@ -175,7 +178,7 @@ void DefaultHandshake::onError(const Message *message) {
   log_warning("DefaultHandshake: Received error message");
 }
 
-void DefaultHandshake::installNewChannelListener(const Message *message) {
+void DefaultHandshake::installNewChannelListener(Message *message) {
   assert(channel_->channelListener() == this);
 
   if (listenerFactory_) {

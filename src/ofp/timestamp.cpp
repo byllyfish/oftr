@@ -10,6 +10,12 @@
 
 using namespace ofp;
 
+OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
+
+const Timestamp Timestamp::kInfinity{MAX_TIME, NANO_UNITS - 1};
+
+OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
+
 inline struct tm *my_gmtime_r(const time_t *t, struct tm *result) {
 #if defined(_WIN32)
   // N.B. Arguments reversed; returns errno_t.
@@ -49,51 +55,36 @@ double Timestamp::secondsSince(const Timestamp &ts) const {
 static const UInt32 kPower10[10] = {
     1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000};
 
-bool Timestamp::parse(const std::string &s) {
-  UInt64 wholeNum = 0;
-  UInt32 fracNum = 0;
-  const char *p = s.c_str();
+bool Timestamp::parse(llvm::StringRef s) {
+  // Parse timestamp of form "sss.nnnnnnnnn"
 
-  const char *wholeStart = p;
-  while (isdigit(*p)) {
-    wholeNum = (wholeNum * 10) + Unsigned_cast(*p - '0');
-    ++p;
+  UInt64 intPart;
+  if (s.consumeInteger(10, intPart)) {
+    return false;
   }
 
-  if (p == wholeStart)
-    return false;
-
-  if (*p != '.')
-    return false;
-  ++p;
-
-  const char *fracStart = p;
-  while (isdigit(*p)) {
-    fracNum = (fracNum * 10) + Unsigned_cast(*p - '0');
-    ++p;
+  UInt32 fracPart = 0;
+  size_t fracDigits = 0;
+  if (s.consume_front(".")) {
+    fracDigits = s.size();
+    if (fracDigits > 9) {
+      return false;
+    }
+    if (s.consumeInteger(10, fracPart)) {
+      return false;
+    }
+    fracPart *= kPower10[9 - fracDigits];
+    assert(fracPart < NANO_UNITS);
   }
 
-  if (*p != 0)
+  if (!s.empty()) {
     return false;
+  }
 
-  auto fracDigits = p - fracStart;
-  if (fracDigits == 0 || fracDigits > 9)
-    return false;
-
-  fracNum *= kPower10[9 - fracDigits];
-  assert(fracNum < NANO_UNITS);
-
-  time_.first = wholeNum;
-  time_.second = fracNum;
+  time_.first = intPart;
+  time_.second = fracPart;
 
   return true;
-}
-
-std::string Timestamp::toString() const {
-  std::stringstream strm;
-  strm << time_.first << '.' << std::setfill('0') << std::setw(9)
-       << time_.second;
-  return strm.str();
 }
 
 std::string Timestamp::toStringUTC() const {
@@ -141,6 +132,17 @@ void Timestamp::addSeconds(int seconds) {
   } else {
     time_.first -= Unsigned_cast(-seconds);
   }
+}
+
+Timestamp Timestamp::operator+(const Timestamp &rhs) const {
+  Timestamp result = *this;
+  result.time_.first += rhs.time_.first;
+  result.time_.second += rhs.time_.second;
+  if (result.time_.second >= NANO_UNITS) {
+    ++result.time_.first;
+    result.time_.second -= NANO_UNITS;
+  }
+  return result;
 }
 
 namespace ofp {

@@ -46,6 +46,10 @@ void RpcConnection::onRpcDescription(RpcDescription *desc) {
   server_->onRpcDescription(this, desc);
 }
 
+void RpcConnection::onRpcSetFilter(RpcSetFilter *set) {
+  server_->onRpcSetFilter(this, set);
+}
+
 void RpcConnection::onChannel(Channel *channel, const char *status) {
   RpcChannel notification;
   notification.params.type = std::string("CHANNEL_") + status;
@@ -63,12 +67,7 @@ void RpcConnection::onMessage(Channel *channel, const Message *message) {
 
   if (decoder.error().empty()) {
     // Send `OFP.MESSAGE` notification event.
-    const llvm::StringRef prefix{"{\"params\":", 10};
-    const llvm::StringRef suffix{",\"method\":\"OFP.MESSAGE\"}\x00", 25};
-
-    write(prefix, false);
-    write(decoder.result(), false);
-    write(suffix);
+    writeEvent(decoder.result(), true);
 
   } else {
     // Send `CHANNEL_ALERT` notification event.
@@ -120,9 +119,9 @@ void RpcConnection::handleEvent(const std::string &eventText) {
                      }};
 }
 
-void RpcConnection::rpcRequestTooBig() {
+void RpcConnection::rpcRequestInvalid(llvm::StringRef errorMsg) {
   RpcErrorResponse response{RpcID::NULL_VALUE};
   response.error.code = ERROR_CODE_INVALID_REQUEST;
-  response.error.message = "RPC request is too big";
+  response.error.message = errorMsg;
   rpcReply(&response);
 }

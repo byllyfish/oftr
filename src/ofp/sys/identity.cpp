@@ -14,14 +14,14 @@ using namespace ofp::sys;
 
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
-const int SSL_CTX_ASIO_PTR =
+static const int SSL_CTX_ASIO_PTR =
     SSL_CTX_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
-const int SSL_CTX_IDENTITY_PTR =
+static const int SSL_CTX_IDENTITY_PTR =
     SSL_CTX_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
 
-const int SSL_ASIO_PTR =
+static const int SSL_ASIO_PTR =
     SSL_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
-const int SSL_CONNECTION_PTR =
+static const int SSL_CONNECTION_PTR =
     SSL_get_ex_new_index(0, nullptr, nullptr, nullptr, nullptr);
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR

@@ -10,10 +10,10 @@ class MockChannelListener : public ChannelListener {
  public:
   void onChannelUp(Channel *channel) override {}
   void onChannelDown(Channel *channel) override {}
-  void onMessage(const Message *message) override;
+  void onMessage(Message *message) override;
 };
 
-void MockChannelListener::onMessage(const Message *message) {}
+void MockChannelListener::onMessage(Message *message) {}
 
 TEST(driver, test) {
   Driver driver;

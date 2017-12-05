@@ -14,9 +14,9 @@ using ofp::rpc::RpcServer;
 using ofp::sys::TCP_Server;
 using namespace ofp;
 
-RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
+RpcServer::RpcServer(int inputFD, int outputFD, bool binaryProtocol,
                      Milliseconds metricInterval, Channel *defaultChannel)
-    : engine_{driver->engine()},
+    : engine_{driver_.engine()},
       defaultChannel_{defaultChannel},
       metricInterval_{metricInterval} {
   log::fatal_if_false(inputFD >= 0, "inputFD >= 0");
@@ -26,10 +26,12 @@ RpcServer::RpcServer(Driver *driver, int inputFD, int outputFD,
   // directly up to this connection.
   auto conn = std::make_shared<RpcConnectionStdio>(
       this, asio::posix::stream_descriptor{engine_->io(), inputFD},
-      asio::posix::stream_descriptor{engine_->io(), outputFD});
+      asio::posix::stream_descriptor{engine_->io(), outputFD}, binaryProtocol);
 
   conn->asyncAccept();
   engine_->setAlertCallback(alertCallback, this);
+
+  driver_.installSignalHandlers([this]() { this->close(); });
 }
 
 RpcServer::~RpcServer() {
@@ -297,6 +299,18 @@ void RpcServer::onRpcDescription(RpcConnection *conn, RpcDescription *desc) {
   conn->rpcReply(&response);
 }
 
+void RpcServer::onRpcSetFilter(RpcConnection *conn, RpcSetFilter *set) {
+  // This code "moves" from the vector in the rpc parameter.
+  filter_.setFilters(std::move(set->params));
+
+  if (set->id.is_missing())
+    return;
+
+  RpcSetFilterResponse response{set->id};
+  response.result.count = UInt32_narrow_cast(filter_.size());
+  conn->rpcReply(&response);
+}
+
 void RpcServer::onChannelUp(Channel *channel) {
   if (oneConn_)
     oneConn_->onChannel(channel, "UP");
@@ -307,9 +321,17 @@ void RpcServer::onChannelDown(Channel *channel) {
     oneConn_->onChannel(channel, "DOWN");
 }
 
-void RpcServer::onMessage(Channel *channel, const Message *message) {
-  if (oneConn_)
-    oneConn_->onMessage(channel, message);
+void RpcServer::onMessage(Channel *channel, Message *message) {
+  if (oneConn_) {
+    // Run the message through the filter table. We ignore the result of whether
+    // any entries matched; all we care about is whether to escalate it. If no
+    // entries matched, the default is to escalate.
+    bool escalate = true;
+    (void)filter_.apply(message, &escalate);
+    if (escalate) {
+      oneConn_->onMessage(channel, message);
+    }
+  }
 }
 
 ofp::Channel *RpcServer::findDatapath(UInt64 connId,
