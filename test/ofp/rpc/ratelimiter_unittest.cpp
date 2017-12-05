@@ -149,4 +149,7 @@ TEST(ratelimiter, parse_invalid) {
   EXPECT_FALSE(limit.parse("1:2/3.0x"));
   EXPECT_FALSE(limit.parse(""));
   EXPECT_FALSE(limit.parse(" "));
+  EXPECT_FALSE(limit.parse("x:2/3.0"));
+  EXPECT_FALSE(limit.parse("1:x/3.0"));
+  EXPECT_FALSE(limit.parse("1:2/x"));
 }
