@@ -125,7 +125,7 @@ class LibOFP(object):
         assert msg.result.versions == [1, 2, 3, 4, 5, 6]
 
     def _write(self, msg):
-        hdr = struct.pack('>L', ((len(msg) + 4) << 8) | 0xA0)
+        hdr = struct.pack('>L', ((len(msg) + 4) << 8) | 0xF5)
         self._sockOutput.write(hdr + msg)
 
 
@@ -134,6 +134,7 @@ def _read_next(stream):
     """Read next event from stream.
     """
     hdr, = struct.unpack('>L', stream.read(4))
+    assert (hdr & 0xFF) == 0xF5
     result = stream.read((hdr >> 8) - 4)
     print('>>> %s' % result)
     return result

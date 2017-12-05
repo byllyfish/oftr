@@ -27,7 +27,7 @@ const size_t RPC_MAX_MESSAGE_SIZE = 1048576;
 const char RPC_EVENT_DELIMITER_CHAR = '\x00';
 
 /// RPC event tag byte (in the binary protocol).
-const UInt8 RPC_EVENT_BINARY_TAG = 0xA0;
+const UInt8 RPC_EVENT_BINARY_TAG = 0xF5;
 
 /// RPC Methods
 enum RpcMethod : UInt32 {
