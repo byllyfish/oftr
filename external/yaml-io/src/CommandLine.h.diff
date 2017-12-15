@@ -1,5 +1,5 @@
 --- ../../../llvm_git/llvm/include/llvm/Support/CommandLine.h	2017-12-09 16:02:38.000000000 -0700
-+++ ./include/llvm/Support/CommandLine.h	2017-12-14 16:21:09.000000000 -0700
++++ ./include/llvm/Support/CommandLine.h	2017-12-15 16:07:37.000000000 -0700
 @@ -1593,7 +1593,7 @@
  // This makes us exactly compatible with the bits in all cases that it is used.
  //

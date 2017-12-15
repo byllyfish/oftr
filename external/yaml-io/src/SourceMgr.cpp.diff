@@ -1,5 +1,5 @@
 --- ../../../llvm_git/llvm/lib/Support/SourceMgr.cpp	2017-12-09 16:02:39.000000000 -0700
-+++ ./src/Support/SourceMgr.cpp	2017-12-14 11:15:36.000000000 -0700
++++ ./src/Support/SourceMgr.cpp	2017-12-15 16:07:37.000000000 -0700
 @@ -20,7 +20,7 @@
  #include "llvm/ADT/StringRef.h"
  #include "llvm/ADT/Twine.h"

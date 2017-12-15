@@ -1,5 +1,5 @@
 --- ../../../llvm_git/llvm/lib/Support/YAMLParser.cpp	2017-12-09 16:02:39.000000000 -0700
-+++ ./src/Support/YAMLParser.cpp	2017-12-14 12:38:08.000000000 -0700
++++ ./src/Support/YAMLParser.cpp	2017-12-15 16:07:37.000000000 -0700
 @@ -1389,6 +1389,12 @@
    Token T;
    T.Kind = Token::TK_Scalar;
