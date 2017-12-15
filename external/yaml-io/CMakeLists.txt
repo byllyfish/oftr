@@ -115,6 +115,7 @@ endif()
 
 configure_file(include/llvm/Config/config.h.cmake include/llvm/Config/config.h)
 configure_file(include/llvm/Config/llvm-config.h.cmake include/llvm/Config/llvm-config.h)
+configure_file(include/llvm/Config/abi-breaking.h.cmake include/llvm/Config/abi-breaking.h)
 configure_file(include/llvm/Support/DataTypes.h.cmake include/llvm/Support/DataTypes.h)
 
 add_library(yamlio ${YAMLIO_SOURCES})

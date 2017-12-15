@@ -12,7 +12,6 @@ function usage()
 }
 
 LLVM_SOURCE_DIR="$1"
-LLVM_BUILD_DIR="${LLVM_SOURCE_DIR}/../llvm-build"
 WORKING_DIR=`dirname $0`
 
 test -d "$LLVM_SOURCE_DIR/include" || usage
@@ -32,6 +31,7 @@ test -d "$LLVM_SOURCE_DIR/lib/Support" || usage
 # Include files to copy from llvm source tree.
 INCLUDES=(
 	include/llvm/ADT/AllocatorList.h
+	include/llvm/ADT/APFloat.h
 	include/llvm/ADT/APInt.h
 	include/llvm/ADT/ArrayRef.h
 	include/llvm/ADT/DenseMap.h
@@ -62,6 +62,7 @@ INCLUDES=(
 	include/llvm/ADT/StringRef.h
 	include/llvm/ADT/StringSwitch.h
 	include/llvm/ADT/Twine.h
+	include/llvm/Config/abi-breaking.h.cmake
 	include/llvm/Config/config.h.cmake
 	include/llvm/Config/llvm-config.h.cmake
 	include/llvm/Support/AlignOf.h
@@ -69,24 +70,29 @@ INCLUDES=(
 	include/llvm/Support/Atomic.h
 	include/llvm/Support/Casting.h
 	include/llvm/Support/CBindingWrapping.h
-	include/llvm/Support/COFF.h
+	include/llvm/Support/Chrono.h
 	include/llvm/Support/CommandLine.h
 	include/llvm/Support/Compiler.h
 	include/llvm/Support/ConvertUTF.h
-	include/llvm/Support/DataStream.h
 	include/llvm/Support/DataTypes.h.cmake
 	include/llvm/Support/Debug.h
 	include/llvm/Support/Endian.h
 	include/llvm/Support/Errc.h
 	include/llvm/Support/Errno.h
+	include/llvm/Support/Error.h
 	include/llvm/Support/ErrorHandling.h
 	include/llvm/Support/ErrorOr.h
 	include/llvm/Support/FileSystem.h
 	include/llvm/Support/Format.h
+	include/llvm/Support/FormatCommon.h
+	include/llvm/Support/FormatProviders.h
+	include/llvm/Support/FormatVariadic.h
+	include/llvm/Support/FormatVariadicDetails.h
 	include/llvm/Support/Host.h
 	include/llvm/Support/LineIterator.h
 	include/llvm/Support/ManagedStatic.h
 	include/llvm/Support/MathExtras.h
+	include/llvm/Support/MD5.h
 	include/llvm/Support/Memory.h
 	include/llvm/Support/MemoryBuffer.h
 	include/llvm/Support/Mutex.h
@@ -98,13 +104,14 @@ INCLUDES=(
 	include/llvm/Support/Program.h
 	include/llvm/Support/raw_ostream.h
 	include/llvm/Support/Recycler.h
+	include/llvm/Support/ReverseIteration.h
+	include/llvm/Support/Signals.h
 	include/llvm/Support/SMLoc.h
 	include/llvm/Support/SourceMgr.h
 	include/llvm/Support/StringSaver.h
 	include/llvm/Support/SwapByteOrder.h
 	include/llvm/Support/Threading.h
 	include/llvm/Support/thread.h
-	include/llvm/Support/TimeValue.h
 	include/llvm/Support/type_traits.h
 	include/llvm/Support/Valgrind.h
 	include/llvm/Support/WindowsError.h
@@ -144,13 +151,11 @@ SOURCES=(
 	Support/StringRef.cpp
 	Support/StringSaver.cpp
 	Support/Threading.cpp
-	Support/TimeValue.cpp
 	Support/Twine.cpp
 	Support/Unix/Memory.inc
 	Support/Unix/Path.inc
 	Support/Unix/Process.inc
 	Support/Unix/Program.inc
-	Support/Unix/TimeValue.inc
 	Support/Unix/Unix.h
 	Support/Valgrind.cpp
 	Support/YAMLParser.cpp
@@ -159,7 +164,6 @@ SOURCES=(
 	Support/Windows/Path.inc
 	Support/Windows/Process.inc
 	Support/Windows/Program.inc
-	Support/Windows/TimeValue.inc
 	Support/Windows/WindowsSupport.h
 )
 
@@ -185,13 +189,13 @@ done
 
 # Apply patches.
 
-patch "${WORKING_DIR}/src/Support/Path.cpp" "$WORKING_DIR/src/Path.cpp.diff"
-patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
-patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
-patch "${WORKING_DIR}/src/Support/YAMLParser.cpp" "$WORKING_DIR/src/YAMLParser.cpp.diff"
-patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
-patch "${WORKING_DIR}/src/Support/Unix/Process.inc" "$WORKING_DIR/src/Process.inc.diff"
-patch "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" "$WORKING_DIR/src/YAMLParserTest.cpp.diff"
-patch "${WORKING_DIR}/include/llvm/Support/CommandLine.h" "$WORKING_DIR/src/CommandLine.h.diff"
+#patch "${WORKING_DIR}/src/Support/Path.cpp" "$WORKING_DIR/src/Path.cpp.diff"
+#patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
+#patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
+#patch "${WORKING_DIR}/src/Support/YAMLParser.cpp" "$WORKING_DIR/src/YAMLParser.cpp.diff"
+#patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
+#patch "${WORKING_DIR}/src/Support/Unix/Process.inc" "$WORKING_DIR/src/Process.inc.diff"
+#patch "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" "$WORKING_DIR/src/YAMLParserTest.cpp.diff"
+#patch "${WORKING_DIR}/include/llvm/Support/CommandLine.h" "$WORKING_DIR/src/CommandLine.h.diff"
 
 exit 0

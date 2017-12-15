@@ -60,24 +60,17 @@
 /// \macro LLVM_MSC_PREREQ
 /// \brief Is the compiler MSVC of at least the specified version?
 /// The common \param version values to check for are:
-///  * 1800: Microsoft Visual Studio 2013 / 12.0
 ///  * 1900: Microsoft Visual Studio 2015 / 14.0
 #ifdef _MSC_VER
 #define LLVM_MSC_PREREQ(version) (_MSC_VER >= (version))
 
-// We require at least MSVC 2013.
-#if !LLVM_MSC_PREREQ(1800)
-#error LLVM requires at least MSVC 2013.
+// We require at least MSVC 2015.
+#if !LLVM_MSC_PREREQ(1900)
+#error LLVM requires at least MSVC 2015.
 #endif
 
 #else
 #define LLVM_MSC_PREREQ(version) 0
-#endif
-
-#if !defined(_MSC_VER) || defined(__clang__) || LLVM_MSC_PREREQ(1900)
-#define LLVM_NOEXCEPT noexcept
-#else
-#define LLVM_NOEXCEPT throw()
 #endif
 
 /// \brief Does the compiler support ref-qualifiers for *this?
@@ -100,12 +93,6 @@
 #define LLVM_LVALUE_FUNCTION
 #endif
 
-#if __has_feature(cxx_constexpr) || defined(__GXX_EXPERIMENTAL_CXX0X__) || LLVM_MSC_PREREQ(1900)
-# define LLVM_CONSTEXPR constexpr
-#else
-# define LLVM_CONSTEXPR
-#endif
-
 /// LLVM_LIBRARY_VISIBILITY - If a class marked with this attribute is linked
 /// into a shared library, then the class should be private to the library and
 /// not accessible from outside it.  Can also be used to mark variables and
@@ -118,25 +105,16 @@
 #define LLVM_LIBRARY_VISIBILITY
 #endif
 
-#if __has_attribute(sentinel) || LLVM_GNUC_PREREQ(3, 0, 0)
-#define LLVM_END_WITH_NULL __attribute__((sentinel))
+#if defined(__GNUC__)
+#define LLVM_PREFETCH(addr, rw, locality) __builtin_prefetch(addr, rw, locality)
 #else
-#define LLVM_END_WITH_NULL
+#define LLVM_PREFETCH(addr, rw, locality)
 #endif
 
 #if __has_attribute(used) || LLVM_GNUC_PREREQ(3, 1, 0)
 #define LLVM_ATTRIBUTE_USED __attribute__((__used__))
 #else
 #define LLVM_ATTRIBUTE_USED
-#endif
-
-/// LLVM_ATTRIBUTE_UNUSED_RESULT - Deprecated. Use LLVM_NODISCARD instead.
-#if __has_attribute(warn_unused_result) || LLVM_GNUC_PREREQ(3, 4, 0)
-#define LLVM_ATTRIBUTE_UNUSED_RESULT __attribute__((__warn_unused_result__))
-#elif defined(_MSC_VER)
-#define LLVM_ATTRIBUTE_UNUSED_RESULT _Check_return_
-#else
-#define LLVM_ATTRIBUTE_UNUSED_RESULT
 #endif
 
 /// LLVM_NODISCARD - Warn if a type or return value is discarded.
@@ -249,6 +227,8 @@
 /// LLVM_FALLTHROUGH - Mark fallthrough cases in switch statements.
 #if __cplusplus > 201402L && __has_cpp_attribute(fallthrough)
 #define LLVM_FALLTHROUGH [[fallthrough]]
+#elif __has_cpp_attribute(gnu::fallthrough)
+#define LLVM_FALLTHROUGH [[gnu::fallthrough]]
 #elif !__cplusplus
 // Workaround for llvm.org/PR23435, since clang 3.6 and below emit a spurious
 // error when __has_cpp_attribute is given a scoped attribute in C mode.
@@ -335,15 +315,8 @@
 #endif
 
 /// \macro LLVM_ALIGNAS
-/// \brief Used to specify a minimum alignment for a structure or variable. The
-/// alignment must be a constant integer. Use LLVM_PTR_SIZE to compute
-/// alignments in terms of the size of a pointer.
-///
-/// Note that __declspec(align) has special quirks, it's not legal to pass a
-/// structure with __declspec(align) as a formal parameter.
-#ifdef _MSC_VER
-# define LLVM_ALIGNAS(x) __declspec(align(x))
-#elif __GNUC__ && !__has_feature(cxx_alignas) && !LLVM_GNUC_PREREQ(4, 8, 0)
+/// \brief Used to specify a minimum alignment for a structure or variable.
+#if __GNUC__ && !__has_feature(cxx_alignas) && !LLVM_GNUC_PREREQ(4, 8, 1)
 # define LLVM_ALIGNAS(x) __attribute__((aligned(x)))
 #else
 # define LLVM_ALIGNAS(x) alignas(x)
@@ -366,7 +339,7 @@
 ///   int k;
 ///   long long l;
 /// };
-/// LLVM_PACKED_END 
+/// LLVM_PACKED_END
 #ifdef _MSC_VER
 # define LLVM_PACKED(d) __pragma(pack(push, 1)) d __pragma(pack(pop))
 # define LLVM_PACKED_START __pragma(pack(push, 1))
@@ -391,15 +364,6 @@
 # error "could not determine LLVM_PTR_SIZE as a constant int for MSVC"
 #else
 # define LLVM_PTR_SIZE sizeof(void *)
-#endif
-
-/// \macro LLVM_FUNCTION_NAME
-/// \brief Expands to __func__ on compilers which support it.  Otherwise,
-/// expands to a compiler-dependent replacement.
-#if defined(_MSC_VER)
-# define LLVM_FUNCTION_NAME __FUNCTION__
-#else
-# define LLVM_FUNCTION_NAME __func__
 #endif
 
 /// \macro LLVM_MEMORY_SANITIZER_BUILD
@@ -477,6 +441,9 @@ void AnnotateIgnoreWritesEnd(const char *file, int line);
 
 /// \brief Mark debug helper function definitions like dump() that should not be
 /// stripped from debug builds.
+/// Note that you should also surround dump() functions with
+/// `#if !defined(NDEBUG) || defined(LLVM_ENABLE_DUMP)` so they do always
+/// get stripped in release builds.
 // FIXME: Move this to a private config.h as it's not usable in public headers.
 #if !defined(NDEBUG) || defined(LLVM_ENABLE_DUMP)
 #define LLVM_DUMP_METHOD LLVM_ATTRIBUTE_NOINLINE LLVM_ATTRIBUTE_USED
@@ -493,7 +460,7 @@ void AnnotateIgnoreWritesEnd(const char *file, int line);
 #define LLVM_PRETTY_FUNCTION __FUNCSIG__
 #elif defined(__GNUC__) || defined(__clang__)
 #define LLVM_PRETTY_FUNCTION __PRETTY_FUNCTION__
-#else 
+#else
 #define LLVM_PRETTY_FUNCTION __func__
 #endif
 
@@ -524,6 +491,16 @@ void AnnotateIgnoreWritesEnd(const char *file, int line);
 // If threading is disabled entirely, this compiles to nothing and you get
 // a normal global variable.
 #define LLVM_THREAD_LOCAL
+#endif
+
+/// \macro LLVM_ENABLE_EXCEPTIONS
+/// \brief Whether LLVM is built with exception support.
+#if __has_feature(cxx_exceptions)
+#define LLVM_ENABLE_EXCEPTIONS 1
+#elif defined(__GNUC__) && defined(__EXCEPTIONS)
+#define LLVM_ENABLE_EXCEPTIONS 1
+#elif defined(_MSC_VER) && defined(_CPPUNWIND)
+#define LLVM_ENABLE_EXCEPTIONS 1
 #endif
 
 #endif

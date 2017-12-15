@@ -7,11 +7,9 @@
 #include "llvm/Support/Format.h"
 #include "llvm/Support/YAMLParser.h"
 #include "llvm/Support/YAMLTraits.h"
+#include "llvm/ADT/SmallString.h"
 #include "ofp/header.h"
 #include "ofp/yaml/yconstants.h"
-
-LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(ofp::UInt8)
-LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(std::string)
 
 namespace llvm {
 namespace yaml {
