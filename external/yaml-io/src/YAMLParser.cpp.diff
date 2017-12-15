@@ -1,6 +1,19 @@
---- /Users/bfish/code/llvm/lib/Support/YAMLParser.cpp	2016-10-14 12:38:41.000000000 -0700
-+++ ./src/Support/YAMLParser.cpp	2016-10-18 11:39:28.000000000 -0700
-@@ -2279,7 +2279,7 @@
+--- ../../../llvm_git/llvm/lib/Support/YAMLParser.cpp	2017-12-09 16:02:39.000000000 -0700
++++ ./src/Support/YAMLParser.cpp	2017-12-14 12:38:08.000000000 -0700
+@@ -1389,6 +1389,12 @@
+   Token T;
+   T.Kind = Token::TK_Scalar;
+   T.Range = StringRef(Start, Current - Start);
++
++  if (FlowLevel) {
++    // Make sure that plain scalars don't have trailing white space.
++    T.Range = T.Range.rtrim(" \n\r");
++  }
++
+   TokenQueue.push_back(T);
+ 
+   // Plain scalars can be simple keys.
+@@ -2308,7 +2314,7 @@
    case Token::TK_Anchor:
      if (AnchorInfo.Kind == Token::TK_Anchor) {
        setError("Already encountered an anchor for this node!", T);
@@ -9,7 +22,7 @@
      }
      AnchorInfo = getNext(); // Consume TK_Anchor.
      T = peekNext();
-@@ -2287,7 +2287,7 @@
+@@ -2316,7 +2322,7 @@
    case Token::TK_Tag:
      if (TagInfo.Kind == Token::TK_Tag) {
        setError("Already encountered a tag for this node!", T);
@@ -18,7 +31,7 @@
      }
      TagInfo = getNext(); // Consume TK_Tag.
      T = peekNext();
-@@ -2333,6 +2333,10 @@
+@@ -2362,6 +2368,10 @@
                   , AnchorInfo.Range.substr(1)
                   , TagInfo.Range
                   , MappingNode::MT_Flow);

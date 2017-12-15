@@ -2,6 +2,11 @@
 #
 # Script to update yaml-io sources from llvm source tree.
 #
+# Example:
+#   ./update_source.sh ../../../llvm_git/llvm
+#   
+# When we need to update the patches, set LLVM_PATCH_DEV to 1.
+#   LLVM_PATCH_DEV=1 ./update_source.sh ../../../llvm_git/llvm
 
 set -e
 
@@ -19,14 +24,14 @@ test -d "$LLVM_SOURCE_DIR/lib/Support" || usage
 
 
 # Update patch (during development)
-#diff -u "${LLVM_SOURCE_DIR}/lib/Support/SourceMgr.cpp" "${WORKING_DIR}/src/Support/SourceMgr.cpp" > "$WORKING_DIR/src/SourceMgr.cpp.diff" || true
-#diff -u "${LLVM_SOURCE_DIR}/lib/Support/YAMLTraits.cpp" "${WORKING_DIR}/src/Support/YAMLTraits.cpp" > "$WORKING_DIR/src/YAMLTraits.cpp.diff" || true
-#diff -u "${LLVM_SOURCE_DIR}/lib/Support/YAMLParser.cpp" "${WORKING_DIR}/src/Support/YAMLParser.cpp" > "$WORKING_DIR/src/YAMLParser.cpp.diff" || true
-#diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/YAMLTraits.h" "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" > "$WORKING_DIR/src/YAMLTraits.h.diff" || true
-#diff -u "${LLVM_SOURCE_DIR}/lib/Support/Path.cpp" "${WORKING_DIR}/src/Support/Path.cpp" > "$WORKING_DIR/src/Path.cpp.diff" || true
-#diff -u "${LLVM_SOURCE_DIR}/lib/Support/Unix/Process.inc" "${WORKING_DIR}/src/Support/Unix/Process.inc" > "$WORKING_DIR/src/Process.inc.diff" || true
-#diff -u "${LLVM_SOURCE_DIR}/unittests/Support/YAMLParserTest.cpp" "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" > "$WORKING_DIR/src/YAMLParserTest.cpp.diff" || true
-#diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/CommandLine.h" "${WORKING_DIR}/include/llvm/Support/CommandLine.h" > "$WORKING_DIR/src/CommandLine.h.diff" || true
+if [ "$LLVM_PATCH_DEV" = 1 ]; then
+	diff -u "${LLVM_SOURCE_DIR}/lib/Support/SourceMgr.cpp" "${WORKING_DIR}/src/Support/SourceMgr.cpp" > "$WORKING_DIR/src/SourceMgr.cpp.diff" || true
+	diff -u "${LLVM_SOURCE_DIR}/lib/Support/YAMLTraits.cpp" "${WORKING_DIR}/src/Support/YAMLTraits.cpp" > "$WORKING_DIR/src/YAMLTraits.cpp.diff" || true
+	diff -u "${LLVM_SOURCE_DIR}/lib/Support/YAMLParser.cpp" "${WORKING_DIR}/src/Support/YAMLParser.cpp" > "$WORKING_DIR/src/YAMLParser.cpp.diff" || true
+	diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/YAMLTraits.h" "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" > "$WORKING_DIR/src/YAMLTraits.h.diff" || true
+	diff -u "${LLVM_SOURCE_DIR}/unittests/Support/YAMLParserTest.cpp" "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" > "$WORKING_DIR/src/YAMLParserTest.cpp.diff" || true
+	diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/CommandLine.h" "${WORKING_DIR}/include/llvm/Support/CommandLine.h" > "$WORKING_DIR/src/CommandLine.h.diff" || true
+fi
 
 # Include files to copy from llvm source tree.
 INCLUDES=(
@@ -189,13 +194,11 @@ done
 
 # Apply patches.
 
-#patch "${WORKING_DIR}/src/Support/Path.cpp" "$WORKING_DIR/src/Path.cpp.diff"
-#patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
-#patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
-#patch "${WORKING_DIR}/src/Support/YAMLParser.cpp" "$WORKING_DIR/src/YAMLParser.cpp.diff"
-#patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
-#patch "${WORKING_DIR}/src/Support/Unix/Process.inc" "$WORKING_DIR/src/Process.inc.diff"
-#patch "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" "$WORKING_DIR/src/YAMLParserTest.cpp.diff"
-#patch "${WORKING_DIR}/include/llvm/Support/CommandLine.h" "$WORKING_DIR/src/CommandLine.h.diff"
+patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
+patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
+patch "${WORKING_DIR}/src/Support/YAMLParser.cpp" "$WORKING_DIR/src/YAMLParser.cpp.diff"
+patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
+patch "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" "$WORKING_DIR/src/YAMLParserTest.cpp.diff"
+patch "${WORKING_DIR}/include/llvm/Support/CommandLine.h" "$WORKING_DIR/src/CommandLine.h.diff"
 
 exit 0

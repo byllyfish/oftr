@@ -1,11 +1,11 @@
---- ../../../llvm/include/llvm/Support/CommandLine.h	2016-10-14 12:38:27.000000000 -0700
-+++ ./include/llvm/Support/CommandLine.h	2016-11-05 13:45:14.000000000 -0700
-@@ -1541,6 +1541,8 @@
-   }
+--- ../../../llvm_git/llvm/include/llvm/Support/CommandLine.h	2017-12-09 16:02:38.000000000 -0700
++++ ./include/llvm/Support/CommandLine.h	2017-12-14 16:21:09.000000000 -0700
+@@ -1593,7 +1593,7 @@
+ // This makes us exactly compatible with the bits in all cases that it is used.
+ //
+ template <class DataType> class bits_storage<DataType, bool> {
+-  unsigned Bits; // Where to store the bits...
++  unsigned Bits = 0; // Where to store the bits...
  
- public:
-+  bits_storage() : Bits(0) {}
-+
-   template <class T> void addValue(const T &V) { Bits |= Bit(V); }
- 
-   unsigned getBits() { return Bits; }
+   template <class T> static unsigned Bit(const T &V) {
+     unsigned BitPos = (unsigned)V;
