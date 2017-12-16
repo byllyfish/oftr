@@ -108,7 +108,7 @@ void print_version(llvm::raw_ostream &out) {
   std::string asioCommit{LIBOFP_GIT_COMMIT_ASIO};
 
   out << "  ASIO " << asioMajor << '.' << asioMinor << '.' << asioPatch << " ("
-     << asioCommit.substr(0, 7) << ")\n";
+      << asioCommit.substr(0, 7) << ")\n";
 #endif  // LIBOFP_ENABLE_JSONRPC
 
 #if LIBOFP_ENABLE_OPENSSL
@@ -117,8 +117,8 @@ void print_version(llvm::raw_ostream &out) {
   unsigned sslPatch = (OPENSSL_VERSION_NUMBER >> 12) & 0xFF;
   std::string sslCommit{LIBOFP_GIT_COMMIT_BORINGSSL};
 
-  out << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch << " ("
-     << sslCommit.substr(0, 7) << ")\n";
+  out << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch
+      << " (" << sslCommit.substr(0, 7) << ")\n";
 #endif  // LIBOFP_ENABLE_OPENSSL
 
 #if HAVE_LIBPCAP

@@ -142,5 +142,6 @@ msg:
 
   Encoder encoder{yaml};
   EXPECT_EQ("", encoder.error());
-  EXPECT_HEX("0600001000000000000100080000007E", encoder.data(), encoder.size());
+  EXPECT_HEX("0600001000000000000100080000007E", encoder.data(),
+             encoder.size());
 }
