@@ -1,7 +1,7 @@
 sudo: false
 language: cpp
 script:
-  - mkdir -p Build && cd Build && cmake .. -G Ninja && ctest -j 4 -D Experimental
+  - mkdir -p Build && cd Build && cmake .. && MAKEFLAGS=-j4 ctest -j4 -D Experimental
 
 branches:
   except:
@@ -29,6 +29,5 @@ addons:
     branch_pattern: coverity_scan
   apt:
     packages:
-      - ninja-build
       - valgrind
       - libpcap-dev
