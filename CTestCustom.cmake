@@ -13,8 +13,3 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
 	${CTEST_CUSTOM_WARNING_EXCEPTION}
 	"ranlib: file: .* has no symbols"
 )
-
-# Ignore ctypes test on alpine linux.
-if(EXISTS "/etc/alpine-release")
-#  set(CTEST_CUSTOM_TESTS_IGNORE python-ctypes)
-endif()
