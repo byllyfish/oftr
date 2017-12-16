@@ -29,5 +29,6 @@ addons:
     branch_pattern: coverity_scan
   apt:
     packages:
+      - ninja-build
       - valgrind
       - libpcap-dev
