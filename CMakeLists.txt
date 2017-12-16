@@ -30,7 +30,7 @@
 #    cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true ..
 #
 
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 3.0.0)
 project(Libofp)
 
 # Log version of cmake
