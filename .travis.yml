@@ -1,8 +1,8 @@
 sudo: false
 language: cpp
 script:
-#  - if [ $TRAVIS_OS_NAME == linux ]; then export CC="gcc-4.8" CXX="g++-4.8"; fi
-  - mkdir -p Build && cd Build && cmake .. && ctest -D Experimental
+  - mkdir -p Build && cd Build && cmake .. -G Ninja && ctest -j 4 -D Experimental
+
 branches:
   except:
     - /^v\d+.*$/  # Skip tagged releases
@@ -28,12 +28,6 @@ addons:
     build_command:   make
     branch_pattern: coverity_scan
   apt:
-#    sources:
-#      - kalakris-cmake
-#      - ubuntu-toolchain-r-test
     packages:
-#      - cmake
-#      - gcc-4.8
-#      - g++-4.8
       - valgrind
       - libpcap-dev
