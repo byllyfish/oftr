@@ -1,7 +1,7 @@
 sudo: false
 language: cpp
 script:
-  - mkdir -p Build && cd Build && cmake .. && MAKEFLAGS=-j4 ctest -j4 -D Experimental
+  - ./travis_build.sh
 
 branches:
   except:
