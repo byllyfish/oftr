@@ -990,8 +990,8 @@ void Decode::fuzzStressTest(const ofp::Message *originalMessage) {
 
   const UInt8 values[] = {0x00, 0xFF};
 
-  // Only fuzz the first 256 bytes.
-  const size_t kFuzzPrefix = 256;
+  // Only fuzz the first 128 bytes.
+  const size_t kFuzzPrefix = 128;
   const size_t kMaxSize =
       std::min(originalMessage->size(), kFuzzPrefix + sizeof(Header));
 
