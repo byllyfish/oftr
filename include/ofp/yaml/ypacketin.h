@@ -76,8 +76,6 @@ struct MappingTraits<ofp::PacketInBuilder> {
     io.mapRequired("buffer_id", bufferId);
     msg.setBufferId(bufferId);
 
-    io.mapRequired("total_len", msg.msg_.totalLen_);
-
     PortNumber inPort;
     UInt32 inPhyPort = 0;
     UInt64 metadata = 0;
@@ -102,6 +100,10 @@ struct MappingTraits<ofp::PacketInBuilder> {
       io.mapOptional("_pkt_data", pktData);
       ofp::MatchPacketBuilder mp{pktDecode.toRange()};
       mp.build(&msg.enetFrame_, pktData.toRange());
+      // Set total_len from enetFrame if total_len is not present.
+      io.mapOptional("total_len", msg.msg_.totalLen_, msg.enetFrame_.size());
+    } else {
+      io.mapRequired("total_len", msg.msg_.totalLen_);
     }
   }
 };
