@@ -1618,6 +1618,31 @@ TEST(encoder, packetinv4) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, packetinv4_no_phys_port) {
+  const char *input = R"""(
+      type:            PACKET_IN
+      version:         4
+      xid:             1
+      msg:             
+        buffer_id:       0x33333331
+        total_len:       0x4441
+        in_port:         0x55555551
+        metadata:        0x7777777777777771
+        reason:          APPLY_ACTION
+        table_id:        0x88
+        cookie:          0x9999999999999991
+        match:
+        data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(0x05c, encoder.size());
+  EXPECT_HEX(
+      "040A005C00000001333333314441018899999999999999910001001880000004555555518000040877777777777777710000FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, packetinv4_pkt) {
   const char *input = R"""(
       type:            PACKET_IN
