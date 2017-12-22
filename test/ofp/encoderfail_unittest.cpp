@@ -645,3 +645,31 @@ TEST(encoderfail, flowmod_with_mask) {
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
+
+TEST(encoderfail, invalid_yaml1) {
+  const char *input = ",--\ntype: HELLO\n";
+
+  Encoder encoder{input};
+
+  EXPECT_EQ(
+      "YAML:1:2: error: Unexpected token\n,--\n ^\n",
+      encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+}
+
+TEST(encoderfail, invalid_yaml2) {
+  const char *input = R"""(
+    type: FEATURES_REPLY
+    msg:
+      datapath_id: &ff:ff:ff:ff:ff:ff:ff:ff'
+  )""";
+
+  Encoder encoder{input};
+
+  EXPECT_EQ(
+      "YAML:4:23: error: Unrecognized character while tokenizing.\n      datapath_id: &ff:ff:ff:ff:ff:ff:ff:ff'\n                      ^\n",
+      encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+}

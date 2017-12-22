@@ -2370,6 +2370,7 @@ parse_property:
                  , MappingNode::MT_Flow);
   case Token::TK_FlowSequenceEnd:
   case Token::TK_FlowMappingEnd:
+  case Token::TK_FlowEntry:
     setError("Unexpected token", T);
     return new (NodeAllocator) NullNode(stream.CurrentDoc);
   case Token::TK_Scalar:
@@ -2402,7 +2403,8 @@ parse_property:
     //       !!null null.
     return new (NodeAllocator) NullNode(stream.CurrentDoc);
   case Token::TK_Error:
-    return nullptr;
+    setError("Unexpected token", T);
+    return new (NodeAllocator) NullNode(stream.CurrentDoc);
   }
   llvm_unreachable("Control flow shouldn't reach here.");
   return nullptr;

@@ -108,6 +108,11 @@ TEST(YAMLParser, FailsOnMissingQuote) {
   ExpectParseError("Missing closing quote", "a:\n b: n\n \"c: 3\n");
 }
 
+TEST(YAMLParser, FailsOnUnexpectedComma) {
+  ExpectParseError("Unexpected token", ",");
+  ExpectParseError("Unexpected token", "  ,");
+}
+
 TEST(YAMLParser, ParsesEscapedQuotes) {
   ExpectParseSuccess("Parses escaped string in key and value",
                      "[{\"a\":\"\\\"b\\\"  \\\" \\\"\"}]");
