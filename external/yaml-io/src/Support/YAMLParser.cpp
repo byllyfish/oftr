@@ -929,12 +929,13 @@ void Scanner::scan_ns_uri_char() {
 }
 
 bool Scanner::consume(uint32_t Expected) {
-  if (Expected >= 0x80)
-    report_fatal_error("Not dealing with this yet");
+  assert(Expected < 0x80);
+  //if (Expected >= 0x80)
+  //  report_fatal_error("Not dealing with this yet");
   if (Current == End)
     return false;
-  if (uint8_t(*Current) >= 0x80)
-    report_fatal_error("Not dealing with this yet");
+  //if (uint8_t(*Current) >= 0x80)
+  //  report_fatal_error("Not dealing with this yet");
   if (uint8_t(*Current) == Expected) {
     ++Current;
     ++Column;

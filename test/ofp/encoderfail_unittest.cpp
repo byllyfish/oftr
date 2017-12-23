@@ -646,7 +646,7 @@ TEST(encoderfail, flowmod_with_mask) {
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
 
-TEST(encoderfail, invalid_yaml1) {
+TEST(encoderfail, invalid_yaml1_fuzz) {
   const char *input = ",--\ntype: HELLO\n";
 
   Encoder encoder{input};
@@ -658,7 +658,7 @@ TEST(encoderfail, invalid_yaml1) {
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
 
-TEST(encoderfail, invalid_yaml2) {
+TEST(encoderfail, invalid_yaml2_fuzz) {
   const char *input = R"""(
     type: FEATURES_REPLY
     msg:
@@ -670,6 +670,19 @@ TEST(encoderfail, invalid_yaml2) {
   EXPECT_EQ(
       "YAML:4:23: error: Unrecognized character while tokenizing.\n      datapath_id: &ff:ff:ff:ff:ff:ff:ff:ff'\n                      ^\n",
       encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+}
+
+TEST(encoderfail, invalid_yaml3_fuzz) {
+  const std::string input = HexToRawData("2120 213c c1c3 c3c3 c410 c3c4 1000 0500 0e0a 1f0e 0000 0a");
+
+  Encoder encoder{input};
+
+  auto err = encoder.error();
+  EXPECT_HEX(
+      "59414D4C3A313A353A206572726F723A20556E657870656374656420746F6B656E0A2120213CC1C3C3C3C410C3C4100005000E0A",
+      err.data(), err.size());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
