@@ -686,3 +686,16 @@ TEST(encoderfail, invalid_yaml3_fuzz) {
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
+
+TEST(encoderfail, invalid_yaml4_fuzz) {
+  const std::string input = HexToRawData("2d2d 2d0a 7665 7273 6973 696f 6e73 3a20 213c 6161 615d e72d 2d2d 0a");
+
+  Encoder encoder{input};
+
+  EXPECT_EQ(
+      "YAML:2:19: error: Unexpected token\nversisions: !<aaa]\xE7---\n",
+      encoder.error());
+  EXPECT_EQ(0, encoder.size());
+  EXPECT_HEX("", encoder.data(), encoder.size());
+  
+}
