@@ -1,0 +1,10 @@
+---
+version: 0x04
+type: HELLO
+msg:
+  versions: [ 0x0f ]
+---
+version: 0x04
+type: ERROR
+msg:
+  type: BAD_REQUEST
