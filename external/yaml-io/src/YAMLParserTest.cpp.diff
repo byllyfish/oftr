@@ -1,5 +1,5 @@
 --- ../../../llvm_git/llvm/unittests/Support/YAMLParserTest.cpp	2017-12-09 16:02:49.000000000 -0700
-+++ ./unittests/Support/YAMLParserTest.cpp	2017-12-15 16:07:37.000000000 -0700
++++ ./unittests/Support/YAMLParserTest.cpp	2017-12-21 16:10:21.000000000 -0700
 @@ -16,6 +16,11 @@
  
  namespace llvm {
@@ -36,7 +36,7 @@
  TEST(YAMLParser, FailsIfMissingColon) {
    ExpectParseError("Missing colon between key and value", "[{\"a\"\"/b\"}]");
    ExpectParseError("Missing colon between key and value", "[{\"a\" \"b\"}]");
-@@ -85,6 +100,12 @@
+@@ -85,6 +100,17 @@
  TEST(YAMLParser, FailsOnMissingQuote) {
    ExpectParseError("Missing open quote", "[{a\":\"b\"}]");
    ExpectParseError("Missing closing quote", "[{\"a\":\"b}]");
@@ -46,10 +46,15 @@
 +
 +  //EXPECT_FALSE(llvm::yaml::dumpTokens("a:\n b: n\n \"c: 3\n", llvm::errs()));
 +  ExpectParseError("Missing closing quote", "a:\n b: n\n \"c: 3\n");
++}
++
++TEST(YAMLParser, FailsOnUnexpectedComma) {
++  ExpectParseError("Unexpected token", ",");
++  ExpectParseError("Unexpected token", "  ,");
  }
  
  TEST(YAMLParser, ParsesEscapedQuotes) {
-@@ -125,6 +146,24 @@
+@@ -125,6 +151,24 @@
        " \t \n\n \r \"b\"\t \n\n \r } \t \n\n \r]\t \n\n \r");
  }
  

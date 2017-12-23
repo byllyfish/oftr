@@ -1,6 +1,24 @@
 --- ../../../llvm_git/llvm/lib/Support/YAMLParser.cpp	2017-12-09 16:02:39.000000000 -0700
-+++ ./src/Support/YAMLParser.cpp	2017-12-15 16:07:37.000000000 -0700
-@@ -1389,6 +1389,12 @@
++++ ./src/Support/YAMLParser.cpp	2017-12-22 13:31:48.000000000 -0700
+@@ -929,12 +929,13 @@
+ }
+ 
+ bool Scanner::consume(uint32_t Expected) {
+-  if (Expected >= 0x80)
+-    report_fatal_error("Not dealing with this yet");
++  assert(Expected < 0x80);
++  //if (Expected >= 0x80)
++  //  report_fatal_error("Not dealing with this yet");
+   if (Current == End)
+     return false;
+-  if (uint8_t(*Current) >= 0x80)
+-    report_fatal_error("Not dealing with this yet");
++  //if (uint8_t(*Current) >= 0x80)
++  //  report_fatal_error("Not dealing with this yet");
+   if (uint8_t(*Current) == Expected) {
+     ++Current;
+     ++Column;
+@@ -1389,6 +1390,12 @@
    Token T;
    T.Kind = Token::TK_Scalar;
    T.Range = StringRef(Start, Current - Start);
@@ -13,7 +31,7 @@
    TokenQueue.push_back(T);
  
    // Plain scalars can be simple keys.
-@@ -2308,7 +2314,7 @@
+@@ -2308,7 +2315,7 @@
    case Token::TK_Anchor:
      if (AnchorInfo.Kind == Token::TK_Anchor) {
        setError("Already encountered an anchor for this node!", T);
@@ -22,7 +40,7 @@
      }
      AnchorInfo = getNext(); // Consume TK_Anchor.
      T = peekNext();
-@@ -2316,7 +2322,7 @@
+@@ -2316,7 +2323,7 @@
    case Token::TK_Tag:
      if (TagInfo.Kind == Token::TK_Tag) {
        setError("Already encountered a tag for this node!", T);
@@ -31,14 +49,25 @@
      }
      TagInfo = getNext(); // Consume TK_Tag.
      T = peekNext();
-@@ -2362,6 +2368,10 @@
+@@ -2362,6 +2369,11 @@
                   , AnchorInfo.Range.substr(1)
                   , TagInfo.Range
                   , MappingNode::MT_Flow);
 +  case Token::TK_FlowSequenceEnd:
 +  case Token::TK_FlowMappingEnd:
++  case Token::TK_FlowEntry:
 +    setError("Unexpected token", T);
 +    return new (NodeAllocator) NullNode(stream.CurrentDoc);
    case Token::TK_Scalar:
      getNext();
      return new (NodeAllocator)
+@@ -2392,7 +2404,8 @@
+     //       !!null null.
+     return new (NodeAllocator) NullNode(stream.CurrentDoc);
+   case Token::TK_Error:
+-    return nullptr;
++    setError("Unexpected token", T);
++    return new (NodeAllocator) NullNode(stream.CurrentDoc);
+   }
+   llvm_unreachable("Control flow shouldn't reach here.");
+   return nullptr;
