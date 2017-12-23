@@ -1,5 +1,16 @@
 = Changelog
 
+== Version 0.41 (23 December 2017)
+
+- Fix several YAML parser issues discovered by fuzzing.
+- PacketIn total_len field is now set automatically when generating packets.
+- PacketIn in_phy_port field is now optional.
+- Added "escalate" field to FilterTableEntry yaml schema.
+- Parallelize tests.
+- Change minimum cmake version to 3.0.0.
+- Update yamlio from recent llvm source (svn 320310).
+- Clean up travis-ci file.
+
 == Version 0.40 (4 December 2017)
 
 - Add support to jsonrpc server for "--binary-protocol".
