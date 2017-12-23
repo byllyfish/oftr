@@ -9,8 +9,8 @@
 #include "ofp/yaml/ybytelist.h"
 #include "ofp/yaml/ydatapathid.h"
 #include "ofp/yaml/yllvm.h"
-#include "ofp/yaml/ytimestamp.h"
 #include "ofp/yaml/yratelimiter.h"
+#include "ofp/yaml/ytimestamp.h"
 
 LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::RpcConnectionStats)
 LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::FilterTableEntry)
@@ -441,4 +441,4 @@ struct MappingTraits<ofp::rpc::RpcAlert::Params> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_RPC_YRPCEVENTS_H_
+#endif  // OFP_RPC_YRPCEVENTS_H_

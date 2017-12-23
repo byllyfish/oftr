@@ -15,9 +15,10 @@ struct ScalarTraits<ofp::rpc::RateLimiter> {
     out << value;
   }
 
-  static StringRef input(StringRef scalar, void *ctxt, ofp::rpc::RateLimiter &value) {
+  static StringRef input(StringRef scalar, void *ctxt,
+                         ofp::rpc::RateLimiter &value) {
     if (!value.parse(scalar)) {
-        return "Invalid rate limit";
+      return "Invalid rate limit";
     }
 
     return "";
@@ -29,4 +30,4 @@ struct ScalarTraits<ofp::rpc::RateLimiter> {
 }  // namespace yaml
 }  // namespace llvm
 
-#endif // OFP_YAML_YRATELIMITER_H_
+#endif  // OFP_YAML_YRATELIMITER_H_

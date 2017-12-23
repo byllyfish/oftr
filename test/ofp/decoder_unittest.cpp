@@ -883,7 +883,17 @@ TEST(decoder, packetinv4_equal_phys_port) {
       "80000004555555558000020455555555800004087777777777777777000"
       "0FFFFFFFFFFFF000000000001080600010800060400010000000000010A"
       "0000010000000000000A000002",
-      "---\ntype:            PACKET_IN\nxid:             0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:       0x33333333\n  total_len:       0x4444\n  in_port:         0x55555555\n  metadata:        0x7777777777777777\n  reason:          APPLY_ACTION\n  table_id:        0x88\n  cookie:          0x9999999999999999\n  match:           \n    - field:           IN_PORT\n      value:           0x55555555\n    - field:           IN_PHY_PORT\n      value:           0x55555555\n    - field:           METADATA\n      value:           0x7777777777777777\n  data:            FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002\n...\n");
+      "---\ntype:            PACKET_IN\nxid:             0x00000001\nversion:  "
+      "       0x04\nmsg:             \n  buffer_id:       0x33333333\n  "
+      "total_len:       0x4444\n  in_port:         0x55555555\n  metadata:     "
+      "   0x7777777777777777\n  reason:          APPLY_ACTION\n  table_id:     "
+      "   0x88\n  cookie:          0x9999999999999999\n  match:           \n   "
+      " - field:           IN_PORT\n      value:           0x55555555\n    - "
+      "field:           IN_PHY_PORT\n      value:           0x55555555\n    - "
+      "field:           METADATA\n      value:           0x7777777777777777\n  "
+      "data:            "
+      "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
+      "00000A000002\n...\n");
 }
 
 TEST(decoder, packetinv1) {
