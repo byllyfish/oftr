@@ -16,8 +16,8 @@
 
 namespace llvm {
 
-/// \brief Saves strings in the inheritor's stable storage and returns a stable
-/// raw character pointer.
+/// \brief Saves strings in the inheritor's stable storage and returns a
+/// StringRef with a stable character pointer.
 class StringSaver final {
   BumpPtrAllocator &Alloc;
 
@@ -26,7 +26,7 @@ public:
   StringRef save(const char *S) { return save(StringRef(S)); }
   StringRef save(StringRef S);
   StringRef save(const Twine &S) { return save(StringRef(S.str())); }
-  StringRef save(std::string &S) { return save(StringRef(S)); }
+  StringRef save(const std::string &S) { return save(StringRef(S)); }
 };
 }
 #endif

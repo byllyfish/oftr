@@ -26,7 +26,7 @@ static std::string decodeMessage(ByteRange data) {
   return decoder.result();
 }
 
-TEST(rpcfilteractiongenericreply, test) {
+TEST(rpcfilteractiongenericreply, test_icmpv4_echo) {
   const char *input = R"""(
     type:            PACKET_IN
     xid:             0x00000000
@@ -92,4 +92,47 @@ TEST(rpcfilteractiongenericreply, test) {
       "0x40\n    - field:           ICMPV4_TYPE\n      value:           0x00\n "
       "   - field:           ICMPV4_CODE\n      value:           0x00\n    - "
       "field:           X_PKT_POS\n      value:           0x002A\n...\n");
+}
+
+TEST(rpcfilteractiongenericreply, test_icmpv4_non_echo) {
+  const char *input = R"""(
+    type:            PACKET_IN
+    xid:             0x00000000
+    version:         0x04
+    msg:             
+      buffer_id:       NO_BUFFER
+      total_len:       0x05EE
+      in_port:         0x00000001
+      in_phy_port:     0x00000001
+      metadata:        0x0000000000000000
+      reason:          APPLY_ACTION
+      table_id:        0x06
+      cookie:          0x00000000FFFFFFFF
+      match:           
+        - field:           IN_PORT
+          value:           0x00000001
+      data:            0E00000000010AC2BB024296810000640800450005DC0518200040013AA70A0000010A6400FE880014572C2400059DA8FC590000000046D5060000000000101112131415161718191A1B1C1D1E1F202122232425
+  )""";
+
+  Message message = encodeMessage(input);
+  ASSERT_TRUE(message.type() == OFPT_PACKET_IN);
+  message.normalize();
+
+  MockChannel outputChannel{OFP_VERSION_4};
+  message.setSource(&outputChannel);
+
+  const PacketIn *packetIn = PacketIn::cast(&message);
+  ASSERT_TRUE(packetIn != nullptr);
+  ByteRange enetFrame = packetIn->enetFrame();
+  PortNumber inPort = packetIn->inPort();
+  UInt64 metadata = packetIn->metadata();
+
+  EXPECT_EQ(message.msgFlags() & OFP_REPLIED, 0);
+
+  FilterActionGenericReply action;
+  bool result = action.apply(enetFrame, inPort, metadata, &message);
+  EXPECT_FALSE(result);
+
+  EXPECT_EQ(message.msgFlags() & OFP_REPLIED, 0);
+  EXPECT_EQ(outputChannel.size(), 0);
 }

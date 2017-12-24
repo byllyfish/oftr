@@ -36,6 +36,7 @@ class OutputJson : public llvm::yaml::IO {
   bool preflightKey(const char *Key, bool Required, bool, bool &UseDefault,
                     void *&SaveInfo) override;
   void postflightKey(void *SaveInfo) override;
+  std::vector<llvm::StringRef> keys() override { return {}; }
 
   void beginFlowMapping() override { beginMapping(); }
   void endFlowMapping() override { endMapping(); }

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include "ofp/oxmtype.h"
-#include "ofp/rpc/rpcevents.h"
+#include "ofp/rpc/yrpcevents.h"
 #include "ofp/yaml/ybundleaddmessage.h"
 #include "ofp/yaml/ybundlecontrol.h"
 #include "ofp/yaml/yecho.h"

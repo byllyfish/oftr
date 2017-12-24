@@ -877,6 +877,25 @@ TEST(decoder, packetinv4) {
       "00000A000002\n...\n");
 }
 
+TEST(decoder, packetinv4_equal_phys_port) {
+  testDecodeEncode(
+      "040A0064000000013333333344440188999999999999999900010020 "
+      "80000004555555558000020455555555800004087777777777777777000"
+      "0FFFFFFFFFFFF000000000001080600010800060400010000000000010A"
+      "0000010000000000000A000002",
+      "---\ntype:            PACKET_IN\nxid:             0x00000001\nversion:  "
+      "       0x04\nmsg:             \n  buffer_id:       0x33333333\n  "
+      "total_len:       0x4444\n  in_port:         0x55555555\n  metadata:     "
+      "   0x7777777777777777\n  reason:          APPLY_ACTION\n  table_id:     "
+      "   0x88\n  cookie:          0x9999999999999999\n  match:           \n   "
+      " - field:           IN_PORT\n      value:           0x55555555\n    - "
+      "field:           IN_PHY_PORT\n      value:           0x55555555\n    - "
+      "field:           METADATA\n      value:           0x7777777777777777\n  "
+      "data:            "
+      "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
+      "00000A000002\n...\n");
+}
+
 TEST(decoder, packetinv1) {
   testDecodeEncode(
       "010A003C0000000233333333444455550100FFFFFFFFFFFF00000000000"
@@ -2000,8 +2019,8 @@ TEST(decoder, packet_in_nonzero_padding) {
       "42e50bb51ff50800",
       "---\ntype:            PACKET_IN\nxid:             0x00000000\nversion:  "
       "       0x04\nmsg:             \n  buffer_id:       0x00000158\n  "
-      "total_len:       0x05EA\n  in_port:         0x00000001\n  in_phy_port:  "
-      "   0x00000001\n  metadata:        0x0000000000000000\n  reason:         "
+      "total_len:       0x05EA\n  in_port:         0x00000001\n"
+      "  metadata:        0x0000000000000000\n  reason:         "
       " TABLE_MISS\n  table_id:        0x00\n  cookie:          "
       "0x0000000000000000\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x00000001\n    - field:           "
@@ -2156,8 +2175,8 @@ TEST(decoder, packetin_icmp4_frag1) {
       "1415161718191A1B1C1D1E1F202122232425",
       "---\ntype:            PACKET_IN\nxid:             0x00000000\nversion:  "
       "       0x04\nmsg:             \n  buffer_id:       NO_BUFFER\n  "
-      "total_len:       0x05EE\n  in_port:         0x00000001\n  in_phy_port:  "
-      "   0x00000001\n  metadata:        0x0000000000000000\n  reason:         "
+      "total_len:       0x05EE\n  in_port:         0x00000001\n"
+      "  metadata:        0x0000000000000000\n  reason:         "
       " APPLY_ACTION\n  table_id:        0x06\n  cookie:          "
       "0x00000000FFFFFFFF\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x00000001\n  data:            "
@@ -2188,8 +2207,8 @@ TEST(decoder, packetin_icmp4_frag2) {
       "0A0000010A6400FEC0C1C2C3",
       "---\ntype:            PACKET_IN\nxid:             0x00000000\nversion:  "
       "       0x04\nmsg:             \n  buffer_id:       NO_BUFFER\n  "
-      "total_len:       0x002A\n  in_port:         0x00000001\n  in_phy_port:  "
-      "   0x00000001\n  metadata:        0x0000000000000000\n  reason:         "
+      "total_len:       0x002A\n  in_port:         0x00000001\n"
+      "  metadata:        0x0000000000000000\n  reason:         "
       " APPLY_ACTION\n  table_id:        0x06\n  cookie:          "
       "0x00000000FFFFFFFF\n  match:           \n    - field:           "
       "IN_PORT\n      value:           0x00000001\n  data:            "

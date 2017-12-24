@@ -4,7 +4,7 @@
 #ifndef OFP_RPC_RPCENCODER_H_
 #define OFP_RPC_RPCENCODER_H_
 
-#include "ofp/rpc/rpcevents.h"
+#include "ofp/rpc/yrpcevents.h"
 #include "ofp/yaml/yllvm.h"
 
 namespace ofp {

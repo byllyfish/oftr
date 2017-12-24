@@ -1,5 +1,5 @@
---- /Users/bfish/code/llvm/unittests/Support/YAMLParserTest.cpp	2016-10-14 12:38:40.000000000 -0700
-+++ ./unittests/Support/YAMLParserTest.cpp	2016-10-18 11:39:28.000000000 -0700
+--- ../../../llvm_git/llvm/unittests/Support/YAMLParserTest.cpp	2017-12-09 16:02:49.000000000 -0700
++++ ./unittests/Support/YAMLParserTest.cpp	2017-12-21 16:10:21.000000000 -0700
 @@ -16,6 +16,11 @@
  
  namespace llvm {
@@ -12,3 +12,70 @@
  static void SuppressDiagnosticsOutput(const SMDiagnostic &, void *) {
    // Prevent SourceMgr from writing errors to stderr
    // to reduce noise in unit test runs.
+@@ -54,6 +59,11 @@
+   ExpectParseError("Not closing array", "  [x");
+ }
+ 
++TEST(YAMLParser, FailsOnUnexpectedRightBracket) {
++  ExpectParseError("Unexpected token", "]");
++  ExpectParseError("Unexpected token", "  ]");
++}
++
+ TEST(YAMLParser, ParsesEmptyArrayWithWhitespace) {
+   ExpectParseSuccess("Array with spaces", "  [  ]  ");
+   ExpectParseSuccess("All whitespaces", "\t\r\n[\t\n \t\r ]\t\r \n\n");
+@@ -77,6 +87,11 @@
+   ExpectParseError("Missing close after pair", "[{\"a\":\"b\"]");
+ }
+ 
++TEST(YAMLParser, FailsOnUnexpectedRightBrace) {
++  ExpectParseError("Unexpected token", "}");
++  ExpectParseError("Unexpected token", "  }");
++}
++
+ TEST(YAMLParser, FailsIfMissingColon) {
+   ExpectParseError("Missing colon between key and value", "[{\"a\"\"/b\"}]");
+   ExpectParseError("Missing colon between key and value", "[{\"a\" \"b\"}]");
+@@ -85,6 +100,17 @@
+ TEST(YAMLParser, FailsOnMissingQuote) {
+   ExpectParseError("Missing open quote", "[{a\":\"b\"}]");
+   ExpectParseError("Missing closing quote", "[{\"a\":\"b}]");
++
++  //EXPECT_FALSE(llvm::yaml::dumpTokens("a:\n b: \"n\n", llvm::errs()));
++  ExpectParseError("Missing closing quote", "a:\n b: \"n\n");
++
++  //EXPECT_FALSE(llvm::yaml::dumpTokens("a:\n b: n\n \"c: 3\n", llvm::errs()));
++  ExpectParseError("Missing closing quote", "a:\n b: n\n \"c: 3\n");
++}
++
++TEST(YAMLParser, FailsOnUnexpectedComma) {
++  ExpectParseError("Unexpected token", ",");
++  ExpectParseError("Unexpected token", "  ,");
+ }
+ 
+ TEST(YAMLParser, ParsesEscapedQuotes) {
+@@ -125,6 +151,24 @@
+       " \t \n\n \r \"b\"\t \n\n \r } \t \n\n \r]\t \n\n \r");
+ }
+ 
++TEST(YAMLParser, ParsesExactlyOneTag) {
++  ExpectParseSuccess("Exactly one tag", "!opt test");
++}
++
++TEST(YAMLParser, FailsIfMultipleTags) {
++  ExpectParseError("Fails", "!opt !opt");
++  ExpectParseError("Fails", "!opt !opt test");
++}
++
++TEST(YAMLParser, ParsesExactlyOneAnchor) {
++  ExpectParseSuccess("Exactly one anchor", "&opt test");
++}
++
++TEST(YAMLParser, FailsIfMultipleAnchors) {
++  ExpectParseError("Fails", "&opt &opt");
++  ExpectParseError("Fails", "&opt &opt test");
++}
++
+ TEST(YAMLParser, ParsesArrayOfArrays) {
+   ExpectParseSuccess("Array of arrays", "[[]]");
+ }

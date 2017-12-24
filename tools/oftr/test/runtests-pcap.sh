@@ -24,7 +24,7 @@ function verify_sha1 {
 
 CURRENT_SOURCE_DIR=`dirname "$0"`
 CURRENT_TEST_DIR=`pwd`
-MSG_DIR="$CURRENT_TEST_DIR/oftr.msgs"
+MSG_DIR="$CURRENT_TEST_DIR/oftr$$.msgs"
 
 echo "Working Directory: $CURRENT_TEST_DIR"
 
@@ -75,6 +75,8 @@ verify_sha1 "$MSG_DIR/_tcp-17-172.16.133.78:58899-184.96.221.120:64510" "c08dc3d
 verify_sha1 "$MSG_DIR/_tcp-17-184.96.221.120:64510-172.16.133.78:58899" "f18d85da70cf6c082640988b4c58baceabcfb8d6"
 verify_sha1 "$MSG_DIR/_tcp-18-172.16.133.84:58899-172.16.139.250:5440" "ec6139bad6d010c782e2dc07e889fc45b75f8132"
 
+/bin/rm -rf "$MSG_DIR"
+
 # Check illegal argument combinations to make sure they are rejected.
 
 # You cannot combine the --pcap-device option with any input arguments.
@@ -87,26 +89,34 @@ echo "Run oftr decode combinging --pcap-device option with file arguments."
 # Decode OpenFlow messages in `cap_single.pcap`.
 
 echo "Run oftr decode on $CURRENT_SOURCE_DIR/cap_single.pcap"
-$LIBOFP_MEMCHECK $LIBOFP decode --json-array "$CURRENT_SOURCE_DIR/cap_single.pcap" > "$CURRENT_TEST_DIR/cap_single.pcap.out"
-echo "Compare $CURRENT_TEST_DIR/cap_single.pcap.out to $CURRENT_SOURCE_DIR/cap_single.pcap.out"
-diff "$CURRENT_TEST_DIR/cap_single.pcap.out" "$CURRENT_SOURCE_DIR/cap_single.pcap.out"
+cap_single_out="$CURRENT_TEST_DIR/cap_single$$.pcap.out"
+$LIBOFP_MEMCHECK $LIBOFP decode --json-array "$CURRENT_SOURCE_DIR/cap_single.pcap" > "$cap_single_out"
+echo "Compare $cap_single_out to $CURRENT_SOURCE_DIR/cap_single.pcap.out"
+diff "$cap_single_out" "$CURRENT_SOURCE_DIR/cap_single.pcap.out"
+rm "$cap_single_out"
 
 # Decode packets in pcap files (--pcap-convert-packetin)
 
 echo "Run oftr decode --pcap-convert-packetin on $CURRENT_SOURCE_DIR/tcp.pcap $CURRENT_SOURCE_DIR/flow58899.pcap $CURRENT_SOURCE_DIR/cap_single.pcap"
-$LIBOFP_MEMCHECK $LIBOFP decode --json-array --pcap-convert-packetin --pkt-decode $CURRENT_SOURCE_DIR/tcp.pcap $CURRENT_SOURCE_DIR/flow58899.pcap $CURRENT_SOURCE_DIR/cap_single.pcap > "$CURRENT_TEST_DIR/pcap-packetin.out"
-echo "Compare $CURRENT_TEST_DIR/pcap-packetin.out to $CURRENT_SOURCE_DIR/pcap-packetin.out"
-diff "$CURRENT_TEST_DIR/pcap-packetin.out" "$CURRENT_SOURCE_DIR/pcap-packetin.out"
+pcap_packetin_out="$CURRENT_TEST_DIR/pcap-packetin$$.out"
+$LIBOFP_MEMCHECK $LIBOFP decode --json-array --pcap-convert-packetin --pkt-decode $CURRENT_SOURCE_DIR/tcp.pcap $CURRENT_SOURCE_DIR/flow58899.pcap $CURRENT_SOURCE_DIR/cap_single.pcap > "$pcap_packetin_out"
+echo "Compare $pcap_packetin_out to $CURRENT_SOURCE_DIR/pcap-packetin.out"
+diff "$pcap_packetin_out" "$CURRENT_SOURCE_DIR/pcap-packetin.out"
+rm "$pcap_packetin_out"
 
 # Decode OpenFlow message in `cap_single.pcap`; filter to PacketIn/PacketOut containing ARP packets.
 # Also, extract these arp packets to a separate arp.pcap file.
 
 echo "Run oftr decode with --pkt-filter='arp' on $CURRENT_SOURCE_DIR/cap_single.pcap"
-$LIBOFP_MEMCHECK $LIBOFP decode --json-array --msg-include='PACKET_*' --pkt-filter='arp' --pkt-decode --pkt-write-file='arp.pcap' "$CURRENT_SOURCE_DIR/cap_single.pcap" > "$CURRENT_TEST_DIR/cap_single.pcap.filtered"
-echo "Compare $CURRENT_TEST_DIR/cap_single.pcap.filtered to $CURRENT_SOURCE_DIR/cap_single.pcap.filtered"
-diff "$CURRENT_TEST_DIR/cap_single.pcap.filtered" "$CURRENT_SOURCE_DIR/cap_single.pcap.filtered"
-echo "Compare $CURRENT_TEST_DIR/arp.pcap to $CURRENT_SOURCE_DIR/arp.pcap"
-diff "$CURRENT_TEST_DIR/arp.pcap" "$CURRENT_SOURCE_DIR/arp.pcap"
+pcap_filtered_out="$CURRENT_TEST_DIR/cap_single$$.pcap.filtered"
+arp_pcap="arp$$.pcap"
+$LIBOFP_MEMCHECK $LIBOFP decode --json-array --msg-include='PACKET_*' --pkt-filter='arp' --pkt-decode --pkt-write-file="$arp_pcap" "$CURRENT_SOURCE_DIR/cap_single.pcap" > "$pcap_filtered_out"
+echo "Compare $pcap_filtered_out to $CURRENT_SOURCE_DIR/cap_single.pcap.filtered"
+diff "$pcap_filtered_out" "$CURRENT_SOURCE_DIR/cap_single.pcap.filtered"
+rm "$pcap_filtered_out"
+echo "Compare $arp_pcap to $CURRENT_SOURCE_DIR/arp.pcap"
+diff "$arp_pcap" "$CURRENT_SOURCE_DIR/arp.pcap"
+rm "$arp_pcap"
 
 echo "Done."
 exit 0

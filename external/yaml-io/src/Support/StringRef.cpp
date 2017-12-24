@@ -8,8 +8,10 @@
 //===----------------------------------------------------------------------===//
 
 #include "llvm/ADT/StringRef.h"
+#include "llvm/ADT/APFloat.h"
 #include "llvm/ADT/APInt.h"
 #include "llvm/ADT/Hashing.h"
+#include "llvm/ADT/StringExtras.h"
 #include "llvm/ADT/edit_distance.h"
 #include <bitset>
 
@@ -20,28 +22,12 @@ using namespace llvm;
 const size_t StringRef::npos;
 #endif
 
-static char ascii_tolower(char x) {
-  if (x >= 'A' && x <= 'Z')
-    return x - 'A' + 'a';
-  return x;
-}
-
-static char ascii_toupper(char x) {
-  if (x >= 'a' && x <= 'z')
-    return x - 'a' + 'A';
-  return x;
-}
-
-static bool ascii_isdigit(char x) {
-  return x >= '0' && x <= '9';
-}
-
 // strncasecmp() is not available on non-POSIX systems, so define an
 // alternative function here.
 static int ascii_strncasecmp(const char *LHS, const char *RHS, size_t Length) {
   for (size_t I = 0; I < Length; ++I) {
-    unsigned char LHC = ascii_tolower(LHS[I]);
-    unsigned char RHC = ascii_tolower(RHS[I]);
+    unsigned char LHC = toLower(LHS[I]);
+    unsigned char RHC = toLower(RHS[I]);
     if (LHC != RHC)
       return LHC < RHC ? -1 : 1;
   }
@@ -69,17 +55,22 @@ bool StringRef::endswith_lower(StringRef Suffix) const {
       ascii_strncasecmp(end() - Suffix.Length, Suffix.Data, Suffix.Length) == 0;
 }
 
+size_t StringRef::find_lower(char C, size_t From) const {
+  char L = toLower(C);
+  return find_if([L](char D) { return toLower(D) == L; }, From);
+}
+
 /// compare_numeric - Compare strings, handle embedded numbers.
 int StringRef::compare_numeric(StringRef RHS) const {
   for (size_t I = 0, E = std::min(Length, RHS.Length); I != E; ++I) {
     // Check for sequences of digits.
-    if (ascii_isdigit(Data[I]) && ascii_isdigit(RHS.Data[I])) {
+    if (isDigit(Data[I]) && isDigit(RHS.Data[I])) {
       // The longer sequence of numbers is considered larger.
       // This doesn't really handle prefixed zeros well.
       size_t J;
       for (J = I + 1; J != E + 1; ++J) {
-        bool ld = J < Length && ascii_isdigit(Data[J]);
-        bool rd = J < RHS.Length && ascii_isdigit(RHS.Data[J]);
+        bool ld = J < Length && isDigit(Data[J]);
+        bool rd = J < RHS.Length && isDigit(RHS.Data[J]);
         if (ld != rd)
           return rd ? -1 : 1;
         if (!rd)
@@ -117,7 +108,7 @@ unsigned StringRef::edit_distance(llvm::StringRef Other,
 std::string StringRef::lower() const {
   std::string Result(size(), char());
   for (size_type i = 0, e = size(); i != e; ++i) {
-    Result[i] = ascii_tolower(Data[i]);
+    Result[i] = toLower(Data[i]);
   }
   return Result;
 }
@@ -125,7 +116,7 @@ std::string StringRef::lower() const {
 std::string StringRef::upper() const {
   std::string Result(size(), char());
   for (size_type i = 0, e = size(); i != e; ++i) {
-    Result[i] = ascii_toupper(Data[i]);
+    Result[i] = toUpper(Data[i]);
   }
   return Result;
 }
@@ -143,16 +134,20 @@ size_t StringRef::find(StringRef Str, size_t From) const {
   if (From > Length)
     return npos;
 
+  const char *Start = Data + From;
+  size_t Size = Length - From;
+
   const char *Needle = Str.data();
   size_t N = Str.size();
   if (N == 0)
     return From;
-
-  size_t Size = Length - From;
   if (Size < N)
     return npos;
+  if (N == 1) {
+    const char *Ptr = (const char *)::memchr(Start, Needle[0], Size);
+    return Ptr == nullptr ? npos : Ptr - Data;
+  }
 
-  const char *Start = Data + From;
   const char *Stop = Start + (Size - N + 1);
 
   // For short haystacks or unsupported needles fall back to the naive algorithm
@@ -172,13 +167,37 @@ size_t StringRef::find(StringRef Str, size_t From) const {
     BadCharSkip[(uint8_t)Str[i]] = N-1-i;
 
   do {
-    if (std::memcmp(Start, Needle, N) == 0)
-      return Start - Data;
+    uint8_t Last = Start[N - 1];
+    if (LLVM_UNLIKELY(Last == (uint8_t)Needle[N - 1]))
+      if (std::memcmp(Start, Needle, N - 1) == 0)
+        return Start - Data;
 
     // Otherwise skip the appropriate number of bytes.
-    Start += BadCharSkip[(uint8_t)Start[N-1]];
+    Start += BadCharSkip[Last];
   } while (Start < Stop);
 
+  return npos;
+}
+
+size_t StringRef::find_lower(StringRef Str, size_t From) const {
+  StringRef This = substr(From);
+  while (This.size() >= Str.size()) {
+    if (This.startswith_lower(Str))
+      return From;
+    This = This.drop_front();
+    ++From;
+  }
+  return npos;
+}
+
+size_t StringRef::rfind_lower(char C, size_t From) const {
+  From = std::min(From, Length);
+  size_t i = From;
+  while (i != 0) {
+    --i;
+    if (toLower(Data[i]) == toLower(C))
+      return i;
+  }
   return npos;
 }
 
@@ -193,6 +212,18 @@ size_t StringRef::rfind(StringRef Str) const {
   for (size_t i = Length - N + 1, e = 0; i != e;) {
     --i;
     if (substr(i, N).equals(Str))
+      return i;
+  }
+  return npos;
+}
+
+size_t StringRef::rfind_lower(StringRef Str) const {
+  size_t N = Str.size();
+  if (N > Length)
+    return npos;
+  for (size_t i = Length - N + 1, e = 0; i != e;) {
+    --i;
+    if (substr(i, N).equals_lower(Str))
       return i;
   }
   return npos;
@@ -369,7 +400,7 @@ static unsigned GetAutoSenseRadix(StringRef &Str) {
     return 8;
   }
 
-  if (Str[0] == '0' && Str.size() > 1 && ascii_isdigit(Str[1])) {
+  if (Str[0] == '0' && Str.size() > 1 && isDigit(Str[1])) {
     Str = Str.substr(1);
     return 8;
   }
@@ -550,6 +581,18 @@ bool StringRef::getAsInteger(unsigned Radix, APInt &Result) const {
   return false;
 }
 
+bool StringRef::getAsDouble(double &Result, bool AllowInexact) const {
+  APFloat F(0.0);
+  APFloat::opStatus Status =
+      F.convertFromString(*this, APFloat::rmNearestTiesToEven);
+  if (Status != APFloat::opOK) {
+    if (!AllowInexact || Status != APFloat::opInexact)
+      return true;
+  }
+
+  Result = F.convertToDouble();
+  return false;
+}
 
 // Implementation of StringRef hashing.
 hash_code llvm::hash_value(StringRef S) {
