@@ -10,5 +10,5 @@ data = sys.stdin.read()
 msgs = [line for line in data.split('\x00') if line.strip()]
 
 for msg in msgs:
-    hdr = struct.pack('>L', ((len(msg) + 4) << 8) | 0xF5)
+    hdr = struct.pack('>L', (len(msg) << 8) | 0xF5)
     sys.stdout.write(hdr + msg)
