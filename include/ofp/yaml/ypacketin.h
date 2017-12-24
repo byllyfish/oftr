@@ -18,7 +18,7 @@ msg:
   buffer_id: BufferNumber
   total_len: UInt16
   in_port: PortNumber
-  in_phy_port: UInt32
+  in_phy_port: !opt UInt32            # default = in_port
   metadata: UInt64
   reason: PacketInReason
   table_id: TableNumber
@@ -44,7 +44,7 @@ struct MappingTraits<ofp::PacketIn> {
     Hex32 inPhyPort = msg.inPhyPort();
     Hex64 metadata = msg.metadata();
     io.mapRequired("in_port", inPort);
-    io.mapRequired("in_phy_port", inPhyPort);
+    io.mapOptional("in_phy_port", inPhyPort, inPort);
     io.mapRequired("metadata", metadata);
 
     OFPPacketInReason reason = msg.reason();
@@ -76,13 +76,11 @@ struct MappingTraits<ofp::PacketInBuilder> {
     io.mapRequired("buffer_id", bufferId);
     msg.setBufferId(bufferId);
 
-    io.mapRequired("total_len", msg.msg_.totalLen_);
-
     PortNumber inPort;
     UInt32 inPhyPort = 0;
     UInt64 metadata = 0;
     io.mapRequired("in_port", inPort);
-    io.mapRequired("in_phy_port", inPhyPort);
+    io.mapOptional("in_phy_port", inPhyPort, inPort);
     io.mapRequired("metadata", metadata);
     msg.setInPort(inPort);
     msg.setInPhyPort(inPhyPort);
@@ -102,6 +100,10 @@ struct MappingTraits<ofp::PacketInBuilder> {
       io.mapOptional("_pkt_data", pktData);
       ofp::MatchPacketBuilder mp{pktDecode.toRange()};
       mp.build(&msg.enetFrame_, pktData.toRange());
+      // Set total_len from enetFrame if total_len is not present.
+      io.mapOptional("total_len", msg.msg_.totalLen_, msg.enetFrame_.size());
+    } else {
+      io.mapRequired("total_len", msg.msg_.totalLen_);
     }
   }
 };

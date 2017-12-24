@@ -14,43 +14,22 @@
 
 * [ ] Update CMakeLists.txt with new version.
 
-* [ ] Merge develop into master.
+* [ ] Merge develop into master and push.
 
-* [ ] Push master branch.
+* [ ] Merge master into coverity-scan branch and push.
 
-* [ ] Check build results.
+* [ ] Merge master into codecov branch and push.
 
-* [ ] Produce linux release build:
-** [ ] Reboot Linux VM so time is accurate.
-** [ ] Compile fresh linux build. `make`
-** [ ] Run tests. `make test`
-** [ ] Strip the binary. `strip libofp`
-** [ ] Test the binary version. `libofp version`
-** [ ] Create a zip archive.  `zip libofp-version-linux.zip libofp`
-** [ ] Compute sha1 hash.  `openssl sha1 libofp_X.Y_linux.zip`
-** [ ] Download binary to mac.
+* [ ] Run make_deb.sh to build trusty/xenial packages on Launchpad.
 
-* [ ] Attach osx, linux binaries and tag the master branch.
+* [ ] Update homebrew-oftr/oftr.rb with source SHA256 and push.
 
-* [ ] Merge master into coverity_scan branch.
+* [ ] Run "brew install --build-bottle oftr; brew bottle oftr" to build new bottle.
 
+* [ ] Update homebrew-oftr/oftr.rb with bottle's SHA256 and push.
 
-* [ ] Produce launchpad build
+* [ ] Upload oftr bottle to bintray.
 
-  docker run -i -t byllyfish/debuild /bin/bash
-  cd /root
-  git clone --recursive https://github.com/byllyfish/libofp.git
-  mv libofp libofp-0.12.0
-  include GIT-VERSION.cmake
-  # date -R 
-  # update changelog date and ppa version
-tar --exclude '.git*' -vacf libofp_0.9.orig.tar.gz libofp-0.9
-cd libofp
-debuild -S -sa -i
-cd ..
-dput ppa:byllyfish/libofp libofp_0.9-0ppa0_source.changes
+* [ ] Tag release on Github.
 
-
-cd libofp
-debuild -S -sd -i
-cd ..
+* [ ] Check that oftr docker image built on Docker hub.

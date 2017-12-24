@@ -35,16 +35,10 @@ bool FilterActionGenericReply::applyICMPv4(ByteRange enetFrame,
                                            OXMRange oxm) {
   // Verify the ICMPv4 type and code for an echo request.
   UInt8 icmpType = oxm.get<OFB_ICMPV4_TYPE>();
-  if (icmpType != ICMPV4_TYPE_ECHO_REQUEST) {
-    log_warning("FilterActionGenericReply:applyICMPv4: invalid icmp type",
-                icmpType);
-    return false;
-  }
-
   UInt8 icmpCode = oxm.get<OFB_ICMPV4_CODE>();
-  if (icmpCode != ICMPV4_CODE_ECHO) {
-    log_warning("FilterActionGenericReply:applyICMPv4: invalid icmp code",
-                icmpCode);
+
+  if (icmpType != ICMPV4_TYPE_ECHO_REQUEST || icmpCode != ICMPV4_CODE_ECHO) {
+    log_warning("FilterActionGenericReply:applyICMPv4: invalid icmp header");
     return false;
   }
 

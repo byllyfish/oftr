@@ -10,22 +10,28 @@ echo "Working Directory: $CURRENT_TEST_DIR"
 LIBOFP=$CURRENT_TEST_DIR/../oftr
 
 echo "Generate schema-all"
-$LIBOFP_MEMCHECK $LIBOFP help -schema-all > schema-all.yml
+schema_all="schema-all$$.yml"
+$LIBOFP_MEMCHECK $LIBOFP help -schema-all > $schema_all
 
-echo "Compare schema-all.yml to $CURRENT_SOURCE_DIR/schema-all.yml"
-diff "$CURRENT_TEST_DIR/schema-all.yml" "$CURRENT_SOURCE_DIR/schema-all.yml"
+echo "Compare $schema_all to $CURRENT_SOURCE_DIR/schema-all.yml"
+diff "$schema_all" "$CURRENT_SOURCE_DIR/schema-all.yml"
+rm $schema_all
 
 echo "Generate schema-lexicon"
-$LIBOFP_MEMCHECK $LIBOFP help -schema-lexicon > schema-lexicon.txt
+schema_lexicon="schema-lexicon$$.txt"
+$LIBOFP_MEMCHECK $LIBOFP help -schema-lexicon > $schema_lexicon
 
-echo "Compare schema-lexicon.txt to $CURRENT_SOURCE_DIR/schema-lexicon.txt"
-diff "$CURRENT_TEST_DIR/schema-lexicon.txt" "$CURRENT_SOURCE_DIR/schema-lexicon.txt"
+echo "Compare $schema_lexicon to $CURRENT_SOURCE_DIR/schema-lexicon.txt"
+diff "$schema_lexicon" "$CURRENT_SOURCE_DIR/schema-lexicon.txt"
+rm $schema_lexicon
 
 echo "Generate schema-fields"
-$LIBOFP_MEMCHECK $LIBOFP help --field-table > schema-fields.txt
+schema_fields="schema-fields$$.txt"
+$LIBOFP_MEMCHECK $LIBOFP help --field-table > $schema_fields
 
-echo "Compare schema-fields.txt to $CURRENT_SOURCE_DIR/schema-fields.txt"
-diff "$CURRENT_TEST_DIR/schema-fields.txt" "$CURRENT_SOURCE_DIR/schema-fields.txt"
+echo "Compare $schema_fields to $CURRENT_SOURCE_DIR/schema-fields.txt"
+diff "$schema_fields" "$CURRENT_SOURCE_DIR/schema-fields.txt"
+rm $schema_fields
 
 echo "Done."
 exit 0

@@ -259,7 +259,7 @@ Message/PacketIn:
     buffer_id: BufferNumber
     total_len: UInt16
     in_port: PortNumber
-    in_phy_port: UInt32
+    in_phy_port: !opt UInt32            # default = in_port
     metadata: UInt64
     reason: PacketInReason
     table_id: TableNumber

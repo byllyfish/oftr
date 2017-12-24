@@ -2,8 +2,8 @@ sudo: false
 language: cpp
 script:
   - if [ "${COVERITY_SCAN_BRANCH}" == "1" ]; then echo "Don't build on coverity_scan"; exit 0; fi
-  - if [ $TRAVIS_OS_NAME == linux ]; then export CC="gcc-4.8" CXX="g++-4.8"; fi
   - mkdir -p Build && cd Build && cmake .. && ctest -D Experimental
+
 branches:
   except:
     - /^v\d+.*$/  # Skip tagged releases
@@ -25,33 +25,10 @@ addons:
       description: "Build submitted via Travis CI"
     notification_email: william.w.fisher@gmail.com
     # I only want to do a coverity_scan on the linux build
-    build_command_prepend: 'test $TRAVIS_OS_NAME == linux && export CC="gcc-4.8" CXX="g++-4.8" && cov-configure --comptype gcc --compiler gcc-4.8 --template && mkdir -p Build && cd Build && cmake -DLIBOFP_ENABLE_OPENSSL=false .. && make clean'
+    build_command_prepend: 'test $TRAVIS_OS_NAME == linux && cov-configure --comptype gcc --compiler gcc-4.8 --template && mkdir -p Build && cd Build && cmake -DLIBOFP_ENABLE_OPENSSL=false .. && make clean'
     build_command:   make
     branch_pattern: coverity_scan
   apt:
-    sources:
-      - kalakris-cmake
-      - ubuntu-toolchain-r-test
     packages:
-      - cmake
-      - gcc-4.8
-      - g++-4.8
       - valgrind
       - libpcap-dev
-
-before_deploy:
-  - TOOLDIR=${TRAVIS_BUILD_DIR}/Build/tools/oftr
-  - ZIPFILE=oftr-master-${TRAVIS_OS_NAME}.zip
-  - if [ $TRAVIS_OS_NAME == linux ]; then strip --strip-debug ${TOOLDIR}/oftr; fi
-  - openssl dgst -sha256 "${TOOLDIR}/oftr"
-  - pushd ${TOOLDIR}; zip ${ZIPFILE} oftr; popd
-
-deploy:
-  provider: bintray
-  file: ${TRAVIS_BUILD_DIR}/.bintray.json
-  user: byllyfish
-  skip_cleanup: true
-  key:
-    secure: "nyFUM5j49UzG1q9ac+mkI99jABDtOZ8iQof/N9RHJt/3kMkL+S1MAGCS+u9TQQqlmsB9fe4w+KtDRfVouv9Sfapkk8r3JBIL4w1dtm9bFgv1fxVpXbDekiHuO/WGTD+JrmDRKf9yJ6acX411BpL8fLVvGtY2qCjKWEqOhKgS7OEaE7ec/JipZjkXeXW7J040q1DHKxwjJJJgEtjuPjT8G67QhOoFfMuhXq75Ru6f2Nz9Nu5y1AVPyJO0nVPsodHMdXMdL9rskAt47a+w8ckV5Chepvw5+l58HgqE3dUfz+m683kguuUvl6NmSC2qlfzB14KivyMVU2FJNMB4N+rDhlMVLwZYauIqICSPcBNEi7OYqte8VnJwIB7NHXIeY7pBrEFYmlTL1b4vvG/LY4X6+boLTHklywTMKEy6ETHacD2GvCb1B//DCJfSDFcjn2ghGA07hFp4hKuodUO7Xu5OG7c94lCfECYAcQJRvhVwE5TeROFtWFo+eEeXkHXV/i1wqccPbxHfGm6SdgH2tlhx2+hdhxx11fpMBnvZHGZVxt+NOeDwHJcvF8JRrUaVw6QI7KgtJ98dz2M+OoPVkCQhMO97OEXz58LwF2N0j8tjy1HMna7sTp/kSQUsfP4zezsCj7WH6gDv7w3IfOS8hmJoeQVc9K+H5YOoknlcmDFVY1M="
-  on: master
-

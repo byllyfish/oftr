@@ -133,13 +133,15 @@ msg:
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
 
-TEST(yhello, error2) {
+TEST(yhello, test9) {
+  // Empty msg is now permitted by yamlio.
   const char *yaml = R"(
 type: HELLO
 msg:
 )";
 
   Encoder encoder{yaml};
-  EXPECT_TRUE(encoder.error().find("not a mapping") != std::string::npos);
-  EXPECT_HEX("", encoder.data(), encoder.size());
+  EXPECT_EQ("", encoder.error());
+  EXPECT_HEX("0600001000000000000100080000007E", encoder.data(),
+             encoder.size());
 }

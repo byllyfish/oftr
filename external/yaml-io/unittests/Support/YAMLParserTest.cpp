@@ -7,11 +7,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "llvm/Support/YAMLParser.h"
 #include "llvm/ADT/Twine.h"
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/MemoryBuffer.h"
 #include "llvm/Support/SourceMgr.h"
-#include "llvm/Support/YAMLParser.h"
 #include "gtest/gtest.h"
 
 namespace llvm {
@@ -106,6 +106,11 @@ TEST(YAMLParser, FailsOnMissingQuote) {
 
   //EXPECT_FALSE(llvm::yaml::dumpTokens("a:\n b: n\n \"c: 3\n", llvm::errs()));
   ExpectParseError("Missing closing quote", "a:\n b: n\n \"c: 3\n");
+}
+
+TEST(YAMLParser, FailsOnUnexpectedComma) {
+  ExpectParseError("Unexpected token", ",");
+  ExpectParseError("Unexpected token", "  ,");
 }
 
 TEST(YAMLParser, ParsesEscapedQuotes) {
@@ -219,6 +224,7 @@ TEST(YAMLParser, HandlesEndOfFileGracefully) {
 }
 
 TEST(YAMLParser, HandlesNullValuesInKeyValueNodesGracefully) {
+  ExpectParseError("KeyValueNode with null key", "? \"\n:");
   ExpectParseError("KeyValueNode with null value", "test: '");
 }
 

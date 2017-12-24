@@ -25,10 +25,11 @@ done
 
 echo "Decode flowmod msgs to JSON..."
 # First, construct the benchmark file: bench_flowmod.json
-gunzip -c $CURRENT_SOURCE_DIR/bench_flowmod.bin.gz | $LIBOFP decode -j > bench_flowmod.json
+bench_json=bench_flowmod$$.json
+gunzip -c $CURRENT_SOURCE_DIR/bench_flowmod.bin.gz | $LIBOFP decode -j > $bench_json
 
 echo "Benchmark encoding flowmod msgs from JSON to binary"
-time $LIBOFP encode -js bench_flowmod.json
-
+time $LIBOFP encode -js $bench_json
+rm $bench_json
 
 exit 0

@@ -39,9 +39,8 @@ void RpcConnectionStdio::writeEvent(llvm::StringRef msg, bool ofp_message) {
   // TODO(bfish): Make sure the outgoing message doesn't exceed MAX msg size.
 
   if (binaryProtocol_) {
-    // Add header.
-    size_t hdrlen = msgSize + sizeof(Big32);
-    Big32 hdr = UInt32_narrow_cast((hdrlen << 8) | RPC_EVENT_BINARY_TAG);
+    // Add binary header.
+    Big32 hdr = UInt32_narrow_cast((msgSize << 8) | RPC_EVENT_BINARY_TAG);
     outgoing_[outgoingIdx_].add(&hdr, sizeof(hdr));
   }
 
@@ -129,14 +128,14 @@ void RpcConnectionStdio::asyncReadHeader() {
               UInt8 tag = tagLen & 0x00FFu;
               UInt32 len = (tagLen >> 8);
 
-              if (tag != RPC_EVENT_BINARY_TAG || len < 4) {
+              if (tag != RPC_EVENT_BINARY_TAG) {
                 log_error("RPC invalid header:", UInt32_cast(tag));
                 rpcRequestInvalid("RPC invalid header");
               } else if (len > RPC_MAX_MESSAGE_SIZE) {
                 log_error("RPC request is too big:", len);
                 rpcRequestInvalid("RPC request is too big");
               } else {
-                asyncReadMessage(len - 4);
+                asyncReadMessage(len);
               }
 
             } else {

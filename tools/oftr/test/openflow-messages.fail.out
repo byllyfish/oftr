@@ -15825,7 +15825,6 @@ msg:
   buffer_id:       0x0E1D7AF1
   total_len:       0x0000
   in_port:         0x00000000
-  in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          ACTION_SET
   table_id:        0x01
@@ -16343,7 +16342,6 @@ msg:
   buffer_id:       0x0E1D7AF1
   total_len:       0x0001
   in_port:         0x00000000
-  in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          TABLE_MISS
   table_id:        0x01
@@ -16370,7 +16368,6 @@ msg:
   buffer_id:       0x24ACC76E
   total_len:       0x0008
   in_port:         0x00000003
-  in_phy_port:     0x00000003
   metadata:        0x0000000000000000
   reason:          APPLY_ACTION
   table_id:        0x01
@@ -16389,7 +16386,6 @@ msg:
   buffer_id:       0x73CBE867
   total_len:       0x0000
   in_port:         0x00000000
-  in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          TABLE_MISS
   table_id:        0x01
@@ -18120,7 +18116,6 @@ msg:
   buffer_id:       0x62DA3957
   total_len:       0x0064
   in_port:         0x00000000
-  in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          ACTION_SET
   table_id:        0xBF
@@ -21551,7 +21546,6 @@ msg:
   buffer_id:       0x62DA3957
   total_len:       0x0064
   in_port:         0x00000000
-  in_phy_port:     0x00000000
   metadata:        0x0000000000000000
   reason:          ACTION_SET
   table_id:        0xBF

@@ -33,7 +33,7 @@ static const SubprogramEntry programs[] = {
     {"help", ofpx::Run<ofpx::Help>}};
 
 static void print_usage(llvm::raw_ostream &out);
-static void print_version();
+static void print_version(llvm::raw_ostream &out);
 
 int main(int argc, const char *const *argv) {
   if (argc < 2) {
@@ -49,7 +49,7 @@ int main(int argc, const char *const *argv) {
 
   if (name == "version" || name == "-v" || name == "-version" ||
       name == "--version") {
-    print_version();
+    print_version(llvm::outs());
     return 0;
   }
 
@@ -76,14 +76,12 @@ void print_usage(llvm::raw_ostream &out) {
   out << '\n';
 }
 
-void print_version() {
-  raw_ostream &os = llvm::outs();
-
+void print_version(llvm::raw_ostream &out) {
   std::string libofpCommit{LIBOFP_GIT_COMMIT_LIBOFP};
-  os << "oftr " << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7)
-     << ")";
+  out << "oftr " << LIBOFP_VERSION_STRING << " (" << libofpCommit.substr(0, 7)
+      << ")";
 
-  os << "  <" << LIBOFP_GITHUB_URL << ">\n";
+  out << "  <" << LIBOFP_GITHUB_URL << ">\n";
 
   const char *bits = "? bit";
   if (sizeof(void *) == 8) {
@@ -93,15 +91,15 @@ void print_version() {
   }
 
 #ifndef __OPTIMIZE__
-  os << "  DEBUG ";
+  out << "  DEBUG ";
 #else
-  os << "  Optimized ";
+  out << "  Optimized ";
 #endif
-  os << bits << " build";
+  out << bits << " build";
 #ifndef NDEBUG
-  os << " with assertions";
+  out << " with assertions";
 #endif
-  os << " (" << LIBOFP_COMPILER_SPEC << ")\n";
+  out << " (" << LIBOFP_COMPILER_SPEC << ")\n";
 
 #if LIBOFP_ENABLE_JSONRPC
   unsigned asioMajor = ASIO_VERSION / 100000;
@@ -109,8 +107,8 @@ void print_version() {
   unsigned asioPatch = ASIO_VERSION % 100;
   std::string asioCommit{LIBOFP_GIT_COMMIT_ASIO};
 
-  os << "  ASIO " << asioMajor << '.' << asioMinor << '.' << asioPatch << " ("
-     << asioCommit.substr(0, 7) << ")\n";
+  out << "  ASIO " << asioMajor << '.' << asioMinor << '.' << asioPatch << " ("
+      << asioCommit.substr(0, 7) << ")\n";
 #endif  // LIBOFP_ENABLE_JSONRPC
 
 #if LIBOFP_ENABLE_OPENSSL
@@ -119,12 +117,12 @@ void print_version() {
   unsigned sslPatch = (OPENSSL_VERSION_NUMBER >> 12) & 0xFF;
   std::string sslCommit{LIBOFP_GIT_COMMIT_BORINGSSL};
 
-  os << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch << " ("
-     << sslCommit.substr(0, 7) << ")\n";
+  out << "  BoringSSL " << sslMajor << '.' << sslMinor << '.' << sslPatch
+      << " (" << sslCommit.substr(0, 7) << ")\n";
 #endif  // LIBOFP_ENABLE_OPENSSL
 
 #if HAVE_LIBPCAP
   // Print libpcap version.
-  os << "  Using: " << pcap_lib_version() << '\n';
+  out << "  Using: " << pcap_lib_version() << '\n';
 #endif  // HAVE_LIBPCAP
 }

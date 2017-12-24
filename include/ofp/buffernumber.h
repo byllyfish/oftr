@@ -12,10 +12,10 @@ enum OFPBufferNo : UInt32;
 
 class BufferNumber {
  public:
-  constexpr BufferNumber(UInt32 id = 0) : buffer_{id} {}
+  constexpr /* implicit NOLINT */ BufferNumber(UInt32 id = 0) : buffer_{id} {}
 
   // This is a convenience constructor (for efficiency).
-  constexpr BufferNumber(Big32 id) : buffer_{id} {}
+  constexpr /* implicit NOLINT */ BufferNumber(Big32 id) : buffer_{id} {}
 
   constexpr operator OFPBufferNo() const {
     return static_cast<OFPBufferNo>(value());
@@ -24,9 +24,11 @@ class BufferNumber {
   bool operator==(const BufferNumber &rhs) const {
     return buffer_ == rhs.buffer_;
   }
+
   bool operator==(OFPBufferNo rhs) const {
     return buffer_ == static_cast<UInt32>(rhs);
   }
+
   bool operator!=(const BufferNumber &rhs) const { return !(*this == rhs); }
 
  private:

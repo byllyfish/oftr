@@ -30,7 +30,7 @@
 #    cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true ..
 #
 
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 3.0.0)
 project(Libofp)
 
 # Log version of cmake
@@ -43,7 +43,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.40.0)
+set(Libofp_VERSION 0.41.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -442,6 +442,8 @@ endif()
 
 if(LIBOFP_ENABLE_CODE_COVERAGE)
   set(LIBOFP_COVERAGE "-fprofile-arcs -ftest-coverage")
+  # But, disable ctest coverage support. Coverage will run separately.
+  set(COVERAGE_COMMAND "")
 else()
   set(LIBOFP_COVERAGE "")
 endif()
