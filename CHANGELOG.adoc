@@ -10,6 +10,7 @@
 - Change minimum cmake version to 3.0.0.
 - Update yamlio from recent llvm source (svn 320310).
 - Clean up travis-ci file.
+- Binary protocol header length does not include header itself.
 
 == Version 0.40 (4 December 2017)
 
