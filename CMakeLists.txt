@@ -30,7 +30,14 @@
 #    cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true ..
 #
 
-cmake_minimum_required(VERSION 3.0.0)
+# N.B. Trusty supports cmake 2.8.12 (unless you use cmake3 pkg).
+cmake_minimum_required(VERSION 2.8.11)
+
+# Required for boringssl. (See external/boringssl/CMakeLists.txt)
+if(POLICY CMP0025)
+  cmake_policy(SET CMP0025 NEW)
+endif()
+
 project(Libofp)
 
 # Log version of cmake
