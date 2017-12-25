@@ -1,5 +1,9 @@
 = Changelog
 
+== Version 0.42 (24 December 2017)
+
+- Change minimum cmake version back to 2.8.11.
+
 == Version 0.41 (23 December 2017)
 
 - Fix several YAML parser issues discovered by fuzzing.
@@ -11,6 +15,7 @@
 - Update yamlio from recent llvm source (svn 320310).
 - Clean up travis-ci file.
 - Binary protocol header length does not include header itself.
+- Update boringssl and googletest modules.
 
 == Version 0.40 (4 December 2017)
 
