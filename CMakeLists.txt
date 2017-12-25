@@ -30,7 +30,14 @@
 #    cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true ..
 #
 
-cmake_minimum_required(VERSION 3.0.0)
+# N.B. Trusty supports cmake 2.8.12 (unless you use cmake3 pkg).
+cmake_minimum_required(VERSION 2.8.11)
+
+# Required for boringssl. (See external/boringssl/CMakeLists.txt)
+if(POLICY CMP0025)
+  cmake_policy(SET CMP0025 NEW)
+endif()
+
 project(Libofp)
 
 # Log version of cmake
@@ -43,7 +50,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.41.0)
+set(Libofp_VERSION 0.42.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
