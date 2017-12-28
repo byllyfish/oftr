@@ -12,10 +12,10 @@ enum OFPGroupNo : UInt32;
 
 class GroupNumber {
  public:
-  constexpr GroupNumber(UInt32 group = 0) : group_{group} {}
+  /* implicit NOLINT */ constexpr GroupNumber(UInt32 group = 0) : group_{group} {}
 
   // This is a convenience constructor (for efficiency).
-  constexpr GroupNumber(Big32 group) : group_{group} {}
+  /* implicit NOLINT */ constexpr GroupNumber(Big32 group) : group_{group} {}
 
   constexpr operator OFPGroupNo() const {
     return static_cast<OFPGroupNo>(value());

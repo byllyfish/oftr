@@ -52,7 +52,7 @@ class AT_OUTPUT {
  public:
   constexpr static ActionType type() { return ActionType(OFPAT_OUTPUT, 16); }
 
-  constexpr AT_OUTPUT(PortNumber port, ControllerMaxLen maxlen = 0)
+  constexpr explicit AT_OUTPUT(PortNumber port, ControllerMaxLen maxlen = 0)
       : port_{port}, maxlen_{maxlen} {}
 
   constexpr PortNumber port() const { return port_; }
@@ -74,7 +74,7 @@ class AT_OUTPUT_V1 {
  public:
   constexpr static ActionType type() { return ActionType(OFPAT_OUTPUT, 8); }
 
-  constexpr AT_OUTPUT_V1(const AT_OUTPUT *output)
+  constexpr explicit AT_OUTPUT_V1(const AT_OUTPUT *output)
       : port_{UInt16_narrow_cast(output->port())}, maxlen_{output->maxlen()} {}
 
   constexpr UInt16 port() const { return port_; }
@@ -280,7 +280,7 @@ class AT_SET_FIELD {
     return ActionType(OFPAT_SET_FIELD, 8 + sizeof(Padded<ValueType>));
   }
 
-  constexpr AT_SET_FIELD(const ValueType &value) : value_{value} {}
+  constexpr explicit AT_SET_FIELD(const ValueType &value) : value_{value} {}
 
   ValueType value() const { return value_; }
 
@@ -351,7 +351,7 @@ class AT_SET_FIELD_V {
                       PadLength(4 + sizeof(ValueType)));
   }
 
-  constexpr AT_SET_FIELD_V(const AT_SET_FIELD<ValueType> *action)
+  constexpr explicit AT_SET_FIELD_V(const AT_SET_FIELD<ValueType> *action)
       : value_{action->value()} {}
 
  private:
@@ -368,7 +368,7 @@ class AT_SET_FIELD_V_NPAD {
                       PadLength(4 + sizeof(ValueType)));
   }
 
-  constexpr AT_SET_FIELD_V_NPAD(const AT_SET_FIELD<ValueType> *action)
+  constexpr explicit AT_SET_FIELD_V_NPAD(const AT_SET_FIELD<ValueType> *action)
       : value_{action->value()} {}
 
  private:

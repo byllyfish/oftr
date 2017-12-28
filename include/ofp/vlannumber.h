@@ -11,7 +11,7 @@ namespace ofp {
 class VlanNumber {
  public:
   constexpr VlanNumber() = default;
-  constexpr VlanNumber(UInt16 vlan) : vlan_{vlan} {}
+  /* implicit NOLINT */ constexpr VlanNumber(UInt16 vlan) : vlan_{vlan} {}
 
   constexpr UInt16 value() const { return vlan_; }
 

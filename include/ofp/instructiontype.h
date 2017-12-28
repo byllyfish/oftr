@@ -13,7 +13,7 @@ struct InstructionTypeInfo;
 
 class InstructionType {
  public:
-  constexpr InstructionType(OFPInstructionType type = OFPIT_GOTO_TABLE)
+  /* implicit NOLINT */ constexpr InstructionType(OFPInstructionType type = OFPIT_GOTO_TABLE)
       : type_{type} {}
 
   constexpr OFPInstructionType enumType() const { return type_; }

@@ -90,7 +90,7 @@ class BigEndianAligned {
   using NativeType = Type;
 
   constexpr BigEndianAligned() : n_{static_cast<Type>(0)} {}
-  constexpr BigEndianAligned(Type n, bool bigEndian = false)
+  /* implicit NOLINT */ constexpr BigEndianAligned(Type n, bool bigEndian = false)
       : n_{bigEndian ? n : HostSwapByteOrder(n)} {}
   constexpr BigEndianAligned(const BigEndianAligned &n) = default;
 
@@ -158,7 +158,7 @@ class Big24 {
   using NativeType = UInt32;
 
   constexpr Big24() : n_{0, 0, 0} {}
-  constexpr Big24(UInt32 n)
+  /* implicit NOLINT */ constexpr Big24(UInt32 n)
       : n_{UInt8_narrow_cast((n >> 16) & 0xFF),
            UInt8_narrow_cast((n >> 8) & 0xFF), UInt8_narrow_cast(n & 0xFF)} {}
 

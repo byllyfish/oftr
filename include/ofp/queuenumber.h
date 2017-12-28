@@ -12,10 +12,10 @@ enum OFPQueueNo : UInt32;
 
 class QueueNumber {
  public:
-  constexpr QueueNumber(UInt32 queue = 0) : queue_{queue} {}
+  /* implicit NOLINT */ constexpr QueueNumber(UInt32 queue = 0) : queue_{queue} {}
 
   // This is a convenience constructor (for efficiency).
-  constexpr QueueNumber(Big32 queue) : queue_{queue} {}
+  /* implicit NOLINT */ constexpr QueueNumber(Big32 queue) : queue_{queue} {}
 
   constexpr operator OFPQueueNo() const {
     return static_cast<OFPQueueNo>(value());

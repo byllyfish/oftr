@@ -10,7 +10,7 @@ namespace ofp {
 
 class DurationSec {
  public:
-  constexpr DurationSec(UInt32 sec = 0, UInt32 nsec = 0)
+  /* implicit NOLINT */ constexpr DurationSec(UInt32 sec = 0, UInt32 nsec = 0)
       : sec_{sec}, nsec_{nsec} {}
 
   UInt32 seconds() const { return sec_; }

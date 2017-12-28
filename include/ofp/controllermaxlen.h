@@ -13,10 +13,10 @@ enum OFPControllerMaxLen : UInt16;
 class ControllerMaxLen {
  public:
   constexpr ControllerMaxLen() = default;
-  constexpr ControllerMaxLen(UInt16 maxlen) : maxlen_{maxlen} {}
+  /* implicit NOLINT */ constexpr ControllerMaxLen(UInt16 maxlen) : maxlen_{maxlen} {}
 
   // This is a convenience constructor (for efficiency).
-  constexpr ControllerMaxLen(Big16 maxlen) : maxlen_{maxlen} {}
+  /* implicit NOLINT */ constexpr ControllerMaxLen(Big16 maxlen) : maxlen_{maxlen} {}
 
   constexpr operator OFPControllerMaxLen() const {
     return static_cast<OFPControllerMaxLen>(value());
