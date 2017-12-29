@@ -12,7 +12,8 @@ enum OFPGroupNo : UInt32;
 
 class GroupNumber {
  public:
-  /* implicit NOLINT */ constexpr GroupNumber(UInt32 group = 0) : group_{group} {}
+  /* implicit NOLINT */ constexpr GroupNumber(UInt32 group = 0)
+      : group_{group} {}
 
   // This is a convenience constructor (for efficiency).
   /* implicit NOLINT */ constexpr GroupNumber(Big32 group) : group_{group} {}

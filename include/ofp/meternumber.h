@@ -12,7 +12,8 @@ enum OFPMeterNo : UInt32;
 
 class MeterNumber {
  public:
-  /* implicit NOLINT */ constexpr MeterNumber(UInt32 meter = 0) : meter_{meter} {}
+  /* implicit NOLINT */ constexpr MeterNumber(UInt32 meter = 0)
+      : meter_{meter} {}
 
   // This is a convenience constructor (for efficiency).
   /* implicit NOLINT */ constexpr MeterNumber(Big32 meter) : meter_{meter} {}

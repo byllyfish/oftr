@@ -12,7 +12,8 @@ enum OFPQueueNo : UInt32;
 
 class QueueNumber {
  public:
-  /* implicit NOLINT */ constexpr QueueNumber(UInt32 queue = 0) : queue_{queue} {}
+  /* implicit NOLINT */ constexpr QueueNumber(UInt32 queue = 0)
+      : queue_{queue} {}
 
   // This is a convenience constructor (for efficiency).
   /* implicit NOLINT */ constexpr QueueNumber(Big32 queue) : queue_{queue} {}
