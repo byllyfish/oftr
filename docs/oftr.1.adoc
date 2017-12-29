@@ -180,11 +180,6 @@ also represents stdin.
 *--json-array*::
     Write output as a valid JSON array.
 
-*--json-flavor*='FLAVOR'::
-    Specifies the flavor of JSON output. The default is 'default'.
-    - *default* = Regular JSON output.
-    - *mongodb* = MongoDB JSON with binary data.
-
 *-k, --keep-going*::
     Continue processing messages after errors.
 

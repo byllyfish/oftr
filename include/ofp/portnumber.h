@@ -12,10 +12,10 @@ enum OFPPortNo : UInt32;
 
 class PortNumber {
  public:
-  constexpr PortNumber(UInt32 port = 0) : port_{port} {}
+  /* implicit NOLINT */ constexpr PortNumber(UInt32 port = 0) : port_{port} {}
 
   // This is a convenience constructor (for efficiency).
-  constexpr PortNumber(Big32 port) : port_{port} {}
+  /* implicit NOLINT */ constexpr PortNumber(Big32 port) : port_{port} {}
 
   constexpr operator OFPPortNo() const {
     return static_cast<OFPPortNo>(value());

@@ -13,10 +13,10 @@ enum OFPTableNo : UInt8;
 class TableNumber {
  public:
   constexpr TableNumber() = default;
-  constexpr TableNumber(UInt8 table) : table_{table} {}
+  /* implicit NOLINT */ constexpr TableNumber(UInt8 table) : table_{table} {}
 
   // This is a convenience constructor (for efficiency).
-  constexpr TableNumber(Big8 table) : table_{table} {}
+  /* implicit NOLINT */ constexpr TableNumber(Big8 table) : table_{table} {}
 
   constexpr operator OFPTableNo() const {
     return static_cast<OFPTableNo>(value());

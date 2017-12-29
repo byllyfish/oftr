@@ -12,10 +12,11 @@ enum OFPMeterNo : UInt32;
 
 class MeterNumber {
  public:
-  constexpr MeterNumber(UInt32 meter = 0) : meter_{meter} {}
+  /* implicit NOLINT */ constexpr MeterNumber(UInt32 meter = 0)
+      : meter_{meter} {}
 
   // This is a convenience constructor (for efficiency).
-  constexpr MeterNumber(Big32 meter) : meter_{meter} {}
+  /* implicit NOLINT */ constexpr MeterNumber(Big32 meter) : meter_{meter} {}
 
   constexpr operator OFPMeterNo() const {
     return static_cast<OFPMeterNo>(value());

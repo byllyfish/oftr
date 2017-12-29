@@ -1,5 +1,11 @@
 = Changelog
 
+== Version 0.43 (29 December 2017)
+
+- Update asio release. (This fixes a double-free memory bug.)
+- Remove legacy --use-findx command line option to oftr-decode.
+- Remove --json-flavor command line option.
+
 == Version 0.42 (24 December 2017)
 
 - Change minimum cmake version back to 2.8.11.
