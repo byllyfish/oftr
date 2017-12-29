@@ -33,13 +33,11 @@ namespace ofpx {
 //
 //   --json (-j)           Write compact JSON output instead of YAML.
 //   --json-array          Write output as a valid JSON array.
-//   --json-flavor=default|mongodb Flavor of JSON output
 //   --silent (-s)         Quiet mode; suppress normal output.
 //   --silent-error        Suppress error output for invalid messages.
 //   --invert-check (-v)   Expect invalid messages only.
 //   --keep-going (-k)     Continue processing messages after errors.
 //   --verify-output (-V)  Verify output by translating it back to binary.
-//   --use-findx           Use metadata from tcpflow '.findx' files.
 //   --pkt-decode          Include _pkt in PacketIn/PacketOut decodes.
 //   --pkt-filter=<filter> Filter packets inside PacketIn/PacketOut messages.
 //   --pkt-write-file=<file> Write data from PacketIn/PacketOut messages to
@@ -114,7 +112,6 @@ class Decode : public Subprogram {
   ExitStatus decodeFiles();
   ExitStatus decodeFile(const std::string &filename);
   ExitStatus decodeMessages(std::istream &input);
-  ExitStatus decodeMessagesWithIndex(std::istream &input, std::istream &index);
   ExitStatus decodePcapDevice(const std::string &device);
   ExitStatus decodePcapFiles();
   ExitStatus checkError(std::istream &input, std::streamsize readLen,
@@ -132,7 +129,6 @@ class Decode : public Subprogram {
                              ofp::Timestamp *timestamp, size_t *length);
 
   void setCurrentFilename(const std::string &filename);
-  bool parseFilename(const std::string &filename, ofp::MessageInfo *info);
   ofp::UInt64 lookupSessionId(const ofp::IPv6Endpoint &src,
                               const ofp::IPv6Endpoint &dst);
 
@@ -145,7 +141,6 @@ class Decode : public Subprogram {
   void fuzzStressTest(const ofp::Message *originalMessage);
 
   enum PcapFormat { kPcapFormatAuto, kPcapFormatYes, kPcapFormatNo };
-  enum JsonFlavor { kJsonFlavorDefault, kJsonFlavorMongoDB };
   enum TimestampFormat { kTimestampUnset, kTimestampNone, kTimestampSecs };
 
   // --- Command-line Arguments (Order is important here.) ---
@@ -153,11 +148,6 @@ class Decode : public Subprogram {
                       cl::desc("Write compact JSON output instead of YAML")};
   cl::opt<bool> jsonArray_{"json-array",
                            cl::desc("Write output as a valid JSON array")};
-  cl::opt<JsonFlavor> jsonFlavor_{
-      "json-flavor", cl::desc("Flavor of JSON output"),
-      cl::values(clEnumValN(kJsonFlavorDefault, "default", "JSON (default)"),
-                 clEnumValN(kJsonFlavorMongoDB, "mongodb", "MongoDB JSON")),
-      cl::init(kJsonFlavorDefault)};
   cl::opt<bool> silent_{"silent",
                         cl::desc("Quiet mode; suppress normal output")};
   cl::opt<bool> silentError_{
@@ -172,9 +162,6 @@ class Decode : public Subprogram {
   cl::opt<bool> fuzzStressTest_{
       "fuzz-stress-test",
       cl::desc("Stress test the decoder by fuzzing the input"), cl::Hidden};
-  cl::opt<bool> useFindx_{"use-findx",
-                          cl::desc("Use metadata from tcpflow '.findx' files"),
-                          cl::Hidden};
   cl::opt<bool> pktDecode_{
       "pkt-decode", cl::desc("Include _pkt in PacketIn/PacketOut decodes")};
   cl::opt<std::string> pktWriteFile_{

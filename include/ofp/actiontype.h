@@ -36,7 +36,7 @@ class ActionType {
   constexpr UInt32 nativeType() const { return BigEndianToNative(value32_); }
 
   constexpr ActionType zeroLength() const {
-    return BigEndianFromNative(nativeType() & 0xffff0000U);
+    return ActionType(BigEndianFromNative(nativeType() & 0xffff0000U));
   }
 
   const ActionTypeInfo *lookupInfo() const;
@@ -50,7 +50,7 @@ class ActionType {
  private:
   UInt32 value32_;
 
-  constexpr ActionType(UInt32 value) : value32_{value} {}
+  constexpr explicit ActionType(UInt32 value) : value32_{value} {}
 
   constexpr static UInt32 make(UInt16 type, UInt16 length) {
     return BigEndianFromNative(UInt32_cast(type << 16) | length);

@@ -8,14 +8,6 @@
 
 #include "ofp/bytelist.h"
 
-namespace ofp {
-
-// Set once at program startup to output MongoDB JSON syntax, e.g.:
-//     Binary data: `{"$binary":"<base64>","$type":"00"}`
-extern bool GLOBAL_ARG_MongoDBCompatible;
-
-}  // namespace ofp
-
 namespace llvm {
 namespace yaml {
 

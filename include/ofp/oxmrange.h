@@ -13,7 +13,7 @@ class OXMRange {
  public:
   constexpr OXMRange() : begin_{nullptr}, end_{nullptr} {}
 
-  constexpr OXMRange(const ByteRange &range)
+  /* implicit NOLINT */ constexpr OXMRange(const ByteRange &range)
       : begin_{range.begin()}, end_{range.end()} {}
 
   constexpr OXMRange(OXMIterator begin, OXMIterator end)

@@ -15,7 +15,7 @@ echo "TRAVIS_OS_NAME:    ${TRAVIS_OS_NAME}"       # "linux" or "osx"
 mkdir -p Build
 cd Build
 cmake ..
-MAKEFLAGS=-j4 ctest -j4 -D Experimental
+MAKEFLAGS=-j4 ctest -j4 --output-on-failure -D Experimental
 cd ..
 
 # Test code coverage with debug build (linux only).
