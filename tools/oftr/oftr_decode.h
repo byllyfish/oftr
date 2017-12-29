@@ -39,7 +39,6 @@ namespace ofpx {
 //   --invert-check (-v)   Expect invalid messages only.
 //   --keep-going (-k)     Continue processing messages after errors.
 //   --verify-output (-V)  Verify output by translating it back to binary.
-//   --use-findx           Use metadata from tcpflow '.findx' files.
 //   --pkt-decode          Include _pkt in PacketIn/PacketOut decodes.
 //   --pkt-filter=<filter> Filter packets inside PacketIn/PacketOut messages.
 //   --pkt-write-file=<file> Write data from PacketIn/PacketOut messages to
@@ -114,7 +113,6 @@ class Decode : public Subprogram {
   ExitStatus decodeFiles();
   ExitStatus decodeFile(const std::string &filename);
   ExitStatus decodeMessages(std::istream &input);
-  ExitStatus decodeMessagesWithIndex(std::istream &input, std::istream &index);
   ExitStatus decodePcapDevice(const std::string &device);
   ExitStatus decodePcapFiles();
   ExitStatus checkError(std::istream &input, std::streamsize readLen,
@@ -132,7 +130,6 @@ class Decode : public Subprogram {
                              ofp::Timestamp *timestamp, size_t *length);
 
   void setCurrentFilename(const std::string &filename);
-  bool parseFilename(const std::string &filename, ofp::MessageInfo *info);
   ofp::UInt64 lookupSessionId(const ofp::IPv6Endpoint &src,
                               const ofp::IPv6Endpoint &dst);
 
@@ -172,9 +169,6 @@ class Decode : public Subprogram {
   cl::opt<bool> fuzzStressTest_{
       "fuzz-stress-test",
       cl::desc("Stress test the decoder by fuzzing the input"), cl::Hidden};
-  cl::opt<bool> useFindx_{"use-findx",
-                          cl::desc("Use metadata from tcpflow '.findx' files"),
-                          cl::Hidden};
   cl::opt<bool> pktDecode_{
       "pkt-decode", cl::desc("Include _pkt in PacketIn/PacketOut decodes")};
   cl::opt<std::string> pktWriteFile_{

@@ -132,14 +132,7 @@ bool Decode::validateCommandLineArguments() {
 ExitStatus Decode::decodeFiles() {
   const std::vector<std::string> &files = inputFiles_;
 
-  for (std::string filename : files) {
-    // If filename ends in .findx when using --use-findx, strip the extension
-    // from filename. N.B. `filename` is an independent copy.
-    llvm::StringRef fname{filename};
-    if (useFindx_ && fname.endswith(".findx")) {
-      filename = fname.drop_back(6);
-    }
-
+  for (const std::string &filename : files) {
     ExitStatus result = decodeFile(filename);
     if (result != ExitStatus::Success && !keepGoing_) {
       return result;
@@ -171,29 +164,8 @@ ExitStatus Decode::decodeFile(const std::string &filename) {
     return ExitStatus::FileOpenFailed;
   }
 
-  ExitStatus result;
-
-  if (useFindx_) {
-    // There is no .findx file for stdin.
-    if (filename == "-") {
-      llvm::errs() << "Error: stdin has no index file";
-      return ExitStatus::FileOpenFailed;
-    }
-
-    std::ifstream index(filename + ".findx");
-    if (!index) {
-      llvm::errs() << "Error: opening index file " << filename << ".findx\n";
-      return ExitStatus::FileOpenFailed;
-    }
-
-    setCurrentFilename(filename);
-    result = decodeMessagesWithIndex(*input, index);
-
-  } else {
-    // Decode messages from file normally -- no index file.
-    setCurrentFilename(filename);
-    result = decodeMessages(*input);
-  }
+  setCurrentFilename(filename);
+  ExitStatus result = decodeMessages(*input);
 
   setCurrentFilename("");
 
@@ -250,135 +222,6 @@ ExitStatus Decode::decodeMessages(std::istream &input) {
     if (result != ExitStatus::Success && !keepGoing_) {
       return result;
     }
-  }
-
-  return ExitStatus::Success;
-}
-
-ExitStatus Decode::decodeMessagesWithIndex(std::istream &input,
-                                           std::istream &index) {
-  // Create message buffers.
-  ofp::Message message{nullptr};
-  ofp::Message originalMessage{nullptr};
-  ofp::Message buffer{nullptr};
-
-  message.setInfo(&sessionInfo_);
-
-  size_t expectedPos = 0;
-  size_t previousPos = 0;
-  ofp::Timestamp lastTimestamp;
-
-  buffer.shrink(0);
-  assert(buffer.size() == 0);
-
-  // Read lines from index file.
-  for (std::string line; std::getline(index, line);) {
-    ofp::Timestamp timestamp;
-    size_t pos;
-    size_t length;
-
-    // Parse line to obtain position, timestamp and length.
-    if (!parseIndexLine(line, &pos, &timestamp, &length)) {
-      llvm::errs() << "Error in parsing index: " << line
-                   << " file=" << currentFilename_ << '\n';
-      return ExitStatus::IndexReadFailed;
-    }
-
-    // Check for gaps in the stream. Don't warn about duplicate lines in the
-    // .findx file.
-    if (pos < expectedPos) {
-      // N.B. Ignore the timestamp when we check for duplicate lines in the
-      // .findx files; the timestamps are always slightly different.
-      if (!(pos == previousPos && pos + length == expectedPos)) {
-        llvm::errs() << "Error in index; data offset is backwards: " << line
-                     << " file=" << currentFilename_ << '\n';
-      }
-      continue;
-
-    } else if (pos > expectedPos) {
-      llvm::errs() << "Gap in stream (" << pos - expectedPos
-                   << " bytes) file=" << currentFilename_ << '\n';
-      auto jump = ofp::Signed_cast(pos - expectedPos);
-      if (!input.ignore(jump)) {
-        return checkError(input, jump, false);
-      }
-    }
-
-    // Verify that packet timestamp always increases.
-    if (timestamp >= lastTimestamp) {
-      lastTimestamp = timestamp;
-    } else {
-      llvm::errs() << "Error in index; timestamp smaller than last seen: "
-                   << line << " file=" << currentFilename_ << '\n';
-    }
-
-    // Set up next expectedPos.
-    expectedPos = pos + length;
-    previousPos = pos;
-
-    size_t offset = buffer.size();
-    char *buf =
-        reinterpret_cast<char *>(buffer.mutableDataResized(offset + length));
-    assert(buffer.size() == offset + length);
-
-    // Read length bytes from input into buffer.
-    input.read(buf + offset, ofp::Signed_cast(length));
-    if (!input) {
-      return checkError(input, ofp::Signed_cast(length), false);
-    }
-
-    // Log when messages do not align to packet 'boundaries'.
-    if (buffer.size() < sizeof(ofp::Header)) {
-      llvm::errs() << "Header fragmented (" << buffer.size() << " bytes) "
-                   << currentFilename_ << '\n';
-    } else if (buffer.header()->length() > buffer.size()) {
-      llvm::errs() << "Message fragmented (" << length << " of "
-                   << buffer.header()->length() << " bytes) in "
-                   << currentFilename_ << '\n';
-    }
-
-    // Decode complete messages and assign them the last read timestamp.
-    while (buffer.size() >= sizeof(ofp::Header) &&
-           buffer.header()->length() <= buffer.size()) {
-      message.setTime(timestamp);
-      message.setData(buffer.data(), buffer.header()->length());
-      buffer.removeFront(buffer.header()->length());
-
-      if (message.size() < sizeof(ofp::Header)) {
-        // If message size is less than 8 bytes, report an error.
-        llvm::errs() << "Filename: " << currentFilename_ << ": " << line
-                     << '\n';
-        llvm::errs() << "Error: Invalid message header length: "
-                     << message.size() << " bytes\n";
-        return ExitStatus::DecodeFailed;
-      }
-
-      // Save a copy of the original message binary before we normalize it
-      // for parsing.
-      originalMessage.assign(message);
-      message.normalize();
-
-      ExitStatus result = decodeOneMessage(&message, &originalMessage);
-      if (result != ExitStatus::Success && !keepGoing_) {
-        return result;
-      }
-    }
-  }
-
-  // Check that we reached end of index file without error.
-  if (!index.eof()) {
-    llvm::errs() << "Error: Error reading from index file " << currentFilename_
-                 << ".findx\n";
-    return ExitStatus::IndexReadFailed;
-  }
-
-  // We should not be able to read any more data from input. If we can, the
-  // index file is not synced with the input file.
-  char ch;
-  if (input.get(ch)) {
-    llvm::errs() << "Error: Unexpected data in file " << currentFilename_
-                 << '\n';
-    return ExitStatus::MessageReadFailed;
   }
 
   return ExitStatus::Success;
@@ -770,66 +613,11 @@ void Decode::setCurrentFilename(const std::string &filename) {
     return;
   }
 
-  if (useFindx_) {
-    // When we are using '.findx' files, parse the filename to obtain
-    // information about the session, so we can set up the `sessionInfo_`
-    // structure with source and destination information.
-    (void)parseFilename(filename, &sessionInfo_);
-  } else if (showFilename_) {
+  if (showFilename_) {
     sessionInfo_ = ofp::MessageInfo{filename};
   } else {
     sessionInfo_ = ofp::MessageInfo{};
   }
-}
-
-bool Decode::parseFilename(const std::string &filename,
-                           ofp::MessageInfo *info) {
-  // tcpflow uses base IPv4 filenames of the form:
-  //
-  // (\d+T)?\d{3}.\d{3}.\d{3}.\d{3}.\d{5}-\d{3}.\d{3}.\d{3}.\d{3}.\d{5}(c\d+)?
-
-  // Obtain file's base name.
-  llvm::StringRef basename = llvm::sys::path::filename(filename);
-
-  // Find the optional 'T' character and strip off the prefix.
-  size_t pos = basename.find('T');
-  if (pos != llvm::StringRef::npos) {
-    basename = basename.drop_front(pos + 1);
-  }
-
-  // Find the optional 'c' character and strip off the suffix.
-  pos = basename.rfind('c');
-  if (pos != llvm::StringRef::npos) {
-    basename = basename.drop_back(basename.size() - pos);
-  }
-
-  // Split the remaining portion on the hyphen.
-  auto pair = basename.split('-');
-  if (pair.second.empty()) {
-    llvm::errs() << "parseFilename: Unexpected filename format `" << basename
-                 << "`\n";
-    return false;
-  }
-
-  ofp::IPv6Endpoint source;
-  ofp::IPv6Endpoint dest;
-
-  if (!source.parse(pair.first)) {
-    llvm::errs() << "parseFilename: Unable to parse source endpoint `"
-                 << pair.first << "`\n";
-    return false;
-  }
-
-  if (!dest.parse(pair.second)) {
-    llvm::errs() << "parseFilename: Unable to parse destination endpoint `"
-                 << pair.first << "`\n";
-    return false;
-  }
-
-  ofp::UInt64 sessionId = lookupSessionId(source, dest);
-  *info = ofp::MessageInfo{sessionId, source, dest};
-
-  return true;
 }
 
 ofp::UInt64 Decode::lookupSessionId(const ofp::IPv6Endpoint &src,
