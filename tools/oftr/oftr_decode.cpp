@@ -110,12 +110,6 @@ bool Decode::validateCommandLineArguments() {
     json_ = true;
   }
 
-  if (jsonFlavor_ == kJsonFlavorMongoDB) {
-    // mongodb flavor also implies --json.
-    json_ = true;
-    ofp::GLOBAL_ARG_MongoDBCompatible = true;
-  }
-
   // Parse --msg-exclude and --msg-include filters.
   parseMsgFilter(msgExclude_, &msgExcludeFilter_);
   parseMsgFilter(msgInclude_, &msgIncludeFilter_);

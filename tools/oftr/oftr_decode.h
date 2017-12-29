@@ -33,7 +33,6 @@ namespace ofpx {
 //
 //   --json (-j)           Write compact JSON output instead of YAML.
 //   --json-array          Write output as a valid JSON array.
-//   --json-flavor=default|mongodb Flavor of JSON output
 //   --silent (-s)         Quiet mode; suppress normal output.
 //   --silent-error        Suppress error output for invalid messages.
 //   --invert-check (-v)   Expect invalid messages only.
@@ -142,7 +141,6 @@ class Decode : public Subprogram {
   void fuzzStressTest(const ofp::Message *originalMessage);
 
   enum PcapFormat { kPcapFormatAuto, kPcapFormatYes, kPcapFormatNo };
-  enum JsonFlavor { kJsonFlavorDefault, kJsonFlavorMongoDB };
   enum TimestampFormat { kTimestampUnset, kTimestampNone, kTimestampSecs };
 
   // --- Command-line Arguments (Order is important here.) ---
@@ -150,11 +148,6 @@ class Decode : public Subprogram {
                       cl::desc("Write compact JSON output instead of YAML")};
   cl::opt<bool> jsonArray_{"json-array",
                            cl::desc("Write output as a valid JSON array")};
-  cl::opt<JsonFlavor> jsonFlavor_{
-      "json-flavor", cl::desc("Flavor of JSON output"),
-      cl::values(clEnumValN(kJsonFlavorDefault, "default", "JSON (default)"),
-                 clEnumValN(kJsonFlavorMongoDB, "mongodb", "MongoDB JSON")),
-      cl::init(kJsonFlavorDefault)};
   cl::opt<bool> silent_{"silent",
                         cl::desc("Quiet mode; suppress normal output")};
   cl::opt<bool> silentError_{
