@@ -2,13 +2,14 @@
 
 set -e
 
-
 # Log current travis settings...
 echo "TRAVIS_EVENT_TYPE: ${TRAVIS_EVENT_TYPE}"
 echo "TRAVIS_BRANCH:     ${TRAVIS_BRANCH}"
 echo "TRAVIS_TAG:        ${TRAVIS_TAG}"
 echo "TRAVIS_COMMIT:     ${TRAVIS_COMMIT}"
 echo "TRAVIS_OS_NAME:    ${TRAVIS_OS_NAME}"       # "linux" or "osx"
+
+python3.6 --version
 
 # Build release version.
 
@@ -18,13 +19,27 @@ cmake ..
 MAKEFLAGS=-j4 ctest -j4 --output-on-failure -D Experimental
 cd ..
 
-# Test code coverage with debug build (linux only).
+# Test code coverage with debug build (linux only). Include zof integration tests
+# as part of code coverage.
 
 if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     mkdir -p Build+Debug
     cd Build+Debug
     cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true -DLIBOFP_ENABLE_MEMCHECK_TESTS=false ..
     MAKEFLAGS=-j4 ctest -j4 -D Experimental
+
+	# Run zof integration tests too.
+	export ZOF_OFTR_PATH="$(pwd)/tools/oftr/oftr"
+	$ZOF_OFTR_PATH version
+	git clone --depth=1 "https://github.com/byllyfish/zof.git"
+	cd zof
+	python3.6 -m venv venv36
+	source venv36/bin/activate
+	pip install -r requirements.txt
+	PYTHONPATH="$(pwd)" ./test/integration_tests.sh || echo "ZOF Integration tests failed."
+	deactivate
+	cd ..
+
     echo "Submit to codecov..."
     bash <(curl -s https://codecov.io/bash)
     echo "Done submitting to codecov."
