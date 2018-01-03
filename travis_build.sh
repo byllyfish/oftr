@@ -8,6 +8,9 @@ echo "TRAVIS_BRANCH:     ${TRAVIS_BRANCH}"
 echo "TRAVIS_TAG:        ${TRAVIS_TAG}"
 echo "TRAVIS_COMMIT:     ${TRAVIS_COMMIT}"
 echo "TRAVIS_OS_NAME:    ${TRAVIS_OS_NAME}"       # "linux" or "osx"
+echo "PYENV_ROOT:        ${PYENV_ROOT}"
+
+pyenv install --list
 
 # Build release version.
 
@@ -31,6 +34,8 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 	$ZOF_OFTR_PATH version
 	git clone --depth=1 "https://github.com/byllyfish/zof.git"
 	cd zof
+	eval "$(pyenv init -)"
+	pyenv install 3.5.2
 	pyenv shell 3.5.2
 	python -m venv venv3
 	source venv3/bin/activate
