@@ -3,6 +3,7 @@ package main
 // #cgo LDFLAGS: -ldl
 // #include <dlfcn.h>
 // #include <stdlib.h>
+// #include <stdint.h>
 //
 // typedef int32_t (*oftr_call)(uint32_t opcode, const char *input,
 //                                size_t input_len, char *output,
