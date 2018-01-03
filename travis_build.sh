@@ -9,8 +9,6 @@ echo "TRAVIS_TAG:        ${TRAVIS_TAG}"
 echo "TRAVIS_COMMIT:     ${TRAVIS_COMMIT}"
 echo "TRAVIS_OS_NAME:    ${TRAVIS_OS_NAME}"       # "linux" or "osx"
 
-python3 --version
-
 # Build release version.
 
 mkdir -p Build
@@ -33,7 +31,8 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
 	$ZOF_OFTR_PATH version
 	git clone --depth=1 "https://github.com/byllyfish/zof.git"
 	cd zof
-	python3 -m venv venv3
+	pyenv shell 3.5.2
+	python -m venv venv3
 	source venv3/bin/activate
 	pip install -r requirements.txt
 	PYTHONPATH="$(pwd)" ./test/integration_tests.sh || echo "ZOF Integration tests failed."
