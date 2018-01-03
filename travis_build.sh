@@ -25,9 +25,7 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     cd Build+Debug
     cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true -DLIBOFP_ENABLE_MEMCHECK_TESTS=false ..
     MAKEFLAGS=-j4 ctest -j4 -D Experimental
-    # We must use gcov-4.8 when using gcc-4.8.
     echo "Submit to codecov..."
     bash <(curl -s https://codecov.io/bash)
-    #curl -s https://codecov.io/bash | bash /dev/stdin -x gcov-4.8
     echo "Done submitting to codecov."
 fi
