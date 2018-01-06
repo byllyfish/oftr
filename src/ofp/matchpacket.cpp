@@ -138,10 +138,13 @@ void MatchPacket::decodeARP(const UInt8 *pkt, size_t length) {
   match_.addUnchecked(OFB_ARP_SHA(arp->sha));
   match_.addUnchecked(OFB_ARP_THA(arp->tha));
 
+  pkt += sizeof(pkt::Arp);
+  length -= sizeof(pkt::Arp);
   offset_ += sizeof(pkt::Arp);
 
-  if (length > sizeof(pkt::Arp)) {
-    log_warning("MatchPacket: Ignoring extra data in arp message");
+  if (IsMemFilled(pkt, length, 0)) {
+    // Ignore padding added to ARP message only if it's all zeros.
+    offset_ += length;
   }
 }
 
