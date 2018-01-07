@@ -31,7 +31,7 @@ static const MacAddress *findLLOption(const UInt8 *ptr, size_t length,
 //
 // When ETH_TYPE == 0x8100:
 //    VLAN_VID  
-//    VLAN_PCP  (TODO if non-zero)
+//    VLAN_PCP  (if non-zero)
 //    ETH_TYPE
 //
 // When ETH_TYPE == 0x0806:
@@ -152,9 +152,11 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
     UInt16 vlan_vid = (vlan->tci & 0x0FFF) | OFPVID_PRESENT;
     match_.addUnchecked(OFB_VLAN_VID(vlan_vid));
 
-    // (TODO) Include VLAN_PCP only if it's non-zero.
+    // Include VLAN_PCP only if it's non-zero.
     UInt8 vlan_pcp = vlan->tci >> 13;
-    match_.addUnchecked(OFB_VLAN_PCP(vlan_pcp));
+    if (vlan_pcp) {
+      match_.addUnchecked(OFB_VLAN_PCP(vlan_pcp));
+    }
 
     ethType = vlan->ethType;
 
@@ -418,8 +420,8 @@ void MatchPacket::decodeIPv6_NextHdr(const UInt8 *pkt, size_t length,
     hdrFlags = (hdrFlags & 0x0ffff) | OFPIEH_DEST;
   }
 
-  match_.addUnchecked(
-      OFB_IPV6_EXTHDR{static_cast<OFPIPv6ExtHdrFlags>(hdrFlags)});
+  auto exthdr = static_cast<OFPIPv6ExtHdrFlags>(hdrFlags);
+  match_.addUnchecked(OFB_IPV6_EXTHDR{exthdr});
 }
 
 void MatchPacket::decodeICMPv4(const UInt8 *pkt, size_t length) {
