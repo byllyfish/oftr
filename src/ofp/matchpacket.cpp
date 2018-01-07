@@ -22,6 +22,70 @@ static bool isAlignedPacket(const UInt8 *ptr) {
 static const MacAddress *findLLOption(const UInt8 *ptr, size_t length,
                                       UInt8 option);
 
+// The MatchPacket parser sets the following fields:
+//
+// Always:
+//    ETH_DST
+//    ETH_SRC
+//    ETH_TYPE
+//
+// When ETH_TYPE == 0x8100:
+//    VLAN_VID  
+//    VLAN_PCP  (TODO if non-zero)
+//    ETH_TYPE
+//
+// When ETH_TYPE == 0x0806:
+//    ARP_OP    
+//    ARP_SPA
+//    ARP_TPA
+//    ARP_SHA
+//    ARP_THA
+//
+// When ETH_TYPE == 0x0800:
+//    IP_DSCP  (TODO if non-zero)
+//    IP_ECN   (TODO if non-zero)
+//    IP_PROTO
+//    IPV4_SRC
+//    IPV4_DST
+//    NX_IP_FRAG  (fragments only)
+//    NX_IP_TTL
+//
+// When ETH_TYPE == 0x86dd:
+//    IP_DSCP  (TODO if non-zero)
+//    IP_ECN   (TODO if non-zero)
+//    NX_IP_TTL
+//    IPV6_SRC
+//    IPV6_DST
+//    IPV6_FLABEL  (TODO if non-zero)
+//    IP_PROTO     (fixme: only if recognized?)
+//    IPV6_EXTHDR
+//
+// When IP_PROTO == 0x06:
+//    TCP_SRC
+//    TCP_DST
+//    NX_TCP_FLAGS
+//
+// When IP_PROTO == 0x11:
+//    UDP_SRC
+//    UDP_DST
+//
+// When ETH_TYPE == 0x0800 and IP_PROTO == 0x01:
+//    ICMPV4_TYPE
+//    ICMPV4_CODE
+//
+// When ETH_TYPE == 0x86dd and IP_PROTO == 0x3A:
+//    ICMPV6_TYPE
+//    ICMPV6_CODE
+//    X_IPV6_ND_RES
+//    IPV6_ND_TARGET
+//    IPV6_ND_SLL
+//    IPV6_ND_TLL
+//
+// When ETH_TYPE == 0x88cc or ETH_TYPE == 0x8942:
+//    X_LLDP_CHASSIS_ID
+//    X_LLDP_PORT_ID
+//    X_LLDP_TTL
+
 MatchPacket::MatchPacket(const ByteRange &data, bool warnMisaligned) {
   if (isAlignedPacket(data.data())) {
     decode(data.data(), data.size());
@@ -85,8 +149,13 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
     }
 
     // N.B. Continue the OpenFlow tradition of setting the OFPVID_PRESENT bit.
-    match_.addUnchecked(OFB_VLAN_VID((vlan->tci & 0x0FFF) | OFPVID_PRESENT));
-    match_.addUnchecked(OFB_VLAN_PCP(vlan->tci >> 13));
+    UInt16 vlan_vid = (vlan->tci & 0x0FFF) | OFPVID_PRESENT;
+    match_.addUnchecked(OFB_VLAN_VID(vlan_vid));
+
+    // (TODO) Include VLAN_PCP only if it's non-zero.
+    UInt8 vlan_pcp = vlan->tci >> 13;
+    match_.addUnchecked(OFB_VLAN_PCP(vlan_pcp));
+
     ethType = vlan->ethType;
 
     pkt += sizeof(pkt::VlanHdr);
