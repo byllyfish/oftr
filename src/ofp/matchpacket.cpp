@@ -42,8 +42,8 @@ static const MacAddress *findLLOption(const UInt8 *ptr, size_t length,
 //    ARP_THA
 //
 // When ETH_TYPE == 0x0800:
-//    IP_DSCP  (TODO if non-zero)
-//    IP_ECN   (TODO if non-zero)
+//    IP_DSCP  (if non-zero)
+//    IP_ECN   (if non-zero)
 //    IP_PROTO
 //    IPV4_SRC
 //    IPV4_DST
@@ -51,12 +51,12 @@ static const MacAddress *findLLOption(const UInt8 *ptr, size_t length,
 //    NX_IP_TTL
 //
 // When ETH_TYPE == 0x86dd:
-//    IP_DSCP  (TODO if non-zero)
-//    IP_ECN   (TODO if non-zero)
+//    IP_DSCP  (if non-zero)
+//    IP_ECN   (if non-zero)
 //    NX_IP_TTL
 //    IPV6_SRC
 //    IPV6_DST
-//    IPV6_FLABEL  (TODO if non-zero)
+//    IPV6_FLABEL  (if non-zero)
 //    IP_PROTO     (fixme: only if recognized?)
 //    IPV6_EXTHDR
 //
@@ -258,10 +258,15 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   assert(length <= totalLen);
 
   UInt8 dscp = ip->tos >> 2;
-  UInt8 ecn = ip->tos & 0x03;
+  if (dscp) {
+    match_.addUnchecked(OFB_IP_DSCP{dscp});
+  }
 
-  match_.addUnchecked(OFB_IP_DSCP{dscp});
-  match_.addUnchecked(OFB_IP_ECN{ecn});
+  UInt8 ecn = ip->tos & 0x03;
+  if (ecn) {
+    match_.addUnchecked(OFB_IP_ECN{ecn});
+  }
+
   match_.addUnchecked(OFB_IP_PROTO{ip->proto});
   match_.addUnchecked(OFB_IPV4_SRC{ip->src});
   match_.addUnchecked(OFB_IPV4_DST{ip->dst});
@@ -326,14 +331,21 @@ void MatchPacket::decodeIPv6(const UInt8 *pkt, size_t length) {
   UInt32 flowLabel = verClassLabel & 0x000FFFFF;
 
   UInt8 dscp = trafCls >> 2;
-  UInt8 ecn = trafCls & 0x03;
+  if (dscp) {
+    match_.addUnchecked(OFB_IP_DSCP{dscp});
+  }
 
-  match_.addUnchecked(OFB_IP_DSCP{dscp});
-  match_.addUnchecked(OFB_IP_ECN{ecn});
+  UInt8 ecn = trafCls & 0x03;
+  if (ecn) {
+    match_.addUnchecked(OFB_IP_ECN{ecn});
+  }
+
   match_.addUnchecked(NXM_NX_IP_TTL{ip->hopLimit});
   match_.addUnchecked(OFB_IPV6_SRC{ip->src});
   match_.addUnchecked(OFB_IPV6_DST{ip->dst});
-  match_.addUnchecked(OFB_IPV6_FLABEL{flowLabel});
+  if (flowLabel) {
+    match_.addUnchecked(OFB_IPV6_FLABEL{flowLabel});
+  }
 
   pkt += sizeof(pkt::IPv6Hdr);
   length -= sizeof(pkt::IPv6Hdr);

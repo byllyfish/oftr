@@ -63,10 +63,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -75,8 +71,6 @@ msg:
       value:           '::'
     - field:           IPV6_DST
       value:           'ff02::1:ffb4:99ba'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x87
     - field:           ICMPV6_CODE
@@ -157,10 +151,6 @@ msg:
       value:           '00:00:00:00:00:02'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -169,8 +159,6 @@ msg:
       value:           '::'
     - field:           IPV6_DST
       value:           'ff02::1:ff00:2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x87
     - field:           ICMPV6_CODE
@@ -199,10 +187,6 @@ msg:
       value:           '00:00:00:00:00:01'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -211,8 +195,6 @@ msg:
       value:           '::'
     - field:           IPV6_DST
       value:           'ff02::1:ff00:1'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x87
     - field:           ICMPV6_CODE
@@ -241,10 +223,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -253,8 +231,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE
@@ -283,10 +259,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -295,8 +267,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE
@@ -325,10 +295,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -337,8 +303,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -367,10 +331,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -379,8 +339,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -409,10 +367,6 @@ msg:
       value:           '00:00:00:00:00:02'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -421,8 +375,6 @@ msg:
       value:           'fe80::200:ff:fe00:2'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE
@@ -451,10 +403,6 @@ msg:
       value:           '00:00:00:00:00:02'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -463,8 +411,6 @@ msg:
       value:           'fe80::200:ff:fe00:2'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -493,10 +439,6 @@ msg:
       value:           '00:00:00:00:00:01'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -505,8 +447,6 @@ msg:
       value:           'fe80::200:ff:fe00:1'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE
@@ -535,10 +475,6 @@ msg:
       value:           '00:00:00:00:00:01'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -547,8 +483,6 @@ msg:
       value:           'fe80::200:ff:fe00:1'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -829,10 +763,6 @@ msg:
       value:           '00:00:00:00:00:02'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -841,8 +771,6 @@ msg:
       value:           'fe80::200:ff:fe00:2'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE
@@ -871,10 +799,6 @@ msg:
       value:           '00:00:00:00:00:02'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -883,8 +807,6 @@ msg:
       value:           'fe80::200:ff:fe00:2'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE
@@ -913,10 +835,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -925,8 +843,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -955,10 +871,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -967,8 +879,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -997,10 +907,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -1009,8 +915,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE
@@ -1039,10 +943,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -1051,8 +951,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE
@@ -1081,10 +979,6 @@ msg:
       value:           '00:00:00:00:00:02'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -1093,8 +987,6 @@ msg:
       value:           'fe80::200:ff:fe00:2'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -1123,10 +1015,6 @@ msg:
       value:           '00:00:00:00:00:01'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -1135,8 +1023,6 @@ msg:
       value:           'fe80::200:ff:fe00:1'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -1165,10 +1051,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -1177,8 +1059,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE
@@ -1207,10 +1087,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -1219,8 +1095,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE
@@ -1257,10 +1131,6 @@ msg:
       value:           '00:00:00:00:00:01'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -1269,8 +1139,6 @@ msg:
       value:           'fe80::200:ff:fe00:1'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE
@@ -1329,10 +1197,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -1341,8 +1205,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -1371,10 +1233,6 @@ msg:
       value:           '02:69:3c:bf:39:47'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -1383,8 +1241,6 @@ msg:
       value:           'fe80::b4bc:75ff:feb4:99ba'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -1413,10 +1269,6 @@ msg:
       value:           '00:00:00:00:00:02'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -1425,8 +1277,6 @@ msg:
       value:           'fe80::200:ff:fe00:2'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -1455,10 +1305,6 @@ msg:
       value:           '00:00:00:00:00:01'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0xFF
     - field:           IP_PROTO
@@ -1467,8 +1313,6 @@ msg:
       value:           'fe80::200:ff:fe00:1'
     - field:           IPV6_DST
       value:           'ff02::2'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x85
     - field:           ICMPV6_CODE
@@ -1497,10 +1341,6 @@ msg:
       value:           '00:00:00:00:00:01'
     - field:           ETH_TYPE
       value:           0x86DD
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           NX_IP_TTL
       value:           0x01
     - field:           IP_PROTO
@@ -1509,8 +1349,6 @@ msg:
       value:           'fe80::200:ff:fe00:1'
     - field:           IPV6_DST
       value:           'ff02::16'
-    - field:           IPV6_FLABEL
-      value:           0x00000000
     - field:           ICMPV6_TYPE
       value:           0x8F
     - field:           ICMPV6_CODE

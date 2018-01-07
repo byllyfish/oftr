@@ -17,10 +17,6 @@ msg:
       value:           'f2:0b:a4:7d:f8:ea'
     - field:           ETH_TYPE
       value:           0x0800
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           IP_PROTO
       value:           0x01
     - field:           IPV4_SRC
@@ -171,10 +167,6 @@ msg:
       value:           'f2:0b:a4:7d:f8:ea'
     - field:           ETH_TYPE
       value:           0x0800
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           IP_PROTO
       value:           0x01
     - field:           IPV4_SRC
@@ -999,10 +991,6 @@ msg:
       value:           'f2:0b:a4:7d:f8:ea'
     - field:           ETH_TYPE
       value:           0x0800
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           IP_PROTO
       value:           0x01
     - field:           IPV4_SRC
@@ -3798,10 +3786,6 @@ msg:
       value:           'f2:0b:a4:7d:f8:ea'
     - field:           ETH_TYPE
       value:           0x0800
-    - field:           IP_DSCP
-      value:           0x00
-    - field:           IP_ECN
-      value:           0x00
     - field:           IP_PROTO
       value:           0x01
     - field:           IPV4_SRC
