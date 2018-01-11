@@ -10,6 +10,10 @@ using namespace ofp;
 const UInt8 kDefaultIPv4_TTL = 64;
 const UInt8 kDefaultIPv6_TTL = 64;
 
+// Ethernet frames have a minimum size of 64 bytes. Since the FCS is 4 bytes,
+// this means we should pad out Ethernet packets to 60 bytes.
+const size_t kMinEthernetFrameDataSize = 60;
+
 MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
   assert(range.validateInput());
 
@@ -135,6 +139,11 @@ void MatchPacketBuilder::build(ByteList *msg, const ByteRange &data) const {
       log_error("MatchPacketBuilder: Unknown ethType:", ethType_);
       buildEthernet(msg, data);
       break;
+  }
+
+  // If packet is less than 60 bytes, pad it with zeros.
+  if (msg->size() < kMinEthernetFrameDataSize) {
+    msg->addZeros(kMinEthernetFrameDataSize - msg->size());
   }
 }
 
