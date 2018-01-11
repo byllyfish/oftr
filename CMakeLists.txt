@@ -689,5 +689,5 @@ if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
     COMMAND go run util/all_tests.go -build-dir "${CMAKE_BINARY_DIR}/external/boringssl/"
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/external/boringssl"
   )
-  set_tests_properties(boringssl-all-tests PROPERTIES TIMEOUT 30)
+  set_tests_properties(boringssl-all-tests PROPERTIES TIMEOUT 300)
 endif()
