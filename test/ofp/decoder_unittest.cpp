@@ -896,6 +896,11 @@ TEST(decoder, packetinv4_equal_phys_port) {
       "00000A000002\n...\n");
 }
 
+TEST(decoder, packetinv4_pkt) {
+  // From encoder_unittest.packetinv4_pkt.
+  testDecodeEncode("040A0076000000013333333044400180999999999999999000010020800000045555555080000204666666608000040877777777777777700000FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002000000000000000000000000000000000000", "---\ntype:            PACKET_IN\nxid:             0x00000001\nversion:         0x04\nmsg:             \n  buffer_id:       0x33333330\n  total_len:       0x4440\n  in_port:         0x55555550\n  in_phy_port:     0x66666660\n  metadata:        0x7777777777777770\n  reason:          APPLY_ACTION\n  table_id:        0x80\n  cookie:          0x9999999999999990\n  match:           \n    - field:           IN_PORT\n      value:           0x55555550\n    - field:           IN_PHY_PORT\n      value:           0x66666660\n    - field:           METADATA\n      value:           0x7777777777777770\n  data:            FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002000000000000000000000000000000000000\n  _pkt:            \n    - field:           ETH_DST\n      value:           'ff:ff:ff:ff:ff:ff'\n    - field:           ETH_SRC\n      value:           '00:00:00:00:00:01'\n    - field:           ETH_TYPE\n      value:           0x0806\n    - field:           ARP_OP\n      value:           0x0001\n    - field:           ARP_SPA\n      value:           10.0.0.1\n    - field:           ARP_TPA\n      value:           10.0.0.2\n    - field:           ARP_SHA\n      value:           '00:00:00:00:00:01'\n    - field:           ARP_THA\n      value:           '00:00:00:00:00:00'\n...\n", true);
+}
+
 TEST(decoder, packetinv1) {
   testDecodeEncode(
       "010A003C0000000233333333444455550100FFFFFFFFFFFF00000000000"
