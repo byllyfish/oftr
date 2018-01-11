@@ -10,8 +10,6 @@ echo "TRAVIS_COMMIT:     ${TRAVIS_COMMIT}"
 echo "TRAVIS_OS_NAME:    ${TRAVIS_OS_NAME}"       # "linux" or "osx"
 echo "PYENV_ROOT:        ${PYENV_ROOT}"
 
-pyenv install --list
-
 # Build release version.
 
 mkdir -p Build
