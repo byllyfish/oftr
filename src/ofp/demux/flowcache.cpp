@@ -105,7 +105,8 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
             entry.secondsSince(ts));
 
   if (final) {
-    log_info("TCP finished", entry.sessionID, tcpFlagToString(flags), src, dst, data.size());
+    log_info("TCP finished", entry.sessionID, tcpFlagToString(flags), src, dst,
+             data.size());
   }
 
   if (isX) {

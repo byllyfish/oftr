@@ -30,12 +30,12 @@ static const MacAddress *findLLOption(const UInt8 *ptr, size_t length,
 //    ETH_TYPE
 //
 // When ETH_TYPE == 0x8100:
-//    VLAN_VID  
+//    VLAN_VID
 //    VLAN_PCP  (if non-zero)
 //    ETH_TYPE
 //
 // When ETH_TYPE == 0x0806:
-//    ARP_OP    
+//    ARP_OP
 //    ARP_SPA
 //    ARP_TPA
 //    ARP_SHA
