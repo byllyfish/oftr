@@ -16,6 +16,8 @@ namespace sys {
 
 class Connection;
 
+OFP_BEGIN_IGNORE_PADDING
+
 class Identity {
  public:
   explicit Identity(const std::string &certData, const std::string &privKey,
@@ -89,6 +91,8 @@ class Identity {
   static int dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
                                          size_t cookie_len);
 };
+
+OFP_END_IGNORE_PADDING
 
 }  // namespace sys
 }  // namespace ofp
