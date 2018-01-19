@@ -228,10 +228,10 @@ struct RpcAddIdentity {
   struct Params {
     /// Certificate chain in PEM format.
     std::string cert;
-    /// PEM certificate for trusted CA to use for verifying a peer certificate.
-    std::string cacert;
     /// Private key for certificate in `cert`.
     std::string privkey;
+    /// PEM certificate for trusted CA to use for verifying a peer certificate.
+    std::string cacert;
     /// TLS Protocol version.
     std::string version;
     /// Supported ciphers.
