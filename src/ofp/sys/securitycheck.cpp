@@ -55,8 +55,7 @@ void SecurityCheck::beforeHandshake<SSL>(Connection *conn, SSL *ssl,
   Identity *identity = Identity::GetIdentityPtr(SSL_get_SSL_CTX(ssl));
 
   // Set up the verify callback.
-  int verifyMode = SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
-  SSL_set_verify(ssl, verifyMode, tls_verify_callback);
+  SSL_set_verify(ssl, identity->peerVerifyMode(), tls_verify_callback);
 
   if (isClient && !IsDTLS(ssl)) {
     // Check if there is a client session we can resume.

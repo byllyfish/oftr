@@ -30,6 +30,7 @@ class Identity {
   SSL_CTX *dtlsContext() { return dtls_.get(); }
 
   std::string subjectName() const { return subjectName_; }
+  int peerVerifyMode() const { return peerVerifyMode_; }
 
   SSL_SESSION *findClientSession(const IPv6Endpoint &remoteEndpt);
   void saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *session);
@@ -58,6 +59,9 @@ class Identity {
   /// resumption in the client.
   std::unordered_map<IPv6Endpoint, SSL_SESSION *> clientSessions_;
 #endif  // IDENTITY_SESSIONS_ENABLED
+
+  /// Peer verification enabled.
+  int peerVerifyMode_ = SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
 
   std::error_code initContext(SSL_CTX *ctx, const std::string &certData,
                               const std::string &privKey,

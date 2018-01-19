@@ -129,19 +129,25 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
 
   result = loadCertificateChain(ctx, certData);
   if (result) {
-    log_debug("Identity: loadCertificateChain failed", result);
+    log_error("Identity: loadCertificateChain failed", result);
     return result;
   }
 
   result = loadPrivateKey(ctx, privKey);
   if (result) {
-    log_debug("Identity: loadPrivateKey failed", result);
+    log_error("Identity: loadPrivateKey failed", result);
     return result;
   }
 
-  result = loadVerifier(ctx, verifyData);
-  if (result) {
-    log_debug("Identity: loadVerifier failed", result);
+  if (verifyData.empty()) {
+    // Don't verify peer certificate. There's no cacert.
+    peerVerifyMode_ = SSL_VERIFY_NONE;
+
+  } else {
+    result = loadVerifier(ctx, verifyData);
+    if (result) {
+      log_error("Identity: loadVerifier failed", result);
+    }
   }
 
   return result;
@@ -339,6 +345,7 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
 
   if (::SSL_CTX_check_private_key(ctx) != 1) {
     log_warning("loadPrivateKey: private key does not match certificate");
+    // TODO(bfish): Return error here.
   }
 
   return {};
