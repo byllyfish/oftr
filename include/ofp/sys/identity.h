@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_SYS_IDENTITY_H_
@@ -16,6 +16,8 @@ namespace sys {
 
 class Connection;
 
+OFP_BEGIN_IGNORE_PADDING
+
 class Identity {
  public:
   explicit Identity(const std::string &certData, const std::string &privKey,
@@ -30,6 +32,7 @@ class Identity {
   SSL_CTX *dtlsContext() { return dtls_.get(); }
 
   std::string subjectName() const { return subjectName_; }
+  int peerVerifyMode() const { return peerVerifyMode_; }
 
   SSL_SESSION *findClientSession(const IPv6Endpoint &remoteEndpt);
   void saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *session);
@@ -59,6 +62,9 @@ class Identity {
   std::unordered_map<IPv6Endpoint, SSL_SESSION *> clientSessions_;
 #endif  // IDENTITY_SESSIONS_ENABLED
 
+  /// Peer verification enabled.
+  int peerVerifyMode_ = SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
+
   std::error_code initContext(SSL_CTX *ctx, const std::string &certData,
                               const std::string &privKey,
                               const std::string &verifyData,
@@ -85,6 +91,8 @@ class Identity {
   static int dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
                                          size_t cookie_len);
 };
+
+OFP_END_IGNORE_PADDING
 
 }  // namespace sys
 }  // namespace ofp

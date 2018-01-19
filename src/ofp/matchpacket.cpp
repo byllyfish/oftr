@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/matchpacket.h"
@@ -21,6 +21,70 @@ static bool isAlignedPacket(const UInt8 *ptr) {
 
 static const MacAddress *findLLOption(const UInt8 *ptr, size_t length,
                                       UInt8 option);
+
+// The MatchPacket parser sets the following fields:
+//
+// Always:
+//    ETH_DST
+//    ETH_SRC
+//    ETH_TYPE
+//
+// When ETH_TYPE == 0x8100:
+//    VLAN_VID
+//    VLAN_PCP  (if non-zero)
+//    ETH_TYPE
+//
+// When ETH_TYPE == 0x0806:
+//    ARP_OP
+//    ARP_SPA
+//    ARP_TPA
+//    ARP_SHA
+//    ARP_THA
+//
+// When ETH_TYPE == 0x0800:
+//    IP_DSCP  (if non-zero)
+//    IP_ECN   (if non-zero)
+//    IP_PROTO
+//    IPV4_SRC
+//    IPV4_DST
+//    NX_IP_FRAG  (fragments only)
+//    NX_IP_TTL
+//
+// When ETH_TYPE == 0x86dd:
+//    IP_DSCP  (if non-zero)
+//    IP_ECN   (if non-zero)
+//    NX_IP_TTL
+//    IPV6_SRC
+//    IPV6_DST
+//    IPV6_FLABEL  (if non-zero)
+//    IP_PROTO     (fixme: only if recognized?)
+//    IPV6_EXTHDR
+//
+// When IP_PROTO == 0x06:
+//    TCP_SRC
+//    TCP_DST
+//    NX_TCP_FLAGS
+//
+// When IP_PROTO == 0x11:
+//    UDP_SRC
+//    UDP_DST
+//
+// When ETH_TYPE == 0x0800 and IP_PROTO == 0x01:
+//    ICMPV4_TYPE
+//    ICMPV4_CODE
+//
+// When ETH_TYPE == 0x86dd and IP_PROTO == 0x3A:
+//    ICMPV6_TYPE
+//    ICMPV6_CODE
+//    X_IPV6_ND_RES
+//    IPV6_ND_TARGET
+//    IPV6_ND_SLL
+//    IPV6_ND_TLL
+//
+// When ETH_TYPE == 0x88cc or ETH_TYPE == 0x8942:
+//    X_LLDP_CHASSIS_ID
+//    X_LLDP_PORT_ID
+//    X_LLDP_TTL
 
 MatchPacket::MatchPacket(const ByteRange &data, bool warnMisaligned) {
   if (isAlignedPacket(data.data())) {
@@ -85,8 +149,15 @@ void MatchPacket::decodeEthernet(const UInt8 *pkt, size_t length) {
     }
 
     // N.B. Continue the OpenFlow tradition of setting the OFPVID_PRESENT bit.
-    match_.addUnchecked(OFB_VLAN_VID((vlan->tci & 0x0FFF) | OFPVID_PRESENT));
-    match_.addUnchecked(OFB_VLAN_PCP(vlan->tci >> 13));
+    UInt16 vlan_vid = (vlan->tci & 0x0FFF) | OFPVID_PRESENT;
+    match_.addUnchecked(OFB_VLAN_VID(vlan_vid));
+
+    // Include VLAN_PCP only if it's non-zero.
+    UInt8 vlan_pcp = vlan->tci >> 13;
+    if (vlan_pcp) {
+      match_.addUnchecked(OFB_VLAN_PCP(vlan_pcp));
+    }
+
     ethType = vlan->ethType;
 
     pkt += sizeof(pkt::VlanHdr);
@@ -138,10 +209,13 @@ void MatchPacket::decodeARP(const UInt8 *pkt, size_t length) {
   match_.addUnchecked(OFB_ARP_SHA(arp->sha));
   match_.addUnchecked(OFB_ARP_THA(arp->tha));
 
+  pkt += sizeof(pkt::Arp);
+  length -= sizeof(pkt::Arp);
   offset_ += sizeof(pkt::Arp);
 
-  if (length > sizeof(pkt::Arp)) {
-    log_warning("MatchPacket: Ignoring extra data in arp message");
+  if (IsMemFilled(pkt, length, 0)) {
+    // Ignore padding added to ARP message only if it's all zeros.
+    offset_ += length;
   }
 }
 
@@ -186,10 +260,15 @@ void MatchPacket::decodeIPv4(const UInt8 *pkt, size_t length) {
   assert(length <= totalLen);
 
   UInt8 dscp = ip->tos >> 2;
-  UInt8 ecn = ip->tos & 0x03;
+  if (dscp) {
+    match_.addUnchecked(OFB_IP_DSCP{dscp});
+  }
 
-  match_.addUnchecked(OFB_IP_DSCP{dscp});
-  match_.addUnchecked(OFB_IP_ECN{ecn});
+  UInt8 ecn = ip->tos & 0x03;
+  if (ecn) {
+    match_.addUnchecked(OFB_IP_ECN{ecn});
+  }
+
   match_.addUnchecked(OFB_IP_PROTO{ip->proto});
   match_.addUnchecked(OFB_IPV4_SRC{ip->src});
   match_.addUnchecked(OFB_IPV4_DST{ip->dst});
@@ -254,14 +333,21 @@ void MatchPacket::decodeIPv6(const UInt8 *pkt, size_t length) {
   UInt32 flowLabel = verClassLabel & 0x000FFFFF;
 
   UInt8 dscp = trafCls >> 2;
-  UInt8 ecn = trafCls & 0x03;
+  if (dscp) {
+    match_.addUnchecked(OFB_IP_DSCP{dscp});
+  }
 
-  match_.addUnchecked(OFB_IP_DSCP{dscp});
-  match_.addUnchecked(OFB_IP_ECN{ecn});
+  UInt8 ecn = trafCls & 0x03;
+  if (ecn) {
+    match_.addUnchecked(OFB_IP_ECN{ecn});
+  }
+
   match_.addUnchecked(NXM_NX_IP_TTL{ip->hopLimit});
   match_.addUnchecked(OFB_IPV6_SRC{ip->src});
   match_.addUnchecked(OFB_IPV6_DST{ip->dst});
-  match_.addUnchecked(OFB_IPV6_FLABEL{flowLabel});
+  if (flowLabel) {
+    match_.addUnchecked(OFB_IPV6_FLABEL{flowLabel});
+  }
 
   pkt += sizeof(pkt::IPv6Hdr);
   length -= sizeof(pkt::IPv6Hdr);
@@ -334,8 +420,8 @@ void MatchPacket::decodeIPv6_NextHdr(const UInt8 *pkt, size_t length,
     hdrFlags = (hdrFlags & 0x0ffff) | OFPIEH_DEST;
   }
 
-  match_.addUnchecked(
-      OFB_IPV6_EXTHDR{static_cast<OFPIPv6ExtHdrFlags>(hdrFlags)});
+  auto exthdr = static_cast<OFPIPv6ExtHdrFlags>(hdrFlags);
+  match_.addUnchecked(OFB_IPV6_EXTHDR{exthdr});
 }
 
 void MatchPacket::decodeICMPv4(const UInt8 *pkt, size_t length) {

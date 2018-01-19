@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/decoder.h"
@@ -894,6 +894,36 @@ TEST(decoder, packetinv4_equal_phys_port) {
       "data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n");
+}
+
+TEST(decoder, packetinv4_pkt) {
+  // From encoder_unittest.packetinv4_pkt.
+  testDecodeEncode(
+      "040A00760000000133333330444001809999999999999990000100208000000455555550"
+      "80000204666666608000040877777777777777700000FFFFFFFFFFFF0000000000010806"
+      "00010800060400010000000000010A0000010000000000000A0000020000000000000000"
+      "00000000000000000000",
+      "---\ntype:            PACKET_IN\nxid:             0x00000001\nversion:  "
+      "       0x04\nmsg:             \n  buffer_id:       0x33333330\n  "
+      "total_len:       0x4440\n  in_port:         0x55555550\n  in_phy_port:  "
+      "   0x66666660\n  metadata:        0x7777777777777770\n  reason:         "
+      " APPLY_ACTION\n  table_id:        0x80\n  cookie:          "
+      "0x9999999999999990\n  match:           \n    - field:           "
+      "IN_PORT\n      value:           0x55555550\n    - field:           "
+      "IN_PHY_PORT\n      value:           0x66666660\n    - field:           "
+      "METADATA\n      value:           0x7777777777777770\n  data:            "
+      "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
+      "00000A000002000000000000000000000000000000000000\n  _pkt:            \n "
+      "   - field:           ETH_DST\n      value:           "
+      "'ff:ff:ff:ff:ff:ff'\n    - field:           ETH_SRC\n      value:       "
+      "    '00:00:00:00:00:01'\n    - field:           ETH_TYPE\n      value:  "
+      "         0x0806\n    - field:           ARP_OP\n      value:           "
+      "0x0001\n    - field:           ARP_SPA\n      value:           "
+      "10.0.0.1\n    - field:           ARP_TPA\n      value:           "
+      "10.0.0.2\n    - field:           ARP_SHA\n      value:           "
+      "'00:00:00:00:00:01'\n    - field:           ARP_THA\n      value:       "
+      "    '00:00:00:00:00:00'\n...\n",
+      true);
 }
 
 TEST(decoder, packetinv1) {
@@ -2175,28 +2205,26 @@ TEST(decoder, packetin_icmp4_frag1) {
       "1415161718191A1B1C1D1E1F202122232425",
       "---\ntype:            PACKET_IN\nxid:             0x00000000\nversion:  "
       "       0x04\nmsg:             \n  buffer_id:       NO_BUFFER\n  "
-      "total_len:       0x05EE\n  in_port:         0x00000001\n"
-      "  metadata:        0x0000000000000000\n  reason:         "
-      " APPLY_ACTION\n  table_id:        0x06\n  cookie:          "
-      "0x00000000FFFFFFFF\n  match:           \n    - field:           "
-      "IN_PORT\n      value:           0x00000001\n  data:            "
+      "total_len:       0x05EE\n  in_port:         0x00000001\n  metadata:     "
+      "   0x0000000000000000\n  reason:          APPLY_ACTION\n  table_id:     "
+      "   0x06\n  cookie:          0x00000000FFFFFFFF\n  match:           \n   "
+      " - field:           IN_PORT\n      value:           0x00000001\n  data: "
+      "           "
       "0E00000000010AC2BB024296810000640800450005DC0518200040013AA70A0000010A64"
       "00FE080014572C2400059DA8FC590000000046D506000000000010111213141516171819"
       "1A1B1C1D1E1F202122232425\n  _pkt:            \n    - field:           "
       "ETH_DST\n      value:           '0e:00:00:00:00:01'\n    - field:       "
       "    ETH_SRC\n      value:           '0a:c2:bb:02:42:96'\n    - field:   "
       "        VLAN_VID\n      value:           0x1064\n    - field:           "
-      "VLAN_PCP\n      value:           0x00\n    - field:           "
       "ETH_TYPE\n      value:           0x0800\n    - field:           "
-      "IP_DSCP\n      value:           0x00\n    - field:           IP_ECN\n   "
-      "   value:           0x00\n    - field:           IP_PROTO\n      value: "
-      "          0x01\n    - field:           IPV4_SRC\n      value:           "
-      "10.0.0.1\n    - field:           IPV4_DST\n      value:           "
-      "10.100.0.254\n    - field:           NX_IP_FRAG\n      value:           "
-      "0x01\n    - field:           NX_IP_TTL\n      value:           0x40\n   "
-      " - field:           ICMPV4_TYPE\n      value:           0x08\n    - "
-      "field:           ICMPV4_CODE\n      value:           0x00\n    - field: "
-      "          X_PKT_POS\n      value:           0x002A\n...\n",
+      "IP_PROTO\n      value:           0x01\n    - field:           "
+      "IPV4_SRC\n      value:           10.0.0.1\n    - field:           "
+      "IPV4_DST\n      value:           10.100.0.254\n    - field:           "
+      "NX_IP_FRAG\n      value:           0x01\n    - field:           "
+      "NX_IP_TTL\n      value:           0x40\n    - field:           "
+      "ICMPV4_TYPE\n      value:           0x08\n    - field:           "
+      "ICMPV4_CODE\n      value:           0x00\n    - field:           "
+      "X_PKT_POS\n      value:           0x002A\n...\n",
       true);
 }
 
@@ -2207,25 +2235,23 @@ TEST(decoder, packetin_icmp4_frag2) {
       "0A0000010A6400FEC0C1C2C3",
       "---\ntype:            PACKET_IN\nxid:             0x00000000\nversion:  "
       "       0x04\nmsg:             \n  buffer_id:       NO_BUFFER\n  "
-      "total_len:       0x002A\n  in_port:         0x00000001\n"
-      "  metadata:        0x0000000000000000\n  reason:         "
-      " APPLY_ACTION\n  table_id:        0x06\n  cookie:          "
-      "0x00000000FFFFFFFF\n  match:           \n    - field:           "
-      "IN_PORT\n      value:           0x00000001\n  data:            "
+      "total_len:       0x002A\n  in_port:         0x00000001\n  metadata:     "
+      "   0x0000000000000000\n  reason:          APPLY_ACTION\n  table_id:     "
+      "   0x06\n  cookie:          0x00000000FFFFFFFF\n  match:           \n   "
+      " - field:           IN_PORT\n      value:           0x00000001\n  data: "
+      "           "
       "0E00000000010AC2BB02429681000064080045000018051800B940015FB20A0000010A64"
       "00FEC0C1C2C3\n  _pkt:            \n    - field:           ETH_DST\n     "
       " value:           '0e:00:00:00:00:01'\n    - field:           ETH_SRC\n "
       "     value:           '0a:c2:bb:02:42:96'\n    - field:           "
       "VLAN_VID\n      value:           0x1064\n    - field:           "
-      "VLAN_PCP\n      value:           0x00\n    - field:           "
       "ETH_TYPE\n      value:           0x0800\n    - field:           "
-      "IP_DSCP\n      value:           0x00\n    - field:           IP_ECN\n   "
-      "   value:           0x00\n    - field:           IP_PROTO\n      value: "
-      "          0x01\n    - field:           IPV4_SRC\n      value:           "
-      "10.0.0.1\n    - field:           IPV4_DST\n      value:           "
-      "10.100.0.254\n    - field:           NX_IP_FRAG\n      value:           "
-      "0x03\n    - field:           NX_IP_TTL\n      value:           0x40\n   "
-      " - field:           X_PKT_POS\n      value:           0x0026\n...\n",
+      "IP_PROTO\n      value:           0x01\n    - field:           "
+      "IPV4_SRC\n      value:           10.0.0.1\n    - field:           "
+      "IPV4_DST\n      value:           10.100.0.254\n    - field:           "
+      "NX_IP_FRAG\n      value:           0x03\n    - field:           "
+      "NX_IP_TTL\n      value:           0x40\n    - field:           "
+      "X_PKT_POS\n      value:           0x0026\n...\n",
       true);
 }
 

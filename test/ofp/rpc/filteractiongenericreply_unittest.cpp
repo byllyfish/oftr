@@ -1,4 +1,4 @@
-// Copyright (c) 2017 William W. Fisher (at gmail dot com)
+// Copyright (c) 2017-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/filteractiongenericreply.h"
@@ -82,16 +82,14 @@ TEST(rpcfilteractiongenericreply, test_icmpv4_echo) {
       "ETH_DST\n      value:           '0a:c2:bb:02:42:96'\n    - field:       "
       "    ETH_SRC\n      value:           '0e:00:00:00:00:01'\n    - field:   "
       "        VLAN_VID\n      value:           0x1064\n    - field:           "
-      "VLAN_PCP\n      value:           0x00\n    - field:           "
       "ETH_TYPE\n      value:           0x0800\n    - field:           "
-      "IP_DSCP\n      value:           0x00\n    - field:           IP_ECN\n   "
-      "   value:           0x00\n    - field:           IP_PROTO\n      value: "
-      "          0x01\n    - field:           IPV4_SRC\n      value:           "
-      "10.100.0.254\n    - field:           IPV4_DST\n      value:           "
-      "10.0.0.1\n    - field:           NX_IP_TTL\n      value:           "
-      "0x40\n    - field:           ICMPV4_TYPE\n      value:           0x00\n "
-      "   - field:           ICMPV4_CODE\n      value:           0x00\n    - "
-      "field:           X_PKT_POS\n      value:           0x002A\n...\n");
+      "IP_PROTO\n      value:           0x01\n    - field:           "
+      "IPV4_SRC\n      value:           10.100.0.254\n    - field:           "
+      "IPV4_DST\n      value:           10.0.0.1\n    - field:           "
+      "NX_IP_TTL\n      value:           0x40\n    - field:           "
+      "ICMPV4_TYPE\n      value:           0x00\n    - field:           "
+      "ICMPV4_CODE\n      value:           0x00\n    - field:           "
+      "X_PKT_POS\n      value:           0x002A\n...\n");
 }
 
 TEST(rpcfilteractiongenericreply, test_icmpv4_non_echo) {
