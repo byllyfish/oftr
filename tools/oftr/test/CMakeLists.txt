@@ -51,7 +51,7 @@ endif()
 if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
   # Only run this test when building release binary.
   add_test(NAME oftr-benchmark COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-benchmark.sh)
-  set_tests_properties(oftr-benchmark PROPERTIES TIMEOUT 600)
+  set_tests_properties(oftr-benchmark PROPERTIES TIMEOUT 600 ENVIRONMENT "CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}")
 endif()
 
 add_test(NAME oftr-jsonrpc COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/runtests-jsonrpc.sh)

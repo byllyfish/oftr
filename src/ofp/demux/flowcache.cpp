@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/flowcache.h"
@@ -105,7 +105,8 @@ FlowData FlowCache::receive(const Timestamp &ts, const IPv6Endpoint &src,
             entry.secondsSince(ts));
 
   if (final) {
-    log_info("TCP finished", entry.sessionID, tcpFlagToString(flags), src, dst);
+    log_info("TCP finished", entry.sessionID, tcpFlagToString(flags), src, dst,
+             data.size());
   }
 
   if (isX) {

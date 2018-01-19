@@ -342,16 +342,16 @@ using Transport Layer Security (TLS).
     method: OFP.ADD_IDENTITY
     params:
       cert: String
-      cacert: String
       privkey: String
+      cacert: !opt String
       version: !opt String
       ciphers: !opt String
 
 *cert*:: PEM certificate chain data.
 
-*cacert*:: Trusted PEM root certificate(s).
-
 *privkey*: PEM private key associated with given `cert`.
+
+*cacert*:: Trusted PEM root certificates used to verify peer (optional).
 
 *version*: Supported TLS versions (optional). 
 
@@ -371,9 +371,15 @@ Use the `OFP.ADD_IDENTITY` command to add a SSL/TLS identity for use in encrypti
 connections. The reply contains the unique `tls_id` to pass to OFP.CONNECT and
 OFP.LISTEN commands.
 
+The `cert` parameter contains the certificate chain sent to clients that want to
+establish a secure connection. The `privkey` parameter is the private key associated 
+with the main certificate in the chain.
+
 The `cacert` parameter contains the certificate authority used to authenticate the 
 certificate chain presented by the other end of the connection. The cacert may
-be multiple certificates concatenated together.
+be multiple certificates concatenated together to support multiple, unrelated client 
+certificates. If the cacert is empty or missing, the SSL identity will not request
+or verify the peer certificate.
 
 The `version` parameter is the supported TLS version. This may be specified as a
 single version "TLS1.2" or a range "TLS1.0-TLS1.2". Supported constants are TLS1.0,

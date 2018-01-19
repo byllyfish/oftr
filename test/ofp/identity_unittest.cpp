@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/identity.h"
@@ -98,10 +98,10 @@ TEST(identity, cert_with_private_key_no_ca) {
   sys::Identity identity{
       kGarbageCertificate, kGarbagePrivateKey, "", "", "", err};
 
-  log_debug("identity error", err);
-  asio::error_code expected{ERR_PACK(ERR_LIB_PEM, PEM_R_NO_START_LINE),
-                            asio::error::get_ssl_category()};
+  // This is an insecure configuration but it's allowed.
+  asio::error_code expected;
   EXPECT_EQ(expected, err);
+  EXPECT_EQ(SSL_VERIFY_NONE, identity.peerVerifyMode());
 }
 
 TEST(identity, cert_with_private_key) {
@@ -115,6 +115,8 @@ TEST(identity, cert_with_private_key) {
 
   asio::error_code expected;
   EXPECT_EQ(expected, err);
+  EXPECT_EQ(SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
+            identity.peerVerifyMode());
 
   // EXPECT_EQ(identity.minProtoVersion(), TLS1_2_VERSION);
   // EXPECT_EQ(identity.maxProtoVersion(), TLS1_2_VERSION);
@@ -146,6 +148,8 @@ TEST(identity, cert_with_valid_cipher) {
 
   asio::error_code expected;
   EXPECT_EQ(expected, err);
+  EXPECT_EQ(SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
+            identity.peerVerifyMode());
 
   // EXPECT_EQ(identity.minProtoVersion(), TLS1_2_VERSION);
   // EXPECT_EQ(identity.maxProtoVersion(), TLS1_2_VERSION);
@@ -176,6 +180,8 @@ TEST(identity, cert_with_valid_version) {
 
   asio::error_code expected;
   EXPECT_EQ(expected, err);
+  EXPECT_EQ(SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
+            identity.peerVerifyMode());
 
   // EXPECT_EQ(identity.minProtoVersion(), TLS1_1_VERSION);
   // EXPECT_EQ(identity.maxProtoVersion(), TLS1_2_VERSION);

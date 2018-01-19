@@ -63,8 +63,8 @@ Rpc/OFP.ADD_IDENTITY:
   method: !request OFP.ADD_IDENTITY
   params: !request
     cert: String
-    cacert: String
     privkey: String
+    cacert: !opt String
     version: !opt String
     ciphers: !opt String
   result: !reply

@@ -2,12 +2,12 @@
 .\"     Title: oftr-jsonrpc
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 12/29/2017
+.\"      Date: 01/18/2018
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "OFTR\-JSONRPC" "1" "12/29/2017" "\ \&" "\ \&"
+.TH "OFTR\-JSONRPC" "1" "01/18/2018" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -866,8 +866,8 @@ id: UInt64
 method: OFP\&.ADD_IDENTITY
 params:
   cert: String
-  cacert: String
   privkey: String
+  cacert: !opt String
   version: !opt String
   ciphers: !opt String
 .fi
@@ -879,13 +879,13 @@ params:
 .RS 4
 PEM certificate chain data\&.
 .RE
+.sp
+\fBprivkey\fR: PEM private key associated with given cert\&.
 .PP
 \fBcacert\fR
 .RS 4
-Trusted PEM root certificate(s)\&.
+Trusted PEM root certificates used to verify peer (optional)\&.
 .RE
-.sp
-\fBprivkey\fR: PEM private key associated with given cert\&.
 .sp
 \fBversion\fR: Supported TLS versions (optional)\&.
 .sp
@@ -928,7 +928,9 @@ Unique, non\-zero identifier representing the TLS identity\&.
 .sp
 Use the OFP\&.ADD_IDENTITY command to add a SSL/TLS identity for use in encrypting connections\&. The reply contains the unique tls_id to pass to OFP\&.CONNECT and OFP\&.LISTEN commands\&.
 .sp
-The cacert parameter contains the certificate authority used to authenticate the certificate chain presented by the other end of the connection\&. The cacert may be multiple certificates concatenated together\&.
+The cert parameter contains the certificate chain sent to clients that want to establish a secure connection\&. The privkey parameter is the private key associated with the main certificate in the chain\&.
+.sp
+The cacert parameter contains the certificate authority used to authenticate the certificate chain presented by the other end of the connection\&. The cacert may be multiple certificates concatenated together to support multiple, unrelated client certificates\&. If the cacert is empty or missing, the SSL identity will not request or verify the peer certificate\&.
 .sp
 The version parameter is the supported TLS version\&. This may be specified as a single version "TLS1\&.2" or a range "TLS1\&.0\-TLS1\&.2"\&. Supported constants are TLS1\&.0, TLS1\&.1, TLS1\&.2, and TLS1\&.3\&. Leaving the version empty specifies the default, TLS 1\&.2\&.
 .sp

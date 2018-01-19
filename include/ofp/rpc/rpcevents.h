@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_RPC_RPCEVENTS_H_
@@ -228,10 +228,10 @@ struct RpcAddIdentity {
   struct Params {
     /// Certificate chain in PEM format.
     std::string cert;
-    /// PEM certificate for trusted CA to use for verifying a peer certificate.
-    std::string cacert;
     /// Private key for certificate in `cert`.
     std::string privkey;
+    /// PEM certificate for trusted CA to use for verifying a peer certificate.
+    std::string cacert;
     /// TLS Protocol version.
     std::string version;
     /// Supported ciphers.

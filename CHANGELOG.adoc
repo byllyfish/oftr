@@ -1,5 +1,17 @@
 = Changelog
 
+== Version 0.44 (18 January 2018)
+
+- In OFP.ADD_IDENTITY, cacert is now optional. If omitted, we don't request or verify the peer certificate.
+- Generate ethernet packets with a minimum size of 60 bytes.
+- Packet decodes only include vlan_pcp, ip_dscp, ip_ecn, ipv6_flabel fields if they are non-zero.
+- Ignore zero padding at end of decoded arp messages (don't add x_pkt_pos).
+- Include zof integration tests in code coverage.
+- Add go-dlopen example test.
+- Update copyright year to 2018.
+- Flush writes to --pkt-write-file output after each packet.
+- Update boringssl and googletest modules.
+
 == Version 0.43 (29 December 2017)
 
 - Update asio release. (This fixes a double-free memory bug.)

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2017 William W. Fisher (at gmail dot com)
+// Copyright (c) 2016-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/pktsink.h"
@@ -67,6 +67,9 @@ void PktSink::write(const Timestamp &ts, const ByteRange &captureData,
   hdr.len = length;
 
   pcap_dump(reinterpret_cast<u_char *>(dump_), &hdr, captureData.data());
+
+  // Flush the packet output immediately.
+  (void)pcap_dump_flush(dump_);
 }
 
 void PktSink::setError(const char *func, const char *msg) {

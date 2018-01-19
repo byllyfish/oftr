@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2017 William W. Fisher (at gmail dot com)
+// Copyright (c) 2015-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
 #ifndef OFP_RPC_YRPCEVENTS_H_
@@ -84,8 +84,8 @@ id: !opt UInt64
 method: !request OFP.ADD_IDENTITY
 params: !request
   cert: String
-  cacert: String
   privkey: String
+  cacert: !opt String
   version: !opt String
   ciphers: !opt String
 result: !reply
@@ -205,8 +205,8 @@ template <>
 struct MappingTraits<ofp::rpc::RpcAddIdentity::Params> {
   static void mapping(IO &io, ofp::rpc::RpcAddIdentity::Params &params) {
     io.mapRequired("cert", params.cert);
-    io.mapRequired("cacert", params.cacert);
     io.mapRequired("privkey", params.privkey);
+    io.mapOptional("cacert", params.cacert);
     io.mapOptional("version", params.version);
     io.mapOptional("ciphers", params.ciphers);
   }

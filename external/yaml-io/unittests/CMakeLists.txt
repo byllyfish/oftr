@@ -18,3 +18,6 @@ if(LIBOFP_MEMCHECK)
   add_test(NAME memcheck_yaml_test COMMAND ${cmd})
   set_tests_properties(memcheck_yaml_test PROPERTIES TIMEOUT 60)
 endif()
+
+add_executable(yamlio_parse yamlio_parse_main.cpp)
+target_link_libraries(yamlio_parse yamlio ${CMAKE_THREAD_LIBS_INIT})
