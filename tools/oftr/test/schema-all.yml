@@ -2090,6 +2090,21 @@ Field/X_IPV6_ND_RES:
   value: UInt32
   mask: !optout UInt32
   
+Field/X_LLDP_SYS_NAME: 
+  field: X_LLDP_SYS_NAME
+  value: LLDPSysName
+  mask: !optout LLDPSysName
+  
+Field/X_LLDP_PORT_DESCR: 
+  field: X_LLDP_PORT_DESCR
+  value: LLDPPortDescr
+  mask: !optout LLDPPortDescr
+  
+Field/X_LLDP_CUSTOM1: 
+  field: X_LLDP_CUSTOM1
+  value: LLDPCustom
+  mask: !optout LLDPCustom
+  
 Field/X_EXPERIMENTER_01: 
   field: X_EXPERIMENTER_01
   value: UInt16
@@ -2169,4 +2184,10 @@ Builtin/RegisterBits: <builtin>
 Builtin/DurationSec: <builtin>
 
 Builtin/VlanNumber: <builtin>
+
+Builtin/LLDPSysName: <builtin>
+
+Builtin/LLDPPortDescr: <builtin>
+
+Builtin/LLDPCustom: <builtin>
 

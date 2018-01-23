@@ -4,6 +4,7 @@
 #include "ofp/lldpvalue.h"
 #include "ofp/ipv6address.h"
 #include "ofp/smallcstring.h"  // for validUtf8String
+#include "ofp/byteorder.h"
 
 using namespace ofp;
 
@@ -283,9 +284,59 @@ static bool portIDFromString(const std::string &val, ByteList *data) {
   return fromText(val, data, asByte(PortIDSubtype::LocallyAssigned));
 }
 
+static std::string customToString(const ByteRange &data) {
+  if (data.size() < 4) {
+    return toRaw("unknown", data, 0);
+  }
+
+  UInt32 org_prefix = Big32_unaligned(data.data());
+  UInt32 oui = org_prefix >> 8;
+  UInt8 subtype = org_prefix & 0xFF;
+  ByteRange rest = SafeByteRange(data, 4);
+
+  std::string result;
+  llvm::raw_string_ostream oss{result};
+  oss << "0x";
+  oss.write_hex(oui);
+  oss << " 0x";
+  oss.write_hex(subtype);
+  oss << ' ' << RawDataToHex(rest.data(), rest.size());
+
+  return oss.str();
+}
+
+static bool customFromString(const std::string &val, ByteList *data) {
+  llvm::StringRef str{val};
+
+  UInt32 oui = 0;
+  if (str.consumeInteger(0, oui)) {
+    log_debug("customFromString: Unrecognized oui:", str);
+    return false;
+  }
+  str = str.ltrim();
+
+  UInt8 subtype = 0;
+  if (str.consumeInteger(0, subtype)) {
+    log_debug("customFromString: Unrecognized subtype:", str);
+    return false;
+  }
+  str = str.ltrim();
+
+  data->resize(str.size() / 2 + 1);
+  bool err = false;
+  size_t size = HexToRawData(str, data->mutableData(), data->size(), &err);
+  data->resize(size);
+  if (err) {
+    return false;
+  }
+
+  Big32 prefix = (oui << 8) | subtype;
+  data->insert(data->begin(), &prefix, sizeof(prefix));
+  return true;
+}
+
 /// Parse a string into the value of a LLDP TLV. The interpretation of the
-/// string
-/// depends on the type of TLV.
+/// string depends on the type of TLV.
 bool ofp::detail::LLDPParse(LLDPType type, const std::string &val,
                             ByteList *data) {
   switch (type) {
@@ -300,6 +351,8 @@ bool ofp::detail::LLDPParse(LLDPType type, const std::string &val,
     case LLDPType::SysCapabilities:
     case LLDPType::MgmtAddress:
       return fromRaw(val, data, 0);
+    case LLDPType::Custom:
+      return customFromString(val, data);
   }
 
   return fromRaw(val, data, 0);
@@ -319,6 +372,8 @@ std::string ofp::detail::LLDPToString(LLDPType type, const ByteRange &data) {
     case LLDPType::SysCapabilities:
     case LLDPType::MgmtAddress:
       break;
+    case LLDPType::Custom:
+      return customToString(data);
   }
 
   return RawDataToHex(data.begin(), data.size());

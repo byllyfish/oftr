@@ -78,6 +78,9 @@ X_LLDP_PORT_ID    | LLDPPortID    | 0xffff0444.0x00ffffff | (Internal) LLDP Port
 X_LLDP_TTL        | UInt16        | 0xffff0606.0x00ffffff | (Internal) LLDP TTL
 X_PKT_POS         | UInt16        | 0xffff0806.0x00ffffff | (Internal) Last Position in Packet
 X_IPV6_ND_RES     | UInt32        | 0xffff0a08.0x00ffffff | (Internal) ICMPv6 Neighbor Discovery Reserved
+X_LLDP_SYS_NAME   | LLDPSysName   | 0xffff0c44.0x00ffffff | (Internal) LLDP System Name
+X_LLDP_PORT_DESCR | LLDPPortDescr | 0xffff0e44.0x00ffffff | (Internal) LLDP System Name
+X_LLDP_CUSTOM1    | LLDPCustom    | 0xffff1044.0x00ffffff | (Internal) LLDP Custom Field 1
 X_EXPERIMENTER_01 | UInt16        | 0xffff0606.0x00fffffe | (Internal) Experimental Test Field
 DURATION          | DurationSec   | 0x80020008            | (OXS) Time flow entry has been alive
 IDLE_TIME         | DurationSec   | 0x80020208            | (OXS) Time flow entry has been idle

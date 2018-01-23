@@ -144,7 +144,7 @@ static const char *const kBuiltinTypes[] = {
     "MacAddress",    "IPv4Address", "IPv6Address",  "IPEndpoint",
     "LLDPChassisID", "LLDPPortID",  "ActionID",     "FieldID",
     "InstructionID", "Timestamp",   "RegisterBits", "DurationSec",
-    "VlanNumber"};
+    "VlanNumber", "LLDPSysName", "LLDPPortDescr", "LLDPCustom"};
 
 using SchemaPair = std::pair<ofp::yaml::SchemaMakerFunction, const char *>;
 
@@ -229,7 +229,10 @@ static const std::pair<const char *, const char *> kFieldTypeMap[] = {
     {"Big64", "UInt64"},
     {"Big24", "UInt24"},
     {"LLDPValue<LLDPType::ChassisID>", "LLDPChassisID"},
-    {"LLDPValue<LLDPType::PortID>", "LLDPPortID"}};
+    {"LLDPValue<LLDPType::PortID>", "LLDPPortID"},
+    {"LLDPValue<LLDPType::SysName>", "LLDPSysName"},
+    {"LLDPValue<LLDPType::PortDescr>", "LLDPPortDescr"},
+    {"LLDPValue<LLDPType::Custom>", "LLDPCustom"}};
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
 

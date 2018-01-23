@@ -16,7 +16,8 @@ enum class LLDPType {
   SysName = 5,
   SysDescr = 6,
   SysCapabilities = 7,
-  MgmtAddress = 8
+  MgmtAddress = 8,
+  Custom = 127
 };
 
 namespace detail {
@@ -26,6 +27,10 @@ std::string LLDPToString(LLDPType type, const ByteRange &data);
 
 }  // namespace detail
 
+/// LLDPValue is a concrete type that stores an LLDP value as a 
+/// pascal string. The first byte is the size of the data, and
+/// the remaining bytes are the data. `Type` represents the TLV
+/// type.
 template <LLDPType Type>
 class LLDPValue {
  public:
