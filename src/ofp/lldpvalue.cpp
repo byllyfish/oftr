@@ -2,9 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/lldpvalue.h"
+#include "ofp/byteorder.h"
 #include "ofp/ipv6address.h"
 #include "ofp/smallcstring.h"  // for validUtf8String
-#include "ofp/byteorder.h"
 
 using namespace ofp;
 

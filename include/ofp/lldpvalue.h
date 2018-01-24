@@ -27,7 +27,7 @@ std::string LLDPToString(LLDPType type, const ByteRange &data);
 
 }  // namespace detail
 
-/// LLDPValue is a concrete type that stores an LLDP value as a 
+/// LLDPValue is a concrete type that stores an LLDP value as a
 /// pascal string. The first byte is the size of the data, and
 /// the remaining bytes are the data. `Type` represents the TLV
 /// type.

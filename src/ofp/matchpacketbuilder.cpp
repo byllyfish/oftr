@@ -257,7 +257,7 @@ void MatchPacketBuilder::buildLldp(ByteList *msg) const {
   if (!lldpCustom_.empty()) {
     pkt::LLDPTlv tlv{pkt::LLDPTlv::ORG_SPECIFIC, lldpCustom_.size()};
     msg->add(&tlv, sizeof(tlv));
-    msg->add(lldpCustom_.data(), lldpCustom_.size());    
+    msg->add(lldpCustom_.data(), lldpCustom_.size());
   }
 
   pkt::LLDPTlv end{pkt::LLDPTlv::END, 0};
