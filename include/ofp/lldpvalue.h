@@ -46,6 +46,8 @@ class LLDPValue {
   size_t size() const { return buf_[0] <= MaxSize ? buf_[0] : MaxSize; }
   UInt8 *mutableData() { return &buf_[1]; }
 
+  bool empty() const { return buf_[0] == 0; }
+
   void resize(size_t size) {
     assert(size <= MaxSize);
     buf_[0] = UInt8_narrow_cast(size);

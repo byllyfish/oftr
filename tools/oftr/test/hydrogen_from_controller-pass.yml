@@ -105,6 +105,10 @@ msg:
       value:           '2'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_CUSTOM1
+      value:           '0x26e1 0x0 4F467C32404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            PACKET_OUT
@@ -131,6 +135,10 @@ msg:
       value:           '-2'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_CUSTOM1
+      value:           '0x26e1 0x0 4F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            PACKET_OUT
@@ -517,6 +525,10 @@ msg:
       value:           '1'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_CUSTOM1
+      value:           '0x26e1 0x0 4F467C31404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            PACKET_OUT
@@ -1470,6 +1482,10 @@ msg:
       value:           '2'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_CUSTOM1
+      value:           '0x26e1 0x0 4F467C32404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            PACKET_OUT
@@ -1496,6 +1512,10 @@ msg:
       value:           '-2'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_CUSTOM1
+      value:           '0x26e1 0x0 4F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            PACKET_OUT
@@ -1522,6 +1542,10 @@ msg:
       value:           '1'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_CUSTOM1
+      value:           '0x26e1 0x0 4F467C31404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            REQUEST.EXPERIMENTER

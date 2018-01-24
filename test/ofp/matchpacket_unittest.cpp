@@ -501,36 +501,20 @@ TEST(matchpacket, lldp) {
       "0180C200000E00000000000188CC0207040000000000010403072D32060200780A1A4F46"
       "7C30303A30303A30303A30303A30303A30303A30303A3031FE240026E1004F467C2D3240"
       "4F467C30303A30303A30303A30303A30303A30303A30303A30310000",
-      "---\n- field:           ETH_DST\n  value:           "
-      "'01:80:c2:00:00:0e'\n- field:           ETH_SRC\n  value:           "
-      "'00:00:00:00:00:01'\n- field:           ETH_TYPE\n  value:           "
-      "0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           'mac "
-      "000000000001'\n- field:           X_LLDP_PORT_ID\n  value:           "
-      "'-2'\n- field:           X_LLDP_TTL\n  value:           0x0078\n...\n");
+      "---\n- field:           ETH_DST\n  value:           '01:80:c2:00:00:0e'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:01'\n- field:           ETH_TYPE\n  value:           0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           'mac 000000000001'\n- field:           X_LLDP_PORT_ID\n  value:           '-2'\n- field:           X_LLDP_TTL\n  value:           0x0078\n- field:           X_LLDP_SYS_NAME\n  value:           'OF|00:00:00:00:00:00:00:01'\n- field:           X_LLDP_CUSTOM1\n  value:           '0x26e1 0x0 4F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A3031'\n...\n");
 
   // malformed lldp tlv
   testPacket(
       "0180C200000EB2D434D89B0388CC0209010000000000000002040502000000020603000"
       "1",
-      "---\n- field:           ETH_DST\n  value:           "
-      "'01:80:c2:00:00:0e'\n- field:           ETH_SRC\n  value:           "
-      "'b2:d4:34:d8:9b:03'\n- field:           ETH_TYPE\n  value:           "
-      "0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           "
-      "'chassis 0000000000000002'\n- field:           X_LLDP_PORT_ID\n  value: "
-      "          'port 00000002'\n- field:           X_PKT_POS\n  value:       "
-      "    0x0020\n...\n");
+      "---\n- field:           ETH_DST\n  value:           '01:80:c2:00:00:0e'\n- field:           ETH_SRC\n  value:           'b2:d4:34:d8:9b:03'\n- field:           ETH_TYPE\n  value:           0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           'chassis 0000000000000002'\n- field:           X_LLDP_PORT_ID\n  value:           'port 00000002'\n- field:           X_PKT_POS\n  value:           0x0020\n...\n");
 
   // no end tlv
   testPacket(
       "0180C200000E00000000000188CC0207040000000000010403072D32060200780A1A4F46"
       "7C30303A30303A30303A30303A30303A30303A30303A3031FE240026E1004F467C2D3240"
       "4F467C30303A30303A30303A30303A30303A30303A30303A3031",
-      "---\n- field:           ETH_DST\n  value:           "
-      "'01:80:c2:00:00:0e'\n- field:           ETH_SRC\n  value:           "
-      "'00:00:00:00:00:01'\n- field:           ETH_TYPE\n  value:           "
-      "0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           'mac "
-      "000000000001'\n- field:           X_LLDP_PORT_ID\n  value:           "
-      "'-2'\n- field:           X_LLDP_TTL\n  value:           0x0078\n...\n");
+      "---\n- field:           ETH_DST\n  value:           '01:80:c2:00:00:0e'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:01'\n- field:           ETH_TYPE\n  value:           0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           'mac 000000000001'\n- field:           X_LLDP_PORT_ID\n  value:           '-2'\n- field:           X_LLDP_TTL\n  value:           0x0078\n- field:           X_LLDP_SYS_NAME\n  value:           'OF|00:00:00:00:00:00:00:01'\n- field:           X_LLDP_CUSTOM1\n  value:           '0x26e1 0x0 4F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A3031'\n...\n");
 
   // Padded to 60 bytes
   testPacket(
@@ -542,7 +526,7 @@ TEST(matchpacket, lldp) {
       "0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           "
       "'chassis 001122334455'\n- field:           X_LLDP_PORT_ID\n  value:     "
       "      'port 0102'\n- field:           X_LLDP_TTL\n  value:           "
-      "0x0045\n- field:           X_PKT_POS\n  value:           0x0022\n...\n");
+      "0x0045\n...\n");
 
   // Minimal LLDP (60 bytes)
   testPacket(
@@ -553,8 +537,8 @@ TEST(matchpacket, lldp) {
       "'00:00:00:00:00:00'\n- field:           ETH_TYPE\n  value:           "
       "0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           "
       "'unknown'\n- field:           X_LLDP_PORT_ID\n  value:           "
-      "'unknown'\n- field:           X_LLDP_TTL\n  value:           0x0000\n- "
-      "field:           X_PKT_POS\n  value:           0x0018\n...\n");
+      "'unknown'\n- field:           X_LLDP_TTL\n  value:           0x0000\n"
+      "...\n");
 }
 
 TEST(matchpacket, ethernet_misaligned) {

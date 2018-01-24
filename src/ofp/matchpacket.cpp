@@ -519,7 +519,7 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
 
     switch (lldp->type()) {
       case pkt::LLDPTlv::END:
-        offset_ += jumpSize;
+        offset_ += length;
         return;  // all done; ignore anything else
 
       case pkt::LLDPTlv::CHASSIS_ID:
@@ -532,6 +532,18 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
 
       case pkt::LLDPTlv::TTL:
         match_.addUnchecked(X_LLDP_TTL{lldp->value16()});
+        break;
+
+      case pkt::LLDPTlv::SYS_NAME:
+        match_.addUnchecked(X_LLDP_SYS_NAME{lldp->value()});
+        break;
+
+      case pkt::LLDPTlv::PORT_DESCR:
+        match_.addUnchecked(X_LLDP_PORT_DESCR{lldp->value()});
+        break;
+
+      case pkt::LLDPTlv::ORG_SPECIFIC:
+        match_.addUnchecked(X_LLDP_CUSTOM1{lldp->value()});
         break;
     }
 
