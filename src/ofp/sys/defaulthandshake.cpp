@@ -118,8 +118,8 @@ void DefaultHandshake::onHello(const Message *message) {
 
   channel_->setVersion(version);
 
-  log_info("OpenFlow version:", static_cast<int>(msgVersion), "Peer versions:",
-           msg->protocolVersions().toString(),
+  log_info("OpenFlow version:", static_cast<int>(msgVersion),
+           "Peer versions:", msg->protocolVersions().toString(),
            std::make_pair("connid", channel_->connectionId()));
 
   if (wantFeatures()) {

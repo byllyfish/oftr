@@ -7,11 +7,11 @@
 #include "ofp/ofp.h"
 #include "ofp/yaml/yflowmod.h"
 
+using ofp::Channel;
+using ofp::Message;
+using ofp::Milliseconds;
 using ofp::UInt16;
 using ofp::UInt32;
-using ofp::Message;
-using ofp::Channel;
-using ofp::Milliseconds;
 
 class NullAgent : public ofp::ChannelListener {
  public:

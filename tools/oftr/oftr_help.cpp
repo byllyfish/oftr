@@ -122,7 +122,8 @@ static const char *const kActionSchemas[] = {
     llvm::yaml::kNiciraRegLoadActionSchema};
 
 static const char *const kMeterBandSchemas[] = {
-    llvm::yaml::kMeterBandDropSchema, llvm::yaml::kMeterBandDscpRemarkSchema,
+    llvm::yaml::kMeterBandDropSchema,
+    llvm::yaml::kMeterBandDscpRemarkSchema,
     llvm::yaml::kMeterBandExperimenterSchema,
 };
 
