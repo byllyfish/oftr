@@ -709,3 +709,7 @@ TEST(matchpacket, icmpv4_padded) {
       "value:           0x08\n- field:           ICMPV4_CODE\n  value:         "
       "  0x00\n- field:           X_PKT_POS\n  value:           0x0026\n...\n");
 }
+
+TEST(matchpacket, lldp_custom) {
+  testPacket("0180C200000E0E000000100188CC0207040E000000100104020531060200030A0B53797374656D5F4E414D45080A506F72745F4445534352FE080012BB02014065000000", "---\n- field:           ETH_DST\n  value:           '01:80:c2:00:00:0e'\n- field:           ETH_SRC\n  value:           '0e:00:00:00:10:01'\n- field:           ETH_TYPE\n  value:           0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           'mac 0E0000001001'\n- field:           X_LLDP_PORT_ID\n  value:           'ifname 31'\n- field:           X_LLDP_TTL\n  value:           0x0003\n- field:           X_LLDP_SYS_NAME\n  value:           'System_NAME'\n- field:           X_LLDP_PORT_DESCR\n  value:           'Port_DESCR'\n- field:           X_LLDP_CUSTOM1\n  value:           '0x12bb 0x2 01406500'\n...\n");
+}
