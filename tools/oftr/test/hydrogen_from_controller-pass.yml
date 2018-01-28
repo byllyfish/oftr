@@ -100,7 +100,7 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '2'
     - field:           X_LLDP_TTL
@@ -130,7 +130,7 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '-2'
     - field:           X_LLDP_TTL
@@ -520,7 +520,7 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '1'
     - field:           X_LLDP_TTL
@@ -1477,7 +1477,7 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '2'
     - field:           X_LLDP_TTL
@@ -1507,7 +1507,7 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '-2'
     - field:           X_LLDP_TTL
@@ -1537,7 +1537,7 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '1'
     - field:           X_LLDP_TTL

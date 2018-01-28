@@ -5,6 +5,7 @@
 #include "ofp/byteorder.h"
 #include "ofp/ipv6address.h"
 #include "ofp/smallcstring.h"  // for validUtf8String
+#include "ofp/macaddress.h"
 
 using namespace ofp;
 
@@ -142,6 +143,27 @@ static std::string toAddress(const ByteRange &data, size_t offset) {
   return toRaw("unknown", data, 0);
 }
 
+static bool fromAddressMAC(const std::string &val, ByteList *data,
+                          UInt8 subtype) {
+  MacAddress addr;
+  if (!addr.parse(val))
+    return false;
+  data->clear();
+  data->add(&subtype, 1);
+  data->add(&addr, sizeof(addr));
+  return true;
+}
+
+static std::string toAddressMAC(const ByteRange &data, size_t offset) {
+  MacAddress addr;
+  if (offset + sizeof(addr) == data.size()) {
+    std::memcpy(&addr, &data[offset], sizeof(addr));
+    return "mac " + addr.toString();
+  }
+
+  return toRaw("unknown", data, 0);
+}
+
 // Convert LLDP ChassisID to a string.
 //
 // Formatted as:
@@ -168,7 +190,7 @@ static std::string chassisIDToString(const ByteRange &data) {
     case asByte(ChassisIDSubtype::PortComponent):
       return toRaw("port", data, 1);
     case asByte(ChassisIDSubtype::MacAddress):
-      return toRaw("mac", data, 1);
+      return toAddressMAC(data, 1);
     case asByte(ChassisIDSubtype::NetworkAddress):
       return toAddress(data, 1);
     case asByte(ChassisIDSubtype::InterfaceName):
@@ -214,7 +236,7 @@ static bool chassisIDFromString(const std::string &val, ByteList *data) {
     return fromText(pair.second, data, asByte(ChassisIDSubtype::InterfaceName));
 
   if (pair.first == "mac")
-    return fromRaw(pair.second, data, asByte(ChassisIDSubtype::MacAddress));
+    return fromAddressMAC(pair.second, data, asByte(ChassisIDSubtype::MacAddress));
 
   if (pair.first == "ip")
     return fromAddressV4(pair.second, data,
@@ -240,7 +262,7 @@ static std::string portIDToString(const ByteRange &data) {
     case asByte(PortIDSubtype::NetworkAddress):
       return toAddress(data, 1);
     case asByte(PortIDSubtype::MacAddress):
-      return toRaw("mac", data, 1);
+      return toAddressMAC(data, 1);
     case asByte(PortIDSubtype::InterfaceName):
       return toRaw("ifname", data, 1);
     case asByte(PortIDSubtype::AgentCircuitID):
@@ -268,7 +290,7 @@ static bool portIDFromString(const std::string &val, ByteList *data) {
     return fromRaw(pair.second, data, asByte(PortIDSubtype::InterfaceName));
 
   if (pair.first == "mac")
-    return fromRaw(pair.second, data, asByte(PortIDSubtype::MacAddress));
+    return fromAddressMAC(pair.second, data, asByte(PortIDSubtype::MacAddress));
 
   if (pair.first == "ip")
     return fromAddressV4(pair.second, data,
