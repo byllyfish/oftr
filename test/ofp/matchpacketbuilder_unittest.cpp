@@ -138,7 +138,7 @@ TEST(matchpacketbuilder, lldp_custom) {
   oxm.add(X_LLDP_CHASSIS_ID{chassisID});
 
   LLDPValue<LLDPType::PortID> portID;
-  EXPECT_TRUE(portID.parse("ifname 31"));
+  EXPECT_TRUE(portID.parse("ifname 1"));
   oxm.add(X_LLDP_PORT_ID{portID});
   oxm.add(X_LLDP_TTL{3});
 

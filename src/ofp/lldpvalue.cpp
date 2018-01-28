@@ -264,7 +264,7 @@ static std::string portIDToString(const ByteRange &data) {
     case asByte(PortIDSubtype::MacAddress):
       return toAddressMAC(data, 1);
     case asByte(PortIDSubtype::InterfaceName):
-      return toRaw("ifname", data, 1);
+      return toText("ifname", data, 1);
     case asByte(PortIDSubtype::AgentCircuitID):
       return toRaw("circuit", data, 1);
     case asByte(PortIDSubtype::LocallyAssigned):
@@ -287,7 +287,7 @@ static bool portIDFromString(const std::string &val, ByteList *data) {
     return fromRaw(pair.second, data, asByte(PortIDSubtype::PortComponent));
 
   if (pair.first == "ifname")
-    return fromRaw(pair.second, data, asByte(PortIDSubtype::InterfaceName));
+    return fromText(pair.second, data, asByte(PortIDSubtype::InterfaceName));
 
   if (pair.first == "mac")
     return fromAddressMAC(pair.second, data, asByte(PortIDSubtype::MacAddress));
