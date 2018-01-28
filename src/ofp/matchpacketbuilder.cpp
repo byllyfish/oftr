@@ -111,8 +111,8 @@ MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
       case X_LLDP_PORT_DESCR::type():
         lldpPortDescr_ = item.value<X_LLDP_PORT_DESCR>();
         break;
-      case X_LLDP_CUSTOM1::type():
-        lldpCustom_ = item.value<X_LLDP_CUSTOM1>();
+      case X_LLDP_ORG_SPECIFIC::type():
+        lldpCustom_ = item.value<X_LLDP_ORG_SPECIFIC>();
         break;
       case X_IPV6_ND_RES::type():
         ndRes_ = item.value<X_IPV6_ND_RES>();

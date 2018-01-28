@@ -543,7 +543,7 @@ void MatchPacket::decodeLLDP(const UInt8 *pkt, size_t length) {
         break;
 
       case pkt::LLDPTlv::ORG_SPECIFIC:
-        match_.addUnchecked(X_LLDP_CUSTOM1{lldp->value()});
+        match_.addUnchecked(X_LLDP_ORG_SPECIFIC{lldp->value()});
         break;
     }
 

@@ -219,8 +219,8 @@ TEST(lldpvalue, portID) {
   EXPECT_EQ("001122334455", value.toString());
 }
 
-TEST(lldpvalue, portDescr) {
-  LLDPValue<LLDPType::PortDescr> value;
+TEST(lldpvalue, bytestring) {
+  LLDPValue<LLDPType::ByteString> value;
 
   EXPECT_TRUE(value.parse(""));
   EXPECT_HEX(
@@ -237,47 +237,9 @@ TEST(lldpvalue, portDescr) {
   EXPECT_EQ("portdescr", value.toString());
 }
 
-TEST(lldpvalue, sysName) {
-  LLDPValue<LLDPType::SysName> value;
-
-  EXPECT_TRUE(value.parse(""));
-  EXPECT_HEX(
-      "000000000000000000000000000000000000000000000000000000000000000000000000"
-      "00000000000000000000000000000000000000000000000000000000",
-      &value, sizeof(value));
-  EXPECT_EQ("", value.toString());
-
-  EXPECT_TRUE(value.parse("sysname"));
-  EXPECT_HEX(
-      "077379736E616D6500000000000000000000000000000000000000000000000000000000"
-      "00000000000000000000000000000000000000000000000000000000",
-      &value, sizeof(value));
-  EXPECT_EQ("sysname", value.toString());
-}
-
-TEST(lldpvalue, sysDescr) {
-  LLDPValue<LLDPType::SysDescr> value;
-
-  EXPECT_TRUE(value.parse(""));
-  EXPECT_HEX(
-      "000000000000000000000000000000000000000000000000000000000000000000000000"
-      "00000000000000000000000000000000000000000000000000000000",
-      &value, sizeof(value));
-  EXPECT_EQ("", value.toString());
-
-  EXPECT_TRUE(value.parse("sysdescr"));
-  EXPECT_HEX(
-      "087379736465736372000000000000000000000000000000000000000000000000000000"
-      "00000000000000000000000000000000000000000000000000000000",
-      &value, sizeof(value));
-  EXPECT_EQ("sysdescr", value.toString());
-}
-
 TEST(lldpvalue, LLDPToString) {
   LLDPType types[] = {LLDPType::ChassisID,  LLDPType::PortID,
-                      LLDPType::PortDescr,  LLDPType::SysName,
-                      LLDPType::SysDescr,   LLDPType::SysCapabilities,
-                      LLDPType::MgmtAddress};
+                      LLDPType::ByteString};
 
   for (auto type : types) {
     for (size_t i = 0; i < 25; ++i) {
@@ -292,8 +254,8 @@ TEST(lldpvalue, LLDPToString) {
   }
 }
 
-TEST(lldpvalue, custom) {
-  LLDPValue<LLDPType::Custom> value;
+TEST(lldpvalue, orgSpecific) {
+  LLDPValue<LLDPType::OrgSpecific> value;
 
   EXPECT_TRUE(value.parse("0x123456 0x78 abcdef"));
   EXPECT_HEX(

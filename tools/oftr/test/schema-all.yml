@@ -2092,18 +2092,18 @@ Field/X_IPV6_ND_RES:
   
 Field/X_LLDP_SYS_NAME: 
   field: X_LLDP_SYS_NAME
-  value: LLDPSysName
-  mask: !optout LLDPSysName
+  value: LLDPByteString
+  mask: !optout LLDPByteString
   
 Field/X_LLDP_PORT_DESCR: 
   field: X_LLDP_PORT_DESCR
-  value: LLDPPortDescr
-  mask: !optout LLDPPortDescr
+  value: LLDPByteString
+  mask: !optout LLDPByteString
   
-Field/X_LLDP_CUSTOM1: 
-  field: X_LLDP_CUSTOM1
-  value: LLDPCustom
-  mask: !optout LLDPCustom
+Field/X_LLDP_ORG_SPECIFIC: 
+  field: X_LLDP_ORG_SPECIFIC
+  value: LLDPOrgSpecific
+  mask: !optout LLDPOrgSpecific
   
 Field/X_EXPERIMENTER_01: 
   field: X_EXPERIMENTER_01
@@ -2185,9 +2185,7 @@ Builtin/DurationSec: <builtin>
 
 Builtin/VlanNumber: <builtin>
 
-Builtin/LLDPSysName: <builtin>
+Builtin/LLDPByteString: <builtin>
 
-Builtin/LLDPPortDescr: <builtin>
-
-Builtin/LLDPCustom: <builtin>
+Builtin/LLDPOrgSpecific: <builtin>
 

@@ -284,7 +284,7 @@ static bool portIDFromString(const std::string &val, ByteList *data) {
   return fromText(val, data, asByte(PortIDSubtype::LocallyAssigned));
 }
 
-static std::string customToString(const ByteRange &data) {
+static std::string orgSpecificToString(const ByteRange &data) {
   if (data.size() < 4) {
     return toRaw("unknown", data, 0);
   }
@@ -305,19 +305,19 @@ static std::string customToString(const ByteRange &data) {
   return oss.str();
 }
 
-static bool customFromString(const std::string &val, ByteList *data) {
+static bool orgSpecificFromString(const std::string &val, ByteList *data) {
   llvm::StringRef str{val};
 
   UInt32 oui = 0;
   if (str.consumeInteger(0, oui)) {
-    log_debug("customFromString: Unrecognized oui:", str);
+    log_debug("orgSpecificFromString: Unrecognized oui:", str);
     return false;
   }
   str = str.ltrim();
 
   UInt8 subtype = 0;
   if (str.consumeInteger(0, subtype)) {
-    log_debug("customFromString: Unrecognized subtype:", str);
+    log_debug("orgSpecificFromString: Unrecognized subtype:", str);
     return false;
   }
   str = str.ltrim();
@@ -344,15 +344,10 @@ bool ofp::detail::LLDPParse(LLDPType type, const std::string &val,
       return chassisIDFromString(val, data);
     case LLDPType::PortID:
       return portIDFromString(val, data);
-    case LLDPType::PortDescr:
-    case LLDPType::SysName:
-    case LLDPType::SysDescr:
+    case LLDPType::ByteString:
       return fromText(val, data, 0);
-    case LLDPType::SysCapabilities:
-    case LLDPType::MgmtAddress:
-      return fromRaw(val, data, 0);
-    case LLDPType::Custom:
-      return customFromString(val, data);
+    case LLDPType::OrgSpecific:
+      return orgSpecificFromString(val, data);
   }
 
   return fromRaw(val, data, 0);
@@ -365,15 +360,10 @@ std::string ofp::detail::LLDPToString(LLDPType type, const ByteRange &data) {
       return chassisIDToString(data);
     case LLDPType::PortID:
       return portIDToString(data);
-    case LLDPType::PortDescr:
-    case LLDPType::SysName:
-    case LLDPType::SysDescr:
+    case LLDPType::ByteString:
       return toText(data);
-    case LLDPType::SysCapabilities:
-    case LLDPType::MgmtAddress:
-      break;
-    case LLDPType::Custom:
-      return customToString(data);
+    case LLDPType::OrgSpecific:
+      return orgSpecificToString(data);
   }
 
   return RawDataToHex(data.begin(), data.size());

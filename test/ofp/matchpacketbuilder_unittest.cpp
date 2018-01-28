@@ -142,17 +142,17 @@ TEST(matchpacketbuilder, lldp_custom) {
   oxm.add(X_LLDP_PORT_ID{portID});
   oxm.add(X_LLDP_TTL{3});
 
-  LLDPValue<LLDPType::SysName> sysName;
+  LLDPValue<LLDPType::ByteString> sysName;
   EXPECT_TRUE(sysName.parse("System_NAME"));
   oxm.add(X_LLDP_SYS_NAME{sysName});
 
-  LLDPValue<LLDPType::PortDescr> portDescr;
+  LLDPValue<LLDPType::ByteString> portDescr;
   EXPECT_TRUE(portDescr.parse("Port_DESCR"));
   oxm.add(X_LLDP_PORT_DESCR{portDescr});
 
-  LLDPValue<LLDPType::Custom> custom;
+  LLDPValue<LLDPType::OrgSpecific> custom;
   EXPECT_TRUE(custom.parse("0x12bb 0x2 01406500"));
-  oxm.add(X_LLDP_CUSTOM1{custom});
+  oxm.add(X_LLDP_ORG_SPECIFIC{custom});
 
   ByteList data;
   MatchPacketBuilder packet{oxm.toRange()};

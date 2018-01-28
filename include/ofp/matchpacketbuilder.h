@@ -49,9 +49,9 @@ class MatchPacketBuilder {
   LLDPValue<LLDPType::ChassisID> lldpChassisId_;
   LLDPValue<LLDPType::PortID> lldpPortId_;
   UInt16 lldpTtl_ = 0;
-  LLDPValue<LLDPType::SysName> lldpSysName_;
-  LLDPValue<LLDPType::PortDescr> lldpPortDescr_;
-  LLDPValue<LLDPType::Custom> lldpCustom_;
+  LLDPValue<LLDPType::ByteString> lldpSysName_;
+  LLDPValue<LLDPType::ByteString> lldpPortDescr_;
+  LLDPValue<LLDPType::OrgSpecific> lldpCustom_;
 
   void addEthernet(ByteList *msg) const;
   void addIPv4(ByteList *msg, size_t length) const;
