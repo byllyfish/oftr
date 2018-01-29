@@ -31,12 +31,12 @@ class Buffered : private StreamType {
     lowest_layer() = std::move(sock);
   }
 
-  using inherited::get_executor;
   using inherited::async_read_some;
+  using inherited::get_executor;
   // using inherited::async_write_some;
-  using inherited::lowest_layer;
   using inherited::async_handshake;
   using inherited::async_shutdown;
+  using inherited::lowest_layer;
 
   // using inherited::async_connect;
   // using inherited::remote_endpoint;

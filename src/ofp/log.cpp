@@ -12,8 +12,8 @@ namespace detail {
 static void trace1(const char *type, UInt64 id, const void *data,
                    size_t length) {
   if (length < sizeof(Header)) {
-    detail::write_(Level::Trace, type, length, "Invalid Data:",
-                   RawDataToHex(data, length));
+    detail::write_(Level::Trace, type, length,
+                   "Invalid Data:", RawDataToHex(data, length));
     return;
   }
 
@@ -55,8 +55,8 @@ void trace_msg_(const char *type, UInt64 id, const void *data, size_t length) {
   }
 
   if (remaining > 0) {
-    detail::write_(Level::Trace, type, "Invalid Leftover:",
-                   RawDataToHex(ptr, remaining));
+    detail::write_(Level::Trace, type,
+                   "Invalid Leftover:", RawDataToHex(ptr, remaining));
   }
 }
 

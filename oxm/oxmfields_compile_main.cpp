@@ -388,7 +388,7 @@ static vector<string> Split(const string &str, char delimiter, bool trim) {
 namespace ofp {
 extern const OXMTypeInfo OXMTypeInfoArray[];
 extern const size_t OXMTypeInfoArraySize;
-}
+}  // namespace ofp
 const ofp::OXMTypeInfo ofp::OXMTypeInfoArray[] = {
     {"none", nullptr, 0, 0, "none", "none"}};
 const size_t ofp::OXMTypeInfoArraySize = 0;

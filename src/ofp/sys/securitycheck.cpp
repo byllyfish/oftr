@@ -164,9 +164,9 @@ int tls_verify_callback(int preverified, X509_STORE_CTX *ctx) {
   if (!preverified || (error != X509_V_OK)) {
     // We failed pre-verification or there is a verify error.
 
-    log_warning("Certificate verify failed:",
-                X509_verify_cert_error_string(error),
-                std::make_pair("connid", connId));
+    log_warning(
+        "Certificate verify failed:", X509_verify_cert_error_string(error),
+        std::make_pair("connid", connId));
 
     log_warning("Peer certificate", depth, subjectName,
                 std::make_pair("tlsid", securityId),

@@ -106,7 +106,7 @@ TEST(lldpvalue, chassisID) {
       "070400112233445500000000000000000000000000000000000000000000000000000000"
       "00000000000000000000000000000000000000000000000000000000",
       &value, sizeof(value));
-  EXPECT_EQ("mac 001122334455", value.toString());
+  EXPECT_EQ("mac 00:11:22:33:44:55", value.toString());
 
   EXPECT_TRUE(value.parse("ip 127.0.0.1"));
   EXPECT_HEX(
@@ -188,7 +188,7 @@ TEST(lldpvalue, portID) {
 
   EXPECT_TRUE(value.parse("ifname 001122334455"));
   EXPECT_HEX(
-      "070500112233445500000000000000000000000000000000000000000000000000000000"
+      "0D0530303131323233333434353500000000000000000000000000000000000000000000"
       "00000000000000000000000000000000000000000000000000000000",
       &value, sizeof(value));
   EXPECT_EQ("ifname 001122334455", value.toString());
@@ -198,7 +198,7 @@ TEST(lldpvalue, portID) {
       "070300112233445500000000000000000000000000000000000000000000000000000000"
       "00000000000000000000000000000000000000000000000000000000",
       &value, sizeof(value));
-  EXPECT_EQ("mac 001122334455", value.toString());
+  EXPECT_EQ("mac 00:11:22:33:44:55", value.toString());
 
   EXPECT_TRUE(value.parse("ip 127.0.0.1"));
   EXPECT_HEX(
@@ -219,8 +219,8 @@ TEST(lldpvalue, portID) {
   EXPECT_EQ("001122334455", value.toString());
 }
 
-TEST(lldpvalue, portDescr) {
-  LLDPValue<LLDPType::PortDescr> value;
+TEST(lldpvalue, bytestring) {
+  LLDPValue<LLDPType::ByteString> value;
 
   EXPECT_TRUE(value.parse(""));
   EXPECT_HEX(
@@ -237,47 +237,9 @@ TEST(lldpvalue, portDescr) {
   EXPECT_EQ("portdescr", value.toString());
 }
 
-TEST(lldpvalue, sysName) {
-  LLDPValue<LLDPType::SysName> value;
-
-  EXPECT_TRUE(value.parse(""));
-  EXPECT_HEX(
-      "000000000000000000000000000000000000000000000000000000000000000000000000"
-      "00000000000000000000000000000000000000000000000000000000",
-      &value, sizeof(value));
-  EXPECT_EQ("", value.toString());
-
-  EXPECT_TRUE(value.parse("sysname"));
-  EXPECT_HEX(
-      "077379736E616D6500000000000000000000000000000000000000000000000000000000"
-      "00000000000000000000000000000000000000000000000000000000",
-      &value, sizeof(value));
-  EXPECT_EQ("sysname", value.toString());
-}
-
-TEST(lldpvalue, sysDescr) {
-  LLDPValue<LLDPType::SysDescr> value;
-
-  EXPECT_TRUE(value.parse(""));
-  EXPECT_HEX(
-      "000000000000000000000000000000000000000000000000000000000000000000000000"
-      "00000000000000000000000000000000000000000000000000000000",
-      &value, sizeof(value));
-  EXPECT_EQ("", value.toString());
-
-  EXPECT_TRUE(value.parse("sysdescr"));
-  EXPECT_HEX(
-      "087379736465736372000000000000000000000000000000000000000000000000000000"
-      "00000000000000000000000000000000000000000000000000000000",
-      &value, sizeof(value));
-  EXPECT_EQ("sysdescr", value.toString());
-}
-
 TEST(lldpvalue, LLDPToString) {
-  LLDPType types[] = {LLDPType::ChassisID,  LLDPType::PortID,
-                      LLDPType::PortDescr,  LLDPType::SysName,
-                      LLDPType::SysDescr,   LLDPType::SysCapabilities,
-                      LLDPType::MgmtAddress};
+  LLDPType types[] = {LLDPType::ChassisID, LLDPType::PortID,
+                      LLDPType::ByteString};
 
   for (auto type : types) {
     for (size_t i = 0; i < 25; ++i) {
@@ -290,4 +252,23 @@ TEST(lldpvalue, LLDPToString) {
       EXPECT_EQ(val, parsedVal);
     }
   }
+}
+
+TEST(lldpvalue, orgSpecific) {
+  LLDPValue<LLDPType::OrgSpecific> value;
+
+  EXPECT_TRUE(value.parse("0x123456 0x78 abcdef"));
+  EXPECT_HEX(
+      "0712345678ABCDEF00000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000000000000000000000000000",
+      &value, sizeof(value));
+  EXPECT_EQ("0x123456 0x78 ABCDEF", value.toString());
+
+  // Support decimal input also...
+  EXPECT_TRUE(value.parse("123456 78 abcdef"));
+  EXPECT_HEX(
+      "0701E2404EABCDEF00000000000000000000000000000000000000000000000000000000"
+      "00000000000000000000000000000000000000000000000000000000",
+      &value, sizeof(value));
+  EXPECT_EQ("0x1e240 0x4e ABCDEF", value.toString());
 }

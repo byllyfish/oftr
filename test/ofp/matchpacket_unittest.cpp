@@ -505,8 +505,13 @@ TEST(matchpacket, lldp) {
       "'01:80:c2:00:00:0e'\n- field:           ETH_SRC\n  value:           "
       "'00:00:00:00:00:01'\n- field:           ETH_TYPE\n  value:           "
       "0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           'mac "
-      "000000000001'\n- field:           X_LLDP_PORT_ID\n  value:           "
-      "'-2'\n- field:           X_LLDP_TTL\n  value:           0x0078\n...\n");
+      "00:00:00:00:00:01'\n- field:           X_LLDP_PORT_ID\n  value:         "
+      "  '-2'\n- field:           X_LLDP_TTL\n  value:           0x0078\n- "
+      "field:           X_LLDP_SYS_NAME\n  value:           "
+      "'OF|00:00:00:00:00:00:00:01'\n- field:           X_LLDP_ORG_SPECIFIC\n  "
+      "value:           '0x26e1 0x0 "
+      "4F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A3031'\n..."
+      "\n");
 
   // malformed lldp tlv
   testPacket(
@@ -529,8 +534,13 @@ TEST(matchpacket, lldp) {
       "'01:80:c2:00:00:0e'\n- field:           ETH_SRC\n  value:           "
       "'00:00:00:00:00:01'\n- field:           ETH_TYPE\n  value:           "
       "0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           'mac "
-      "000000000001'\n- field:           X_LLDP_PORT_ID\n  value:           "
-      "'-2'\n- field:           X_LLDP_TTL\n  value:           0x0078\n...\n");
+      "00:00:00:00:00:01'\n- field:           X_LLDP_PORT_ID\n  value:         "
+      "  '-2'\n- field:           X_LLDP_TTL\n  value:           0x0078\n- "
+      "field:           X_LLDP_SYS_NAME\n  value:           "
+      "'OF|00:00:00:00:00:00:00:01'\n- field:           X_LLDP_ORG_SPECIFIC\n  "
+      "value:           '0x26e1 0x0 "
+      "4F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A3031'\n..."
+      "\n");
 
   // Padded to 60 bytes
   testPacket(
@@ -542,7 +552,7 @@ TEST(matchpacket, lldp) {
       "0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           "
       "'chassis 001122334455'\n- field:           X_LLDP_PORT_ID\n  value:     "
       "      'port 0102'\n- field:           X_LLDP_TTL\n  value:           "
-      "0x0045\n- field:           X_PKT_POS\n  value:           0x0022\n...\n");
+      "0x0045\n...\n");
 
   // Minimal LLDP (60 bytes)
   testPacket(
@@ -553,8 +563,8 @@ TEST(matchpacket, lldp) {
       "'00:00:00:00:00:00'\n- field:           ETH_TYPE\n  value:           "
       "0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           "
       "'unknown'\n- field:           X_LLDP_PORT_ID\n  value:           "
-      "'unknown'\n- field:           X_LLDP_TTL\n  value:           0x0000\n- "
-      "field:           X_PKT_POS\n  value:           0x0018\n...\n");
+      "'unknown'\n- field:           X_LLDP_TTL\n  value:           0x0000\n"
+      "...\n");
 }
 
 TEST(matchpacket, ethernet_misaligned) {
@@ -698,4 +708,20 @@ TEST(matchpacket, icmpv4_padded) {
       "NX_IP_TTL\n  value:           0x40\n- field:           ICMPV4_TYPE\n  "
       "value:           0x08\n- field:           ICMPV4_CODE\n  value:         "
       "  0x00\n- field:           X_PKT_POS\n  value:           0x0026\n...\n");
+}
+
+TEST(matchpacket, lldp_custom) {
+  testPacket(
+      "0180C200000E0E000000100188CC0207040E000000100104020531060200030A0B537973"
+      "74656D5F4E414D45080A506F72745F4445534352FE080012BB02014065000000",
+      "---\n- field:           ETH_DST\n  value:           "
+      "'01:80:c2:00:00:0e'\n- field:           ETH_SRC\n  value:           "
+      "'0e:00:00:00:10:01'\n- field:           ETH_TYPE\n  value:           "
+      "0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           'mac "
+      "0e:00:00:00:10:01'\n- field:           X_LLDP_PORT_ID\n  value:         "
+      "  'ifname 1'\n- field:           X_LLDP_TTL\n  value:           "
+      "0x0003\n- field:           X_LLDP_SYS_NAME\n  value:           "
+      "'System_NAME'\n- field:           X_LLDP_PORT_DESCR\n  value:           "
+      "'Port_DESCR'\n- field:           X_LLDP_ORG_SPECIFIC\n  value:          "
+      " '0x12bb 0x2 01406500'\n...\n");
 }

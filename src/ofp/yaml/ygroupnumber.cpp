@@ -12,7 +12,8 @@ using ofp::yaml::EnumConverterSparse;
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 static const std::pair<OFPGroupNo, llvm::StringRef> sGroupNumbers[] = {
-    OFP_NAME(ALL), OFP_NAME(ANY),
+    OFP_NAME(ALL),
+    OFP_NAME(ANY),
 };
 
 const EnumConverterSparse<OFPGroupNo>
