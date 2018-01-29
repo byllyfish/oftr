@@ -1,5 +1,13 @@
 = Changelog
 
+== Version 0.45 (28 January 2018)
+
+- Add new LLDP fields for packet de/serialization: X_LLDP_SYS_NAME, X_LLDP_PORT_DESCR, X_LLDP_ORG_SPECIFIC.
+- LLDP ChassisID and PortID "mac" subtype supports MacAddress format.
+- LLDP PortID "ifname" subtype supports text format.
+- Update boringssl and googletest modules.
+- Upgraded clang-format to latest homebrew version.
+
 == Version 0.44 (18 January 2018)
 
 - In OFP.ADD_IDENTITY, cacert is now optional. If omitted, we don't request or verify the peer certificate.
