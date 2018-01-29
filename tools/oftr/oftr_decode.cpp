@@ -569,35 +569,6 @@ bool Decode::equalMessages(ofp::ByteRange origData,
   return true;
 }
 
-bool Decode::parseIndexLine(const llvm::StringRef &line, size_t *pos,
-                            ofp::Timestamp *timestamp, size_t *length) {
-  // Each line has the format:
-  //
-  //     pos|timestamp|length
-
-  auto posEnd = line.find_first_of('|');
-  if (posEnd == llvm::StringRef::npos)
-    return false;
-
-  auto timestampEnd = line.find_first_of('|', posEnd + 1);
-  if (timestampEnd == llvm::StringRef::npos)
-    return false;
-
-  assert(timestampEnd >= posEnd + 1);
-
-  auto posStr = line.substr(0, posEnd);
-  auto timestampStr = line.substr(posEnd + 1, timestampEnd - posEnd - 1);
-  auto lengthStr = line.substr(timestampEnd + 1);
-
-  if (posStr.getAsInteger(10, *pos))
-    return false;
-
-  if (lengthStr.getAsInteger(10, *length))
-    return false;
-
-  return timestamp->parse(timestampStr);
-}
-
 /// Update the current file. To clear the current file, pass "".
 void Decode::setCurrentFilename(const std::string &filename) {
   currentFilename_ = filename;
@@ -612,28 +583,6 @@ void Decode::setCurrentFilename(const std::string &filename) {
   } else {
     sessionInfo_ = ofp::MessageInfo{};
   }
-}
-
-ofp::UInt64 Decode::lookupSessionId(const ofp::IPv6Endpoint &src,
-                                    const ofp::IPv6Endpoint &dst) {
-  EndpointPair pair;
-
-  if (src < dst) {
-    pair.first = src;
-    pair.second = dst;
-  } else {
-    pair.first = dst;
-    pair.second = src;
-  }
-
-  auto iter = sessionIdMap_.find(pair);
-  if (iter != sessionIdMap_.end()) {
-    return iter->second;
-  }
-
-  sessionIdMap_[pair] = ++nextSessionId_;
-
-  return nextSessionId_;
 }
 
 void Decode::pcapMessageCallback(ofp::Message *message, void *context) {
