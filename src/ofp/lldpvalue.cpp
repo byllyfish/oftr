@@ -4,8 +4,8 @@
 #include "ofp/lldpvalue.h"
 #include "ofp/byteorder.h"
 #include "ofp/ipv6address.h"
-#include "ofp/smallcstring.h"  // for validUtf8String
 #include "ofp/macaddress.h"
+#include "ofp/smallcstring.h"  // for validUtf8String
 
 using namespace ofp;
 
@@ -144,7 +144,7 @@ static std::string toAddress(const ByteRange &data, size_t offset) {
 }
 
 static bool fromAddressMAC(const std::string &val, ByteList *data,
-                          UInt8 subtype) {
+                           UInt8 subtype) {
   MacAddress addr;
   if (!addr.parse(val))
     return false;
@@ -236,7 +236,8 @@ static bool chassisIDFromString(const std::string &val, ByteList *data) {
     return fromText(pair.second, data, asByte(ChassisIDSubtype::InterfaceName));
 
   if (pair.first == "mac")
-    return fromAddressMAC(pair.second, data, asByte(ChassisIDSubtype::MacAddress));
+    return fromAddressMAC(pair.second, data,
+                          asByte(ChassisIDSubtype::MacAddress));
 
   if (pair.first == "ip")
     return fromAddressV4(pair.second, data,
