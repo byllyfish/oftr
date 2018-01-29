@@ -79,6 +79,9 @@ X_LLDP_PORT_ID	0xFFFF	2.0x00FFFFFF	68	LLDPValue<LLDPType::PortID>	false		(Intern
 X_LLDP_TTL	0xFFFF	3.0x00FFFFFF	6	Big16	false		(Internal) LLDP TTL
 X_PKT_POS	0xFFFF	4.0x00FFFFFF	6	Big16	false		(Internal) Last Position in Packet
 X_IPV6_ND_RES	0xFFFF	5.0x00FFFFFF	8	Big32	false		(Internal) ICMPv6 Neighbor Discovery Reserved
+X_LLDP_SYS_NAME	0xFFFF	6.0x00FFFFFF	68	LLDPValue<LLDPType::ByteString>	false		(Internal) LLDP System Name
+X_LLDP_PORT_DESCR	0xFFFF	7.0x00FFFFFF	68	LLDPValue<LLDPType::ByteString>	false		(Internal) LLDP System Name
+X_LLDP_ORG_SPECIFIC	0xFFFF	8.0x00FFFFFF	68	LLDPValue<LLDPType::OrgSpecific>	false		(Internal) LLDP Org Specific
 X_EXPERIMENTER_01	0xFFFF	3.0x00FFFFFE	6	Big16	true		(Internal) Experimental Test Field
 # OXM Fields end here
 

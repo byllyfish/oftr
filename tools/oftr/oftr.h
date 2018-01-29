@@ -71,8 +71,12 @@ class Subprogram {
                            cl::Hidden};
   cl::OptionCategory logCategory_{"Logging Options"};
   cl::opt<ofp::log::Level> loglevel_{
-      "loglevel", cl::desc("Log level (exactly one)"), cl::ValueRequired,
-      cl::Hidden, cl::cat(logCategory_), cl::init(ofp::log::Level::Fatal),
+      "loglevel",
+      cl::desc("Log level (exactly one)"),
+      cl::ValueRequired,
+      cl::Hidden,
+      cl::cat(logCategory_),
+      cl::init(ofp::log::Level::Fatal),
       cl::values(clEnumValN(ofp::log::Level::Silent, "none",
                             "No log messages emitted"),
                  clEnumValN(ofp::log::Level::Debug, "debug",
@@ -89,8 +93,11 @@ class Subprogram {
       "logfile", cl::desc("Log messages to this file"), cl::ValueRequired,
       cl::Hidden, cl::cat(logCategory_)};
   cl::bits<ofp::log::Trace> logtrace_{
-      "trace", cl::desc("Trace flags (one or more separated by commas)"),
-      cl::CommaSeparated, cl::Hidden, cl::cat(logCategory_),
+      "trace",
+      cl::desc("Trace flags (one or more separated by commas)"),
+      cl::CommaSeparated,
+      cl::Hidden,
+      cl::cat(logCategory_),
       cl::values(clEnumValN(ofp::log::kTraceMsg, "msg",
                             "Log all OpenFlow messages sent and received"),
                  clEnumValN(ofp::log::kTraceRpc, "rpc",

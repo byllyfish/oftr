@@ -55,6 +55,10 @@ inline ByteRange SafeByteRange(const void *data, size_t length, size_t offset) {
                             : ByteRange{};
 }
 
+inline ByteRange SafeByteRange(const ByteRange &data, size_t offset) {
+  return SafeByteRange(data.data(), data.size(), offset);
+}
+
 /// Return bytes [offset:offset + size) from given byte range, or empty buffer.
 inline ByteRange SafeByteRange(const void *data, size_t length, size_t offset,
                                size_t size) {

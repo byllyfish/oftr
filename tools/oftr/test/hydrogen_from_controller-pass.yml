@@ -100,11 +100,15 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '2'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_ORG_SPECIFIC
+      value:           '0x26e1 0x0 4F467C32404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            PACKET_OUT
@@ -126,11 +130,15 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '-2'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_ORG_SPECIFIC
+      value:           '0x26e1 0x0 4F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            PACKET_OUT
@@ -512,11 +520,15 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '1'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_ORG_SPECIFIC
+      value:           '0x26e1 0x0 4F467C31404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            PACKET_OUT
@@ -1465,11 +1477,15 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '2'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_ORG_SPECIFIC
+      value:           '0x26e1 0x0 4F467C32404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            PACKET_OUT
@@ -1491,11 +1507,15 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '-2'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_ORG_SPECIFIC
+      value:           '0x26e1 0x0 4F467C2D32404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            PACKET_OUT
@@ -1517,11 +1537,15 @@ msg:
     - field:           ETH_TYPE
       value:           0x88CC
     - field:           X_LLDP_CHASSIS_ID
-      value:           'mac 000000000001'
+      value:           'mac 00:00:00:00:00:01'
     - field:           X_LLDP_PORT_ID
       value:           '1'
     - field:           X_LLDP_TTL
       value:           0x0078
+    - field:           X_LLDP_SYS_NAME
+      value:           'OF|00:00:00:00:00:00:00:01'
+    - field:           X_LLDP_ORG_SPECIFIC
+      value:           '0x26e1 0x0 4F467C31404F467C30303A30303A30303A30303A30303A30303A30303A3031'
 ...
 ---
 type:            REQUEST.EXPERIMENTER

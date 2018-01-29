@@ -8,15 +8,12 @@
 
 namespace ofp {
 
+/// LLDP Value Types (separate from protocol numbers).
 enum class LLDPType {
-  ChassisID = 1,
-  PortID = 2,
-  // TTL = 3, (Unused)
-  PortDescr = 4,
-  SysName = 5,
-  SysDescr = 6,
-  SysCapabilities = 7,
-  MgmtAddress = 8
+  ChassisID = 0,
+  PortID = 1,
+  ByteString = 2,
+  OrgSpecific = 3
 };
 
 namespace detail {
@@ -26,6 +23,10 @@ std::string LLDPToString(LLDPType type, const ByteRange &data);
 
 }  // namespace detail
 
+/// LLDPValue is a concrete type that stores an LLDP value as a
+/// pascal string. The first byte is the size of the data, and
+/// the remaining bytes are the data. `Type` indicates how the
+/// LLDP value is parsed to/from a string.
 template <LLDPType Type>
 class LLDPValue {
  public:
@@ -40,6 +41,8 @@ class LLDPValue {
   const UInt8 *data() const { return &buf_[1]; }
   size_t size() const { return buf_[0] <= MaxSize ? buf_[0] : MaxSize; }
   UInt8 *mutableData() { return &buf_[1]; }
+
+  bool empty() const { return buf_[0] == 0; }
 
   void resize(size_t size) {
     assert(size <= MaxSize);

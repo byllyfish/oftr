@@ -61,7 +61,9 @@ static const llvm::StringRef sInstructionTypes[] = {
 };
 
 static const llvm::StringRef sMeterBandTypes[] = {
-    "NONE", "DROP", "DSCP_REMARK",
+    "NONE",
+    "DROP",
+    "DSCP_REMARK",
 };
 
 static const llvm::StringRef sFlowModCommands[] = {
@@ -73,7 +75,9 @@ static const llvm::StringRef sPacketInReason[] = {
 };
 
 static const llvm::StringRef sPortStatusReason[] = {
-    "ADD", "DELETE", "MODIFY",
+    "ADD",
+    "DELETE",
+    "MODIFY",
 };
 
 static const llvm::StringRef sFlowRemovedReason[] = {
@@ -84,19 +88,29 @@ static const llvm::StringRef sTableStatusReason[] = {
     "0x00", "0x01", "VACANCY_DOWN", "VACANCY_UP"};
 
 static const llvm::StringRef sControllerRole[] = {
-    "ROLE_NOCHANGE", "ROLE_EQUAL", "ROLE_MASTER", "ROLE_SLAVE",
+    "ROLE_NOCHANGE",
+    "ROLE_EQUAL",
+    "ROLE_MASTER",
+    "ROLE_SLAVE",
 };
 
 static const llvm::StringRef sMeterModCommand[] = {
-    "ADD", "MODIFY", "DELETE",
+    "ADD",
+    "MODIFY",
+    "DELETE",
 };
 
 static const llvm::StringRef sGroupModCommand[] = {
-    "ADD", "MODIFY", "DELETE",
+    "ADD",
+    "MODIFY",
+    "DELETE",
 };
 
 static const llvm::StringRef sGroupType[] = {
-    "ALL", "SELECT", "INDIRECT", "FF",
+    "ALL",
+    "SELECT",
+    "INDIRECT",
+    "FF",
 };
 
 static const llvm::StringRef sErrorTypes[] = {"HELLO_FAILED",
@@ -131,7 +145,9 @@ static const llvm::StringRef sBundleCtrlType[] = {
 static const llvm::StringRef sExperimenterPropertyList[] = {"EXPERIMENTER_0"};
 
 static const llvm::StringRef sRoleStatusReason[] = {
-    "MASTER_REQUEST", "CONFIG", "EXPERIMENTER",
+    "MASTER_REQUEST",
+    "CONFIG",
+    "EXPERIMENTER",
 };
 
 const EnumConverter<OFPType> llvm::yaml::ScalarTraits<OFPType>::converter{

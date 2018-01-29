@@ -105,6 +105,15 @@ MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
       case X_LLDP_TTL::type():
         lldpTtl_ = item.value<X_LLDP_TTL>();
         break;
+      case X_LLDP_SYS_NAME::type():
+        lldpSysName_ = item.value<X_LLDP_SYS_NAME>();
+        break;
+      case X_LLDP_PORT_DESCR::type():
+        lldpPortDescr_ = item.value<X_LLDP_PORT_DESCR>();
+        break;
+      case X_LLDP_ORG_SPECIFIC::type():
+        lldpCustom_ = item.value<X_LLDP_ORG_SPECIFIC>();
+        break;
       case X_IPV6_ND_RES::type():
         ndRes_ = item.value<X_IPV6_ND_RES>();
         break;
@@ -232,6 +241,27 @@ void MatchPacketBuilder::buildLldp(ByteList *msg) const {
   pkt::LLDPTlv tlv3{pkt::LLDPTlv::TTL, sizeof(ttl)};
   msg->add(&tlv3, sizeof(tlv3));
   msg->add(&ttl, sizeof(ttl));
+
+  if (!lldpSysName_.empty()) {
+    pkt::LLDPTlv tlv{pkt::LLDPTlv::SYS_NAME, lldpSysName_.size()};
+    msg->add(&tlv, sizeof(tlv));
+    msg->add(lldpSysName_.data(), lldpSysName_.size());
+  }
+
+  if (!lldpPortDescr_.empty()) {
+    pkt::LLDPTlv tlv{pkt::LLDPTlv::PORT_DESCR, lldpPortDescr_.size()};
+    msg->add(&tlv, sizeof(tlv));
+    msg->add(lldpPortDescr_.data(), lldpPortDescr_.size());
+  }
+
+  if (!lldpCustom_.empty()) {
+    pkt::LLDPTlv tlv{pkt::LLDPTlv::ORG_SPECIFIC, lldpCustom_.size()};
+    msg->add(&tlv, sizeof(tlv));
+    msg->add(lldpCustom_.data(), lldpCustom_.size());
+  }
+
+  pkt::LLDPTlv end{pkt::LLDPTlv::END, 0};
+  msg->add(&end, sizeof(end));
 }
 
 void MatchPacketBuilder::buildIPv4(ByteList *msg, const ByteRange &data) const {

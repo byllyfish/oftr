@@ -2,7 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/lldpvalue.h"
+#include "ofp/byteorder.h"
 #include "ofp/ipv6address.h"
+#include "ofp/macaddress.h"
 #include "ofp/smallcstring.h"  // for validUtf8String
 
 using namespace ofp;
@@ -141,6 +143,27 @@ static std::string toAddress(const ByteRange &data, size_t offset) {
   return toRaw("unknown", data, 0);
 }
 
+static bool fromAddressMAC(const std::string &val, ByteList *data,
+                           UInt8 subtype) {
+  MacAddress addr;
+  if (!addr.parse(val))
+    return false;
+  data->clear();
+  data->add(&subtype, 1);
+  data->add(&addr, sizeof(addr));
+  return true;
+}
+
+static std::string toAddressMAC(const ByteRange &data, size_t offset) {
+  MacAddress addr;
+  if (offset + sizeof(addr) == data.size()) {
+    std::memcpy(&addr, &data[offset], sizeof(addr));
+    return "mac " + addr.toString();
+  }
+
+  return toRaw("unknown", data, 0);
+}
+
 // Convert LLDP ChassisID to a string.
 //
 // Formatted as:
@@ -167,7 +190,7 @@ static std::string chassisIDToString(const ByteRange &data) {
     case asByte(ChassisIDSubtype::PortComponent):
       return toRaw("port", data, 1);
     case asByte(ChassisIDSubtype::MacAddress):
-      return toRaw("mac", data, 1);
+      return toAddressMAC(data, 1);
     case asByte(ChassisIDSubtype::NetworkAddress):
       return toAddress(data, 1);
     case asByte(ChassisIDSubtype::InterfaceName):
@@ -213,7 +236,8 @@ static bool chassisIDFromString(const std::string &val, ByteList *data) {
     return fromText(pair.second, data, asByte(ChassisIDSubtype::InterfaceName));
 
   if (pair.first == "mac")
-    return fromRaw(pair.second, data, asByte(ChassisIDSubtype::MacAddress));
+    return fromAddressMAC(pair.second, data,
+                          asByte(ChassisIDSubtype::MacAddress));
 
   if (pair.first == "ip")
     return fromAddressV4(pair.second, data,
@@ -239,9 +263,9 @@ static std::string portIDToString(const ByteRange &data) {
     case asByte(PortIDSubtype::NetworkAddress):
       return toAddress(data, 1);
     case asByte(PortIDSubtype::MacAddress):
-      return toRaw("mac", data, 1);
+      return toAddressMAC(data, 1);
     case asByte(PortIDSubtype::InterfaceName):
-      return toRaw("ifname", data, 1);
+      return toText("ifname", data, 1);
     case asByte(PortIDSubtype::AgentCircuitID):
       return toRaw("circuit", data, 1);
     case asByte(PortIDSubtype::LocallyAssigned):
@@ -264,10 +288,10 @@ static bool portIDFromString(const std::string &val, ByteList *data) {
     return fromRaw(pair.second, data, asByte(PortIDSubtype::PortComponent));
 
   if (pair.first == "ifname")
-    return fromRaw(pair.second, data, asByte(PortIDSubtype::InterfaceName));
+    return fromText(pair.second, data, asByte(PortIDSubtype::InterfaceName));
 
   if (pair.first == "mac")
-    return fromRaw(pair.second, data, asByte(PortIDSubtype::MacAddress));
+    return fromAddressMAC(pair.second, data, asByte(PortIDSubtype::MacAddress));
 
   if (pair.first == "ip")
     return fromAddressV4(pair.second, data,
@@ -283,9 +307,59 @@ static bool portIDFromString(const std::string &val, ByteList *data) {
   return fromText(val, data, asByte(PortIDSubtype::LocallyAssigned));
 }
 
+static std::string orgSpecificToString(const ByteRange &data) {
+  if (data.size() < 4) {
+    return toRaw("unknown", data, 0);
+  }
+
+  UInt32 org_prefix = Big32_unaligned(data.data());
+  UInt32 oui = org_prefix >> 8;
+  UInt8 subtype = org_prefix & 0xFF;
+  ByteRange rest = SafeByteRange(data, 4);
+
+  std::string result;
+  llvm::raw_string_ostream oss{result};
+  oss << "0x";
+  oss.write_hex(oui);
+  oss << " 0x";
+  oss.write_hex(subtype);
+  oss << ' ' << RawDataToHex(rest.data(), rest.size());
+
+  return oss.str();
+}
+
+static bool orgSpecificFromString(const std::string &val, ByteList *data) {
+  llvm::StringRef str{val};
+
+  UInt32 oui = 0;
+  if (str.consumeInteger(0, oui)) {
+    log_debug("orgSpecificFromString: Unrecognized oui:", str);
+    return false;
+  }
+  str = str.ltrim();
+
+  UInt8 subtype = 0;
+  if (str.consumeInteger(0, subtype)) {
+    log_debug("orgSpecificFromString: Unrecognized subtype:", str);
+    return false;
+  }
+  str = str.ltrim();
+
+  data->resize(str.size() / 2 + 1);
+  bool err = false;
+  size_t size = HexToRawData(str, data->mutableData(), data->size(), &err);
+  data->resize(size);
+  if (err) {
+    return false;
+  }
+
+  Big32 prefix = (oui << 8) | subtype;
+  data->insert(data->begin(), &prefix, sizeof(prefix));
+  return true;
+}
+
 /// Parse a string into the value of a LLDP TLV. The interpretation of the
-/// string
-/// depends on the type of TLV.
+/// string depends on the type of TLV.
 bool ofp::detail::LLDPParse(LLDPType type, const std::string &val,
                             ByteList *data) {
   switch (type) {
@@ -293,13 +367,10 @@ bool ofp::detail::LLDPParse(LLDPType type, const std::string &val,
       return chassisIDFromString(val, data);
     case LLDPType::PortID:
       return portIDFromString(val, data);
-    case LLDPType::PortDescr:
-    case LLDPType::SysName:
-    case LLDPType::SysDescr:
+    case LLDPType::ByteString:
       return fromText(val, data, 0);
-    case LLDPType::SysCapabilities:
-    case LLDPType::MgmtAddress:
-      return fromRaw(val, data, 0);
+    case LLDPType::OrgSpecific:
+      return orgSpecificFromString(val, data);
   }
 
   return fromRaw(val, data, 0);
@@ -312,13 +383,10 @@ std::string ofp::detail::LLDPToString(LLDPType type, const ByteRange &data) {
       return chassisIDToString(data);
     case LLDPType::PortID:
       return portIDToString(data);
-    case LLDPType::PortDescr:
-    case LLDPType::SysName:
-    case LLDPType::SysDescr:
+    case LLDPType::ByteString:
       return toText(data);
-    case LLDPType::SysCapabilities:
-    case LLDPType::MgmtAddress:
-      break;
+    case LLDPType::OrgSpecific:
+      return orgSpecificToString(data);
   }
 
   return RawDataToHex(data.begin(), data.size());
