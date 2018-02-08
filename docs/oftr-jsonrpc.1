@@ -2,12 +2,12 @@
 .\"     Title: oftr-jsonrpc
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 01/18/2018
+.\"      Date: 02/07/2018
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "OFTR\-JSONRPC" "1" "01/18/2018" "\ \&" "\ \&"
+.TH "OFTR\-JSONRPC" "1" "02/07/2018" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -870,6 +870,7 @@ params:
   cacert: !opt String
   version: !opt String
   ciphers: !opt String
+  keylog: !opt String
 .fi
 .if n \{\
 .RE
@@ -890,6 +891,8 @@ Trusted PEM root certificates used to verify peer (optional)\&.
 \fBversion\fR: Supported TLS versions (optional)\&.
 .sp
 \fBciphers\fR: OpenSSL cipher list (optional)\&.
+.sp
+\fBkeylog\fR: Path to key log file (optional)\&.
 .RE
 .sp
 .it 1 an-trap
@@ -935,6 +938,8 @@ The cacert parameter contains the certificate authority used to authenticate the
 The version parameter is the supported TLS version\&. This may be specified as a single version "TLS1\&.2" or a range "TLS1\&.0\-TLS1\&.2"\&. Supported constants are TLS1\&.0, TLS1\&.1, TLS1\&.2, and TLS1\&.3\&. Leaving the version empty specifies the default, TLS 1\&.2\&.
 .sp
 The ciphers parameter is the OpenSSL cipher list for TLS up through version 1\&.2\&. Use this to pass in a cipher list in OpenSSL cipher list format\&.
+.sp
+The keylog parameter is the path to a key log file that can be used to later decrypt and debug communications\&. For more information, see: https://developer\&.mozilla\&.org/en\-US/docs/Mozilla/Projects/NSS/Key_Log_Format
 .RE
 .SH "RPC NOTIFICATIONS"
 .SS "OFP\&.MESSAGE"
