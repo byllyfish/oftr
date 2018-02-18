@@ -1,5 +1,10 @@
 = Changelog
 
+== Version 0.46 (18 February 2018)
+
+- Add support for 'keylog' option in OFP.ADD_IDENTITY command.
+- Update boringssl and googletest modules.
+
 == Version 0.45 (28 January 2018)
 
 - Add new LLDP fields for packet de/serialization: X_LLDP_SYS_NAME, X_LLDP_PORT_DESCR, X_LLDP_ORG_SPECIFIC.
