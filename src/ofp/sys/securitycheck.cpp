@@ -51,8 +51,8 @@ void SecurityCheck::beforeHandshake<SSL>(Connection *conn, SSL *ssl,
   // Store connection pointer in SSL object.
   Identity::SetConnectionPtr(ssl, conn);
 
-  // Retrieve identity pointer from SSL_CTX object.
-  Identity *identity = Identity::GetIdentityPtr(SSL_get_SSL_CTX(ssl));
+  // Retrieve identity pointer from SSL object.
+  Identity *identity = Identity::GetIdentityPtr(ssl);
 
   // Set up the verify callback.
   SSL_set_verify(ssl, identity->peerVerifyMode(), tls_verify_callback);
@@ -74,8 +74,8 @@ void SecurityCheck::afterHandshake<SSL>(Connection *conn, SSL *ssl,
 
   conn->setFlags(conn->flags() | Connection::kHandshakeDone);
 
-  // Retrieve identity pointer from SSL_CTX object.
-  Identity *identity = Identity::GetIdentityPtr(SSL_get_SSL_CTX(ssl));
+  // Retrieve identity pointer from SSL object.
+  Identity *identity = Identity::GetIdentityPtr(ssl);
   bool isClient = !SSL_is_server(ssl);
 
   UInt64 securityId = identity->securityId();
@@ -118,7 +118,7 @@ void SecurityCheck::beforeClose<SSL>(Connection *conn, SSL *ssl) {
   auto flags = conn->flags();
   if ((flags & Connection::kHandshakeDone) &&
       !(flags & Connection::kShutdownDone)) {
-    Identity *identity = Identity::GetIdentityPtr(SSL_get_SSL_CTX(ssl));
+    Identity *identity = Identity::GetIdentityPtr(ssl);
     UInt64 securityId = identity->securityId();
     UInt64 connId = conn->connectionId();
 
@@ -140,7 +140,7 @@ int tls_verify_callback(int preverified, X509_STORE_CTX *ctx) {
       ctx, ::SSL_get_ex_data_X509_STORE_CTX_idx()));
   log::fatal_if_null(ssl);
 
-  Identity *identity = Identity::GetIdentityPtr(SSL_get_SSL_CTX(ssl));
+  Identity *identity = Identity::GetIdentityPtr(ssl);
   Connection *conn = Identity::GetConnectionPtr(ssl);
 
   UInt64 securityId = identity->securityId();

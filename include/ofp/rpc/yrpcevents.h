@@ -88,6 +88,7 @@ params: !request
   cacert: !opt String
   version: !opt String
   ciphers: !opt String
+  keylog: !opt String
 result: !reply
   tls_id: UInt64
 

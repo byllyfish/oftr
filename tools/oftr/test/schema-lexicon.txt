@@ -75,6 +75,7 @@ in_port
 instruction
 instructions
 instructions_miss
+keylog
 lookup_count
 mask
 match

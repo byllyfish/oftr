@@ -346,6 +346,7 @@ using Transport Layer Security (TLS).
       cacert: !opt String
       version: !opt String
       ciphers: !opt String
+      keylog: !opt String
 
 *cert*:: PEM certificate chain data.
 
@@ -356,6 +357,8 @@ using Transport Layer Security (TLS).
 *version*: Supported TLS versions (optional). 
 
 *ciphers*: OpenSSL cipher list (optional).
+
+*keylog*: Path to key log file (optional).
 
 ==== Reply
 
@@ -387,6 +390,10 @@ TLS1.1, TLS1.2, and TLS1.3. Leaving the version empty specifies the default, TLS
 
 The `ciphers` parameter is the OpenSSL cipher list for TLS up through version 1.2.
 Use this to pass in a cipher list in OpenSSL cipher list format.
+
+The `keylog` parameter is the path to a key log file that can be used to later decrypt
+and debug communications. For more information, see: 
+https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format
 
 == RPC Notifications
 

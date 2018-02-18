@@ -98,10 +98,6 @@ class Decode : public Subprogram {
   ofp::MessageInfo sessionInfo_;
   bool jsonArrayNeedComma_ = false;
 
-  using EndpointPair = std::pair<ofp::IPv6Endpoint, ofp::IPv6Endpoint>;
-  std::map<EndpointPair, ofp::UInt64> sessionIdMap_;
-  ofp::UInt64 nextSessionId_ = 0;
-
   std::unique_ptr<ofp::demux::PktSink> pktSinkFile_;
   std::vector<std::string> msgIncludeFilter_;
   std::vector<std::string> msgExcludeFilter_;
@@ -125,12 +121,7 @@ class Decode : public Subprogram {
   bool isPktDataAllowed(const ofp::Message *message) const;
   bool equalMessages(ofp::ByteRange origData, ofp::ByteRange newData) const;
 
-  static bool parseIndexLine(const llvm::StringRef &line, size_t *pos,
-                             ofp::Timestamp *timestamp, size_t *length);
-
   void setCurrentFilename(const std::string &filename);
-  ofp::UInt64 lookupSessionId(const ofp::IPv6Endpoint &src,
-                              const ofp::IPv6Endpoint &dst);
 
   static void pcapMessageCallback(ofp::Message *message, void *context);
   bool pcapFormat() const;
