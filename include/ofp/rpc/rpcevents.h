@@ -236,6 +236,8 @@ struct RpcAddIdentity {
     std::string version;
     /// Supported ciphers.
     std::string ciphers;
+    /// Key log file.
+    std::string keylog;
   };
 
   RpcID id;

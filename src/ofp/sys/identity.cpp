@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/identity.h"
+#include "llvm/Support/FileSystem.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/membio.h"
 #include "ofp/sys/memx509.h"
@@ -46,7 +47,8 @@ void Identity::SetConnectionPtr(SSL *ssl, Connection *conn) {
 
 Identity::Identity(const std::string &certData, const std::string &privKey,
                    const std::string &verifyData, const std::string &version,
-                   const std::string &ciphers, std::error_code &error)
+                   const std::string &ciphers, const std::string &keyLogFile,
+                   std::error_code &error)
     : tls_{asio::ssl::context_base::tlsv12},
       dtls_{::SSL_CTX_new(::DTLSv1_method()), ::SSL_CTX_free} {
   // Allow for retrieving this Identity object given just an SSL context.
@@ -55,12 +57,13 @@ Identity::Identity(const std::string &certData, const std::string &privKey,
 
   // Initialize the TLS context.
   error = initContext(tls_.native_handle(), certData, privKey, verifyData,
-                      version, ciphers);
+                      version, ciphers, keyLogFile);
   if (error)
     return;
 
   // Initialize the DTLS context identically (except for version).
-  error = initContext(dtls_.get(), certData, privKey, verifyData, "", ciphers);
+  error =
+      initContext(dtls_.get(), certData, privKey, verifyData, "", ciphers, "");
   if (error)
     return;
 
@@ -110,22 +113,31 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
                                       const std::string &privKey,
                                       const std::string &verifyData,
                                       const std::string &version,
-                                      const std::string &ciphers) {
+                                      const std::string &ciphers,
+                                      const std::string &keyLogFile) {
   std::error_code result = prepareOptions(ctx, ciphers);
   if (result) {
-    log_debug("Identity: prepareOptions failed", result);
+    log_error("Identity: prepareOptions failed", result);
     return result;
   }
 
   result = prepareVersion(ctx, version);
   if (result) {
-    log_debug("Identity: prepareVersion failed", result);
+    log_error("Identity: prepareVersion failed", result);
     return result;
   }
 
   prepareSessions(ctx);
   prepareVerifier(ctx);
   prepareDTLSCookies(ctx);
+
+  if (!keyLogFile.empty()) {
+    result = prepareKeyLogFile(ctx, keyLogFile);
+    if (result) {
+      log_error("Identity: prepareKeyLogFile failed", result);
+      return result;
+    }
+  }
 
   result = loadCertificateChain(ctx, certData);
   if (result) {
@@ -409,6 +421,40 @@ void Identity::prepareVerifier(SSL_CTX *ctx) {
 
   ::SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
                        verifyCallback);
+}
+
+std::error_code Identity::prepareKeyLogFile(SSL_CTX *ctx,
+                                            const std::string &keyLogFile) {
+  // Set up a callback to log key material for debugging use.
+  //
+  // The format is described in:
+  //   https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format
+
+  using namespace llvm::sys;
+  assert(!keyLogFile.empty());
+
+  std::error_code err;
+  keyLogFile_.reset(new llvm::raw_fd_ostream{
+      keyLogFile, err, fs::F_Append | fs::F_RW | fs::F_Text});
+  if (err) {
+    log_error("Identity: Failed to open file:", keyLogFile);
+    return err;
+  }
+
+  ::SSL_CTX_set_keylog_callback(ctx, keylog_callback);
+  return {};
+}
+
+void Identity::keylog_callback(const SSL *ssl, const char *line) {
+  Identity *identity = Identity::GetIdentityPtr(ssl);
+  identity->logKeyMaterial(line);
+}
+
+void Identity::logKeyMaterial(const char *line) {
+  if (keyLogFile_) {
+    *keyLogFile_ << line;
+    keyLogFile_->flush();
+  }
 }
 
 void Identity::prepareDTLSCookies(SSL_CTX *ctx) {

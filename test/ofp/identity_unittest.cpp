@@ -67,7 +67,7 @@ jW5RCAwwl078sGl746tcY30=
 
 TEST(identity, empty) {
   std::error_code err;
-  sys::Identity identity{"", "", "", "", "", err};
+  sys::Identity identity{"", "", "", "", "", "", err};
 
   log_debug("identity error", err);
   asio::error_code expected{ERR_LIB_PEM, asio::error::get_ssl_category()};
@@ -76,7 +76,7 @@ TEST(identity, empty) {
 
 TEST(identity, invalid_pem) {
   std::error_code err;
-  sys::Identity identity{"x", "", "", "", "", err};
+  sys::Identity identity{"x", "", "", "", "", "", err};
 
   log_debug("identity error", err);
   asio::error_code expected{ERR_LIB_PEM, asio::error::get_ssl_category()};
@@ -85,7 +85,7 @@ TEST(identity, invalid_pem) {
 
 TEST(identity, cert_only_no_private_key) {
   std::error_code err;
-  sys::Identity identity{kGarbageCertificate, "", "", "", "", err};
+  sys::Identity identity{kGarbageCertificate, "", "", "", "", "", err};
 
   log_debug("identity error", err);
   asio::error_code expected{ERR_PACK(ERR_LIB_PEM, PEM_R_NO_START_LINE),
@@ -96,7 +96,7 @@ TEST(identity, cert_only_no_private_key) {
 TEST(identity, cert_with_private_key_no_ca) {
   std::error_code err;
   sys::Identity identity{
-      kGarbageCertificate, kGarbagePrivateKey, "", "", "", err};
+      kGarbageCertificate, kGarbagePrivateKey, "", "", "", "", err};
 
   // This is an insecure configuration but it's allowed.
   asio::error_code expected;
@@ -109,6 +109,7 @@ TEST(identity, cert_with_private_key) {
   sys::Identity identity{kGarbageCertificate,
                          kGarbagePrivateKey,
                          kGarbageCertificate,
+                         "",
                          "",
                          "",
                          err};
@@ -129,6 +130,7 @@ TEST(identity, cert_with_invalid_cipher) {
                          kGarbageCertificate,
                          "",
                          "x",
+                         "",
                          err};
 
   log_debug("identity error", err);
@@ -144,6 +146,7 @@ TEST(identity, cert_with_valid_cipher) {
                          kGarbageCertificate,
                          "",
                          ciphers,
+                         "",
                          err};
 
   asio::error_code expected;
@@ -162,6 +165,7 @@ TEST(identity, cert_with_invalid_version) {
                          kGarbageCertificate,
                          "TLX1.9",
                          "",
+                         "",
                          err};
 
   log_debug("identity error", err);
@@ -175,6 +179,7 @@ TEST(identity, cert_with_valid_version) {
                          kGarbagePrivateKey,
                          kGarbageCertificate,
                          "TLS1.1-tls1.2",
+                         "",
                          "",
                          err};
 

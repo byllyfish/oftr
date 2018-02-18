@@ -22,7 +22,8 @@ class Identity {
  public:
   explicit Identity(const std::string &certData, const std::string &privKey,
                     const std::string &verifyData, const std::string &version,
-                    const std::string &ciphers, std::error_code &error);
+                    const std::string &ciphers, const std::string &keyLogFile,
+                    std::error_code &error);
   ~Identity();
 
   UInt64 securityId() const { return securityId_; }
@@ -38,6 +39,9 @@ class Identity {
   void saveClientSession(const IPv6Endpoint &remoteEndpt, SSL_SESSION *session);
 
   static Identity *GetIdentityPtr(SSL_CTX *ctx);
+  static Identity *GetIdentityPtr(const SSL *ssl) {
+    return GetIdentityPtr(SSL_get_SSL_CTX(ssl));
+  }
   static void SetIdentityPtr(SSL_CTX *ctx, Identity *identity);
 
   static Connection *GetConnectionPtr(SSL *ssl);
@@ -53,7 +57,7 @@ class Identity {
   /// Separate SSL context used for DTLS connections over UDP.
   std::unique_ptr<SSL_CTX, void (*)(SSL_CTX *)> dtls_;
 
-  /// Subject DN of this identities certificate.
+  /// Subject DN of this identity's certificate.
   std::string subjectName_;
 
 #if IDENTITY_SESSIONS_ENABLED
@@ -65,11 +69,15 @@ class Identity {
   /// Peer verification enabled.
   int peerVerifyMode_ = SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
 
+  /// Key log file output stream.
+  std::unique_ptr<llvm::raw_ostream> keyLogFile_;
+
   std::error_code initContext(SSL_CTX *ctx, const std::string &certData,
                               const std::string &privKey,
                               const std::string &verifyData,
                               const std::string &version,
-                              const std::string &ciphers);
+                              const std::string &ciphers,
+                              const std::string &keyLogFile);
 
   static std::error_code loadCertificateChain(SSL_CTX *ctx,
                                               const std::string &certData);
@@ -85,6 +93,11 @@ class Identity {
   static void prepareSessions(SSL_CTX *ctx);
   static void prepareVerifier(SSL_CTX *ctx);
   static void prepareDTLSCookies(SSL_CTX *ctx);
+
+  std::error_code prepareKeyLogFile(SSL_CTX *ctx,
+                                    const std::string &keyLogFile);
+  static void keylog_callback(const SSL *ssl, const char *line);
+  void logKeyMaterial(const char *line);
 
   static int dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
                                            size_t *cookie_len);
