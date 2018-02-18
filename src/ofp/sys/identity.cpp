@@ -2,10 +2,10 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/identity.h"
+#include "llvm/Support/FileSystem.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/membio.h"
 #include "ofp/sys/memx509.h"
-#include "llvm/Support/FileSystem.h"
 
 using namespace ofp;
 using namespace ofp::sys;
@@ -47,7 +47,7 @@ void Identity::SetConnectionPtr(SSL *ssl, Connection *conn) {
 
 Identity::Identity(const std::string &certData, const std::string &privKey,
                    const std::string &verifyData, const std::string &version,
-                   const std::string &ciphers, const std::string &keyLogFile, 
+                   const std::string &ciphers, const std::string &keyLogFile,
                    std::error_code &error)
     : tls_{asio::ssl::context_base::tlsv12},
       dtls_{::SSL_CTX_new(::DTLSv1_method()), ::SSL_CTX_free} {
@@ -62,7 +62,8 @@ Identity::Identity(const std::string &certData, const std::string &privKey,
     return;
 
   // Initialize the DTLS context identically (except for version).
-  error = initContext(dtls_.get(), certData, privKey, verifyData, "", ciphers, "");
+  error =
+      initContext(dtls_.get(), certData, privKey, verifyData, "", ciphers, "");
   if (error)
     return;
 
@@ -112,7 +113,7 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
                                       const std::string &privKey,
                                       const std::string &verifyData,
                                       const std::string &version,
-                                      const std::string &ciphers, 
+                                      const std::string &ciphers,
                                       const std::string &keyLogFile) {
   std::error_code result = prepareOptions(ctx, ciphers);
   if (result) {
@@ -422,7 +423,8 @@ void Identity::prepareVerifier(SSL_CTX *ctx) {
                        verifyCallback);
 }
 
-std::error_code Identity::prepareKeyLogFile(SSL_CTX *ctx, const std::string &keyLogFile) {
+std::error_code Identity::prepareKeyLogFile(SSL_CTX *ctx,
+                                            const std::string &keyLogFile) {
   // Set up a callback to log key material for debugging use.
   //
   // The format is described in:
@@ -432,7 +434,8 @@ std::error_code Identity::prepareKeyLogFile(SSL_CTX *ctx, const std::string &key
   assert(!keyLogFile.empty());
 
   std::error_code err;
-  keyLogFile_.reset(new llvm::raw_fd_ostream{keyLogFile, err, fs::F_Append | fs::F_RW | fs::F_Text});
+  keyLogFile_.reset(new llvm::raw_fd_ostream{
+      keyLogFile, err, fs::F_Append | fs::F_RW | fs::F_Text});
   if (err) {
     log_error("Identity: Failed to open file:", keyLogFile);
     return err;

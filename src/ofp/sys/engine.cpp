@@ -164,7 +164,7 @@ UInt64 Engine::addIdentity(const std::string &certData,
                            const std::string &privKey,
                            const std::string &verifier,
                            const std::string &version,
-                           const std::string &ciphers, 
+                           const std::string &ciphers,
                            const std::string &keyLogFile,
                            std::error_code &error) {
   auto idPtr = MakeUniquePtr<Identity>(certData, privKey, verifier, version,
