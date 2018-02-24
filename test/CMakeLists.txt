@@ -80,6 +80,7 @@ set(LIBOFP_TEST_SOURCES
 	ofp/queuegetconfigreply_unittest.cpp
 	ofp/queuegetconfigrequest_unittest.cpp
 	ofp/requestforward_unittest.cpp
+	ofp/rolereply_unittest.cpp
 	ofp/rolestatus_unittest.cpp
 	ofp/setasync_unittest.cpp
 	ofp/smallbuffer_unittest.cpp

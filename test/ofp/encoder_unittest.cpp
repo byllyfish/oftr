@@ -998,6 +998,57 @@ TEST(encoder, ofmp_portstats_v1) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, ofmp_portstats_v5) {
+  const char *input = R"""(
+    type: REPLY.PORT_STATS
+    version: 5
+    xid: 0x11111111
+    flags: [ 0x2222 ]
+    msg:
+      - port_no: 0x33333330
+        duration:   286331152.x22222220
+        rx_packets: 0x4444444444444440
+        tx_packets: 0x5555555555555550
+        rx_bytes:   0x6666666666666660
+        tx_bytes:   0x7777777777777770
+        rx_dropped: 0x8888888888888880
+        tx_dropped: 0x9999999999999990
+        rx_errors:  0xAAAAAAAAAAAAAAA0
+        tx_errors:  0xBBBBBBBBBBBBBBB0
+        ethernet:
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
+        optical:
+          flags: 0x11111110
+          tx_freq_lmda: 0x22222220
+          tx_offset: 0x33333330
+          tx_grid_span: 0x44444440
+          rx_freq_lmda: 0x55555550
+          rx_offset: 0x66666660
+          rx_grid_span: 0x77777770
+          tx_pwr: 0x8880
+          rx_pwr: 0x9990
+          bias_current: 0xAAA0
+          temperature: 0xBBB0
+        properties:
+          - property: EXPERIMENTER
+            experimenter: 0x77777701
+            exp_type: 0x88888801
+            data: 99999901
+          - property: 0x1234
+            data: 0123456789ABCDEF
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(216, encoder.size());
+  EXPECT_HEX(
+      "051300D811111111000422220000000000C80000333333301111111022222220444444444444444055555555555555506666666666666660777777777777777088888888888888809999999999999990AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB00000002800000000CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEEEEEEEEE0FFFFFFFFFFFFFFF00001002C000000001111111022222220333333304444444055555550666666607777777088809990AAA0BBB000000000FFFF00107777770188888801999999011234000C0123456789ABCDEF00000000",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, ofmp_queuestats_v4) {
   const char *input = R"""(
     type: MULTIPART_REPLY
