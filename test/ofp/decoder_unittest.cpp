@@ -1204,6 +1204,12 @@ TEST(decoder, getasyncreplyv5) {
       "EVICTION, '0x66666640' ]\n  properties:      \n...\n");
 }
 
+TEST(decoder, getasyncreplyv5_2) {
+  testDecodeEncode(
+      "051B005811111111000000083333333300010008222222220002000855555555000300084444444400040008777777770005000866666666FFFE000E8888888099999990ABCD0000FFFF000EAAAAAAA0BBBBBBB0CDEF0000",
+      "---\ntype:            GET_ASYNC_REPLY\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  packet_in_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, '0x33333300' ]\n  packet_in_master: [ APPLY_ACTION, PACKET_OUT, '0x22222200' ]\n  port_status_slave: [ ADD, MODIFY, '0x55555550' ]\n  port_status_master: [ MODIFY, '0x44444440' ]\n  flow_removed_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, '0x77777740' ]\n  flow_removed_master: [ HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  properties:      \n    - property:        EXPERIMENTER_SLAVE\n      experimenter:    0x88888880\n      exp_type:        0x99999990\n      data:            ABCD\n    - property:        EXPERIMENTER_MASTER\n      experimenter:    0xAAAAAAA0\n      exp_type:        0xBBBBBBB0\n      data:            CDEF\n...\n");
+}
+
 TEST(decoder, queuegetconfigrequestv4) {
   testDecodeEncode(
       "04160010111111112222222200000000",
@@ -1883,6 +1889,12 @@ TEST(decoder, ofmp_portdescv5_reply) {
       "]\n      peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, "
       "'0x88880000' ]\n      curr_speed:      0x99999999\n      max_speed:     "
       "  0xAAAAAAAA\n    properties:      \n...\n");
+}
+
+TEST(decoder, ofmp_portdescv5_reply_2) {
+  testDecodeEncode(
+      "051300D811111111000D00000000000000001111008000002222222222220000506F7274203100000000000000000000333333334444444400000020000000005555555566666666777777778888888899999999AAAAAAAA00010028000000001111111022222220333333304444444055555550666666607777777088809990FFFF000FBBBBBBB0CCCCCCC0ABCDEF000000BBBB00480000CCCCCCCCCCCC0000506F7274203200000000000000000000333333334444444400000020000000005555555566666666777777778888888899999999AAAAAAAA",
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  - port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n    name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    ethernet:        \n      curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n      advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      0x99999999\n      max_speed:       0xAAAAAAAA\n    optical:         \n      supported:       [ '0x11111110' ]\n      tx_min_freq_lmda: 0x22222220\n      tx_max_freq_lmda: 0x33333330\n      tx_grid_freq_lmda: 0x44444440\n      rx_min_freq_lmda: 0x55555550\n      rx_max_freq_lmda: 0x66666660\n      rx_grid_freq_lmda: 0x77777770\n      tx_pwr_min:      0x8880\n      tx_pwr_max:      0x9990\n    properties:      \n      - property:        EXPERIMENTER\n        experimenter:    0xBBBBBBB0\n        exp_type:        0xCCCCCCC0\n        data:            ABCDEF\n  - port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    ethernet:        \n      curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n      advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      0x99999999\n      max_speed:       0xAAAAAAAA\n    properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_tablefeaturesv4_reply_unpadded_len) {
