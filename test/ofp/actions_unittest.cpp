@@ -95,7 +95,7 @@ TEST(actions, AT_SET_MPLS_TTL) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_MPLS_TTL::type().length());
 
-  auto expected = HexToRawData("000F 0008 0005 0000");
+  auto expected = HexToRawData("000F 0008 0500 0000");
   EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
 }
 
