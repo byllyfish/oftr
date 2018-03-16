@@ -112,7 +112,7 @@ MatchPacketBuilder::MatchPacketBuilder(const OXMRange &range) {
         lldpPortDescr_ = item.value<X_LLDP_PORT_DESCR>();
         break;
       case X_LLDP_ORG_SPECIFIC::type():
-        lldpCustom_ = item.value<X_LLDP_ORG_SPECIFIC>();
+        lldpCustom_.push_back(item.value<X_LLDP_ORG_SPECIFIC>());
         break;
       case X_IPV6_ND_RES::type():
         ndRes_ = item.value<X_IPV6_ND_RES>();
@@ -254,10 +254,10 @@ void MatchPacketBuilder::buildLldp(ByteList *msg) const {
     msg->add(lldpPortDescr_.data(), lldpPortDescr_.size());
   }
 
-  if (!lldpCustom_.empty()) {
-    pkt::LLDPTlv tlv{pkt::LLDPTlv::ORG_SPECIFIC, lldpCustom_.size()};
+  for (auto &customValue : lldpCustom_) {
+    pkt::LLDPTlv tlv{pkt::LLDPTlv::ORG_SPECIFIC, customValue.size()};
     msg->add(&tlv, sizeof(tlv));
-    msg->add(lldpCustom_.data(), lldpCustom_.size());
+    msg->add(customValue.data(), customValue.size());
   }
 
   pkt::LLDPTlv end{pkt::LLDPTlv::END, 0};
