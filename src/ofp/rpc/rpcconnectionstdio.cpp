@@ -96,6 +96,8 @@ void RpcConnectionStdio::asyncReadLine() {
           handleEvent(line);
           asyncReadLine();
         } else if (err == asio::error::not_found) {
+          // Input line is too big. Send back an error message then allow
+          // connection to close.
           log_error("RpcConnectionStdio::asyncReadLine: input too large",
                     RPC_MAX_MESSAGE_SIZE, err);
           rpcRequestInvalid("RPC request is too big");
@@ -108,6 +110,8 @@ void RpcConnectionStdio::asyncReadLine() {
                 bytesUnread);
           }
         } else if (err != asio::error::operation_aborted) {
+          // Some error other than operation_aborted occurred. Log the
+          // error then allow connection to close.
           log_error("RpcConnectionStdio::asyncReadLine error", err);
         }
       });
