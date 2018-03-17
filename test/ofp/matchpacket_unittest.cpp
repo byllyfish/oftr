@@ -568,7 +568,18 @@ TEST(matchpacket, lldp) {
 }
 
 TEST(matchpacket, lldp_org_specific_multiple) {
-  testPacket("00000000000200000000000188CC0200040006020017FE080012BB0201406500FE0A0E00000100010203040500000000000000000000000000000000", "---\n- field:           ETH_DST\n  value:           '00:00:00:00:00:02'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:01'\n- field:           ETH_TYPE\n  value:           0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           'unknown'\n- field:           X_LLDP_PORT_ID\n  value:           'unknown'\n- field:           X_LLDP_TTL\n  value:           0x0017\n- field:           X_LLDP_ORG_SPECIFIC\n  value:           '0x12bb 0x2 01406500'\n- field:           X_LLDP_ORG_SPECIFIC\n  value:           '0xe0000 0x1 000102030405'\n...\n");
+  testPacket(
+      "00000000000200000000000188CC0200040006020017FE080012BB0201406500FE0A0E00"
+      "000100010203040500000000000000000000000000000000",
+      "---\n- field:           ETH_DST\n  value:           "
+      "'00:00:00:00:00:02'\n- field:           ETH_SRC\n  value:           "
+      "'00:00:00:00:00:01'\n- field:           ETH_TYPE\n  value:           "
+      "0x88CC\n- field:           X_LLDP_CHASSIS_ID\n  value:           "
+      "'unknown'\n- field:           X_LLDP_PORT_ID\n  value:           "
+      "'unknown'\n- field:           X_LLDP_TTL\n  value:           0x0017\n- "
+      "field:           X_LLDP_ORG_SPECIFIC\n  value:           '0x12bb 0x2 "
+      "01406500'\n- field:           X_LLDP_ORG_SPECIFIC\n  value:           "
+      "'0xe0000 0x1 000102030405'\n...\n");
 }
 
 TEST(matchpacket, ethernet_misaligned) {
