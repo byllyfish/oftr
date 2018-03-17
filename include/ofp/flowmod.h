@@ -94,16 +94,10 @@ class FlowModBuilder {
 
   void setMatch(const MatchBuilder &match) { match_ = match; }
 
-  void setMatch(MatchBuilder &&match) { match_ = std::move(match); }
-
   InstructionList &instructions() { return instructions_; }
 
   void setInstructions(const InstructionList &instructions) {
     instructions_ = instructions;
-  }
-
-  void setInstructions(InstructionList &&instructions) {
-    instructions_ = std::move(instructions);
   }
 
   UInt32 send(Writable *channel);

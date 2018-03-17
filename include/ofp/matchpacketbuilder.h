@@ -4,6 +4,7 @@
 #ifndef OFP_MATCHPACKETBUILDER_H_
 #define OFP_MATCHPACKETBUILDER_H_
 
+#include <vector>
 #include "ofp/ipv4address.h"
 #include "ofp/ipv6address.h"
 #include "ofp/lldpvalue.h"
@@ -51,7 +52,7 @@ class MatchPacketBuilder {
   UInt16 lldpTtl_ = 0;
   LLDPValue<LLDPType::ByteString> lldpSysName_;
   LLDPValue<LLDPType::ByteString> lldpPortDescr_;
-  LLDPValue<LLDPType::OrgSpecific> lldpCustom_;
+  std::vector<LLDPValue<LLDPType::OrgSpecific>> lldpCustom_;
 
   void addEthernet(ByteList *msg) const;
   void addIPv4(ByteList *msg, size_t length) const;

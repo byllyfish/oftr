@@ -582,6 +582,38 @@ TEST(decoder, ofmp_portstats_v1) {
       "collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
 }
 
+TEST(decoder, ofmp_portstats_v5) {
+  testDecodeEncode(
+      "051300D811111111000422220000000000C8000033333330111111102222222044444444"
+      "444444405555555555555550666666666666666077777777777777708888888888888880"
+      "9999999999999990AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB00000002800000000CCCCCCCC"
+      "CCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEEEEEEEEE0FFFFFFFFFFFFFFF00001002C00000000"
+      "1111111022222220333333304444444055555550666666607777777088809990AAA0BBB0"
+      "00000000FFFF00107777770188888801999999011234000C0123456789ABCDEF0000000"
+      "0",
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
+      "]\nxid:             0x11111111\nversion:         0x05\nmsg:             "
+      "\n  - port_no:         0x33333330\n    duration:        "
+      "286331152.572662304\n    rx_packets:      0x4444444444444440\n    "
+      "tx_packets:      0x5555555555555550\n    rx_bytes:        "
+      "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
+      "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
+      "0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    "
+      "tx_errors:       0xBBBBBBBBBBBBBBB0\n    ethernet:        \n      "
+      "rx_frame_err:    0xCCCCCCCCCCCCCCC0\n      rx_over_err:     "
+      "0xDDDDDDDDDDDDDDD0\n      rx_crc_err:      0xEEEEEEEEEEEEEEE0\n      "
+      "collisions:      0xFFFFFFFFFFFFFFF0\n    optical:         \n      "
+      "flags:           0x11111110\n      tx_freq_lmda:    0x22222220\n      "
+      "tx_offset:       0x33333330\n      tx_grid_span:    0x44444440\n      "
+      "rx_freq_lmda:    0x55555550\n      rx_offset:       0x66666660\n      "
+      "rx_grid_span:    0x77777770\n      tx_pwr:          0x8880\n      "
+      "rx_pwr:          0x9990\n      bias_current:    0xAAA0\n      "
+      "temperature:     0xBBB0\n    properties:      \n      - property:       "
+      " EXPERIMENTER\n        experimenter:    0x77777701\n        exp_type:   "
+      "     0x88888801\n        data:            99999901\n      - property:   "
+      "     0x1234\n        data:            0123456789ABCDEF\n...\n");
+}
+
 TEST(decoder, ofmp_queuestats_v4) {
   testDecodeEncode(
       "041300381111111100052222000000003333333044444440555555555555555066666666"
@@ -1196,6 +1228,26 @@ TEST(decoder, getasyncreplyv5) {
       "IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, "
       "'0x77777740' ]\n  flow_removed_master: [ HARD_TIMEOUT, DELETE, "
       "EVICTION, '0x66666640' ]\n  properties:      \n...\n");
+}
+
+TEST(decoder, getasyncreplyv5_2) {
+  testDecodeEncode(
+      "051B00581111111100000008333333330001000822222222000200085555555500030008"
+      "4444444400040008777777770005000866666666FFFE000E8888888099999990ABCD0000"
+      "FFFF000EAAAAAAA0BBBBBBB0CDEF0000",
+      "---\ntype:            GET_ASYNC_REPLY\nxid:             "
+      "0x11111111\nversion:         0x05\nmsg:             \n  "
+      "packet_in_slave: [ TABLE_MISS, APPLY_ACTION, GROUP, PACKET_OUT, "
+      "'0x33333300' ]\n  packet_in_master: [ APPLY_ACTION, PACKET_OUT, "
+      "'0x22222200' ]\n  port_status_slave: [ ADD, MODIFY, '0x55555550' ]\n  "
+      "port_status_master: [ MODIFY, '0x44444440' ]\n  flow_removed_slave: [ "
+      "IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, "
+      "'0x77777740' ]\n  flow_removed_master: [ HARD_TIMEOUT, DELETE, "
+      "EVICTION, '0x66666640' ]\n  properties:      \n    - property:        "
+      "EXPERIMENTER_SLAVE\n      experimenter:    0x88888880\n      exp_type:  "
+      "      0x99999990\n      data:            ABCD\n    - property:        "
+      "EXPERIMENTER_MASTER\n      experimenter:    0xAAAAAAA0\n      exp_type: "
+      "       0xBBBBBBB0\n      data:            CDEF\n...\n");
 }
 
 TEST(decoder, queuegetconfigrequestv4) {
@@ -1877,6 +1929,50 @@ TEST(decoder, ofmp_portdescv5_reply) {
       "]\n      peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, "
       "'0x88880000' ]\n      curr_speed:      0x99999999\n      max_speed:     "
       "  0xAAAAAAAA\n    properties:      \n...\n");
+}
+
+TEST(decoder, ofmp_portdescv5_reply_2) {
+  testDecodeEncode(
+      "051300D811111111000D00000000000000001111008000002222222222220000506F7274"
+      "203100000000000000000000333333334444444400000020000000005555555566666666"
+      "777777778888888899999999AAAAAAAA0001002800000000111111102222222033333330"
+      "4444444055555550666666607777777088809990FFFF000FBBBBBBB0CCCCCCC0ABCDEF00"
+      "0000BBBB00480000CCCCCCCCCCCC0000506F727420320000000000000000000033333333"
+      "4444444400000020000000005555555566666666777777778888888899999999AAAAAAA"
+      "A",
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x05\nmsg:             \n  - "
+      "port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n "
+      "   name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    ethernet:        \n      curr:            [ "
+      "10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, "
+      "'0x55550000' ]\n      advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, "
+      "10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n      "
+      "supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, "
+      "100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      "
+      "peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' "
+      "]\n      curr_speed:      0x99999999\n      max_speed:       "
+      "0xAAAAAAAA\n    optical:         \n      supported:       [ "
+      "'0x11111110' ]\n      tx_min_freq_lmda: 0x22222220\n      "
+      "tx_max_freq_lmda: 0x33333330\n      tx_grid_freq_lmda: 0x44444440\n     "
+      " rx_min_freq_lmda: 0x55555550\n      rx_max_freq_lmda: 0x66666660\n     "
+      " rx_grid_freq_lmda: 0x77777770\n      tx_pwr_min:      0x8880\n      "
+      "tx_pwr_max:      0x9990\n    properties:      \n      - property:       "
+      " EXPERIMENTER\n        experimenter:    0xBBBBBBB0\n        exp_type:   "
+      "     0xCCCCCCC0\n        data:            ABCDEF\n  - port_no:         "
+      "0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:         "
+      "   Port 2\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, "
+      "'0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    "
+      "ethernet:        \n      curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, "
+      "10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n      "
+      "advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, "
+      "AUTONEG, PAUSE, '0x66660000' ]\n      supported:       [ 10MB_HD, "
+      "10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, "
+      "FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            [ "
+      "100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      "
+      "curr_speed:      0x99999999\n      max_speed:       0xAAAAAAAA\n    "
+      "properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_tablefeaturesv4_reply_unpadded_len) {

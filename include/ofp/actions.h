@@ -98,14 +98,14 @@ class AT_SET_MPLS_TTL {
     return ActionType(OFPAT_SET_MPLS_TTL, 8);
   }
 
-  constexpr explicit AT_SET_MPLS_TTL(UInt16 ttl) : ttl_{ttl} {}
+  constexpr explicit AT_SET_MPLS_TTL(UInt8 ttl) : ttl_{ttl} {}
 
-  UInt16 ttl() const { return ttl_; }
+  UInt8 ttl() const { return ttl_; }
 
  private:
   const ActionType type_ = type();
-  const Big16 ttl_;
-  const Padding<2> pad_;
+  const Big8 ttl_;
+  const Padding<3> pad_;
 };
 
 static_assert(sizeof(AT_SET_MPLS_TTL) == 8, "Unexpected size.");

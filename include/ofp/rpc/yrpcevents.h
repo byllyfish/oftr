@@ -210,6 +210,7 @@ struct MappingTraits<ofp::rpc::RpcAddIdentity::Params> {
     io.mapOptional("cacert", params.cacert);
     io.mapOptional("version", params.version);
     io.mapOptional("ciphers", params.ciphers);
+    io.mapOptional("keylog", params.keylog);
   }
 };
 

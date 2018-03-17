@@ -1109,7 +1109,7 @@ msg:
             ethertype:       0x8100
           - action:          DEC_MPLS_TTL
           - action:          SET_MPLS_TTL
-            ttl:             0x0A00
+            ttl:             0x0A
           - action:          DEC_NW_TTL
           - action:          SET_NW_TTL
             ttl:             0x0A
@@ -1227,7 +1227,7 @@ msg:
           ethertype:       0x8100
         - action:          DEC_MPLS_TTL
         - action:          SET_MPLS_TTL
-          ttl:             0x0A00
+          ttl:             0x0A
         - action:          DEC_NW_TTL
         - action:          SET_NW_TTL
           ttl:             0x0A
@@ -3904,7 +3904,7 @@ msg:
             ethertype:       0x8100
           - action:          DEC_MPLS_TTL
           - action:          SET_MPLS_TTL
-            ttl:             0x0A00
+            ttl:             0x0A
           - action:          DEC_NW_TTL
           - action:          SET_NW_TTL
             ttl:             0x0A
@@ -4022,7 +4022,7 @@ msg:
           ethertype:       0x8100
         - action:          DEC_MPLS_TTL
         - action:          SET_MPLS_TTL
-          ttl:             0x0A00
+          ttl:             0x0A
         - action:          DEC_NW_TTL
         - action:          SET_NW_TTL
           ttl:             0x0A
