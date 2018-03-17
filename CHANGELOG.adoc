@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.47 (16 March 2018)
+
+- Support multiple X_LLDP_ORG_SPECIFIC custom fields in packet generation.
+- Fix 'ttl' attribute in SET_MPLS_TTL (UInt8).
+- Fix keylog parameter in OFP.ADD_IDENTITY.
+- Update boringssl and googletest modules.
+
 == Version 0.46 (18 February 2018)
 
 - Add support for 'keylog' option in OFP.ADD_IDENTITY command.
