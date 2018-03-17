@@ -181,6 +181,35 @@ TEST(matchpacketbuilder, lldp_custom) {
       range.data(), range.size());
 }
 
+TEST(matchpacketbuilder, lldp_org_specific_multiple) {
+  MacAddress ethSrc{"00:00:00:00:00:01"};
+  MacAddress ethDst{"00:00:00:00:00:02"};
+
+  OXMList oxm;
+  oxm.add(OFB_ETH_DST{ethDst});
+  oxm.add(OFB_ETH_SRC{ethSrc});
+  oxm.add(OFB_ETH_TYPE{DATALINK_LLDP});
+  oxm.add(X_LLDP_TTL{23});
+
+  // There are two Organizationally specific TLV's.
+  LLDPValue<LLDPType::OrgSpecific> custom1;
+  EXPECT_TRUE(custom1.parse("0x12bb 0x2 01406500"));
+  oxm.add(X_LLDP_ORG_SPECIFIC{custom1});
+
+  LLDPValue<LLDPType::OrgSpecific> custom2;
+  EXPECT_TRUE(custom2.parse("0x0e0000 0x1 000102030405"));
+  oxm.add(X_LLDP_ORG_SPECIFIC{custom2});
+
+  ByteList data;
+  MatchPacketBuilder packet{oxm.toRange()};
+  packet.build(&data, {});
+
+  EXPECT_HEX(
+      "00000000000200000000000188CC0200040006020017FE080012BB0201406500FE0A0E00"
+      "000100010203040500000000000000000000000000000000",
+      data.data(), data.size());
+}
+
 TEST(matchpacketbuilder, minimal_arp) {
   OXMList oxm;
   oxm.add(OFB_ETH_TYPE{DATALINK_ARP});

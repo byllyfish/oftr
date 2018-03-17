@@ -998,6 +998,63 @@ TEST(encoder, ofmp_portstats_v1) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, ofmp_portstats_v5) {
+  const char *input = R"""(
+    type: REPLY.PORT_STATS
+    version: 5
+    xid: 0x11111111
+    flags: [ 0x2222 ]
+    msg:
+      - port_no: 0x33333330
+        duration:   286331152.x22222220
+        rx_packets: 0x4444444444444440
+        tx_packets: 0x5555555555555550
+        rx_bytes:   0x6666666666666660
+        tx_bytes:   0x7777777777777770
+        rx_dropped: 0x8888888888888880
+        tx_dropped: 0x9999999999999990
+        rx_errors:  0xAAAAAAAAAAAAAAA0
+        tx_errors:  0xBBBBBBBBBBBBBBB0
+        ethernet:
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
+        optical:
+          flags: 0x11111110
+          tx_freq_lmda: 0x22222220
+          tx_offset: 0x33333330
+          tx_grid_span: 0x44444440
+          rx_freq_lmda: 0x55555550
+          rx_offset: 0x66666660
+          rx_grid_span: 0x77777770
+          tx_pwr: 0x8880
+          rx_pwr: 0x9990
+          bias_current: 0xAAA0
+          temperature: 0xBBB0
+        properties:
+          - property: EXPERIMENTER
+            experimenter: 0x77777701
+            exp_type: 0x88888801
+            data: 99999901
+          - property: 0x1234
+            data: 0123456789ABCDEF
+    )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(216, encoder.size());
+  EXPECT_HEX(
+      "051300D811111111000422220000000000C8000033333330111111102222222044444444"
+      "444444405555555555555550666666666666666077777777777777708888888888888880"
+      "9999999999999990AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB00000002800000000CCCCCCCC"
+      "CCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEEEEEEEEE0FFFFFFFFFFFFFFF00001002C00000000"
+      "1111111022222220333333304444444055555550666666607777777088809990AAA0BBB0"
+      "00000000FFFF00107777770188888801999999011234000C0123456789ABCDEF0000000"
+      "0",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, ofmp_queuestats_v4) {
   const char *input = R"""(
     type: MULTIPART_REPLY
@@ -2209,6 +2266,40 @@ TEST(encoder, getasyncreplyv5) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, getasyncreplyv5_2) {
+  const char *input = R"""(
+      version: 5
+      type: GET_ASYNC_REPLY
+      datapath_id: 00:00:00:00:00:00:00:01
+      xid: 0x11111111
+      msg:
+        packet_in_master: [0x22222222]
+        packet_in_slave: [0x33333333]
+        port_status_master: [0x44444444]
+        port_status_slave: [0x55555555]
+        flow_removed_master: [0x66666666]
+        flow_removed_slave: [0x77777777]
+        properties:
+          - property: EXPERIMENTER_SLAVE
+            experimenter: 0x88888880
+            exp_type: 0x99999990
+            data: ABCD
+          - property: EXPERIMENTER_MASTER
+            experimenter: 0xAAAAAAA0
+            exp_type: 0xBBBBBBB0
+            data: CDEF
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(88, encoder.size());
+  EXPECT_HEX(
+      "051B00581111111100000008333333330001000822222222000200085555555500030008"
+      "4444444400040008777777770005000866666666FFFE000E8888888099999990ABCD0000"
+      "FFFF000EAAAAAAA0BBBBBBB0CDEF0000",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, queuegetconfigrequestv4) {
   const char *input = R"""(
       version: 4
@@ -3339,6 +3430,68 @@ TEST(encoder, ofmp_portdesc_replyv5) {
       "777777778888888899999999AAAAAAAA0000BBBB00480000CCCCCCCCCCCC0000506F7274"
       "203200000000000000000000333333334444444400000020000000005555555566666666"
       "777777778888888899999999AAAAAAAA",
+      encoder.data(), encoder.size());
+}
+
+TEST(encoder, ofmp_portdesc_replyv5_2) {
+  const char *input = R"""(
+    version: 5
+    type: REPLY.PORT_DESC
+    xid: 0x11111111
+    msg:
+      - port_no: 0x1111
+        hw_addr: 22:22:22:22:22:22
+        name: Port 1
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        optical:
+          supported: [ 0x11111110 ]
+          tx_min_freq_lmda: 0x22222220
+          tx_max_freq_lmda: 0x33333330
+          tx_grid_freq_lmda: 0x44444440
+          rx_min_freq_lmda: 0x55555550
+          rx_max_freq_lmda: 0x66666660
+          rx_grid_freq_lmda: 0x77777770
+          tx_pwr_min: 0x8880
+          tx_pwr_max: 0x9990
+        properties:
+          - property: EXPERIMENTER
+            experimenter: 0xBBBBBBB0
+            exp_type: 0xCCCCCCC0
+            data: ABCDEF
+      - port_no: 0xBBBB
+        hw_addr: CC:CC:CC:CC:CC:CC
+        name: Port 2
+        config: [ '0x33333333' ]
+        state:  [ '0x44444444' ]
+        ethernet:
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
+        properties:
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(216, encoder.size());
+  EXPECT_HEX(
+      "051300D811111111000D00000000000000001111008000002222222222220000506F7274"
+      "203100000000000000000000333333334444444400000020000000005555555566666666"
+      "777777778888888899999999AAAAAAAA0001002800000000111111102222222033333330"
+      "4444444055555550666666607777777088809990FFFF000FBBBBBBB0CCCCCCC0ABCDEF00"
+      "0000BBBB00480000CCCCCCCCCCCC0000506F727420320000000000000000000033333333"
+      "4444444400000020000000005555555566666666777777778888888899999999AAAAAAA"
+      "A",
       encoder.data(), encoder.size());
 }
 

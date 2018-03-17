@@ -82,7 +82,7 @@ max_len: !opt ControllerMaxLen
 
 const char *const kSetMPLSTTLSchema = R"""({Action/SET_MPLS_TTL}
 action: SET_MPLS_TTL
-ttl: UInt16
+ttl: UInt8
 )""";
 
 const char *const kPushVLANSchema = R"""({Action/PUSH_VLAN}
@@ -177,7 +177,7 @@ struct MappingTraits<ofp::detail::ActionIteratorItem> {
       }
       case AT_SET_MPLS_TTL::type(): {
         const AT_SET_MPLS_TTL *action = item.action<AT_SET_MPLS_TTL>();
-        Hex16 ttl = action->ttl();
+        Hex8 ttl = action->ttl();
         io.mapRequired("ttl", ttl);
         break;
       }
@@ -361,7 +361,7 @@ struct MappingTraits<ofp::detail::ActionInserter> {
         break;
       }
       case OFPAT_SET_MPLS_TTL: {
-        UInt16 ttl;
+        UInt8 ttl;
         io.mapRequired("ttl", ttl);
         AT_SET_MPLS_TTL action{ttl};
         list.add(action);

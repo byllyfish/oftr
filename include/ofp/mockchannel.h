@@ -12,6 +12,9 @@
 namespace ofp {
 
 // \brief Concrete class to use for a Channel for testing purposes.
+//
+// There is a related class called `MemoryChannel` which is a subclass
+// of `Writable`; MemoryChannel should be preferred where possible.
 
 class MockChannel : public Channel {
  public:

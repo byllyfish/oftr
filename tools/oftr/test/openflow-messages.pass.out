@@ -15723,7 +15723,7 @@ msg:
         - action:          0x000E
           data:            00000000
         - action:          SET_MPLS_TTL
-          ttl:             0x0000
+          ttl:             0x00
         - action:          DEC_MPLS_TTL
         - action:          PUSH_VLAN
           ethertype:       0x0000
@@ -16409,7 +16409,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          SET_MPLS_TTL
-          ttl:             0x0300
+          ttl:             0x03
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_14_00036.pass
 Error: Encode yielded different data at byte offset 52:
@@ -44396,7 +44396,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          SET_MPLS_TTL
-          ttl:             0x0000
+          ttl:             0x00
 ...
 ---
 type:            FLOW_MOD
@@ -56296,7 +56296,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          SET_MPLS_TTL
-          ttl:             0x0000
+          ttl:             0x00
 ...
 ---
 type:            FLOW_MOD
@@ -69622,7 +69622,7 @@ msg:
     - instruction:     APPLY_ACTIONS
       actions:         
         - action:          SET_MPLS_TTL
-          ttl:             0x0000
+          ttl:             0x00
 ...
 ---
 type:            FLOW_MOD
