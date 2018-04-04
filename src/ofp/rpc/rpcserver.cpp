@@ -15,15 +15,14 @@ using ofp::rpc::RpcServer;
 using ofp::sys::TCP_Server;
 using namespace ofp;
 
-
-RpcServer::RpcServer(bool binaryProtocol, Milliseconds metricInterval, Channel *defaultChannel)
+RpcServer::RpcServer(bool binaryProtocol, Milliseconds metricInterval,
+                     Channel *defaultChannel)
     : engine_{driver_.engine()},
       acceptor_{driver_.engine()->io()},
       socket_{driver_.engine()->io()},
       binaryProtocol_{binaryProtocol},
       defaultChannel_{defaultChannel},
       metricInterval_{metricInterval} {
-
   engine_->setAlertCallback(alertCallback, this);
   driver_.installSignalHandlers([this]() { this->close(); });
 }
@@ -85,9 +84,10 @@ void RpcServer::asyncAccept() {
     }
 
     log_info("async_accept");
-    auto conn = std::make_shared<RpcConnectionUnix>(this, std::move(socket_), binaryProtocol_);
+    auto conn = std::make_shared<RpcConnectionUnix>(this, std::move(socket_),
+                                                    binaryProtocol_);
     conn->asyncAccept();
-    
+
     asyncAccept();
   });
 }

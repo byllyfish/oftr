@@ -17,7 +17,8 @@ class MemX509 {
   explicit MemX509(X509 *cert, bool own = true) : cert_{cert}, own_{own} {}
 
   explicit MemX509(const std::string &data)
-      : cert_{::PEM_read_bio_X509(MemBio{data}.get(), nullptr, nullptr, nullptr)} {}
+      : cert_{::PEM_read_bio_X509(MemBio{data}.get(), nullptr, nullptr,
+                                  nullptr)} {}
 
   ~MemX509() {
     if (cert_ && own_) {

@@ -35,7 +35,8 @@ OFP_BEGIN_IGNORE_PADDING
 /// The driver is controlled using YAML messages.
 class RpcServer {
  public:
-  RpcServer(bool binaryProtocol, Milliseconds metricInterval, Channel *defaultChannel = nullptr);
+  RpcServer(bool binaryProtocol, Milliseconds metricInterval,
+            Channel *defaultChannel = nullptr);
   ~RpcServer();
 
   /// Bind RPC server to stdio or unix domain socket.

@@ -215,5 +215,6 @@ TEST(actions, AT_SET_FIELD_128bit) {
   EXPECT_EQ(24, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_IPV6_SRC>::type().length());
 
-  EXPECT_HEX("0019 0018 8000 3410 00000000000000000000000000000001", &act, sizeof(act));
+  EXPECT_HEX("0019 0018 8000 3410 00000000000000000000000000000001", &act,
+             sizeof(act));
 }

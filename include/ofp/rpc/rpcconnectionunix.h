@@ -15,7 +15,8 @@ OFP_BEGIN_IGNORE_PADDING
 
 class RpcConnectionUnix final : public RpcConnection {
  public:
-  RpcConnectionUnix(RpcServer *server, sys::unix_domain::socket socket, bool binaryProtocol);
+  RpcConnectionUnix(RpcServer *server, sys::unix_domain::socket socket,
+                    bool binaryProtocol);
 
   void asyncAccept() override;
   void close() override;

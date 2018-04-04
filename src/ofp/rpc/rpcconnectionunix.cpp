@@ -15,7 +15,9 @@ using ofp::rpc::RpcConnectionUnix;
 constexpr llvm::StringLiteral kMsgPrefix{"{\"params\":"};
 constexpr llvm::StringLiteral kMsgSuffix{",\"method\":\"OFP.MESSAGE\"}"};
 
-RpcConnectionUnix::RpcConnectionUnix(RpcServer *server, sys::unix_domain::socket socket, bool binaryProtocol)
+RpcConnectionUnix::RpcConnectionUnix(RpcServer *server,
+                                     sys::unix_domain::socket socket,
+                                     bool binaryProtocol)
     : RpcConnection{server},
       sock_{std::move(socket)},
       streambuf_{RPC_MAX_MESSAGE_SIZE},
@@ -96,9 +98,8 @@ void RpcConnectionUnix::asyncReadLine() {
           // Log warning if there are unread bytes in the buffer.
           auto bytesUnread = streambuf_.size();
           if (bytesUnread > 0) {
-            log_warning(
-                "RpcConnectionUnix::asyncReadLine: unread bytes at eof",
-                bytesUnread);
+            log_warning("RpcConnectionUnix::asyncReadLine: unread bytes at eof",
+                        bytesUnread);
           }
         } else if (err != asio::error::operation_aborted) {
           // Some error other than operation_aborted occurred. Log the
