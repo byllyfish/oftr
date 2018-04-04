@@ -13,8 +13,7 @@ TEST(actions, AT_COPY_TTL_OUT) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_COPY_TTL_OUT::type().length());
 
-  auto expected = HexToRawData("000B 0008 0000 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("000B 0008 0000 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_COPY_TTL_IN) {
@@ -22,8 +21,7 @@ TEST(actions, AT_COPY_TTL_IN) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_COPY_TTL_IN::type().length());
 
-  auto expected = HexToRawData("000C 0008 0000 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("000C 0008 0000 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_DEC_MPLS_TTL) {
@@ -31,8 +29,7 @@ TEST(actions, AT_DEC_MPLS_TTL) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_DEC_MPLS_TTL::type().length());
 
-  auto expected = HexToRawData("0010 0008 0000 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0010 0008 0000 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_POP_VLAN) {
@@ -40,8 +37,7 @@ TEST(actions, AT_POP_VLAN) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_POP_VLAN::type().length());
 
-  auto expected = HexToRawData("0012 0008 0000 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0012 0008 0000 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_POP_MPLS) {
@@ -49,8 +45,7 @@ TEST(actions, AT_POP_MPLS) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_POP_MPLS::type().length());
 
-  auto expected = HexToRawData("0014 0008 0005 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0014 0008 0005 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_DEC_NW_TTL) {
@@ -58,8 +53,7 @@ TEST(actions, AT_DEC_NW_TTL) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_DEC_NW_TTL::type().length());
 
-  auto expected = HexToRawData("0018 0008 0000 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0018 0008 0000 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_POP_PBB) {
@@ -67,8 +61,7 @@ TEST(actions, AT_POP_PBB) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_POP_PBB::type().length());
 
-  auto expected = HexToRawData("001B 0008 0000 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("001B 0008 0000 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_OUTPUT) {
@@ -95,8 +88,7 @@ TEST(actions, AT_SET_MPLS_TTL) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_MPLS_TTL::type().length());
 
-  auto expected = HexToRawData("000F 0008 0500 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("000F 0008 0500 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_PUSH_VLAN) {
@@ -105,8 +97,7 @@ TEST(actions, AT_PUSH_VLAN) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_PUSH_VLAN::type().length());
 
-  auto expected = HexToRawData("0011 0008 0005 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0011 0008 0005 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_PUSH_MPLS) {
@@ -115,8 +106,7 @@ TEST(actions, AT_PUSH_MPLS) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_PUSH_MPLS::type().length());
 
-  auto expected = HexToRawData("0013 0008 0005 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0013 0008 0005 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_SET_QUEUE) {
@@ -125,8 +115,7 @@ TEST(actions, AT_SET_QUEUE) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_QUEUE::type().length());
 
-  auto expected = HexToRawData("0015 0008 0000 0005");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0015 0008 0000 0005", &act, sizeof(act));
 }
 
 TEST(actions, AT_GROUP) {
@@ -135,8 +124,7 @@ TEST(actions, AT_GROUP) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_GROUP::type().length());
 
-  auto expected = HexToRawData("0016 0008 0000 0005");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0016 0008 0000 0005", &act, sizeof(act));
 }
 
 TEST(actions, AT_SET_NW_TTL) {
@@ -145,8 +133,7 @@ TEST(actions, AT_SET_NW_TTL) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_NW_TTL::type().length());
 
-  auto expected = HexToRawData("0017 0008 0500 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0017 0008 0500 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_PUSH_PBB) {
@@ -155,8 +142,7 @@ TEST(actions, AT_PUSH_PBB) {
   EXPECT_EQ(8, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_PUSH_PBB::type().length());
 
-  auto expected = HexToRawData("001A 0008 0005 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("001A 0008 0005 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_EXPERIMENTER) {
@@ -176,8 +162,7 @@ TEST(actions, AT_SET_FIELD_8bit) {
   EXPECT_EQ(16, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_IP_PROTO>::type().length());
 
-  auto expected = HexToRawData("0019 0010 8000 1401 05 00000000000000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0019 0010 8000 1401 05 00000000000000", &act, sizeof(act));
 }
 
 TEST(actions, AT_SET_FIELD_16bit) {
@@ -187,8 +172,7 @@ TEST(actions, AT_SET_FIELD_16bit) {
   EXPECT_EQ(16, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_UDP_DST>::type().length());
 
-  auto expected = HexToRawData("0019 0010 8000 2002 0005 000000000000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0019 0010 8000 2002 0005 000000000000", &act, sizeof(act));
 }
 
 TEST(actions, AT_SET_FIELD_32bit) {
@@ -199,8 +183,7 @@ TEST(actions, AT_SET_FIELD_32bit) {
   EXPECT_EQ(16, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_IN_PORT>::type().length());
 
-  auto expected = HexToRawData("0019 0010 8000 0004 0000 0005 00000000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0019 0010 8000 0004 0000 0005 00000000", &act, sizeof(act));
 }
 
 TEST(actions, AT_SET_FIELD_48bit) {
@@ -211,8 +194,7 @@ TEST(actions, AT_SET_FIELD_48bit) {
   EXPECT_EQ(16, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_ETH_DST>::type().length());
 
-  auto expected = HexToRawData("0019 0010 8000 0606 010203040506 0000");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0019 0010 8000 0606 010203040506 0000", &act, sizeof(act));
 }
 
 TEST(actions, AT_SET_FIELD_64bit) {
@@ -222,8 +204,7 @@ TEST(actions, AT_SET_FIELD_64bit) {
   EXPECT_EQ(16, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_METADATA>::type().length());
 
-  auto expected = HexToRawData("0019 0010 8000 0408 0000000000000005");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0019 0010 8000 0408 0000000000000005", &act, sizeof(act));
 }
 
 TEST(actions, AT_SET_FIELD_128bit) {
@@ -234,7 +215,5 @@ TEST(actions, AT_SET_FIELD_128bit) {
   EXPECT_EQ(24, sizeof(act));
   EXPECT_EQ(sizeof(act), AT_SET_FIELD<OFB_IPV6_SRC>::type().length());
 
-  auto expected =
-      HexToRawData("0019 0018 8000 3410 00000000000000000000000000000001");
-  EXPECT_EQ(0, std::memcmp(expected.data(), &act, sizeof(act)));
+  EXPECT_HEX("0019 0018 8000 3410 00000000000000000000000000000001", &act, sizeof(act));
 }

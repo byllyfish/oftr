@@ -15,7 +15,7 @@ class TestController : public ChannelListener {
     ++GLOBAL_controllerCount;
   }
 
-  ~TestController() {
+  ~TestController() override {
     log_debug("TestController destroyed");
     --GLOBAL_controllerCount;
   }
@@ -65,7 +65,7 @@ class TestAgent : public ChannelListener {
     log_debug("TestAgent constructed");
   }
 
-  ~TestAgent() {
+  ~TestAgent() override {
     --GLOBAL_agentCount;
     log_debug("TestAgent destroyed");
   }
