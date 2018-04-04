@@ -53,7 +53,7 @@ class Help : public Subprogram {
 
   // Declare separate constructor/destructor to compile `schemas_`.
   Help();
-  ~Help();
+  ~Help() override;
 
  private:
   std::vector<std::unique_ptr<Schema>> schemas_;

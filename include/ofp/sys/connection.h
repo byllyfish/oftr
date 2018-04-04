@@ -24,7 +24,7 @@ OFP_BEGIN_IGNORE_PADDING
 class Connection : public Channel {
  public:
   Connection(Engine *engine, DefaultHandshake *handshake);
-  virtual ~Connection();
+  ~Connection() override;
 
   Driver *driver() const override;
 

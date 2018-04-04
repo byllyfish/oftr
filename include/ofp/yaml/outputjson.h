@@ -13,8 +13,8 @@ OFP_BEGIN_IGNORE_PADDING
 
 class OutputJson : public llvm::yaml::IO {
  public:
-  explicit OutputJson(llvm::raw_ostream &yout, void *ctxt = NULL);
-  virtual ~OutputJson();
+  explicit OutputJson(llvm::raw_ostream &yout, void *ctxt = nullptr);
+  virtual ~OutputJson() override;
 
   bool outputting() override;
   bool outputtingJson() override { return true; }

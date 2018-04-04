@@ -28,7 +28,7 @@ class TCP_Connection
   TCP_Connection(Engine *engine, tcp::socket socket, ChannelOptions options,
                  UInt64 securityId, ProtocolVersions versions,
                  ChannelListener::Factory factory);
-  ~TCP_Connection();
+  ~TCP_Connection() override;
 
   void asyncConnect(
       const IPv6Endpoint &remoteEndpt,

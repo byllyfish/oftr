@@ -471,7 +471,7 @@ void Engine::asyncIdle() {
   idleTimer_.async_wait([this](const asio::error_code &err) {
     if (!err) {
       TimePoint now = TimeClock::now();
-      forEachConnection([this, &now](Connection *conn) {
+      forEachConnection([&now](Connection *conn) {
         if (conn->flags() & Connection::kConnectionUp) {
           conn->tickle(now);
         }

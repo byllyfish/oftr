@@ -11,6 +11,8 @@
 namespace ofp {
 namespace rpc {
 
+OFP_BEGIN_IGNORE_PADDING
+
 class RpcConnectionUnix final : public RpcConnection {
  public:
   RpcConnectionUnix(RpcServer *server, sys::unix_domain::socket socket, bool binaryProtocol);
@@ -44,6 +46,8 @@ class RpcConnectionUnix final : public RpcConnection {
   void asyncMetrics(Milliseconds interval);
   void logMetrics();
 };
+
+OFP_END_IGNORE_PADDING
 
 }  // namespace rpc
 }  // namespace ofp
