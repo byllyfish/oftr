@@ -38,6 +38,7 @@ class JsonRpc : public Subprogram {
 
   void setMaxOpenFiles();
   void runStdio();
+  void runUnixDomainSocket();
 };
 
 }  // namespace ofpx

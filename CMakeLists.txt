@@ -332,6 +332,7 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/rpc/rpcchannellistener.cpp
     src/ofp/rpc/rpcconnection.cpp
     src/ofp/rpc/rpcconnectionstdio.cpp
+    src/ofp/rpc/rpcconnectionunix.cpp
     src/ofp/rpc/rpcserver.cpp
     src/ofp/rpc/rpcencoder.cpp
     src/ofp/rpc/rpcevents.cpp

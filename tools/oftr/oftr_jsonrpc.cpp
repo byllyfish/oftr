@@ -50,7 +50,18 @@ void JsonRpc::setMaxOpenFiles() {
 void JsonRpc::runStdio() {
   const Milliseconds metricInterval{metricInterval_};
 
-  rpc::RpcServer server{::dup(STDIN_FILENO), ::dup(STDOUT_FILENO),
-                        binaryProtocol_, metricInterval};
+  rpc::RpcServer server{binaryProtocol_, metricInterval};
+  server.bind(::dup(STDIN_FILENO), ::dup(STDOUT_FILENO));
+  server.run();
+}
+
+void JsonRpc::runUnixDomainSocket() {
+  const Milliseconds metricInterval{metricInterval_};
+
+  rpc::RpcServer server{binaryProtocol_, metricInterval};
+  auto err = server.bind("/tmp/oftr.sock");
+  if (err) {
+    log_error("Unix domain socket", err);
+  }
   server.run();
 }
