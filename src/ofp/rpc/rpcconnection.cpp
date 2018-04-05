@@ -2,6 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcconnection.h"
+#include <sys/resource.h>
+#include <sys/time.h>
 #include "ofp/channel.h"
 #include "ofp/rpc/rpcencoder.h"
 #include "ofp/yaml/decoder.h"
