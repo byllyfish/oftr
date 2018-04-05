@@ -59,10 +59,15 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
   UInt32 rxEvents_ = 0;
   UInt64 txBytes_ = 0;
   UInt64 rxBytes_ = 0;
+  asio::steady_timer metricTimer_;
 
   virtual void writeEvent(llvm::StringRef msg, bool ofp_message = false) = 0;
 
   void rpcRequestInvalid(llvm::StringRef errorMsg);
+
+  void asyncMetrics(Milliseconds interval);
+  void logMetrics();
+  virtual size_t outgoingBufferSize() const = 0;
 };
 
 OFP_END_IGNORE_PADDING

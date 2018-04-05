@@ -27,7 +27,6 @@ class RpcConnectionUnix final : public RpcConnection {
  private:
   sys::unix_domain::socket sock_;
   asio::streambuf streambuf_;
-  asio::steady_timer metricTimer_;
   Big32 hdrBuf_;
   std::string eventBuf_;
   sys::handler_allocator allocator_;
@@ -44,8 +43,8 @@ class RpcConnectionUnix final : public RpcConnection {
   void asyncReadMessage(size_t msgLength);
 
   void asyncWrite();
-  void asyncMetrics(Milliseconds interval);
-  void logMetrics();
+
+  size_t outgoingBufferSize() const override { return outgoing_[0].size() + outgoing_[1].size(); }
 };
 
 OFP_END_IGNORE_PADDING

@@ -27,7 +27,6 @@ RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
       input_{std::move(input)},
       output_{std::move(output)},
       streambuf_{RPC_MAX_MESSAGE_SIZE},
-      metricTimer_{server->engine()->io()},
       binaryProtocol_{binaryProtocol} {}
 
 void RpcConnectionStdio::writeEvent(llvm::StringRef msg, bool ofp_message) {
@@ -205,40 +204,4 @@ void RpcConnectionStdio::asyncWrite() {
           }
         }
       });
-}
-
-void RpcConnectionStdio::asyncMetrics(Milliseconds interval) {
-  logMetrics();
-
-  asio::error_code error;
-  metricTimer_.expires_after(interval, error);
-  assert(!error);
-
-  metricTimer_.async_wait([this, interval](const asio::error_code &err) {
-    if (!err) {
-      asyncMetrics(interval);
-    }
-  });
-}
-
-void RpcConnectionStdio::logMetrics() {
-  struct rusage usage;
-  ::getrusage(RUSAGE_SELF, &usage);
-
-  Timestamp utime(Unsigned_cast(usage.ru_utime.tv_sec),
-                  Unsigned_cast(usage.ru_utime.tv_usec * 1000));
-  Timestamp stime(Unsigned_cast(usage.ru_stime.tv_sec),
-                  Unsigned_cast(usage.ru_stime.tv_usec * 1000));
-
-// Use task_info for "resident_size"?
-#if defined(LIBOFP_TARGET_DARWIN)
-  int64_t kbytes = usage.ru_maxrss / 1024;  // convert to kbytes
-#else
-  int64_t kbytes = usage.ru_maxrss;  // already in kbytes
-#endif
-
-  // TODO(bfish): Include SO_NREAD and SO_NWRITE?
-
-  log_info("Metrics", txEvents_, rxEvents_, txBytes_, rxBytes_,
-           outgoing_[0].size(), outgoing_[1].size(), utime, stime, kbytes);
 }
