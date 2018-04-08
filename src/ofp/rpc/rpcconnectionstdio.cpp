@@ -9,13 +9,9 @@
 
 using ofp::rpc::RpcConnectionStdio;
 
-OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
-
 // For `OFP.MESSAGE` notification event.
-static const llvm::StringRef kMsgPrefix{"{\"params\":", 10};
-static const llvm::StringRef kMsgSuffix{",\"method\":\"OFP.MESSAGE\"}", 24};
-
-OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
+constexpr llvm::StringLiteral kMsgPrefix{"{\"params\":"};
+constexpr llvm::StringLiteral kMsgSuffix{",\"method\":\"OFP.MESSAGE\"}"};
 
 RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
                                        asio::posix::stream_descriptor input,
