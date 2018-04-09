@@ -50,6 +50,9 @@ std::error_code RpcServer::bind(const std::string &listenPath) {
     return err;
   }
 
+  // Delete file before attempting to bind.
+  deleteFile(listenPath);
+
   acceptor_.bind(endpt, err);
   if (err) {
     return err;
@@ -83,12 +86,14 @@ void RpcServer::asyncAccept() {
       return;
     }
 
-    log_info("async_accept");
     auto conn = std::make_shared<RpcConnectionUnix>(this, std::move(socket_),
                                                     binaryProtocol_);
     conn->asyncAccept();
 
-    asyncAccept();
+    // Don't accept any more connections -- only one allowed.
+    // i.e. don't re-call asyncAccept().
+    std::error_code ignore;
+    acceptor_.close(ignore);
   });
 }
 
@@ -101,7 +106,6 @@ void RpcServer::close() {
 
 void RpcServer::onConnect(RpcConnection *conn) {
   log_debug("RpcServer::onConnect");
-  assert(oneConn_ == nullptr);
 
   oneConn_ = conn;
 }
@@ -464,4 +468,19 @@ bool RpcServer::verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
   }
 
   return true;
+}
+
+void RpcServer::deleteFile(const std::string &listenPath) {
+  struct stat buf;
+
+  if (::stat(listenPath.c_str(), &buf) >= 0) {
+    // Check if file is a socket before deleting.
+    if (S_ISSOCK(buf.st_mode)) {
+      if (::unlink(listenPath.c_str()) < 0) {
+        log_error("RpcServer::deleteFile: unlink failed", listenPath);
+      }
+    } else {
+      log_warning("RpcServer::deleteFile: file is not a socket:", listenPath);
+    }
+  }
 }

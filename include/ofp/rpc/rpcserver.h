@@ -94,6 +94,8 @@ class RpcServer {
 
   bool verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
                      ChannelOptions options);
+
+  void deleteFile(const std::string &listenPath);
 };
 
 OFP_END_IGNORE_PADDING
