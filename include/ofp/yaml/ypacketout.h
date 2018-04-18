@@ -17,6 +17,7 @@ type: PACKET_OUT
 msg:
   buffer_id: !opt BufferNumber        # default=NO_BUFFER
   in_port: !opt PortNumber            # default=CONTROLLER
+  match: !optout [Field]              # default=[] version=6
   actions: !opt [Action]              # default=[]
   data: !opt HexData                  # default=''
   _pkt: !optout [Field]
@@ -102,7 +103,7 @@ struct MappingTraits<ofp::PacketOutV6Builder> {
 
     PortNumber inPort;
     io.mapOptional("in_port", inPort, OFPP_CONTROLLER);
-    io.mapRequired("match", msg.match_);
+    io.mapOptional("match", msg.match_);
 
     // If `match` does not contain entry for OFB_IN_PORT, we need to add it
     // using the value from `in_port`.
