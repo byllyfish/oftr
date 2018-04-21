@@ -45,19 +45,6 @@ bool Encode::validateCommandLineArguments() {
     outputFile_ = "-";
   }
 
-  roundtripJson_ = json_;
-
-  // If we're roundtripping the YAML/JSON and an output file is specified,
-  // override the roundtrip output format using the file extension. (issue #3)
-  if (roundtrip_ && !outputFile_.empty()) {
-    llvm::StringRef filename = outputFile_;
-    if (filename.endswith_lower(".json")) {
-      roundtripJson_ = true;
-    } else if (filename.endswith_lower(".yml") || filename.endswith_lower(".yaml")) {
-      roundtripJson_ = false;
-    }
-  }
-
   // Set up `readMessage` function.
   if (jsonArray_) {
     readMessage_ = ofp::yaml::getjson;
@@ -143,7 +130,7 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
       ofp::Message message{encoder.data(), encoder.size()};
       message.normalize();
 
-      ofp::yaml::Decoder decoder{&message, roundtripJson_};
+      ofp::yaml::Decoder decoder{&message, json_};
 
       err = decoder.error();
       if (!err.empty()) {
@@ -159,7 +146,7 @@ ExitStatus Encode::encodeMessages(std::istream &input) {
         }
       } else if (!silent_) {
         *output_ << decoder.result();
-        if (roundtripJson_)
+        if (json_)
           *output_ << '\n';
       }
 

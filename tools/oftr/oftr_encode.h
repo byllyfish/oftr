@@ -26,7 +26,7 @@ namespace ofpx {
 //   --silent-error           Suppress error output for invalid messages
 //   --keep-going (-k)        Continue processing messages after errors
 //   --unchecked-match (-M)   Do not check items in match fields
-//   --roundtrip (-R)         Roundtrip encoded binary message back to YAML/JSON
+//   --roundtrip (-R)         Roundtrip encoded binary message back to YAML
 //   --json (-j)              Json input is separated by linefeeds
 //   --json-array             Json input is arbitrarily delimited objects
 //   --ofversion=0            OpenFlow version to use when unspecified
@@ -72,7 +72,6 @@ class Encode : public Subprogram {
   std::string currentFilename_;
   std::unique_ptr<llvm::raw_ostream> output_;
   int lineNumber_ = 0;
-  bool roundtripJson_ = false;
   ofp::yaml::GetMsgFunction readMessage_ = nullptr;
 
   bool validateCommandLineArguments();
@@ -92,7 +91,7 @@ class Encode : public Subprogram {
   cl::opt<bool> uncheckedMatch_{"unchecked-match",
                                 cl::desc("Do not check items in match fields")};
   cl::opt<bool> roundtrip_{
-      "roundtrip", cl::desc("Roundtrip encoded binary message back to YAML/JSON")};
+      "roundtrip", cl::desc("Roundtrip encoded binary message back to YAML")};
   cl::opt<bool> json_{"json", cl::desc("Json input is separated by linefeeds")};
   cl::opt<bool> jsonArray_{
       "json-array", cl::desc("Json input is arbitrarily delimited objects")};

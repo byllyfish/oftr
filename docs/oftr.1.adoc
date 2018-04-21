@@ -141,10 +141,9 @@ OpenFlow version using the --ofversion option.
     Write output to specified file instead of stdout.
 
 *-R, --roundtrip*::
-    After translating the input to a binary message, translate it back to YAML/JSON.
-    This option is used to translate the YAML/JSON input into "canonical" form. Specify 
-    a different output format by using the `-o` option to specify the output file name with a
-    file extension: .yml, .yaml, or .json.
+    After translating the input to a binary message, translate it back to YAML.
+    If -j is specified, translate it back to JSON. This option is used to 
+    translate the YAML input into "canonical" form.
 
 *-s, --silent*::
     Quiet mode; suppress normal output.
