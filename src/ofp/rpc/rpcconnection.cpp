@@ -6,14 +6,15 @@
 #include <sys/time.h>
 #include "ofp/channel.h"
 #include "ofp/rpc/rpcencoder.h"
+#include "ofp/sys/engine.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"
-#include "ofp/sys/engine.h"
 
 using namespace ofp;
 using namespace ofp::rpc;
 
-RpcConnection::RpcConnection(RpcServer *server) : server_{server}, metricTimer_{server->engine()->io()} {
+RpcConnection::RpcConnection(RpcServer *server)
+    : server_{server}, metricTimer_{server->engine()->io()} {
   server_->onConnect(this);
 }
 
@@ -164,4 +165,3 @@ void RpcConnection::logMetrics() {
   log_info("Metrics", txEvents_, rxEvents_, txBytes_, rxBytes_,
            outgoingBufferSize(), utime, stime, kbytes);
 }
-

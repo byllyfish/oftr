@@ -23,10 +23,7 @@ namespace ofpx {
 
 class JsonRpc : public Subprogram {
  public:
-  enum class ExitStatus {
-    Success = 0,
-    ListenFailed = MinExitStatus
-  };
+  enum class ExitStatus { Success = 0, ListenFailed = MinExitStatus };
 
   int run(int argc, const char *const *argv) override;
 
@@ -34,7 +31,8 @@ class JsonRpc : public Subprogram {
   // --- Command-line Arguments ---
   cl::opt<bool> binaryProtocol_{"binary-protocol",
                                 cl::desc("Use binary frame protocol")};
-  cl::opt<std::string> rpcSocket_{"rpc-socket", cl::desc("Listen on unix domain socket")};
+  cl::opt<std::string> rpcSocket_{"rpc-socket",
+                                  cl::desc("Listen on unix domain socket")};
   cl::opt<unsigned> metricInterval_{
       "metric-interval",
       cl::desc("Log RPC metrics at specified interval (msec)"),

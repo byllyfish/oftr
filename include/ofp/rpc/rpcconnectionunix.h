@@ -44,7 +44,9 @@ class RpcConnectionUnix final : public RpcConnection {
 
   void asyncWrite();
 
-  size_t outgoingBufferSize() const override { return outgoing_[0].size() + outgoing_[1].size(); }
+  size_t outgoingBufferSize() const override {
+    return outgoing_[0].size() + outgoing_[1].size();
+  }
 };
 
 OFP_END_IGNORE_PADDING
