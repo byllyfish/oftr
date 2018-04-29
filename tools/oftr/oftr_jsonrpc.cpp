@@ -14,9 +14,15 @@ using ExitStatus = JsonRpc::ExitStatus;
 int JsonRpc::run(int argc, const char *const *argv) {
   parseCommandLineOptions(argc, argv, "Run a JSON-RPC server\n");
   setMaxOpenFiles();
-  runStdio();
 
-  return 0;
+  if (rpcSocket_.empty()) {
+    // Communicate over STDIN/STDOUT.
+    return runStdio();
+
+  } else {
+    // Communicate over unix domain socket.
+    return runUnixDomainSocket(rpcSocket_);
+  }
 }
 
 void JsonRpc::setMaxOpenFiles() {
@@ -47,10 +53,27 @@ void JsonRpc::setMaxOpenFiles() {
   log_info("Open file limit: rlim_cur", rlp.rlim_cur, "rlim_max", rlp.rlim_max);
 }
 
-void JsonRpc::runStdio() {
+int JsonRpc::runStdio() {
   const Milliseconds metricInterval{metricInterval_};
 
-  rpc::RpcServer server{::dup(STDIN_FILENO), ::dup(STDOUT_FILENO),
-                        binaryProtocol_, metricInterval};
+  rpc::RpcServer server{binaryProtocol_, metricInterval};
+  server.bind(::dup(STDIN_FILENO), ::dup(STDOUT_FILENO));
   server.run();
+
+  return 0;
+}
+
+int JsonRpc::runUnixDomainSocket(const std::string &path) {
+  const Milliseconds metricInterval{metricInterval_};
+
+  rpc::RpcServer server{binaryProtocol_, metricInterval};
+  auto err = server.bind(path);
+  if (err) {
+    log_error("Unix domain socket error:", path, err);
+    return static_cast<int>(ExitStatus::ListenFailed);
+  }
+
+  server.run();
+
+  return 0;
 }

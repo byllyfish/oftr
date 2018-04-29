@@ -1,5 +1,11 @@
 = Changelog
 
+== Version 0.48 (28 April 2018)
+
+- Support for RPC over unix domain socket.
+- In OpenFlow 1.5 packet_out, match is optional (Issue #14)
+- Fix compiler warnings in new version of clang.
+
 == Version 0.47 (16 March 2018)
 
 - Support multiple X_LLDP_ORG_SPECIFIC custom fields in packet generation.

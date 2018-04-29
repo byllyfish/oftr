@@ -138,6 +138,11 @@ endif()
 set(gtest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/external/googletest/googletest")
 include_directories(SYSTEM "${gtest_SOURCE_DIR}/include" "${gtest_SOURCE_DIR}")
 
+# -Wzero-as-null-pointer-constant poses a problem for EXPECT_EQ(0, blah) so turn it off
+# until googletest fixes this.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-zero-as-null-pointer-constant")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-zero-as-null-pointer-constant")
+
 add_executable(ofp_unittest ofp/ofp_unittest_main.cpp ${LIBOFP_TEST_SOURCES} ${gtest_SOURCE_DIR}/src/gtest-all.cc)
 target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS} ${LIBOFP_LINKED_LIBPCAP})
 

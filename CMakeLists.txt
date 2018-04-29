@@ -50,7 +50,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.47.0)
+set(Libofp_VERSION 0.48.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -332,6 +332,7 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/rpc/rpcchannellistener.cpp
     src/ofp/rpc/rpcconnection.cpp
     src/ofp/rpc/rpcconnectionstdio.cpp
+    src/ofp/rpc/rpcconnectionunix.cpp
     src/ofp/rpc/rpcserver.cpp
     src/ofp/rpc/rpcencoder.cpp
     src/ofp/rpc/rpcevents.cpp
@@ -650,7 +651,7 @@ include(CPack)
 #-------------------------------------------------------------------------------
 
 set(CPPLINT_PATH external/cpplint/cpplint.py)
-set(CPPLINT_ARGS --filter=-build/include_what_you_use,-runtime/references,-build/namespaces,-build/c++11 --root=include --linelength=200 --extensions=h,cpp,ipp)
+set(CPPLINT_ARGS --filter=-build/include,-runtime/references,-build/namespaces,-build/c++11 --root=include --linelength=200 --extensions=h,cpp,ipp)
 
 add_custom_target(cpplint
   COMMAND find include src tools example oxm test \( -name "*.h" -o -name "*.cpp" -o -name "*.ipp" \) -exec ${PYTHON_EXECUTABLE} ${CPPLINT_PATH} ${CPPLINT_ARGS} {} +

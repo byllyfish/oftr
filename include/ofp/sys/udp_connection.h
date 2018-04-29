@@ -22,7 +22,7 @@ class UDP_Connection : public Connection {
  public:
   UDP_Connection(UDP_Server *server, ChannelOptions options, UInt64 securityId,
                  ProtocolVersions versions, ChannelListener::Factory factory);
-  ~UDP_Connection();
+  ~UDP_Connection() override;
 
   void connect(const udp::endpoint &remoteEndpt);
   void accept(const udp::endpoint &remoteEndpt);

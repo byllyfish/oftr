@@ -129,7 +129,7 @@ void TCP_Server::asyncAccept() {
       }
 
     } else {
-      log_error("Error in TCP_Server.asyncAcept:", err);
+      log_error("Error in TCP_Server.asyncAccept:", err);
     }
 
     asyncAccept();

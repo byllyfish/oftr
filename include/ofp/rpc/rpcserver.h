@@ -9,6 +9,7 @@
 #include "ofp/driver.h"
 #include "ofp/rpc/filtertable.h"
 #include "ofp/rpc/rpcid.h"
+#include "ofp/sys/asio_utils.h"
 
 namespace ofp {
 
@@ -34,9 +35,13 @@ OFP_BEGIN_IGNORE_PADDING
 /// The driver is controlled using YAML messages.
 class RpcServer {
  public:
-  RpcServer(int inputFD, int outputFD, bool binaryProtocol,
-            Milliseconds metricInterval, Channel *defaultChannel = nullptr);
+  RpcServer(bool binaryProtocol, Milliseconds metricInterval,
+            Channel *defaultChannel = nullptr);
   ~RpcServer();
+
+  /// Bind RPC server to stdio or unix domain socket.
+  std::error_code bind(int inputFD, int outputFD);
+  std::error_code bind(const std::string &listenPath);
 
   /// Run the rpc server.
   void run() { driver_.run(); }
@@ -70,10 +75,15 @@ class RpcServer {
  private:
   Driver driver_;
   sys::Engine *engine_;
+  sys::unix_domain::acceptor acceptor_;
+  sys::unix_domain::socket socket_;
+  bool binaryProtocol_ = false;
   RpcConnection *oneConn_ = nullptr;
   Channel *defaultChannel_ = nullptr;
   Milliseconds metricInterval_ = 0_ms;
   FilterTable filter_;
+
+  void asyncAccept();
 
   static void connectResponse(RpcConnection *conn, RpcID id, UInt64 connId,
                               const std::error_code &err);
@@ -84,6 +94,8 @@ class RpcServer {
 
   bool verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
                      ChannelOptions options);
+
+  void deleteFile(const std::string &listenPath);
 };
 
 OFP_END_IGNORE_PADDING

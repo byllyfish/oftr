@@ -78,7 +78,7 @@ bool IPv6Address::parse(const std::string &s, bool parseIPv4) {
 bool IPv6Address::parseIPv6Address(const std::string &s) {
   std::error_code err;
   int result = asio::detail::socket_ops::inet_pton(
-      ASIO_OS_DEF(AF_INET6), s.c_str(), addr_.data(), 0, err);
+      ASIO_OS_DEF(AF_INET6), s.c_str(), addr_.data(), nullptr, err);
   return result > 0;
 }
 

@@ -21,7 +21,7 @@ struct has_FixedHeaderSize {
   template <typename U>
   static double test(...);
 
-  static bool const value = (sizeof(test<T>(0)) == 1);
+  static bool const value = (sizeof(test<T>(nullptr)) == 1);
 };
 
 }  // namespace detail
