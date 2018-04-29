@@ -348,6 +348,7 @@ Message/PacketOut:
   msg:
     buffer_id: !opt BufferNumber        # default=NO_BUFFER
     in_port: !opt PortNumber            # default=CONTROLLER
+    match: !optout [Field]              # default=[] version=6
     actions: !opt [Action]              # default=[]
     data: !opt HexData                  # default=''
     _pkt: !optout [Field]

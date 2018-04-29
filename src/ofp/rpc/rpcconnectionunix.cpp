@@ -1,29 +1,27 @@
-// Copyright (c) 2015-2018 William W. Fisher (at gmail dot com)
+// Copyright (c) 2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/rpc/rpcconnectionstdio.h"
+#include "ofp/rpc/rpcconnectionunix.h"
 #include "ofp/rpc/rpcevents.h"
 #include "ofp/sys/asio_utils.h"
 #include "ofp/sys/engine.h"
 #include "ofp/timestamp.h"
 
-using ofp::rpc::RpcConnectionStdio;
+using ofp::rpc::RpcConnectionUnix;
 
 // For `OFP.MESSAGE` notification event.
 constexpr llvm::StringLiteral kMsgPrefix{"{\"params\":"};
 constexpr llvm::StringLiteral kMsgSuffix{",\"method\":\"OFP.MESSAGE\"}"};
 
-RpcConnectionStdio::RpcConnectionStdio(RpcServer *server,
-                                       asio::posix::stream_descriptor input,
-                                       asio::posix::stream_descriptor output,
-                                       bool binaryProtocol)
+RpcConnectionUnix::RpcConnectionUnix(RpcServer *server,
+                                     sys::unix_domain::socket socket,
+                                     bool binaryProtocol)
     : RpcConnection{server},
-      input_{std::move(input)},
-      output_{std::move(output)},
+      sock_{std::move(socket)},
       streambuf_{RPC_MAX_MESSAGE_SIZE},
       binaryProtocol_{binaryProtocol} {}
 
-void RpcConnectionStdio::writeEvent(llvm::StringRef msg, bool ofp_message) {
+void RpcConnectionUnix::writeEvent(llvm::StringRef msg, bool ofp_message) {
   ++txEvents_;
 
   size_t msgSize = ofp_message ? msg.size() + 34 : msg.size();
@@ -55,12 +53,11 @@ void RpcConnectionStdio::writeEvent(llvm::StringRef msg, bool ofp_message) {
   }
 }
 
-void RpcConnectionStdio::close() {
-  input_.close();
-  output_.close();
+void RpcConnectionUnix::close() {
+  sock_.close();
 }
 
-void RpcConnectionStdio::asyncAccept() {
+void RpcConnectionUnix::asyncAccept() {
   // Start first async read.
   if (binaryProtocol_) {
     asyncReadHeader();
@@ -75,11 +72,11 @@ void RpcConnectionStdio::asyncAccept() {
   }
 }
 
-void RpcConnectionStdio::asyncReadLine() {
+void RpcConnectionUnix::asyncReadLine() {
   auto self(shared_from_this());
 
   asio::async_read_until(
-      input_, streambuf_, RPC_EVENT_DELIMITER_CHAR,
+      sock_, streambuf_, RPC_EVENT_DELIMITER_CHAR,
       [this, self](const asio::error_code &err, size_t bytes_transferred) {
         if (!err) {
           std::istream is(&streambuf_);
@@ -91,30 +88,29 @@ void RpcConnectionStdio::asyncReadLine() {
         } else if (err == asio::error::not_found) {
           // Input line is too big. Send back an error message then allow
           // connection to close.
-          log_error("RpcConnectionStdio::asyncReadLine: input too large",
+          log_error("RpcConnectionUnix::asyncReadLine: input too large",
                     RPC_MAX_MESSAGE_SIZE, err);
           rpcRequestInvalid("RPC request is too big");
         } else if (err == asio::error::eof) {
           // Log warning if there are unread bytes in the buffer.
           auto bytesUnread = streambuf_.size();
           if (bytesUnread > 0) {
-            log_warning(
-                "RpcConnectionStdio::asyncReadLine: unread bytes at eof",
-                bytesUnread);
+            log_warning("RpcConnectionUnix::asyncReadLine: unread bytes at eof",
+                        bytesUnread);
           }
         } else if (err != asio::error::operation_aborted) {
           // Some error other than operation_aborted occurred. Log the
           // error then allow connection to close.
-          log_error("RpcConnectionStdio::asyncReadLine error", err);
+          log_error("RpcConnectionUnix::asyncReadLine error", err);
         }
       });
 }
 
-void RpcConnectionStdio::asyncReadHeader() {
+void RpcConnectionUnix::asyncReadHeader() {
   auto self(this->shared_from_this());
 
   asio::async_read(
-      input_, asio::buffer(&hdrBuf_, sizeof(hdrBuf_)),
+      sock_, asio::buffer(&hdrBuf_, sizeof(hdrBuf_)),
       make_custom_alloc_handler(
           allocator_, [this, self](const asio::error_code &err, size_t length) {
             log_debug("rpc::asyncReadHeader callback", err);
@@ -143,14 +139,14 @@ void RpcConnectionStdio::asyncReadHeader() {
           }));
 }
 
-void RpcConnectionStdio::asyncReadMessage(size_t msgLength) {
+void RpcConnectionUnix::asyncReadMessage(size_t msgLength) {
   auto self(this->shared_from_this());
 
   log_debug("rpc::asyncReadMessage:", msgLength, "bytes");
 
   eventBuf_.resize(msgLength);
   asio::async_read(
-      input_, asio::buffer(eventBuf_),
+      sock_, asio::buffer(eventBuf_),
       make_custom_alloc_handler(
           allocator_, [this, self](const asio::error_code &err, size_t length) {
             log_debug("rpc::asyncReadMessage callback", err, length);
@@ -170,7 +166,7 @@ void RpcConnectionStdio::asyncReadMessage(size_t msgLength) {
           }));
 }
 
-void RpcConnectionStdio::asyncWrite() {
+void RpcConnectionUnix::asyncWrite() {
   assert(!writing_);
 
   int idx = outgoingIdx_;
@@ -185,7 +181,7 @@ void RpcConnectionStdio::asyncWrite() {
   log::trace_rpc("Write RPC", 0, data, size);
 
   asio::async_write(
-      output_, asio::buffer(data, size),
+      sock_, asio::buffer(data, size),
       [this, self](const asio::error_code &err, size_t bytes_transferred) {
         if (!err) {
           assert(bytes_transferred == outgoing_[!outgoingIdx_].size());

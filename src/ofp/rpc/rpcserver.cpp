@@ -4,6 +4,7 @@
 #include "ofp/rpc/rpcserver.h"
 #include "ofp/rpc/rpcchannellistener.h"
 #include "ofp/rpc/rpcconnectionstdio.h"
+#include "ofp/rpc/rpcconnectionunix.h"
 #include "ofp/rpc/rpcevents.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/engine.h"
@@ -14,11 +15,19 @@ using ofp::rpc::RpcServer;
 using ofp::sys::TCP_Server;
 using namespace ofp;
 
-RpcServer::RpcServer(int inputFD, int outputFD, bool binaryProtocol,
-                     Milliseconds metricInterval, Channel *defaultChannel)
+RpcServer::RpcServer(bool binaryProtocol, Milliseconds metricInterval,
+                     Channel *defaultChannel)
     : engine_{driver_.engine()},
+      acceptor_{driver_.engine()->io()},
+      socket_{driver_.engine()->io()},
+      binaryProtocol_{binaryProtocol},
       defaultChannel_{defaultChannel},
       metricInterval_{metricInterval} {
+  engine_->setAlertCallback(alertCallback, this);
+  driver_.installSignalHandlers([this]() { this->close(); });
+}
+
+std::error_code RpcServer::bind(int inputFD, int outputFD) {
   log::fatal_if_false(inputFD >= 0, "inputFD >= 0");
   log::fatal_if_false(outputFD >= 0, "outputFD >= 0");
 
@@ -26,16 +35,66 @@ RpcServer::RpcServer(int inputFD, int outputFD, bool binaryProtocol,
   // directly up to this connection.
   auto conn = std::make_shared<RpcConnectionStdio>(
       this, asio::posix::stream_descriptor{engine_->io(), inputFD},
-      asio::posix::stream_descriptor{engine_->io(), outputFD}, binaryProtocol);
+      asio::posix::stream_descriptor{engine_->io(), outputFD}, binaryProtocol_);
 
   conn->asyncAccept();
-  engine_->setAlertCallback(alertCallback, this);
+  return {};
+}
 
-  driver_.installSignalHandlers([this]() { this->close(); });
+std::error_code RpcServer::bind(const std::string &listenPath) {
+  auto endpt = sys::unix_domain::endpoint(listenPath);
+
+  std::error_code err;
+  acceptor_.open(endpt.protocol(), err);
+  if (err) {
+    return err;
+  }
+
+  // Delete file before attempting to bind.
+  deleteFile(listenPath);
+
+  acceptor_.bind(endpt, err);
+  if (err) {
+    return err;
+  }
+
+  acceptor_.listen(asio::socket_base::max_listen_connections, err);
+  if (err) {
+    return err;
+  }
+
+  asyncAccept();
+
+  return err;
 }
 
 RpcServer::~RpcServer() {
   engine_->setAlertCallback(nullptr, nullptr);
+}
+
+void RpcServer::asyncAccept() {
+  // Accept connections on unix domain socket.
+
+  acceptor_.async_accept(socket_, [this](const asio::error_code &err) {
+    // Check for cancelled operation first.
+    if (err == asio::error::operation_aborted) {
+      return;
+    }
+
+    if (err) {
+      log_error("Error in RpcServer.asyncAccept:", err);
+      return;
+    }
+
+    auto conn = std::make_shared<RpcConnectionUnix>(this, std::move(socket_),
+                                                    binaryProtocol_);
+    conn->asyncAccept();
+
+    // Don't accept any more connections -- only one allowed.
+    // i.e. don't re-call asyncAccept().
+    std::error_code ignore;
+    acceptor_.close(ignore);
+  });
 }
 
 void RpcServer::close() {
@@ -47,7 +106,6 @@ void RpcServer::close() {
 
 void RpcServer::onConnect(RpcConnection *conn) {
   log_debug("RpcServer::onConnect");
-  assert(oneConn_ == nullptr);
 
   oneConn_ = conn;
 }
@@ -410,4 +468,19 @@ bool RpcServer::verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
   }
 
   return true;
+}
+
+void RpcServer::deleteFile(const std::string &listenPath) {
+  struct stat buf;
+
+  if (::stat(listenPath.c_str(), &buf) >= 0) {
+    // Check if file is a socket before deleting.
+    if (S_ISSOCK(buf.st_mode)) {
+      if (::unlink(listenPath.c_str()) < 0) {
+        log_error("RpcServer::deleteFile: unlink failed", listenPath);
+      }
+    } else {
+      log_warning("RpcServer::deleteFile: file is not a socket:", listenPath);
+    }
+  }
 }

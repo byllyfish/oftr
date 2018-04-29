@@ -1878,6 +1878,29 @@ TEST(encoder, packetoutv6) {
       encoder.data(), encoder.size());
 }
 
+TEST(encoder, packetoutv6_minimal) {
+  const char *input = R"""(
+      type:            PACKET_OUT
+      version:         6
+      xid:             1
+      msg:             
+        in_port:         0x44444441
+        actions:
+          - action: OUTPUT
+            port_no: 5
+        data:      FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
+      )""";
+
+  Encoder encoder{input};
+  EXPECT_EQ("", encoder.error());
+  EXPECT_EQ(90, encoder.size());
+  EXPECT_HEX(
+      "060D005A00000001FFFFFFFF001000000001000C80000004444444410000000000000010"
+      "00000005FFE5000000000000FFFFFFFFFFFF000000000001080600010800060400010000"
+      "000000010A0000010000000000000A000002",
+      encoder.data(), encoder.size());
+}
+
 TEST(encoder, setconfigv4) {
   const char *input = R"""(
       version: 4

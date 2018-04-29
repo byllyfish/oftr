@@ -88,7 +88,7 @@ bool IPv4Address::parse(llvm::StringRef s) {
 
   std::error_code err;
   int result = asio::detail::socket_ops::inet_pton(ASIO_OS_DEF(AF_INET), buf,
-                                                   addr_.data(), 0, err);
+                                                   addr_.data(), nullptr, err);
 
   if (result == 0) {
     // inet_pton() on Linux does not accept zero-padded IPv4 addresses like

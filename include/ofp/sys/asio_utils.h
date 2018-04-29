@@ -33,6 +33,7 @@ namespace sys {
 
 using tcp = asio::ip::tcp;
 using udp = asio::ip::udp;
+using unix_domain = asio::local::stream_protocol;
 
 using PlaintextSocket = Plaintext<tcp::socket>;
 
