@@ -117,7 +117,7 @@ endif()
 # Specify the set of warnings to enable. The philosophy of this project is to
 # compile with every clang warning enabled, then disable a few that don't add
 # anything except to clutter up the build logs. Put disabled warnings into
-# LIB_OFP_WARNINGS_DISABLED.
+# LIBOFP_WARNINGS_DISABLED.
 
 set(LIBOFP_WARNINGS_DISABLED "-Wno-unused-parameter -Wno-weak-vtables -Wno-switch-enum -Wno-unreachable-code -Wno-covered-switch-default")
 
@@ -176,6 +176,10 @@ endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -pie -fPIE -rdynamic")
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -pie -fPIE -rdynamic")
+  # Also, disable the -Wpsabi warning on ARM/GCC 7.0. (https://gcc.gnu.org/gcc-7/changes.html)
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7.0)
+    set(LIBOFP_WARNINGS_DISABLED "${LIBOFP_WARNINGS_DISABLED} -Wno-psabi")
+  endif()
 endif()
 
 if(APPLE AND UNIX)
