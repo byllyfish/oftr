@@ -90,7 +90,7 @@ const char *toCString(OFPType type) {
 const char *toCString(OFPMultipartType type) {
   switch (type) {
     ENUMCASE(OFPMP_DESC);
-    ENUMCASE(OFPMP_FLOW);
+    ENUMCASE(OFPMP_FLOW_DESC);
     ENUMCASE(OFPMP_AGGREGATE);
     ENUMCASE(OFPMP_TABLE);
     ENUMCASE(OFPMP_PORT_STATS);

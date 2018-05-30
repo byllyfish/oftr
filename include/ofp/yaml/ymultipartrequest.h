@@ -170,7 +170,7 @@ struct MappingTraits<ofp::MultipartRequest> {
         io.mapRequired(key, empty);
         break;
       }
-      case OFPMP_FLOW:
+      case OFPMP_FLOW_DESC:
       case OFPMP_AGGREGATE: {
         const MPFlowStatsRequest *stats = MPFlowStatsRequest::cast(&msg);
         if (stats) {
@@ -276,7 +276,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         io.mapOptional(key, empty);
         break;
       }
-      case OFPMP_FLOW:
+      case OFPMP_FLOW_DESC:
       case OFPMP_AGGREGATE: {
         MPFlowStatsRequestBuilder stats;
         io.mapRequired(key, stats);

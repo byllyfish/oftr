@@ -35,7 +35,7 @@ bool MultipartReply::validateInput(Validation *context) const {
   switch (replyType()) {
     case OFPMP_DESC:
       return context->validate<MPDesc>(replyBody(), OFP_VERSION_1);
-    case OFPMP_FLOW:
+    case OFPMP_FLOW_DESC:
       return context->validateArrayVariableSize<MPFlowStatsReply>(
           replyBody(), OFP_VERSION_1);
     case OFPMP_AGGREGATE:

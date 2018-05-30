@@ -281,7 +281,7 @@ enum OFPMeterNo : UInt32 {
 
 enum OFPMultipartType : UInt16 {
   OFPMP_DESC = 0,
-  OFPMP_FLOW = 1,
+  OFPMP_FLOW_DESC = 1,
   OFPMP_AGGREGATE = 2,
   OFPMP_TABLE = 3,
   OFPMP_PORT_STATS = 4,

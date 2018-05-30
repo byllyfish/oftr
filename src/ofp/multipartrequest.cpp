@@ -24,7 +24,7 @@ bool MultipartRequest::validateInput(Validation *context) const {
   switch (requestType()) {
     case OFPMP_DESC:
       return context->validateEmpty(requestBody(), OFP_VERSION_1);
-    case OFPMP_FLOW:
+    case OFPMP_FLOW_DESC:
       return context->validate<MPFlowStatsRequest>(requestBody(),
                                                    OFP_VERSION_1);
     case OFPMP_AGGREGATE:

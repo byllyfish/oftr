@@ -550,7 +550,7 @@ void Normalize::normalizeMultipartRequestV1() {
       reinterpret_cast<const MultipartRequest *>(header());
 
   OFPMultipartType reqType = multipartReq->requestType();
-  if (reqType == OFPMP_FLOW || reqType == OFPMP_AGGREGATE) {
+  if (reqType == OFPMP_FLOW_DESC || reqType == OFPMP_AGGREGATE) {
     // Both requests have the same structure.
     normalizeMPFlowRequestV1();
   } else if (reqType == OFPMP_PORT_STATS || reqType == OFPMP_QUEUE) {
@@ -578,7 +578,7 @@ void Normalize::normalizeMultipartReplyV1() {
   OFPMultipartType replyType = multipartReply->replyType();
   size_t offset = sizeof(MultipartReply);
 
-  if (replyType == OFPMP_FLOW) {
+  if (replyType == OFPMP_FLOW_DESC) {
     while (offset < buf_.size())
       normalizeMPFlowReplyV1(&offset);
     assert(offset == buf_.size());

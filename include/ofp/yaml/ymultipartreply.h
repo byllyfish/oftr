@@ -268,7 +268,7 @@ struct MappingTraits<ofp::MultipartReply> {
         }
         break;
       }
-      case OFPMP_FLOW: {
+      case OFPMP_FLOW_DESC: {
         ofp::detail::MPReplyVariableSizeSeq<MPFlowStatsReply> seq{msg};
         io.mapRequired(key, seq);
         break;
@@ -410,7 +410,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         msg.setReplyBody(&desc, sizeof(desc));
         break;
       }
-      case OFPMP_FLOW: {
+      case OFPMP_FLOW_DESC: {
         ofp::detail::MPReplyBuilderSeq<MPFlowStatsReplyBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();

@@ -120,7 +120,7 @@ TEST(decoder, errorv1_2) {
       "---\ntype:            ERROR\nxid:             0x00000062\nversion:      "
       "   0x01\nmsg:             \n  type:            BAD_REQUEST\n  code:     "
       "       OFPBRC_BAD_TYPE\n  data:            01111234567890AA00010000\n  "
-      "_text:           'Type: OFPT_MULTIPART_REPLY.OFPMP_FLOW'\n...\n");
+      "_text:           'Type: OFPT_MULTIPART_REPLY.OFPMP_FLOW_DESC'\n...\n");
 }
 
 TEST(decoder, echoRequest) {
