@@ -15525,7 +15525,7 @@ Filename: external/openflow-messages/v1_1/rep/rep_19_00007.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=168 data=021300A89D3ED7F70001000000000000009801000000003C0000005A00010001000A000000000000585D7FD406F5FF050000000000000064000000000000006500000058CE309900000003FF9578F0D66562C4100BEE216DB08FA0F89250DA2EF5C15DFD518069000080317209B73E6570EC0D9F7EA68C65AEA3D98F8D621279B3B77F4D59000000129DBE487F162020000000000000000000040010000000000012001000000000]
 ---
-type:            REPLY.FLOW
+type:            REPLY.FLOW_DESC
 flags:           [  ]
 xid:             0x9D3ED7F7
 version:         0x02
@@ -17633,7 +17633,7 @@ Error: Only 64 bytes read of message body. Expected to read 65 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_19_00006.fail:
 Error: Only 63 bytes read of message body. Expected to read 64 bytes.
 ---
-type:            REPLY.FLOW
+type:            REPLY.FLOW_DESC
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -17676,7 +17676,7 @@ Filename: external/openflow-messages/v1_2/rep/rep_19_00015.fail
 Error: Decode failed: Range size has improper alignment
 [ByteList size=128 data=0313008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200160000000000000000002FAC0B0000000000252912000400160000000000000010000098230000000000000000]
 ---
-type:            REPLY.FLOW
+type:            REPLY.FLOW_DESC
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -20816,7 +20816,7 @@ Error: Only 64 bytes read of message body. Expected to read 72 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00006.fail:
 Error: Only 63 bytes read of message body. Expected to read 64 bytes.
 ---
-type:            REPLY.FLOW
+type:            REPLY.FLOW_DESC
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -20859,7 +20859,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_19_00015.fail
 Error: Decode failed: Range size has improper alignment
 [ByteList size=128 data=0413008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200160000000000000000002FAC0B0000000000252912000400160000000000000010000098230000000000000000]
 ---
-type:            REPLY.FLOW
+type:            REPLY.FLOW_DESC
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -24246,7 +24246,7 @@ Error: Only 64 bytes read of message body. Expected to read 72 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00006.fail:
 Error: Only 63 bytes read of message body. Expected to read 64 bytes.
 ---
-type:            REPLY.FLOW
+type:            REPLY.FLOW_DESC
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -24289,7 +24289,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_19_00015.fail
 Error: Decode failed: Range size has improper alignment
 [ByteList size=128 data=0413008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200160000000000000000002FAC0B0000000000252912000400160000000000000010000098230000000000000000]
 ---
-type:            REPLY.FLOW
+type:            REPLY.FLOW_DESC
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04

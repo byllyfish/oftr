@@ -360,7 +360,7 @@
       ], 
       "cookie_mask": 18446744073709551615
     }, 
-    "type": "REQUEST.FLOW", 
+    "type": "REQUEST.FLOW_DESC", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -401,7 +401,7 @@
         ]
       }
     ], 
-    "type": "REPLY.FLOW", 
+    "type": "REPLY.FLOW_DESC", 
     "version": 4, 
     "flags": [
       "MORE"

@@ -290,7 +290,7 @@ TEST(decoder, ofmp_flowrequest_v4) {
   testDecodeEncode(
       "041200401122334400010000000000000100000000000002000000030000000000000000"
       "0000000400000000000000050001000C800000041234567800000000",
-      "---\ntype:            REQUEST.FLOW\nflags:           [  ]\nxid:         "
+      "---\ntype:            REQUEST.FLOW_DESC\nflags:           [  ]\nxid:         "
       "    0x11223344\nversion:         0x04\nmsg:             \n  table_id:   "
       "     0x01\n  out_port:        0x00000002\n  out_group:       "
       "0x00000003\n  cookie:          0x0000000000000004\n  cookie_mask:     "
@@ -303,7 +303,7 @@ TEST(decoder, ofmp_flowrequest_v1) {
       "011000381122334400010000003820FE567"
       "8000000000000000000000000000000000000000000"
       "0000000000000000000000000011002222",
-      "---\ntype:            REQUEST.FLOW\nflags:           [  ]\nxid:         "
+      "---\ntype:            REQUEST.FLOW_DESC\nflags:           [  ]\nxid:         "
       "    0x11223344\nversion:         0x01\nmsg:             \n  table_id:   "
       "     0x11\n  out_port:        0x00002222\n  out_group:       "
       "0x00000000\n  cookie:          0x0000000000000000\n  cookie_mask:     "
@@ -342,7 +342,7 @@ TEST(decoder, ofmp_flowreply_v4) {
       "0413005811223344000100000000000000480100000000020000000300"
       "0400050006000700000000000000000000000800000000000000090000"
       "00000000000A0001000C8000000412345678000000000001000801000000",
-      "---\ntype:            REPLY.FLOW\nflags:           [  ]\nxid:           "
+      "---\ntype:            REPLY.FLOW_DESC\nflags:           [  ]\nxid:           "
       "  0x11223344\nversion:         0x04\nmsg:             \n  - table_id:   "
       "     0x01\n    duration:        2.000000003\n    priority:        "
       "0x0004\n    idle_timeout:    0x0005\n  "
@@ -363,7 +363,7 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "000330044005500660077000000000000000000000088999999999999"
       "9999AAAAAAAAAAAAAAAA0001002080000004123456788000080610203"
       "040506080000606AABBCCDDEEFF0001000801000000",
-      "---\ntype:            REPLY.FLOW\nflags:           [  ]\nxid:           "
+      "---\ntype:            REPLY.FLOW_DESC\nflags:           [  ]\nxid:           "
       "  0x11223344\nversion:         0x04\nmsg:             \n  - table_id:   "
       "     0x01\n    duration:        2.000000003\n    priority:        "
       "0x0004\n    idle_timeout:    0x0005\n  "
@@ -392,7 +392,7 @@ TEST(decoder, ofmp_flowreply_v1) {
       "000000000000000000000000000000000000000044444444555555556666777788880000"
       "00000000AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCC00000008EEEEFFF"
       "F",
-      "---\ntype:            REPLY.FLOW\nflags:           [ '0x00002222' "
+      "---\ntype:            REPLY.FLOW_DESC\nflags:           [ '0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x01\nmsg:             "
       "\n  - table_id:        0x33\n    duration:        "
       "1145324612.x55555555\n    priority:        0x6666\n    "
@@ -414,7 +414,7 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "00601100003820F25678102030405060AABBCCDDEEFF0000000000000000000000000000"
       "000000000000000000000022000000330044005500660000000000000000000000000088"
       "9999999999999999AAAAAAAAAAAAAAAA00000008EEEEFFFF",
-      "---\ntype:            REPLY.FLOW\nflags:           [  ]\nxid:           "
+      "---\ntype:            REPLY.FLOW_DESC\nflags:           [  ]\nxid:           "
       "  0x11223344\nversion:         0x01\nmsg:             \n  - table_id:   "
       "     0x01\n    duration:        2.000000003\n    priority:        "
       "0x0004\n    idle_timeout:    0x0005\n  "

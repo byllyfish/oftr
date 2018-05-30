@@ -223,7 +223,7 @@ msg:
   dp_desc: '................................................................................................................................................................................................................................................................'
 ---
 version: 0x04
-type: REQUEST.FLOW
+type: REQUEST.FLOW_DESC
 flags: [ 'MORE' ]
 msg:
   table_id: ALL
@@ -237,7 +237,7 @@ msg:
       mask: 'ff:ff:ff:ff:ff:ff'
 ---
 version: 0x04
-type: REPLY.FLOW
+type: REPLY.FLOW_DESC
 flags: [ 'MORE' ]
 msg:
   - table_id: ALL

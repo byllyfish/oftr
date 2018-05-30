@@ -190,7 +190,7 @@ msg:
   versions:        [  ]
 ...
 ---
-type:            REQUEST.FLOW
+type:            REQUEST.FLOW_DESC
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -203,7 +203,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.FLOW
+type:            REPLY.FLOW_DESC
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -1014,7 +1014,7 @@ msg:
   versions:        [ 1, 2, 3, 9, 10, 30 ]
 ...
 ---
-type:            REQUEST.FLOW
+type:            REQUEST.FLOW_DESC
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1027,7 +1027,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.FLOW
+type:            REPLY.FLOW_DESC
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3809,7 +3809,7 @@ msg:
   versions:        [ 1, 2, 3, 9, 10, 30 ]
 ...
 ---
-type:            REQUEST.FLOW
+type:            REQUEST.FLOW_DESC
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -3822,7 +3822,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.FLOW
+type:            REPLY.FLOW_DESC
 flags:           [  ]
 xid:             0x00000000
 version:         0x05

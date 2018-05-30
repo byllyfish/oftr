@@ -1897,7 +1897,7 @@ msg:
   max_color:       0x00
 ...
 ---
-type:            REPLY.FLOW
+type:            REPLY.FLOW_DESC
 flags:           [  ]
 xid:             0x00001FA5
 version:         0x05

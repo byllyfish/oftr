@@ -394,7 +394,7 @@ TEST(encoder, ofmp_flowrequest_v4) {
     version: 4
     xid: 0x11223344
     msg:
-      type: FLOW
+      type: FLOW_DESC
       flags: []
       body:
           table_id: 1
@@ -419,7 +419,7 @@ TEST(encoder, ofmp_flowrequest_v1) {
     version: 1
     xid: 0x11223344
     msg:
-      type: FLOW
+      type: FLOW_DESC
       flags: []
       body:
           table_id: 0x11
@@ -494,7 +494,7 @@ TEST(encoder, ofmp_flowreply_v4) {
     version: 4
     xid: 0x11223344
     msg:
-      type: FLOW
+      type: FLOW_DESC
       flags: []
       body:
          - table_id: 1
@@ -530,7 +530,7 @@ TEST(encoder, ofmp_flowreply2_v4) {
     version: 4
     xid: 0x11223344
     msg:
-      type: FLOW
+      type: FLOW_DESC
       flags: []
       body:
          - table_id: 1
@@ -580,7 +580,7 @@ TEST(encoder, ofmp_flowreply3_v4) {
     version: 4
     xid: 0x11223344
     msg:
-      type: FLOW
+      type: FLOW_DESC
       flags: []
       body:
          - table_id: 1
@@ -620,7 +620,7 @@ TEST(encoder, ofmp_flowreply_v1) {
     version: 1
     xid: 0x11111111
     msg:
-      type: FLOW
+      type: FLOW_DESC
       flags: [ 0x2222 ]
       body:
          - table_id: 0x33
@@ -661,7 +661,7 @@ TEST(encoder, ofmp_flowreply2_v1) {
     version: 1
     xid: 0x11223344
     msg:
-      type: FLOW
+      type: FLOW_DESC
       flags: []
       body:
          - table_id: 1
