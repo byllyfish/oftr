@@ -48,9 +48,9 @@ static const llvm::StringRef sTypes[] = {"HELLO",
                                          "BUNDLE_ADD_MESSAGE"};
 
 static const llvm::StringRef sMultipartTypes[] = {
-    "DESC",           "FLOW_DESC",      "AGGREGATE",    "TABLE",
-    "PORT_STATS",     "QUEUE",     "GROUP",        "GROUP_DESC",
-    "GROUP_FEATURES", "METER",     "METER_CONFIG", "METER_FEATURES",
+    "DESC",           "FLOW_DESC",      "AGGREGATE_STATS",    "TABLE_STATS",
+    "PORT_STATS",     "QUEUE_STATS",     "GROUP_STATS",        "GROUP_DESC",
+    "GROUP_FEATURES", "METER_STATS",     "METER_CONFIG", "METER_FEATURES",
     "TABLE_FEATURES", "PORT_DESC", "TABLE_DESC",   "QUEUE_DESC",
     "FLOW_MONITOR",
 };

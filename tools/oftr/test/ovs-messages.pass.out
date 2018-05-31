@@ -30,7 +30,7 @@ msg:
   dp_desc:         None
 ...
 ---
-type:            REPLY.TABLE
+type:            REPLY.TABLE_STATS
 flags:           [  ]
 xid:             0x00001FA0
 version:         0x05
@@ -1904,7 +1904,7 @@ version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.AGGREGATE
+type:            REPLY.AGGREGATE_STATS
 flags:           [  ]
 xid:             0x00001FA6
 version:         0x05
@@ -1969,7 +1969,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.QUEUE
+type:            REPLY.QUEUE_STATS
 flags:           [  ]
 xid:             0x00001FA8
 version:         0x05
@@ -1983,14 +1983,14 @@ version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.METER
+type:            REPLY.METER_STATS
 flags:           [  ]
 xid:             0x00001FAA
 version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.GROUP
+type:            REPLY.GROUP_STATS
 flags:           [  ]
 xid:             0x00001FAB
 version:         0x05

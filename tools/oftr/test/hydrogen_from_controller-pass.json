@@ -28,7 +28,7 @@
 {"type":"REQUEST.EXPERIMENTER","flags":[],"xid":906561547,"version":1,"msg":{"experimenter":8992,"exp_type":0,"data":"00000000FFFF0000FF000000"}}
 {"type":"REQUEST.DESC","flags":[],"xid":906561548,"version":1,"msg":{}}
 {"type":"REQUEST.PORT_STATS","flags":[],"xid":906561549,"version":1,"msg":{"port_no":"ANY"}}
-{"type":"REQUEST.TABLE","flags":[],"xid":906561550,"version":1,"msg":{}}
+{"type":"REQUEST.TABLE_STATS","flags":[],"xid":906561550,"version":1,"msg":{}}
 {"type":"PACKET_OUT","xid":906561551,"version":1,"msg":{"buffer_id":"NO_BUFFER","in_port":2,"actions":[{"action":"OUTPUT","port_no":1,"max_len":0}],"data":"33330000001600000000000286DD6000000000240001FE80000000000000020000FFFE000002FF0200000000000000000000000000163A000502000001008F0072050000000102000000FF0200000000000000000001FF000002"}}
 {"type":"PACKET_OUT","xid":906561552,"version":1,"msg":{"buffer_id":"NO_BUFFER","in_port":2,"actions":[{"action":"OUTPUT","port_no":1,"max_len":0}],"data":"33330000001600000000000286DD6000000000240001FE80000000000000020000FFFE000002FF0200000000000000000000000000163A000502000001008F0070050000000104000000FF0200000000000000000001FF000002"}}
 {"type":"PACKET_OUT","xid":906561553,"version":1,"msg":{"buffer_id":"NO_BUFFER","in_port":0,"actions":[{"action":"OUTPUT","port_no":2,"max_len":0}],"data":"33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947"}}
@@ -49,13 +49,13 @@
 {"type":"PACKET_OUT","xid":906561568,"version":1,"msg":{"buffer_id":"NO_BUFFER","in_port":1,"actions":[{"action":"OUTPUT","port_no":2,"max_len":0}],"data":"33330000001600000000000186DD6000000000240001FE80000000000000020000FFFE000001FF0200000000000000000000000000163A000502000001008F0072070000000102000000FF0200000000000000000001FF000001"}}
 {"type":"REQUEST.EXPERIMENTER","flags":[],"xid":906561569,"version":1,"msg":{"experimenter":8992,"exp_type":0,"data":"00000000FFFF0000FF000000"}}
 {"type":"REQUEST.PORT_STATS","flags":[],"xid":906561570,"version":1,"msg":{"port_no":"ANY"}}
-{"type":"REQUEST.TABLE","flags":[],"xid":906561571,"version":1,"msg":{}}
+{"type":"REQUEST.TABLE_STATS","flags":[],"xid":906561571,"version":1,"msg":{}}
 {"type":"ECHO_REPLY","xid":0,"version":1,"msg":{"data":""}}
 {"type":"REQUEST.PORT_STATS","flags":[],"xid":906561572,"version":1,"msg":{"port_no":"ANY"}}
 {"type":"ECHO_REPLY","xid":0,"version":1,"msg":{"data":""}}
 {"type":"REQUEST.EXPERIMENTER","flags":[],"xid":906561573,"version":1,"msg":{"experimenter":8992,"exp_type":0,"data":"00000000FFFF0000FF000000"}}
 {"type":"REQUEST.PORT_STATS","flags":[],"xid":906561574,"version":1,"msg":{"port_no":"ANY"}}
-{"type":"REQUEST.TABLE","flags":[],"xid":906561575,"version":1,"msg":{}}
+{"type":"REQUEST.TABLE_STATS","flags":[],"xid":906561575,"version":1,"msg":{}}
 {"type":"ECHO_REPLY","xid":0,"version":1,"msg":{"data":""}}
 {"type":"REQUEST.PORT_STATS","flags":[],"xid":906561576,"version":1,"msg":{"port_no":"ANY"}}
 {"type":"PACKET_OUT","xid":906561577,"version":1,"msg":{"buffer_id":"NO_BUFFER","in_port":"ANY","actions":[{"action":"OUTPUT","port_no":2,"max_len":0}],"data":"0180C200000E00000000000188CC02070400000000000104020732060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE230026E1004F467C32404F467C30303A30303A30303A30303A30303A30303A30303A30310000"}}
@@ -63,6 +63,6 @@
 {"type":"PACKET_OUT","xid":906561579,"version":1,"msg":{"buffer_id":"NO_BUFFER","in_port":"ANY","actions":[{"action":"OUTPUT","port_no":1,"max_len":0}],"data":"0180C200000E00000000000188CC02070400000000000104020731060200780A1A4F467C30303A30303A30303A30303A30303A30303A30303A3031FE230026E1004F467C31404F467C30303A30303A30303A30303A30303A30303A30303A30310000"}}
 {"type":"REQUEST.EXPERIMENTER","flags":[],"xid":906561580,"version":1,"msg":{"experimenter":8992,"exp_type":0,"data":"00000000FFFF0000FF000000"}}
 {"type":"REQUEST.PORT_STATS","flags":[],"xid":906561581,"version":1,"msg":{"port_no":"ANY"}}
-{"type":"REQUEST.TABLE","flags":[],"xid":906561582,"version":1,"msg":{}}
+{"type":"REQUEST.TABLE_STATS","flags":[],"xid":906561582,"version":1,"msg":{}}
 {"type":"ECHO_REPLY","xid":0,"version":1,"msg":{"data":""}}
 {"type":"REQUEST.PORT_STATS","flags":[],"xid":906561583,"version":1,"msg":{"port_no":"ANY"}}

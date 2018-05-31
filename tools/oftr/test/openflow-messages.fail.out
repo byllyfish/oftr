@@ -15453,7 +15453,7 @@ Error: Only 7 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_1/rep/rep_18_00012.fail:
 Error: Only 3 bytes read of message body. Expected to read 16 bytes.
 ---
-type:            REQUEST.GROUP
+type:            REQUEST.GROUP_STATS
 flags:           [  ]
 xid:             0x7627E157
 version:         0x02
@@ -15461,7 +15461,7 @@ _file:           external/openflow-messages/v1_1/rep/rep_18_00013.fail
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_18_00013.fail
 Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REQUEST.GROUP
+type:            REQUEST.GROUP_STATS
 ^
 
 Filename: external/openflow-messages/v1_1/rep/rep_18_00013.fail:

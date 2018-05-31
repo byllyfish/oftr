@@ -444,7 +444,7 @@ TEST(encoder, ofmp_aggregaterequest_v4) {
     version: 4
     xid: 0x11223344
     msg:
-      type: AGGREGATE
+      type: AGGREGATE_STATS
       flags: []
       body:
           table_id: 0x11
@@ -469,7 +469,7 @@ TEST(encoder, ofmp_aggregaterequest_v1) {
     version: 1
     xid: 0x11223344
     msg:
-      type: AGGREGATE
+      type: AGGREGATE_STATS
       flags: []
       body:
           table_id: 0x11
@@ -722,7 +722,7 @@ TEST(encoder, ofmp_aggregatereply_v4) {
     version: 4
     xid: 0x11111111
     msg:
-      type: AGGREGATE
+      type: AGGREGATE_STATS
       flags: [ 0x2222 ]
       body:
         packet_count: 0x3333333333333330
@@ -745,7 +745,7 @@ TEST(encoder, ofmp_aggregatereply_v1) {
     version: 1
     xid: 0x11111111
     msg:
-      type: AGGREGATE
+      type: AGGREGATE_STATS
       flags: [ 0x2222 ]
       body:
         packet_count: 0x3333333333333330
@@ -764,7 +764,7 @@ TEST(encoder, ofmp_aggregatereply_v1) {
 
 TEST(encoder, ofmp_aggregatereply_v6) {
   const char *input = R"""(
-    type: REPLY.AGGREGATE
+    type: REPLY.AGGREGATE_STATS
     version: 6
     xid: 0x11111111
     msg:
@@ -788,7 +788,7 @@ TEST(encoder, ofmp_tablestats_v4) {
     version: 4
     xid: 0x11111111
     msg:
-      type: TABLE
+      type: TABLE_STATS
       flags: [ 0x2222 ]
       body:
         - table_id: 0x33
@@ -816,7 +816,7 @@ TEST(encoder, ofmp_tablestats_v1) {
     version: 1
     xid: 0x11111111
     msg:
-      type: TABLE
+      type: TABLE_STATS
       flags: [ 0x2222 ]
       body:
         - table_id: 0x33
@@ -1061,7 +1061,7 @@ TEST(encoder, ofmp_queuestats_v4) {
     version: 4
     xid: 0x11111111
     msg:
-      type: QUEUE
+      type: QUEUE_STATS
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
@@ -1087,7 +1087,7 @@ TEST(encoder, ofmp_queuestats_v1) {
     version: 1
     xid: 0x11111111
     msg:
-      type: QUEUE
+      type: QUEUE_STATS
       flags: [ 0x2222 ]
       body:
         - port_no: 0x33333330
@@ -2993,7 +2993,7 @@ TEST(encoder, ofmp_queue_v4_request) {
       datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
-        type: QUEUE
+        type: QUEUE_STATS
         flags: []
         body:
           port_no: 0x22222222
@@ -3014,7 +3014,7 @@ TEST(encoder, ofmp_queue_v1_request) {
       datapath_id: 00:00:00:00:00:00:00:01
       xid: 0x11111111
       msg:
-        type: QUEUE
+        type: QUEUE_STATS
         flags: []
         body:
           port_no: 0x22222222
@@ -3806,7 +3806,7 @@ TEST(encoder, raw_message) {
 
 TEST(encoder, ofmp_groupstats_v3) {
   const char *input = R"""(
-      type:            REPLY.GROUP
+      type:            REPLY.GROUP_STATS
       xid:             0x00000000
       version:         0x03
       msg:             
@@ -3831,7 +3831,7 @@ TEST(encoder, ofmp_groupstats_v3) {
 
 TEST(encoder, ofmp_groupstats_v3_2) {
   const char *input = R"""(
-      type:            REPLY.GROUP
+      type:            REPLY.GROUP_STATS
       xid:             0x00000000
       version:         0x03
       msg:             

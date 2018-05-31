@@ -413,7 +413,7 @@ version:         0x03
 msg:             
 ...
 ---
-type:            REQUEST.AGGREGATE
+type:            REQUEST.AGGREGATE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -426,7 +426,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.AGGREGATE
+type:            REPLY.AGGREGATE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -436,7 +436,7 @@ msg:
   flow_count:      0x00000006
 ...
 ---
-type:            REQUEST.TABLE
+type:            REQUEST.TABLE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -588,7 +588,7 @@ msg:
       properties:      
 ...
 ---
-type:            REQUEST.QUEUE
+type:            REQUEST.QUEUE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -597,7 +597,7 @@ msg:
   queue_id:        ALL
 ...
 ---
-type:            REPLY.QUEUE
+type:            REPLY.QUEUE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -1302,7 +1302,7 @@ version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.AGGREGATE
+type:            REQUEST.AGGREGATE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1315,7 +1315,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.AGGREGATE
+type:            REPLY.AGGREGATE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1325,14 +1325,14 @@ msg:
   flow_count:      0x00000006
 ...
 ---
-type:            REQUEST.TABLE
+type:            REQUEST.TABLE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.TABLE
+type:            REPLY.TABLE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1498,7 +1498,7 @@ msg:
       properties:      
 ...
 ---
-type:            REQUEST.QUEUE
+type:            REQUEST.QUEUE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1507,7 +1507,7 @@ msg:
   queue_id:        ALL
 ...
 ---
-type:            REPLY.QUEUE
+type:            REPLY.QUEUE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1731,7 +1731,7 @@ msg:
         burst_size:      0x0000000A
 ...
 ---
-type:            REQUEST.METER
+type:            REQUEST.METER_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1745,7 +1745,7 @@ version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.METER
+type:            REPLY.METER_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3473,7 +3473,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.GROUP
+type:            REQUEST.GROUP_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3481,7 +3481,7 @@ msg:
   group_id:        ALL
 ...
 ---
-type:            REPLY.GROUP
+type:            REPLY.GROUP_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -4077,7 +4077,7 @@ version:         0x05
 msg:             
 ...
 ---
-type:            REQUEST.AGGREGATE
+type:            REQUEST.AGGREGATE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4090,7 +4090,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.AGGREGATE
+type:            REPLY.AGGREGATE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4100,7 +4100,7 @@ msg:
   flow_count:      0x00000006
 ...
 ---
-type:            REQUEST.TABLE
+type:            REQUEST.TABLE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4188,7 +4188,7 @@ msg:
             max_len:         NO_BUFFER
 ...
 ---
-type:            REQUEST.QUEUE
+type:            REQUEST.QUEUE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4197,7 +4197,7 @@ msg:
   queue_id:        ALL
 ...
 ---
-type:            REPLY.QUEUE
+type:            REPLY.QUEUE_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4387,7 +4387,7 @@ msg:
         burst_size:      0x0000000A
 ...
 ---
-type:            REQUEST.METER
+type:            REQUEST.METER_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4395,7 +4395,7 @@ msg:
   meter_id:        ALL
 ...
 ---
-type:            REPLY.METER
+type:            REPLY.METER_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -6096,7 +6096,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.GROUP
+type:            REQUEST.GROUP_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -6104,7 +6104,7 @@ msg:
   group_id:        ALL
 ...
 ---
-type:            REPLY.GROUP
+type:            REPLY.GROUP_STATS
 flags:           [  ]
 xid:             0x00000000
 version:         0x05

@@ -229,28 +229,28 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.FLOW_DESC.v1	msg.0.packet_count	uint64	True			True
 1	REPLY.FLOW_DESC.v1	msg.0.priority	uint16	True			True
 1	REPLY.FLOW_DESC.v1	msg.0.table_id	ALL	True			
-1	REQUEST.AGGREGATE.v1	msg	object	True			
-1	REQUEST.AGGREGATE.v1	msg.cookie	uint64	True		msg.cookie=0	
-1	REQUEST.AGGREGATE.v1	msg.cookie_mask	uint64	True		msg.cookie_mask=0	
-1	REQUEST.AGGREGATE.v1	msg.match	array	True			
-1	REQUEST.AGGREGATE.v1	msg.match.0	object	False	msg.cookie=0,msg.cookie_mask=0,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0	msg.match.0=object	
-1	REQUEST.AGGREGATE.v1	msg.match.0.field	ETH_DST	True		msg.match.0.field=ETH_DST	
-1	REQUEST.AGGREGATE.v1	msg.match.0.mask	macaddress	False	msg.cookie=0,msg.cookie_mask=0,msg.match.0.mask=macaddress,msg.out_group=0	msg.match.0.mask=macaddress	
-1	REQUEST.AGGREGATE.v1	msg.match.0.value	macaddress	True		msg.match.0.value=macaddress	
-1	REQUEST.AGGREGATE.v1	msg.out_group	ANY	True		msg.out_group=0	
-1	REQUEST.AGGREGATE.v1	msg.out_port	CONTROLLER	True			
-1	REQUEST.AGGREGATE.v1	msg.table_id	ALL	True			
-1	REPLY.AGGREGATE.v1	msg	object	True			
-1	REPLY.AGGREGATE.v1	msg.byte_count	uint64	True			True
-1	REPLY.AGGREGATE.v1	msg.flow_count	uint32	True			True
-1	REPLY.AGGREGATE.v1	msg.packet_count	uint64	True			True
-1	REQUEST.TABLE.v1	msg	object	False			
-1	REPLY.TABLE.v1	msg	array	True			
-1	REPLY.TABLE.v1	msg.0	object	False			
-1	REPLY.TABLE.v1	msg.0.active_count	uint32	True			True
-1	REPLY.TABLE.v1	msg.0.lookup_count	uint64	True			True
-1	REPLY.TABLE.v1	msg.0.matched_count	uint64	True			True
-1	REPLY.TABLE.v1	msg.0.table_id	ALL	True			
+1	REQUEST.AGGREGATE_STATS.v1	msg	object	True			
+1	REQUEST.AGGREGATE_STATS.v1	msg.cookie	uint64	True		msg.cookie=0	
+1	REQUEST.AGGREGATE_STATS.v1	msg.cookie_mask	uint64	True		msg.cookie_mask=0	
+1	REQUEST.AGGREGATE_STATS.v1	msg.match	array	True			
+1	REQUEST.AGGREGATE_STATS.v1	msg.match.0	object	False	msg.cookie=0,msg.cookie_mask=0,msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress,msg.out_group=0	msg.match.0=object	
+1	REQUEST.AGGREGATE_STATS.v1	msg.match.0.field	ETH_DST	True		msg.match.0.field=ETH_DST	
+1	REQUEST.AGGREGATE_STATS.v1	msg.match.0.mask	macaddress	False	msg.cookie=0,msg.cookie_mask=0,msg.match.0.mask=macaddress,msg.out_group=0	msg.match.0.mask=macaddress	
+1	REQUEST.AGGREGATE_STATS.v1	msg.match.0.value	macaddress	True		msg.match.0.value=macaddress	
+1	REQUEST.AGGREGATE_STATS.v1	msg.out_group	ANY	True		msg.out_group=0	
+1	REQUEST.AGGREGATE_STATS.v1	msg.out_port	CONTROLLER	True			
+1	REQUEST.AGGREGATE_STATS.v1	msg.table_id	ALL	True			
+1	REPLY.AGGREGATE_STATS.v1	msg	object	True			
+1	REPLY.AGGREGATE_STATS.v1	msg.byte_count	uint64	True			True
+1	REPLY.AGGREGATE_STATS.v1	msg.flow_count	uint32	True			True
+1	REPLY.AGGREGATE_STATS.v1	msg.packet_count	uint64	True			True
+1	REQUEST.TABLE_STATS.v1	msg	object	False			
+1	REPLY.TABLE_STATS.v1	msg	array	True			
+1	REPLY.TABLE_STATS.v1	msg.0	object	False			
+1	REPLY.TABLE_STATS.v1	msg.0.active_count	uint32	True			True
+1	REPLY.TABLE_STATS.v1	msg.0.lookup_count	uint64	True			True
+1	REPLY.TABLE_STATS.v1	msg.0.matched_count	uint64	True			True
+1	REPLY.TABLE_STATS.v1	msg.0.table_id	ALL	True			
 1	REQUEST.PORT_STATS.v1	msg	object	True			
 1	REQUEST.PORT_STATS.v1	msg.port_no	CONTROLLER	True			
 1	REPLY.PORT_STATS.v1	msg	array	True			
@@ -271,17 +271,17 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.PORT_STATS.v1	msg.0.tx_dropped	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.tx_errors	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.tx_packets	uint64	True			True
-1	REQUEST.QUEUE.v1	msg	object	True			
-1	REQUEST.QUEUE.v1	msg.port_no	CONTROLLER	True			
-1	REQUEST.QUEUE.v1	msg.queue_id	ALL	True			
-1	REPLY.QUEUE.v1	msg	array	True			
-1	REPLY.QUEUE.v1	msg.0	object	False			
-1	REPLY.QUEUE.v1	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
-1	REPLY.QUEUE.v1	msg.0.port_no	CONTROLLER	True			
-1	REPLY.QUEUE.v1	msg.0.queue_id	ALL	True			
-1	REPLY.QUEUE.v1	msg.0.tx_bytes	uint64	True			True
-1	REPLY.QUEUE.v1	msg.0.tx_errors	uint64	True			True
-1	REPLY.QUEUE.v1	msg.0.tx_packets	uint64	True			True
+1	REQUEST.QUEUE_STATS.v1	msg	object	True			
+1	REQUEST.QUEUE_STATS.v1	msg.port_no	CONTROLLER	True			
+1	REQUEST.QUEUE_STATS.v1	msg.queue_id	ALL	True			
+1	REPLY.QUEUE_STATS.v1	msg	array	True			
+1	REPLY.QUEUE_STATS.v1	msg.0	object	False			
+1	REPLY.QUEUE_STATS.v1	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
+1	REPLY.QUEUE_STATS.v1	msg.0.port_no	CONTROLLER	True			
+1	REPLY.QUEUE_STATS.v1	msg.0.queue_id	ALL	True			
+1	REPLY.QUEUE_STATS.v1	msg.0.tx_bytes	uint64	True			True
+1	REPLY.QUEUE_STATS.v1	msg.0.tx_errors	uint64	True			True
+1	REPLY.QUEUE_STATS.v1	msg.0.tx_packets	uint64	True			True
 1	REQUEST.QUEUE_DESC.v1	msg	object	True			ERROR
 1	REQUEST.QUEUE_DESC.v1	msg.port_no	CONTROLLER	True			ERROR
 1	REQUEST.QUEUE_DESC.v1	msg.queue_id	ALL	True			ERROR
@@ -297,19 +297,19 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.QUEUE_DESC.v1	msg.0.properties.0.experimenter	uint32	True			ERROR
 1	REPLY.QUEUE_DESC.v1	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
 1	REPLY.QUEUE_DESC.v1	msg.0.queue_id	ALL	True			ERROR
-1	REQUEST.GROUP.v1	msg	object	True			ERROR
-1	REQUEST.GROUP.v1	msg.group_id	ANY	True			ERROR
-1	REPLY.GROUP.v1	msg	array	True			ERROR
-1	REPLY.GROUP.v1	msg.0	object	True			ERROR
-1	REPLY.GROUP.v1	msg.0.bucket_stats	array	True			ERROR
-1	REPLY.GROUP.v1	msg.0.bucket_stats.0	object	True			ERROR
-1	REPLY.GROUP.v1	msg.0.bucket_stats.0.byte_count	uint64	True			ERROR
-1	REPLY.GROUP.v1	msg.0.bucket_stats.0.packet_count	uint64	True			ERROR
-1	REPLY.GROUP.v1	msg.0.byte_count	uint64	True			ERROR
-1	REPLY.GROUP.v1	msg.0.duration	4294967295.xffffffff	True			ERROR
-1	REPLY.GROUP.v1	msg.0.group_id	ANY	True			ERROR
-1	REPLY.GROUP.v1	msg.0.packet_count	uint64	True			ERROR
-1	REPLY.GROUP.v1	msg.0.ref_count	uint32	True			ERROR
+1	REQUEST.GROUP_STATS.v1	msg	object	True			ERROR
+1	REQUEST.GROUP_STATS.v1	msg.group_id	ANY	True			ERROR
+1	REPLY.GROUP_STATS.v1	msg	array	True			ERROR
+1	REPLY.GROUP_STATS.v1	msg.0	object	True			ERROR
+1	REPLY.GROUP_STATS.v1	msg.0.bucket_stats	array	True			ERROR
+1	REPLY.GROUP_STATS.v1	msg.0.bucket_stats.0	object	True			ERROR
+1	REPLY.GROUP_STATS.v1	msg.0.bucket_stats.0.byte_count	uint64	True			ERROR
+1	REPLY.GROUP_STATS.v1	msg.0.bucket_stats.0.packet_count	uint64	True			ERROR
+1	REPLY.GROUP_STATS.v1	msg.0.byte_count	uint64	True			ERROR
+1	REPLY.GROUP_STATS.v1	msg.0.duration	4294967295.xffffffff	True			ERROR
+1	REPLY.GROUP_STATS.v1	msg.0.group_id	ANY	True			ERROR
+1	REPLY.GROUP_STATS.v1	msg.0.packet_count	uint64	True			ERROR
+1	REPLY.GROUP_STATS.v1	msg.0.ref_count	uint32	True			ERROR
 1	REQUEST.GROUP_DESC.v1	msg	object	True			ERROR
 1	REPLY.GROUP_DESC.v1	msg	array	True			ERROR
 1	REPLY.GROUP_DESC.v1	msg.0	object	True			ERROR
@@ -343,19 +343,19 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REPLY.GROUP_FEATURES.v1	msg.max_groups_sel	uint32	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.types	array	True			ERROR
 1	REPLY.GROUP_FEATURES.v1	msg.types.0	INDIRECT	True			ERROR
-1	REQUEST.METER.v1	msg	object	True			ERROR
-1	REQUEST.METER.v1	msg.meter_id	ALL	True			ERROR
-1	REPLY.METER.v1	msg	array	True			ERROR
-1	REPLY.METER.v1	msg.0	object	True			ERROR
-1	REPLY.METER.v1	msg.0.bands	array	True			ERROR
-1	REPLY.METER.v1	msg.0.bands.0	object	True			ERROR
-1	REPLY.METER.v1	msg.0.bands.0.byte_count	uint64	True			ERROR
-1	REPLY.METER.v1	msg.0.bands.0.packet_count	uint64	True			ERROR
-1	REPLY.METER.v1	msg.0.byte_in_count	uint64	True			ERROR
-1	REPLY.METER.v1	msg.0.duration	4294967295.xffffffff	True			ERROR
-1	REPLY.METER.v1	msg.0.flow_count	uint32	True			ERROR
-1	REPLY.METER.v1	msg.0.meter_id	ALL	True			ERROR
-1	REPLY.METER.v1	msg.0.packet_in_count	uint64	True			ERROR
+1	REQUEST.METER_STATS.v1	msg	object	True			ERROR
+1	REQUEST.METER_STATS.v1	msg.meter_id	ALL	True			ERROR
+1	REPLY.METER_STATS.v1	msg	array	True			ERROR
+1	REPLY.METER_STATS.v1	msg.0	object	True			ERROR
+1	REPLY.METER_STATS.v1	msg.0.bands	array	True			ERROR
+1	REPLY.METER_STATS.v1	msg.0.bands.0	object	True			ERROR
+1	REPLY.METER_STATS.v1	msg.0.bands.0.byte_count	uint64	True			ERROR
+1	REPLY.METER_STATS.v1	msg.0.bands.0.packet_count	uint64	True			ERROR
+1	REPLY.METER_STATS.v1	msg.0.byte_in_count	uint64	True			ERROR
+1	REPLY.METER_STATS.v1	msg.0.duration	4294967295.xffffffff	True			ERROR
+1	REPLY.METER_STATS.v1	msg.0.flow_count	uint32	True			ERROR
+1	REPLY.METER_STATS.v1	msg.0.meter_id	ALL	True			ERROR
+1	REPLY.METER_STATS.v1	msg.0.packet_in_count	uint64	True			ERROR
 1	REQUEST.METER_CONFIG.v1	msg	object	True			ERROR
 1	REQUEST.METER_CONFIG.v1	msg.meter_id	ALL	True			ERROR
 1	REPLY.METER_CONFIG.v1	msg	array	True			ERROR
@@ -871,28 +871,28 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.FLOW_DESC.v2	msg.0.packet_count	uint64	True			True
 2	REPLY.FLOW_DESC.v2	msg.0.priority	uint16	True			True
 2	REPLY.FLOW_DESC.v2	msg.0.table_id	ALL	True			
-2	REQUEST.AGGREGATE.v2	msg	object	True			
-2	REQUEST.AGGREGATE.v2	msg.cookie	uint64	True			True
-2	REQUEST.AGGREGATE.v2	msg.cookie_mask	uint64	True			True
-2	REQUEST.AGGREGATE.v2	msg.match	array	True			
-2	REQUEST.AGGREGATE.v2	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
-2	REQUEST.AGGREGATE.v2	msg.match.0.field	ETH_DST	True			
-2	REQUEST.AGGREGATE.v2	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress		True
-2	REQUEST.AGGREGATE.v2	msg.match.0.value	macaddress	True			True
-2	REQUEST.AGGREGATE.v2	msg.out_group	ANY	True			
-2	REQUEST.AGGREGATE.v2	msg.out_port	CONTROLLER	True			
-2	REQUEST.AGGREGATE.v2	msg.table_id	ALL	True			
-2	REPLY.AGGREGATE.v2	msg	object	True			
-2	REPLY.AGGREGATE.v2	msg.byte_count	uint64	True			True
-2	REPLY.AGGREGATE.v2	msg.flow_count	uint32	True			True
-2	REPLY.AGGREGATE.v2	msg.packet_count	uint64	True			True
-2	REQUEST.TABLE.v2	msg	object	False			
-2	REPLY.TABLE.v2	msg	array	True			ERROR
-2	REPLY.TABLE.v2	msg.0	object	True			ERROR
-2	REPLY.TABLE.v2	msg.0.active_count	uint32	True			ERROR
-2	REPLY.TABLE.v2	msg.0.lookup_count	uint64	True			ERROR
-2	REPLY.TABLE.v2	msg.0.matched_count	uint64	True			ERROR
-2	REPLY.TABLE.v2	msg.0.table_id	ALL	True			ERROR
+2	REQUEST.AGGREGATE_STATS.v2	msg	object	True			
+2	REQUEST.AGGREGATE_STATS.v2	msg.cookie	uint64	True			True
+2	REQUEST.AGGREGATE_STATS.v2	msg.cookie_mask	uint64	True			True
+2	REQUEST.AGGREGATE_STATS.v2	msg.match	array	True			
+2	REQUEST.AGGREGATE_STATS.v2	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
+2	REQUEST.AGGREGATE_STATS.v2	msg.match.0.field	ETH_DST	True			
+2	REQUEST.AGGREGATE_STATS.v2	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress		True
+2	REQUEST.AGGREGATE_STATS.v2	msg.match.0.value	macaddress	True			True
+2	REQUEST.AGGREGATE_STATS.v2	msg.out_group	ANY	True			
+2	REQUEST.AGGREGATE_STATS.v2	msg.out_port	CONTROLLER	True			
+2	REQUEST.AGGREGATE_STATS.v2	msg.table_id	ALL	True			
+2	REPLY.AGGREGATE_STATS.v2	msg	object	True			
+2	REPLY.AGGREGATE_STATS.v2	msg.byte_count	uint64	True			True
+2	REPLY.AGGREGATE_STATS.v2	msg.flow_count	uint32	True			True
+2	REPLY.AGGREGATE_STATS.v2	msg.packet_count	uint64	True			True
+2	REQUEST.TABLE_STATS.v2	msg	object	False			
+2	REPLY.TABLE_STATS.v2	msg	array	True			ERROR
+2	REPLY.TABLE_STATS.v2	msg.0	object	True			ERROR
+2	REPLY.TABLE_STATS.v2	msg.0.active_count	uint32	True			ERROR
+2	REPLY.TABLE_STATS.v2	msg.0.lookup_count	uint64	True			ERROR
+2	REPLY.TABLE_STATS.v2	msg.0.matched_count	uint64	True			ERROR
+2	REPLY.TABLE_STATS.v2	msg.0.table_id	ALL	True			ERROR
 2	REQUEST.PORT_STATS.v2	msg	object	True			
 2	REQUEST.PORT_STATS.v2	msg.port_no	CONTROLLER	True			
 2	REPLY.PORT_STATS.v2	msg	array	True			
@@ -913,17 +913,17 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.PORT_STATS.v2	msg.0.tx_dropped	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.tx_errors	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.tx_packets	uint64	True			True
-2	REQUEST.QUEUE.v2	msg	object	True			
-2	REQUEST.QUEUE.v2	msg.port_no	CONTROLLER	True			
-2	REQUEST.QUEUE.v2	msg.queue_id	ALL	True			
-2	REPLY.QUEUE.v2	msg	array	True			ERROR
-2	REPLY.QUEUE.v2	msg.0	object	False			ERROR
-2	REPLY.QUEUE.v2	msg.0.duration	4294967295.xffffffff	True			ERROR
-2	REPLY.QUEUE.v2	msg.0.port_no	CONTROLLER	True			ERROR
-2	REPLY.QUEUE.v2	msg.0.queue_id	ALL	True			ERROR
-2	REPLY.QUEUE.v2	msg.0.tx_bytes	uint64	True			ERROR
-2	REPLY.QUEUE.v2	msg.0.tx_errors	uint64	True			ERROR
-2	REPLY.QUEUE.v2	msg.0.tx_packets	uint64	True			ERROR
+2	REQUEST.QUEUE_STATS.v2	msg	object	True			
+2	REQUEST.QUEUE_STATS.v2	msg.port_no	CONTROLLER	True			
+2	REQUEST.QUEUE_STATS.v2	msg.queue_id	ALL	True			
+2	REPLY.QUEUE_STATS.v2	msg	array	True			ERROR
+2	REPLY.QUEUE_STATS.v2	msg.0	object	False			ERROR
+2	REPLY.QUEUE_STATS.v2	msg.0.duration	4294967295.xffffffff	True			ERROR
+2	REPLY.QUEUE_STATS.v2	msg.0.port_no	CONTROLLER	True			ERROR
+2	REPLY.QUEUE_STATS.v2	msg.0.queue_id	ALL	True			ERROR
+2	REPLY.QUEUE_STATS.v2	msg.0.tx_bytes	uint64	True			ERROR
+2	REPLY.QUEUE_STATS.v2	msg.0.tx_errors	uint64	True			ERROR
+2	REPLY.QUEUE_STATS.v2	msg.0.tx_packets	uint64	True			ERROR
 2	REQUEST.QUEUE_DESC.v2	msg	object	True			ERROR
 2	REQUEST.QUEUE_DESC.v2	msg.port_no	CONTROLLER	True			ERROR
 2	REQUEST.QUEUE_DESC.v2	msg.queue_id	ALL	True			ERROR
@@ -939,19 +939,19 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.QUEUE_DESC.v2	msg.0.properties.0.experimenter	uint32	True			ERROR
 2	REPLY.QUEUE_DESC.v2	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
 2	REPLY.QUEUE_DESC.v2	msg.0.queue_id	ALL	True			ERROR
-2	REQUEST.GROUP.v2	msg	object	True			
-2	REQUEST.GROUP.v2	msg.group_id	ANY	True			
-2	REPLY.GROUP.v2	msg	array	True			ERROR
-2	REPLY.GROUP.v2	msg.0	object	False			ERROR
-2	REPLY.GROUP.v2	msg.0.bucket_stats	array	True			ERROR
-2	REPLY.GROUP.v2	msg.0.bucket_stats.0	object	True			ERROR
-2	REPLY.GROUP.v2	msg.0.bucket_stats.0.byte_count	uint64	True			ERROR
-2	REPLY.GROUP.v2	msg.0.bucket_stats.0.packet_count	uint64	True			ERROR
-2	REPLY.GROUP.v2	msg.0.byte_count	uint64	True			ERROR
-2	REPLY.GROUP.v2	msg.0.duration	4294967295.xffffffff	True			ERROR
-2	REPLY.GROUP.v2	msg.0.group_id	ANY	True			ERROR
-2	REPLY.GROUP.v2	msg.0.packet_count	uint64	True			ERROR
-2	REPLY.GROUP.v2	msg.0.ref_count	uint32	True			ERROR
+2	REQUEST.GROUP_STATS.v2	msg	object	True			
+2	REQUEST.GROUP_STATS.v2	msg.group_id	ANY	True			
+2	REPLY.GROUP_STATS.v2	msg	array	True			ERROR
+2	REPLY.GROUP_STATS.v2	msg.0	object	False			ERROR
+2	REPLY.GROUP_STATS.v2	msg.0.bucket_stats	array	True			ERROR
+2	REPLY.GROUP_STATS.v2	msg.0.bucket_stats.0	object	True			ERROR
+2	REPLY.GROUP_STATS.v2	msg.0.bucket_stats.0.byte_count	uint64	True			ERROR
+2	REPLY.GROUP_STATS.v2	msg.0.bucket_stats.0.packet_count	uint64	True			ERROR
+2	REPLY.GROUP_STATS.v2	msg.0.byte_count	uint64	True			ERROR
+2	REPLY.GROUP_STATS.v2	msg.0.duration	4294967295.xffffffff	True			ERROR
+2	REPLY.GROUP_STATS.v2	msg.0.group_id	ANY	True			ERROR
+2	REPLY.GROUP_STATS.v2	msg.0.packet_count	uint64	True			ERROR
+2	REPLY.GROUP_STATS.v2	msg.0.ref_count	uint32	True			ERROR
 2	REQUEST.GROUP_DESC.v2	msg	object	False			
 2	REPLY.GROUP_DESC.v2	msg	array	True			
 2	REPLY.GROUP_DESC.v2	msg.0	object	False			
@@ -985,19 +985,19 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REPLY.GROUP_FEATURES.v2	msg.max_groups_sel	uint32	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.types	array	True			ERROR
 2	REPLY.GROUP_FEATURES.v2	msg.types.0	INDIRECT	True			ERROR
-2	REQUEST.METER.v2	msg	object	True			ERROR
-2	REQUEST.METER.v2	msg.meter_id	ALL	True			ERROR
-2	REPLY.METER.v2	msg	array	True			ERROR
-2	REPLY.METER.v2	msg.0	object	True			ERROR
-2	REPLY.METER.v2	msg.0.bands	array	True			ERROR
-2	REPLY.METER.v2	msg.0.bands.0	object	True			ERROR
-2	REPLY.METER.v2	msg.0.bands.0.byte_count	uint64	True			ERROR
-2	REPLY.METER.v2	msg.0.bands.0.packet_count	uint64	True			ERROR
-2	REPLY.METER.v2	msg.0.byte_in_count	uint64	True			ERROR
-2	REPLY.METER.v2	msg.0.duration	4294967295.xffffffff	True			ERROR
-2	REPLY.METER.v2	msg.0.flow_count	uint32	True			ERROR
-2	REPLY.METER.v2	msg.0.meter_id	ALL	True			ERROR
-2	REPLY.METER.v2	msg.0.packet_in_count	uint64	True			ERROR
+2	REQUEST.METER_STATS.v2	msg	object	True			ERROR
+2	REQUEST.METER_STATS.v2	msg.meter_id	ALL	True			ERROR
+2	REPLY.METER_STATS.v2	msg	array	True			ERROR
+2	REPLY.METER_STATS.v2	msg.0	object	True			ERROR
+2	REPLY.METER_STATS.v2	msg.0.bands	array	True			ERROR
+2	REPLY.METER_STATS.v2	msg.0.bands.0	object	True			ERROR
+2	REPLY.METER_STATS.v2	msg.0.bands.0.byte_count	uint64	True			ERROR
+2	REPLY.METER_STATS.v2	msg.0.bands.0.packet_count	uint64	True			ERROR
+2	REPLY.METER_STATS.v2	msg.0.byte_in_count	uint64	True			ERROR
+2	REPLY.METER_STATS.v2	msg.0.duration	4294967295.xffffffff	True			ERROR
+2	REPLY.METER_STATS.v2	msg.0.flow_count	uint32	True			ERROR
+2	REPLY.METER_STATS.v2	msg.0.meter_id	ALL	True			ERROR
+2	REPLY.METER_STATS.v2	msg.0.packet_in_count	uint64	True			ERROR
 2	REQUEST.METER_CONFIG.v2	msg	object	True			ERROR
 2	REQUEST.METER_CONFIG.v2	msg.meter_id	ALL	True			ERROR
 2	REPLY.METER_CONFIG.v2	msg	array	True			ERROR
@@ -1513,28 +1513,28 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.FLOW_DESC.v3	msg.0.packet_count	uint64	True			True
 3	REPLY.FLOW_DESC.v3	msg.0.priority	uint16	True			True
 3	REPLY.FLOW_DESC.v3	msg.0.table_id	ALL	True			
-3	REQUEST.AGGREGATE.v3	msg	object	True			
-3	REQUEST.AGGREGATE.v3	msg.cookie	uint64	True			True
-3	REQUEST.AGGREGATE.v3	msg.cookie_mask	uint64	True			True
-3	REQUEST.AGGREGATE.v3	msg.match	array	True			
-3	REQUEST.AGGREGATE.v3	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
-3	REQUEST.AGGREGATE.v3	msg.match.0.field	ETH_DST	True			
-3	REQUEST.AGGREGATE.v3	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress		True
-3	REQUEST.AGGREGATE.v3	msg.match.0.value	macaddress	True			True
-3	REQUEST.AGGREGATE.v3	msg.out_group	ANY	True			
-3	REQUEST.AGGREGATE.v3	msg.out_port	CONTROLLER	True			
-3	REQUEST.AGGREGATE.v3	msg.table_id	ALL	True			
-3	REPLY.AGGREGATE.v3	msg	object	True			
-3	REPLY.AGGREGATE.v3	msg.byte_count	uint64	True			True
-3	REPLY.AGGREGATE.v3	msg.flow_count	uint32	True			True
-3	REPLY.AGGREGATE.v3	msg.packet_count	uint64	True			True
-3	REQUEST.TABLE.v3	msg	object	False			
-3	REPLY.TABLE.v3	msg	array	True			ERROR
-3	REPLY.TABLE.v3	msg.0	object	True			ERROR
-3	REPLY.TABLE.v3	msg.0.active_count	uint32	True			ERROR
-3	REPLY.TABLE.v3	msg.0.lookup_count	uint64	True			ERROR
-3	REPLY.TABLE.v3	msg.0.matched_count	uint64	True			ERROR
-3	REPLY.TABLE.v3	msg.0.table_id	ALL	True			ERROR
+3	REQUEST.AGGREGATE_STATS.v3	msg	object	True			
+3	REQUEST.AGGREGATE_STATS.v3	msg.cookie	uint64	True			True
+3	REQUEST.AGGREGATE_STATS.v3	msg.cookie_mask	uint64	True			True
+3	REQUEST.AGGREGATE_STATS.v3	msg.match	array	True			
+3	REQUEST.AGGREGATE_STATS.v3	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
+3	REQUEST.AGGREGATE_STATS.v3	msg.match.0.field	ETH_DST	True			
+3	REQUEST.AGGREGATE_STATS.v3	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress		True
+3	REQUEST.AGGREGATE_STATS.v3	msg.match.0.value	macaddress	True			True
+3	REQUEST.AGGREGATE_STATS.v3	msg.out_group	ANY	True			
+3	REQUEST.AGGREGATE_STATS.v3	msg.out_port	CONTROLLER	True			
+3	REQUEST.AGGREGATE_STATS.v3	msg.table_id	ALL	True			
+3	REPLY.AGGREGATE_STATS.v3	msg	object	True			
+3	REPLY.AGGREGATE_STATS.v3	msg.byte_count	uint64	True			True
+3	REPLY.AGGREGATE_STATS.v3	msg.flow_count	uint32	True			True
+3	REPLY.AGGREGATE_STATS.v3	msg.packet_count	uint64	True			True
+3	REQUEST.TABLE_STATS.v3	msg	object	False			
+3	REPLY.TABLE_STATS.v3	msg	array	True			ERROR
+3	REPLY.TABLE_STATS.v3	msg.0	object	True			ERROR
+3	REPLY.TABLE_STATS.v3	msg.0.active_count	uint32	True			ERROR
+3	REPLY.TABLE_STATS.v3	msg.0.lookup_count	uint64	True			ERROR
+3	REPLY.TABLE_STATS.v3	msg.0.matched_count	uint64	True			ERROR
+3	REPLY.TABLE_STATS.v3	msg.0.table_id	ALL	True			ERROR
 3	REQUEST.PORT_STATS.v3	msg	object	True			
 3	REQUEST.PORT_STATS.v3	msg.port_no	CONTROLLER	True			
 3	REPLY.PORT_STATS.v3	msg	array	True			
@@ -1555,17 +1555,17 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.PORT_STATS.v3	msg.0.tx_dropped	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.tx_errors	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.tx_packets	uint64	True			True
-3	REQUEST.QUEUE.v3	msg	object	True			
-3	REQUEST.QUEUE.v3	msg.port_no	CONTROLLER	True			
-3	REQUEST.QUEUE.v3	msg.queue_id	ALL	True			
-3	REPLY.QUEUE.v3	msg	array	True			
-3	REPLY.QUEUE.v3	msg.0	object	False			
-3	REPLY.QUEUE.v3	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
-3	REPLY.QUEUE.v3	msg.0.port_no	CONTROLLER	True			
-3	REPLY.QUEUE.v3	msg.0.queue_id	ALL	True			
-3	REPLY.QUEUE.v3	msg.0.tx_bytes	uint64	True			True
-3	REPLY.QUEUE.v3	msg.0.tx_errors	uint64	True			True
-3	REPLY.QUEUE.v3	msg.0.tx_packets	uint64	True			True
+3	REQUEST.QUEUE_STATS.v3	msg	object	True			
+3	REQUEST.QUEUE_STATS.v3	msg.port_no	CONTROLLER	True			
+3	REQUEST.QUEUE_STATS.v3	msg.queue_id	ALL	True			
+3	REPLY.QUEUE_STATS.v3	msg	array	True			
+3	REPLY.QUEUE_STATS.v3	msg.0	object	False			
+3	REPLY.QUEUE_STATS.v3	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
+3	REPLY.QUEUE_STATS.v3	msg.0.port_no	CONTROLLER	True			
+3	REPLY.QUEUE_STATS.v3	msg.0.queue_id	ALL	True			
+3	REPLY.QUEUE_STATS.v3	msg.0.tx_bytes	uint64	True			True
+3	REPLY.QUEUE_STATS.v3	msg.0.tx_errors	uint64	True			True
+3	REPLY.QUEUE_STATS.v3	msg.0.tx_packets	uint64	True			True
 3	REQUEST.QUEUE_DESC.v3	msg	object	True			ERROR
 3	REQUEST.QUEUE_DESC.v3	msg.port_no	CONTROLLER	True			ERROR
 3	REQUEST.QUEUE_DESC.v3	msg.queue_id	ALL	True			ERROR
@@ -1581,19 +1581,19 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.QUEUE_DESC.v3	msg.0.properties.0.experimenter	uint32	True			ERROR
 3	REPLY.QUEUE_DESC.v3	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
 3	REPLY.QUEUE_DESC.v3	msg.0.queue_id	ALL	True			ERROR
-3	REQUEST.GROUP.v3	msg	object	True			
-3	REQUEST.GROUP.v3	msg.group_id	ANY	True			
-3	REPLY.GROUP.v3	msg	array	True			
-3	REPLY.GROUP.v3	msg.0	object	False			
-3	REPLY.GROUP.v3	msg.0.bucket_stats	array	True			
-3	REPLY.GROUP.v3	msg.0.bucket_stats.0	object	False	msg.0.bucket_stats.0=object,msg.0.bucket_stats.0.byte_count=uint64,msg.0.bucket_stats.0.packet_count=uint64,msg.0.duration=0		
-3	REPLY.GROUP.v3	msg.0.bucket_stats.0.byte_count	uint64	True			True
-3	REPLY.GROUP.v3	msg.0.bucket_stats.0.packet_count	uint64	True			True
-3	REPLY.GROUP.v3	msg.0.byte_count	uint64	True			True
-3	REPLY.GROUP.v3	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
-3	REPLY.GROUP.v3	msg.0.group_id	ANY	True			
-3	REPLY.GROUP.v3	msg.0.packet_count	uint64	True			True
-3	REPLY.GROUP.v3	msg.0.ref_count	uint32	True			True
+3	REQUEST.GROUP_STATS.v3	msg	object	True			
+3	REQUEST.GROUP_STATS.v3	msg.group_id	ANY	True			
+3	REPLY.GROUP_STATS.v3	msg	array	True			
+3	REPLY.GROUP_STATS.v3	msg.0	object	False			
+3	REPLY.GROUP_STATS.v3	msg.0.bucket_stats	array	True			
+3	REPLY.GROUP_STATS.v3	msg.0.bucket_stats.0	object	False	msg.0.bucket_stats.0=object,msg.0.bucket_stats.0.byte_count=uint64,msg.0.bucket_stats.0.packet_count=uint64,msg.0.duration=0		
+3	REPLY.GROUP_STATS.v3	msg.0.bucket_stats.0.byte_count	uint64	True			True
+3	REPLY.GROUP_STATS.v3	msg.0.bucket_stats.0.packet_count	uint64	True			True
+3	REPLY.GROUP_STATS.v3	msg.0.byte_count	uint64	True			True
+3	REPLY.GROUP_STATS.v3	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
+3	REPLY.GROUP_STATS.v3	msg.0.group_id	ANY	True			
+3	REPLY.GROUP_STATS.v3	msg.0.packet_count	uint64	True			True
+3	REPLY.GROUP_STATS.v3	msg.0.ref_count	uint32	True			True
 3	REQUEST.GROUP_DESC.v3	msg	object	False			
 3	REPLY.GROUP_DESC.v3	msg	array	True			
 3	REPLY.GROUP_DESC.v3	msg.0	object	False			
@@ -1627,19 +1627,19 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REPLY.GROUP_FEATURES.v3	msg.max_groups_sel	uint32	True			True
 3	REPLY.GROUP_FEATURES.v3	msg.types	array	True			
 3	REPLY.GROUP_FEATURES.v3	msg.types.0	INDIRECT	False			
-3	REQUEST.METER.v3	msg	object	True			ERROR
-3	REQUEST.METER.v3	msg.meter_id	ALL	True			ERROR
-3	REPLY.METER.v3	msg	array	True			ERROR
-3	REPLY.METER.v3	msg.0	object	True			ERROR
-3	REPLY.METER.v3	msg.0.bands	array	True			ERROR
-3	REPLY.METER.v3	msg.0.bands.0	object	True			ERROR
-3	REPLY.METER.v3	msg.0.bands.0.byte_count	uint64	True			ERROR
-3	REPLY.METER.v3	msg.0.bands.0.packet_count	uint64	True			ERROR
-3	REPLY.METER.v3	msg.0.byte_in_count	uint64	True			ERROR
-3	REPLY.METER.v3	msg.0.duration	4294967295.xffffffff	True			ERROR
-3	REPLY.METER.v3	msg.0.flow_count	uint32	True			ERROR
-3	REPLY.METER.v3	msg.0.meter_id	ALL	True			ERROR
-3	REPLY.METER.v3	msg.0.packet_in_count	uint64	True			ERROR
+3	REQUEST.METER_STATS.v3	msg	object	True			ERROR
+3	REQUEST.METER_STATS.v3	msg.meter_id	ALL	True			ERROR
+3	REPLY.METER_STATS.v3	msg	array	True			ERROR
+3	REPLY.METER_STATS.v3	msg.0	object	True			ERROR
+3	REPLY.METER_STATS.v3	msg.0.bands	array	True			ERROR
+3	REPLY.METER_STATS.v3	msg.0.bands.0	object	True			ERROR
+3	REPLY.METER_STATS.v3	msg.0.bands.0.byte_count	uint64	True			ERROR
+3	REPLY.METER_STATS.v3	msg.0.bands.0.packet_count	uint64	True			ERROR
+3	REPLY.METER_STATS.v3	msg.0.byte_in_count	uint64	True			ERROR
+3	REPLY.METER_STATS.v3	msg.0.duration	4294967295.xffffffff	True			ERROR
+3	REPLY.METER_STATS.v3	msg.0.flow_count	uint32	True			ERROR
+3	REPLY.METER_STATS.v3	msg.0.meter_id	ALL	True			ERROR
+3	REPLY.METER_STATS.v3	msg.0.packet_in_count	uint64	True			ERROR
 3	REQUEST.METER_CONFIG.v3	msg	object	True			ERROR
 3	REQUEST.METER_CONFIG.v3	msg.meter_id	ALL	True			ERROR
 3	REPLY.METER_CONFIG.v3	msg	array	True			ERROR
@@ -2155,28 +2155,28 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.FLOW_DESC.v4	msg.0.packet_count	uint64	True			True
 4	REPLY.FLOW_DESC.v4	msg.0.priority	uint16	True			True
 4	REPLY.FLOW_DESC.v4	msg.0.table_id	ALL	True			
-4	REQUEST.AGGREGATE.v4	msg	object	True			
-4	REQUEST.AGGREGATE.v4	msg.cookie	uint64	True			True
-4	REQUEST.AGGREGATE.v4	msg.cookie_mask	uint64	True			True
-4	REQUEST.AGGREGATE.v4	msg.match	array	True			
-4	REQUEST.AGGREGATE.v4	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
-4	REQUEST.AGGREGATE.v4	msg.match.0.field	ETH_DST	True			
-4	REQUEST.AGGREGATE.v4	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress		True
-4	REQUEST.AGGREGATE.v4	msg.match.0.value	macaddress	True			True
-4	REQUEST.AGGREGATE.v4	msg.out_group	ANY	True			
-4	REQUEST.AGGREGATE.v4	msg.out_port	CONTROLLER	True			
-4	REQUEST.AGGREGATE.v4	msg.table_id	ALL	True			
-4	REPLY.AGGREGATE.v4	msg	object	True			
-4	REPLY.AGGREGATE.v4	msg.byte_count	uint64	True			True
-4	REPLY.AGGREGATE.v4	msg.flow_count	uint32	True			True
-4	REPLY.AGGREGATE.v4	msg.packet_count	uint64	True			True
-4	REQUEST.TABLE.v4	msg	object	False			
-4	REPLY.TABLE.v4	msg	array	True			
-4	REPLY.TABLE.v4	msg.0	object	False			
-4	REPLY.TABLE.v4	msg.0.active_count	uint32	True			True
-4	REPLY.TABLE.v4	msg.0.lookup_count	uint64	True			True
-4	REPLY.TABLE.v4	msg.0.matched_count	uint64	True			True
-4	REPLY.TABLE.v4	msg.0.table_id	ALL	True			
+4	REQUEST.AGGREGATE_STATS.v4	msg	object	True			
+4	REQUEST.AGGREGATE_STATS.v4	msg.cookie	uint64	True			True
+4	REQUEST.AGGREGATE_STATS.v4	msg.cookie_mask	uint64	True			True
+4	REQUEST.AGGREGATE_STATS.v4	msg.match	array	True			
+4	REQUEST.AGGREGATE_STATS.v4	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
+4	REQUEST.AGGREGATE_STATS.v4	msg.match.0.field	ETH_DST	True			
+4	REQUEST.AGGREGATE_STATS.v4	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress		True
+4	REQUEST.AGGREGATE_STATS.v4	msg.match.0.value	macaddress	True			True
+4	REQUEST.AGGREGATE_STATS.v4	msg.out_group	ANY	True			
+4	REQUEST.AGGREGATE_STATS.v4	msg.out_port	CONTROLLER	True			
+4	REQUEST.AGGREGATE_STATS.v4	msg.table_id	ALL	True			
+4	REPLY.AGGREGATE_STATS.v4	msg	object	True			
+4	REPLY.AGGREGATE_STATS.v4	msg.byte_count	uint64	True			True
+4	REPLY.AGGREGATE_STATS.v4	msg.flow_count	uint32	True			True
+4	REPLY.AGGREGATE_STATS.v4	msg.packet_count	uint64	True			True
+4	REQUEST.TABLE_STATS.v4	msg	object	False			
+4	REPLY.TABLE_STATS.v4	msg	array	True			
+4	REPLY.TABLE_STATS.v4	msg.0	object	False			
+4	REPLY.TABLE_STATS.v4	msg.0.active_count	uint32	True			True
+4	REPLY.TABLE_STATS.v4	msg.0.lookup_count	uint64	True			True
+4	REPLY.TABLE_STATS.v4	msg.0.matched_count	uint64	True			True
+4	REPLY.TABLE_STATS.v4	msg.0.table_id	ALL	True			
 4	REQUEST.PORT_STATS.v4	msg	object	True			
 4	REQUEST.PORT_STATS.v4	msg.port_no	CONTROLLER	True			
 4	REPLY.PORT_STATS.v4	msg	array	True			
@@ -2197,17 +2197,17 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.PORT_STATS.v4	msg.0.tx_dropped	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.tx_errors	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.tx_packets	uint64	True			True
-4	REQUEST.QUEUE.v4	msg	object	True			
-4	REQUEST.QUEUE.v4	msg.port_no	CONTROLLER	True			
-4	REQUEST.QUEUE.v4	msg.queue_id	ALL	True			
-4	REPLY.QUEUE.v4	msg	array	True			
-4	REPLY.QUEUE.v4	msg.0	object	False			
-4	REPLY.QUEUE.v4	msg.0.duration	4294967295.xffffffff	True			
-4	REPLY.QUEUE.v4	msg.0.port_no	CONTROLLER	True			
-4	REPLY.QUEUE.v4	msg.0.queue_id	ALL	True			
-4	REPLY.QUEUE.v4	msg.0.tx_bytes	uint64	True			True
-4	REPLY.QUEUE.v4	msg.0.tx_errors	uint64	True			True
-4	REPLY.QUEUE.v4	msg.0.tx_packets	uint64	True			True
+4	REQUEST.QUEUE_STATS.v4	msg	object	True			
+4	REQUEST.QUEUE_STATS.v4	msg.port_no	CONTROLLER	True			
+4	REQUEST.QUEUE_STATS.v4	msg.queue_id	ALL	True			
+4	REPLY.QUEUE_STATS.v4	msg	array	True			
+4	REPLY.QUEUE_STATS.v4	msg.0	object	False			
+4	REPLY.QUEUE_STATS.v4	msg.0.duration	4294967295.xffffffff	True			
+4	REPLY.QUEUE_STATS.v4	msg.0.port_no	CONTROLLER	True			
+4	REPLY.QUEUE_STATS.v4	msg.0.queue_id	ALL	True			
+4	REPLY.QUEUE_STATS.v4	msg.0.tx_bytes	uint64	True			True
+4	REPLY.QUEUE_STATS.v4	msg.0.tx_errors	uint64	True			True
+4	REPLY.QUEUE_STATS.v4	msg.0.tx_packets	uint64	True			True
 4	REQUEST.QUEUE_DESC.v4	msg	object	True			ERROR
 4	REQUEST.QUEUE_DESC.v4	msg.port_no	CONTROLLER	True			ERROR
 4	REQUEST.QUEUE_DESC.v4	msg.queue_id	ALL	True			ERROR
@@ -2223,19 +2223,19 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.QUEUE_DESC.v4	msg.0.properties.0.experimenter	uint32	True			ERROR
 4	REPLY.QUEUE_DESC.v4	msg.0.properties.0.property	EXPERIMENTER	True			ERROR
 4	REPLY.QUEUE_DESC.v4	msg.0.queue_id	ALL	True			ERROR
-4	REQUEST.GROUP.v4	msg	object	True			
-4	REQUEST.GROUP.v4	msg.group_id	ANY	True			
-4	REPLY.GROUP.v4	msg	array	True			
-4	REPLY.GROUP.v4	msg.0	object	False			
-4	REPLY.GROUP.v4	msg.0.bucket_stats	array	True			
-4	REPLY.GROUP.v4	msg.0.bucket_stats.0	object	False	msg.0.bucket_stats.0=object,msg.0.bucket_stats.0.byte_count=uint64,msg.0.bucket_stats.0.packet_count=uint64		
-4	REPLY.GROUP.v4	msg.0.bucket_stats.0.byte_count	uint64	True			True
-4	REPLY.GROUP.v4	msg.0.bucket_stats.0.packet_count	uint64	True			True
-4	REPLY.GROUP.v4	msg.0.byte_count	uint64	True			True
-4	REPLY.GROUP.v4	msg.0.duration	4294967295.xffffffff	True			
-4	REPLY.GROUP.v4	msg.0.group_id	ANY	True			
-4	REPLY.GROUP.v4	msg.0.packet_count	uint64	True			True
-4	REPLY.GROUP.v4	msg.0.ref_count	uint32	True			True
+4	REQUEST.GROUP_STATS.v4	msg	object	True			
+4	REQUEST.GROUP_STATS.v4	msg.group_id	ANY	True			
+4	REPLY.GROUP_STATS.v4	msg	array	True			
+4	REPLY.GROUP_STATS.v4	msg.0	object	False			
+4	REPLY.GROUP_STATS.v4	msg.0.bucket_stats	array	True			
+4	REPLY.GROUP_STATS.v4	msg.0.bucket_stats.0	object	False	msg.0.bucket_stats.0=object,msg.0.bucket_stats.0.byte_count=uint64,msg.0.bucket_stats.0.packet_count=uint64		
+4	REPLY.GROUP_STATS.v4	msg.0.bucket_stats.0.byte_count	uint64	True			True
+4	REPLY.GROUP_STATS.v4	msg.0.bucket_stats.0.packet_count	uint64	True			True
+4	REPLY.GROUP_STATS.v4	msg.0.byte_count	uint64	True			True
+4	REPLY.GROUP_STATS.v4	msg.0.duration	4294967295.xffffffff	True			
+4	REPLY.GROUP_STATS.v4	msg.0.group_id	ANY	True			
+4	REPLY.GROUP_STATS.v4	msg.0.packet_count	uint64	True			True
+4	REPLY.GROUP_STATS.v4	msg.0.ref_count	uint32	True			True
 4	REQUEST.GROUP_DESC.v4	msg	object	False			
 4	REPLY.GROUP_DESC.v4	msg	array	True			
 4	REPLY.GROUP_DESC.v4	msg.0	object	False			
@@ -2269,19 +2269,19 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REPLY.GROUP_FEATURES.v4	msg.max_groups_sel	uint32	True			True
 4	REPLY.GROUP_FEATURES.v4	msg.types	array	True			
 4	REPLY.GROUP_FEATURES.v4	msg.types.0	INDIRECT	False			
-4	REQUEST.METER.v4	msg	object	True			
-4	REQUEST.METER.v4	msg.meter_id	ALL	True			
-4	REPLY.METER.v4	msg	array	True			
-4	REPLY.METER.v4	msg.0	object	False			
-4	REPLY.METER.v4	msg.0.bands	array	True			
-4	REPLY.METER.v4	msg.0.bands.0	object	False	msg.0.bands.0=object,msg.0.bands.0.byte_count=uint64,msg.0.bands.0.packet_count=uint64		
-4	REPLY.METER.v4	msg.0.bands.0.byte_count	uint64	True			True
-4	REPLY.METER.v4	msg.0.bands.0.packet_count	uint64	True			True
-4	REPLY.METER.v4	msg.0.byte_in_count	uint64	True			True
-4	REPLY.METER.v4	msg.0.duration	4294967295.xffffffff	True			
-4	REPLY.METER.v4	msg.0.flow_count	uint32	True			True
-4	REPLY.METER.v4	msg.0.meter_id	ALL	True			
-4	REPLY.METER.v4	msg.0.packet_in_count	uint64	True			True
+4	REQUEST.METER_STATS.v4	msg	object	True			
+4	REQUEST.METER_STATS.v4	msg.meter_id	ALL	True			
+4	REPLY.METER_STATS.v4	msg	array	True			
+4	REPLY.METER_STATS.v4	msg.0	object	False			
+4	REPLY.METER_STATS.v4	msg.0.bands	array	True			
+4	REPLY.METER_STATS.v4	msg.0.bands.0	object	False	msg.0.bands.0=object,msg.0.bands.0.byte_count=uint64,msg.0.bands.0.packet_count=uint64		
+4	REPLY.METER_STATS.v4	msg.0.bands.0.byte_count	uint64	True			True
+4	REPLY.METER_STATS.v4	msg.0.bands.0.packet_count	uint64	True			True
+4	REPLY.METER_STATS.v4	msg.0.byte_in_count	uint64	True			True
+4	REPLY.METER_STATS.v4	msg.0.duration	4294967295.xffffffff	True			
+4	REPLY.METER_STATS.v4	msg.0.flow_count	uint32	True			True
+4	REPLY.METER_STATS.v4	msg.0.meter_id	ALL	True			
+4	REPLY.METER_STATS.v4	msg.0.packet_in_count	uint64	True			True
 4	REQUEST.METER_CONFIG.v4	msg	object	True			
 4	REQUEST.METER_CONFIG.v4	msg.meter_id	ALL	True			
 4	REPLY.METER_CONFIG.v4	msg	array	True			
@@ -2797,28 +2797,28 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.FLOW_DESC.v5	msg.0.packet_count	uint64	True			True
 5	REPLY.FLOW_DESC.v5	msg.0.priority	uint16	True			True
 5	REPLY.FLOW_DESC.v5	msg.0.table_id	ALL	True			
-5	REQUEST.AGGREGATE.v5	msg	object	True			
-5	REQUEST.AGGREGATE.v5	msg.cookie	uint64	True			True
-5	REQUEST.AGGREGATE.v5	msg.cookie_mask	uint64	True			True
-5	REQUEST.AGGREGATE.v5	msg.match	array	True			
-5	REQUEST.AGGREGATE.v5	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
-5	REQUEST.AGGREGATE.v5	msg.match.0.field	ETH_DST	True			
-5	REQUEST.AGGREGATE.v5	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress		True
-5	REQUEST.AGGREGATE.v5	msg.match.0.value	macaddress	True			True
-5	REQUEST.AGGREGATE.v5	msg.out_group	ANY	True			
-5	REQUEST.AGGREGATE.v5	msg.out_port	CONTROLLER	True			
-5	REQUEST.AGGREGATE.v5	msg.table_id	ALL	True			
-5	REPLY.AGGREGATE.v5	msg	object	True			
-5	REPLY.AGGREGATE.v5	msg.byte_count	uint64	True			True
-5	REPLY.AGGREGATE.v5	msg.flow_count	uint32	True			True
-5	REPLY.AGGREGATE.v5	msg.packet_count	uint64	True			True
-5	REQUEST.TABLE.v5	msg	object	False			
-5	REPLY.TABLE.v5	msg	array	True			
-5	REPLY.TABLE.v5	msg.0	object	False			
-5	REPLY.TABLE.v5	msg.0.active_count	uint32	True			True
-5	REPLY.TABLE.v5	msg.0.lookup_count	uint64	True			True
-5	REPLY.TABLE.v5	msg.0.matched_count	uint64	True			True
-5	REPLY.TABLE.v5	msg.0.table_id	ALL	True			
+5	REQUEST.AGGREGATE_STATS.v5	msg	object	True			
+5	REQUEST.AGGREGATE_STATS.v5	msg.cookie	uint64	True			True
+5	REQUEST.AGGREGATE_STATS.v5	msg.cookie_mask	uint64	True			True
+5	REQUEST.AGGREGATE_STATS.v5	msg.match	array	True			
+5	REQUEST.AGGREGATE_STATS.v5	msg.match.0	object	False	msg.match.0=object,msg.match.0.field=ETH_DST,msg.match.0.mask=macaddress,msg.match.0.value=macaddress		
+5	REQUEST.AGGREGATE_STATS.v5	msg.match.0.field	ETH_DST	True			
+5	REQUEST.AGGREGATE_STATS.v5	msg.match.0.mask	macaddress	False	msg.match.0.mask=macaddress		True
+5	REQUEST.AGGREGATE_STATS.v5	msg.match.0.value	macaddress	True			True
+5	REQUEST.AGGREGATE_STATS.v5	msg.out_group	ANY	True			
+5	REQUEST.AGGREGATE_STATS.v5	msg.out_port	CONTROLLER	True			
+5	REQUEST.AGGREGATE_STATS.v5	msg.table_id	ALL	True			
+5	REPLY.AGGREGATE_STATS.v5	msg	object	True			
+5	REPLY.AGGREGATE_STATS.v5	msg.byte_count	uint64	True			True
+5	REPLY.AGGREGATE_STATS.v5	msg.flow_count	uint32	True			True
+5	REPLY.AGGREGATE_STATS.v5	msg.packet_count	uint64	True			True
+5	REQUEST.TABLE_STATS.v5	msg	object	False			
+5	REPLY.TABLE_STATS.v5	msg	array	True			
+5	REPLY.TABLE_STATS.v5	msg.0	object	False			
+5	REPLY.TABLE_STATS.v5	msg.0.active_count	uint32	True			True
+5	REPLY.TABLE_STATS.v5	msg.0.lookup_count	uint64	True			True
+5	REPLY.TABLE_STATS.v5	msg.0.matched_count	uint64	True			True
+5	REPLY.TABLE_STATS.v5	msg.0.table_id	ALL	True			
 5	REQUEST.PORT_STATS.v5	msg	object	True			
 5	REQUEST.PORT_STATS.v5	msg.port_no	CONTROLLER	True			
 5	REPLY.PORT_STATS.v5	msg	array	True			
@@ -2839,17 +2839,17 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.PORT_STATS.v5	msg.0.tx_dropped	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.tx_errors	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.tx_packets	uint64	True			True
-5	REQUEST.QUEUE.v5	msg	object	True			
-5	REQUEST.QUEUE.v5	msg.port_no	CONTROLLER	True			
-5	REQUEST.QUEUE.v5	msg.queue_id	ALL	True			
-5	REPLY.QUEUE.v5	msg	array	True			
-5	REPLY.QUEUE.v5	msg.0	object	False			
-5	REPLY.QUEUE.v5	msg.0.duration	4294967295.xffffffff	True			
-5	REPLY.QUEUE.v5	msg.0.port_no	CONTROLLER	True			
-5	REPLY.QUEUE.v5	msg.0.queue_id	ALL	True			
-5	REPLY.QUEUE.v5	msg.0.tx_bytes	uint64	True			True
-5	REPLY.QUEUE.v5	msg.0.tx_errors	uint64	True			True
-5	REPLY.QUEUE.v5	msg.0.tx_packets	uint64	True			True
+5	REQUEST.QUEUE_STATS.v5	msg	object	True			
+5	REQUEST.QUEUE_STATS.v5	msg.port_no	CONTROLLER	True			
+5	REQUEST.QUEUE_STATS.v5	msg.queue_id	ALL	True			
+5	REPLY.QUEUE_STATS.v5	msg	array	True			
+5	REPLY.QUEUE_STATS.v5	msg.0	object	False			
+5	REPLY.QUEUE_STATS.v5	msg.0.duration	4294967295.xffffffff	True			
+5	REPLY.QUEUE_STATS.v5	msg.0.port_no	CONTROLLER	True			
+5	REPLY.QUEUE_STATS.v5	msg.0.queue_id	ALL	True			
+5	REPLY.QUEUE_STATS.v5	msg.0.tx_bytes	uint64	True			True
+5	REPLY.QUEUE_STATS.v5	msg.0.tx_errors	uint64	True			True
+5	REPLY.QUEUE_STATS.v5	msg.0.tx_packets	uint64	True			True
 5	REQUEST.QUEUE_DESC.v5	msg	object	True			
 5	REQUEST.QUEUE_DESC.v5	msg.port_no	CONTROLLER	True			
 5	REQUEST.QUEUE_DESC.v5	msg.queue_id	ALL	True			
@@ -2865,19 +2865,19 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.QUEUE_DESC.v5	msg.0.properties.0.experimenter	uint32	True			True
 5	REPLY.QUEUE_DESC.v5	msg.0.properties.0.property	EXPERIMENTER	True			
 5	REPLY.QUEUE_DESC.v5	msg.0.queue_id	ALL	True			
-5	REQUEST.GROUP.v5	msg	object	True			
-5	REQUEST.GROUP.v5	msg.group_id	ANY	True			
-5	REPLY.GROUP.v5	msg	array	True			
-5	REPLY.GROUP.v5	msg.0	object	False			
-5	REPLY.GROUP.v5	msg.0.bucket_stats	array	True			
-5	REPLY.GROUP.v5	msg.0.bucket_stats.0	object	False	msg.0.bucket_stats.0=object,msg.0.bucket_stats.0.byte_count=uint64,msg.0.bucket_stats.0.packet_count=uint64		
-5	REPLY.GROUP.v5	msg.0.bucket_stats.0.byte_count	uint64	True			True
-5	REPLY.GROUP.v5	msg.0.bucket_stats.0.packet_count	uint64	True			True
-5	REPLY.GROUP.v5	msg.0.byte_count	uint64	True			True
-5	REPLY.GROUP.v5	msg.0.duration	4294967295.xffffffff	True			
-5	REPLY.GROUP.v5	msg.0.group_id	ANY	True			
-5	REPLY.GROUP.v5	msg.0.packet_count	uint64	True			True
-5	REPLY.GROUP.v5	msg.0.ref_count	uint32	True			True
+5	REQUEST.GROUP_STATS.v5	msg	object	True			
+5	REQUEST.GROUP_STATS.v5	msg.group_id	ANY	True			
+5	REPLY.GROUP_STATS.v5	msg	array	True			
+5	REPLY.GROUP_STATS.v5	msg.0	object	False			
+5	REPLY.GROUP_STATS.v5	msg.0.bucket_stats	array	True			
+5	REPLY.GROUP_STATS.v5	msg.0.bucket_stats.0	object	False	msg.0.bucket_stats.0=object,msg.0.bucket_stats.0.byte_count=uint64,msg.0.bucket_stats.0.packet_count=uint64		
+5	REPLY.GROUP_STATS.v5	msg.0.bucket_stats.0.byte_count	uint64	True			True
+5	REPLY.GROUP_STATS.v5	msg.0.bucket_stats.0.packet_count	uint64	True			True
+5	REPLY.GROUP_STATS.v5	msg.0.byte_count	uint64	True			True
+5	REPLY.GROUP_STATS.v5	msg.0.duration	4294967295.xffffffff	True			
+5	REPLY.GROUP_STATS.v5	msg.0.group_id	ANY	True			
+5	REPLY.GROUP_STATS.v5	msg.0.packet_count	uint64	True			True
+5	REPLY.GROUP_STATS.v5	msg.0.ref_count	uint32	True			True
 5	REQUEST.GROUP_DESC.v5	msg	object	False			
 5	REPLY.GROUP_DESC.v5	msg	array	True			
 5	REPLY.GROUP_DESC.v5	msg.0	object	False			
@@ -2911,19 +2911,19 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REPLY.GROUP_FEATURES.v5	msg.max_groups_sel	uint32	True			True
 5	REPLY.GROUP_FEATURES.v5	msg.types	array	True			
 5	REPLY.GROUP_FEATURES.v5	msg.types.0	INDIRECT	False			
-5	REQUEST.METER.v5	msg	object	True			
-5	REQUEST.METER.v5	msg.meter_id	ALL	True			
-5	REPLY.METER.v5	msg	array	True			
-5	REPLY.METER.v5	msg.0	object	False			
-5	REPLY.METER.v5	msg.0.bands	array	True			
-5	REPLY.METER.v5	msg.0.bands.0	object	False	msg.0.bands.0=object,msg.0.bands.0.byte_count=uint64,msg.0.bands.0.packet_count=uint64		
-5	REPLY.METER.v5	msg.0.bands.0.byte_count	uint64	True			True
-5	REPLY.METER.v5	msg.0.bands.0.packet_count	uint64	True			True
-5	REPLY.METER.v5	msg.0.byte_in_count	uint64	True			True
-5	REPLY.METER.v5	msg.0.duration	4294967295.xffffffff	True			
-5	REPLY.METER.v5	msg.0.flow_count	uint32	True			True
-5	REPLY.METER.v5	msg.0.meter_id	ALL	True			
-5	REPLY.METER.v5	msg.0.packet_in_count	uint64	True			True
+5	REQUEST.METER_STATS.v5	msg	object	True			
+5	REQUEST.METER_STATS.v5	msg.meter_id	ALL	True			
+5	REPLY.METER_STATS.v5	msg	array	True			
+5	REPLY.METER_STATS.v5	msg.0	object	False			
+5	REPLY.METER_STATS.v5	msg.0.bands	array	True			
+5	REPLY.METER_STATS.v5	msg.0.bands.0	object	False	msg.0.bands.0=object,msg.0.bands.0.byte_count=uint64,msg.0.bands.0.packet_count=uint64		
+5	REPLY.METER_STATS.v5	msg.0.bands.0.byte_count	uint64	True			True
+5	REPLY.METER_STATS.v5	msg.0.bands.0.packet_count	uint64	True			True
+5	REPLY.METER_STATS.v5	msg.0.byte_in_count	uint64	True			True
+5	REPLY.METER_STATS.v5	msg.0.duration	4294967295.xffffffff	True			
+5	REPLY.METER_STATS.v5	msg.0.flow_count	uint32	True			True
+5	REPLY.METER_STATS.v5	msg.0.meter_id	ALL	True			
+5	REPLY.METER_STATS.v5	msg.0.packet_in_count	uint64	True			True
 5	REQUEST.METER_CONFIG.v5	msg	object	True			
 5	REQUEST.METER_CONFIG.v5	msg.meter_id	ALL	True			
 5	REPLY.METER_CONFIG.v5	msg	array	True			

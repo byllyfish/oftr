@@ -750,7 +750,7 @@ msg:
   port_no:         ANY
 ...
 ---
-type:            REQUEST.TABLE
+type:            REQUEST.TABLE_STATS
 flags:           [  ]
 xid:             0x3609080E
 version:         0x01
@@ -1389,7 +1389,7 @@ msg:
   port_no:         ANY
 ...
 ---
-type:            REQUEST.TABLE
+type:            REQUEST.TABLE_STATS
 flags:           [  ]
 xid:             0x36090823
 version:         0x01
@@ -1436,7 +1436,7 @@ msg:
   port_no:         ANY
 ...
 ---
-type:            REQUEST.TABLE
+type:            REQUEST.TABLE_STATS
 flags:           [  ]
 xid:             0x36090827
 version:         0x01
@@ -1566,7 +1566,7 @@ msg:
   port_no:         ANY
 ...
 ---
-type:            REQUEST.TABLE
+type:            REQUEST.TABLE_STATS
 flags:           [  ]
 xid:             0x3609082E
 version:         0x01
