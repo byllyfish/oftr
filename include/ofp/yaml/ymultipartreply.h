@@ -273,7 +273,7 @@ struct MappingTraits<ofp::MultipartReply> {
         io.mapRequired(key, seq);
         break;
       }
-      case OFPMP_AGGREGATE: {
+      case OFPMP_AGGREGATE_STATS: {
         if (version >= OFP_VERSION_6) {
           MPAggregateStatsReplyV6 *reply =
               RemoveConst_cast(msg.body_cast<MPAggregateStatsReplyV6>());
@@ -289,7 +289,7 @@ struct MappingTraits<ofp::MultipartReply> {
         }
         break;
       }
-      case OFPMP_TABLE: {
+      case OFPMP_TABLE_STATS: {
         ofp::detail::MPReplyFixedSizeSeq<MPTableStats> seq{msg};
         io.mapRequired(key, seq);
         break;
@@ -299,7 +299,7 @@ struct MappingTraits<ofp::MultipartReply> {
         io.mapRequired(key, seq);
         break;
       }
-      case OFPMP_QUEUE: {
+      case OFPMP_QUEUE_STATS: {
         ofp::detail::MPReplyFixedSizeSeq<MPQueueStats> seq{msg};
         io.mapRequired(key, seq);
         break;
@@ -328,7 +328,7 @@ struct MappingTraits<ofp::MultipartReply> {
         io.mapRequired(key, seq);
         break;
       }
-      case OFPMP_METER: {
+      case OFPMP_METER_STATS: {
         ofp::detail::MPReplyVariableSizeSeq<MPMeterStats> seq{msg};
         io.mapRequired(key, seq);
         break;
@@ -356,7 +356,7 @@ struct MappingTraits<ofp::MultipartReply> {
         io.mapRequired(key, seq);
         break;
       }
-      case OFPMP_GROUP: {
+      case OFPMP_GROUP_STATS: {
         ofp::detail::MPReplyVariableSizeSeq<MPGroupStats> seq{msg};
         io.mapRequired(key, seq);
         break;
@@ -418,7 +418,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
                           MPFlowStatsReply::MPVariableSizeOffset);
         break;
       }
-      case OFPMP_AGGREGATE: {
+      case OFPMP_AGGREGATE_STATS: {
         if (version >= OFP_VERSION_6) {
           MPAggregateStatsReplyV6Builder reply6;
           io.mapRequired(key, reply6);
@@ -433,7 +433,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         }
         break;
       }
-      case OFPMP_TABLE: {
+      case OFPMP_TABLE_STATS: {
         ofp::detail::MPReplyBuilderSeq<MPTableStatsBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
@@ -449,7 +449,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
                           MPPortStats::MPVariableSizeOffset);
         break;
       }
-      case OFPMP_QUEUE: {
+      case OFPMP_QUEUE_STATS: {
         ofp::detail::MPReplyBuilderSeq<MPQueueStatsBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
@@ -488,7 +488,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
                           MPMeterConfig::MPVariableSizeOffset);
         break;
       }
-      case OFPMP_METER: {
+      case OFPMP_METER_STATS: {
         ofp::detail::MPReplyBuilderSeq<MPMeterStatsBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();
@@ -524,7 +524,7 @@ struct MappingTraits<ofp::MultipartReplyBuilder> {
         msg.setReplyBody(seq.data(), seq.size());
         break;
       }
-      case OFPMP_GROUP: {
+      case OFPMP_GROUP_STATS: {
         ofp::detail::MPReplyBuilderSeq<MPGroupStatsBuilder> seq{version};
         io.mapRequired(key, seq);
         seq.close();

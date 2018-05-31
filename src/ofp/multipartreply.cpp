@@ -38,14 +38,14 @@ bool MultipartReply::validateInput(Validation *context) const {
     case OFPMP_FLOW_DESC:
       return context->validateArrayVariableSize<MPFlowStatsReply>(
           replyBody(), OFP_VERSION_1);
-    case OFPMP_AGGREGATE:
+    case OFPMP_AGGREGATE_STATS:
       if (vers >= OFP_VERSION_6) {
         return context->validate<MPAggregateStatsReplyV6>(replyBody(),
                                                           OFP_VERSION_6);
       }
       return context->validate<MPAggregateStatsReply>(replyBody(),
                                                       OFP_VERSION_1);
-    case OFPMP_TABLE: {
+    case OFPMP_TABLE_STATS: {
       // We do NOT support OFPMP_TABLE_STATS for OF versions 1.1 and 1.2.
       if (vers == OFP_VERSION_2 || vers == OFP_VERSION_3) {
         context->multipartTypeIsNotSupportedForVersion();
@@ -57,10 +57,10 @@ bool MultipartReply::validateInput(Validation *context) const {
     case OFPMP_PORT_STATS:
       return context->validateArrayVariableSize<MPPortStats>(replyBody(),
                                                              OFP_VERSION_1);
-    case OFPMP_QUEUE:
+    case OFPMP_QUEUE_STATS:
       return context->validateArrayFixedSize<MPQueueStats>(replyBody(),
                                                            OFP_VERSION_1);
-    case OFPMP_GROUP:
+    case OFPMP_GROUP_STATS:
       return context->validateArrayVariableSize<MPGroupStats>(replyBody(),
                                                               OFP_VERSION_2);
     case OFPMP_GROUP_DESC:
@@ -68,7 +68,7 @@ bool MultipartReply::validateInput(Validation *context) const {
                                                              OFP_VERSION_2);
     case OFPMP_GROUP_FEATURES:
       return context->validate<MPGroupFeatures>(replyBody(), OFP_VERSION_3);
-    case OFPMP_METER:
+    case OFPMP_METER_STATS:
       return context->validateArrayVariableSize<MPMeterStats>(replyBody(),
                                                               OFP_VERSION_4);
     case OFPMP_METER_CONFIG:

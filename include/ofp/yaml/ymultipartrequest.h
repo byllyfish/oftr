@@ -160,7 +160,7 @@ struct MappingTraits<ofp::MultipartRequest> {
 
     switch (type) {
       case OFPMP_DESC:
-      case OFPMP_TABLE:
+      case OFPMP_TABLE_STATS:
       case OFPMP_PORT_DESC:
       case OFPMP_GROUP_DESC:
       case OFPMP_GROUP_FEATURES:
@@ -171,7 +171,7 @@ struct MappingTraits<ofp::MultipartRequest> {
         break;
       }
       case OFPMP_FLOW_DESC:
-      case OFPMP_AGGREGATE: {
+      case OFPMP_AGGREGATE_STATS: {
         const MPFlowStatsRequest *stats = MPFlowStatsRequest::cast(&msg);
         if (stats) {
           io.mapRequired(key, RemoveConst_cast(*stats));
@@ -185,7 +185,7 @@ struct MappingTraits<ofp::MultipartRequest> {
         }
         break;
       }
-      case OFPMP_QUEUE: {
+      case OFPMP_QUEUE_STATS: {
         const MPQueueStatsRequest *stats = MPQueueStatsRequest::cast(&msg);
         if (stats) {
           io.mapRequired(key, RemoveConst_cast(*stats));
@@ -206,14 +206,14 @@ struct MappingTraits<ofp::MultipartRequest> {
         }
         break;
       }
-      case OFPMP_METER: {
+      case OFPMP_METER_STATS: {
         const MPMeterStatsRequest *stats = MPMeterStatsRequest::cast(&msg);
         if (stats) {
           io.mapRequired(key, RemoveConst_cast(*stats));
         }
         break;
       }
-      case OFPMP_GROUP: {
+      case OFPMP_GROUP_STATS: {
         const MPGroupStatsRequest *stats = MPGroupStatsRequest::cast(&msg);
         if (stats) {
           io.mapRequired(key, RemoveConst_cast(*stats));
@@ -266,7 +266,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
 
     switch (type) {
       case OFPMP_DESC:
-      case OFPMP_TABLE:
+      case OFPMP_TABLE_STATS:
       case OFPMP_PORT_DESC:
       case OFPMP_GROUP_DESC:
       case OFPMP_GROUP_FEATURES:
@@ -277,7 +277,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         break;
       }
       case OFPMP_FLOW_DESC:
-      case OFPMP_AGGREGATE: {
+      case OFPMP_AGGREGATE_STATS: {
         MPFlowStatsRequestBuilder stats;
         io.mapRequired(key, stats);
         MemoryChannel channel{msg.msg_.header_.version()};
@@ -293,7 +293,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         msg.setRequestBody(channel.data(), channel.size());
         break;
       }
-      case OFPMP_QUEUE: {
+      case OFPMP_QUEUE_STATS: {
         MPQueueStatsRequestBuilder stats;
         io.mapRequired(key, stats);
         MemoryChannel channel{msg.msg_.header_.version()};
@@ -317,7 +317,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         msg.setRequestBody(channel.data(), channel.size());
         break;
       }
-      case OFPMP_METER: {
+      case OFPMP_METER_STATS: {
         MPMeterStatsRequestBuilder stats;
         io.mapRequired(key, stats);
         MemoryChannel channel{msg.msg_.header_.version()};
@@ -325,7 +325,7 @@ struct MappingTraits<ofp::MultipartRequestBuilder> {
         msg.setRequestBody(channel.data(), channel.size());
         break;
       }
-      case OFPMP_GROUP: {
+      case OFPMP_GROUP_STATS: {
         MPGroupStatsRequestBuilder stats;
         io.mapRequired(key, stats);
         MemoryChannel channel{msg.msg_.header_.version()};
