@@ -19,6 +19,18 @@ static void test_roundtrip(const T &value, void *ctxt) {
 }
 
 TEST(yconstants, test_message_type) {
-    MessageType type{OFPT_MULTIPART_REQUEST, OFPMP_DESC};
-    test_roundtrip(type, nullptr);
+	// Test all possible values for OFPType.
+	for (unsigned type = 0; type <= 0xFF; ++type) {
+		MessageType msgType{static_cast<OFPType>(type)};
+		test_roundtrip(msgType, nullptr);
+	}
+
+	// Test all possible values for Multipart Request and Reply.
+	OFPType types[] = { OFPT_MULTIPART_REQUEST, OFPT_MULTIPART_REPLY };
+	for (auto type: types) {
+		for (unsigned subtype = 0; subtype <= 0xFF; ++subtype) {
+			MessageType msgType{type, static_cast<OFPMultipartType>(subtype)};
+			test_roundtrip(msgType, nullptr);
+		}
+	}
 }
