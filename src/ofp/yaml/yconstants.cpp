@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/yaml/yllvm.h"
+#include <unordered_map>
 
 #include "ofp/yaml/yconstants.h"
 
@@ -357,5 +358,40 @@ const EnumConverterSparse<OFPErrorCode>
 const EnumConverterSparse<OFPAsyncConfigProperty>
     llvm::yaml::ScalarTraits<OFPAsyncConfigProperty>::converter{
         sAsyncConfigProperty};
+
+// Construct hash table for converting StringRef to MessageType.
+
+using MessageTypeTable = llvm::StringMap<ofp::MessageType>;
+
+static MessageTypeTable InitMessageTypes() {
+  MessageTypeTable result;
+
+  // Add all message types.
+  for (UInt8 type = 0; type < ArrayLength(sTypes); ++type) {
+    MessageType msgType{static_cast<OFPType>(type)};
+    result.insert({sTypes[type], msgType});
+  }
+
+  // Add all multipart requests and replies.
+  for (UInt16 mpType = 0; mpType < ArrayLength(sMultipartTypes); ++mpType) {
+    MessageType request{OFPT_MULTIPART_REQUEST, static_cast<OFPMultipartType>(mpType)};
+    std::string name = sMultipartTypes[mpType];
+    name += "_REQUEST";
+    result.insert({name, request});
+
+    MessageType reply{OFPT_MULTIPART_REPLY, static_cast<OFPMultipartType>(mpType)};
+    name = sMultipartTypes[mpType];
+    name += "_REPLY";
+    result.insert({name, reply});
+  }
+
+  return result;
+}
+
+OFP_BEGIN_EXIT_TIME_DESTRUCTORS
+
+static const MessageTypeTable sMessageTypes = InitMessageTypes();
+
+OFP_END_EXIT_TIME_DESTRUCTORS
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
