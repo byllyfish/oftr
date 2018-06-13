@@ -65,7 +65,8 @@ TEST(encoderfail, unknownMultipartRequest) {
 
   Encoder encoder{input};
   EXPECT_EQ(
-      "YAML:2:11: error: unknown value \"REQUEST.DES\" Did you mean \"REQUEST.DESC\"?\n    "
+      "YAML:2:11: error: unknown value \"REQUEST.DES\" Did you mean "
+      "\"REQUEST.DESC\"?\n    "
       "type: REQUEST.DES\n          ^~~~~~~~~~~\n",
       encoder.error());
   EXPECT_EQ(0, encoder.size());
@@ -99,7 +100,8 @@ TEST(encoderfail, unknownMultipartReply) {
 
   Encoder encoder{input};
   EXPECT_EQ(
-      "YAML:2:11: error: unknown value \"REPLY.DES\" Did you mean \"REPLY.DESC\"?\n    "
+      "YAML:2:11: error: unknown value \"REPLY.DES\" Did you mean "
+      "\"REPLY.DESC\"?\n    "
       "type: REPLY.DES\n          ^~~~~~~~~\n",
       encoder.error());
   EXPECT_EQ(0, encoder.size());

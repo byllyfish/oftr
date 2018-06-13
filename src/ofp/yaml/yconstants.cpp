@@ -1,8 +1,8 @@
 // Copyright (c) 2015-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/yaml/yllvm.h"
 #include <unordered_map>
+#include "ofp/yaml/yllvm.h"
 
 #include "ofp/yaml/yconstants.h"
 
@@ -49,10 +49,10 @@ static const llvm::StringRef sTypes[] = {"HELLO",
                                          "BUNDLE_ADD_MESSAGE"};
 
 static const llvm::StringRef sMultipartTypes[] = {
-    "DESC",           "FLOW_DESC",      "AGGREGATE_STATS",    "TABLE_STATS",
-    "PORT_STATS",     "QUEUE_STATS",     "GROUP_STATS",        "GROUP_DESC",
-    "GROUP_FEATURES", "METER_STATS",     "METER_CONFIG", "METER_FEATURES",
-    "TABLE_FEATURES", "PORT_DESC", "TABLE_DESC",   "QUEUE_DESC",
+    "DESC",           "FLOW_DESC",   "AGGREGATE_STATS", "TABLE_STATS",
+    "PORT_STATS",     "QUEUE_STATS", "GROUP_STATS",     "GROUP_DESC",
+    "GROUP_FEATURES", "METER_STATS", "METER_CONFIG",    "METER_FEATURES",
+    "TABLE_FEATURES", "PORT_DESC",   "TABLE_DESC",      "QUEUE_DESC",
     "FLOW_MONITOR",
 };
 
@@ -374,20 +374,24 @@ static MessageTypeTable InitMessageTypes() {
 
   // Add all multipart requests and replies.
   for (UInt16 mpType = 0; mpType < ArrayLength(sMultipartTypes); ++mpType) {
-    MessageType request{OFPT_MULTIPART_REQUEST, static_cast<OFPMultipartType>(mpType)};
+    MessageType request{OFPT_MULTIPART_REQUEST,
+                        static_cast<OFPMultipartType>(mpType)};
     std::string name = "REQUEST.";
     name += sMultipartTypes[mpType];
     result.insert({name, request});
 
-    MessageType reply{OFPT_MULTIPART_REPLY, static_cast<OFPMultipartType>(mpType)};
+    MessageType reply{OFPT_MULTIPART_REPLY,
+                      static_cast<OFPMultipartType>(mpType)};
     name = "REPLY.";
     name += sMultipartTypes[mpType];
     result.insert({name, reply});
   }
 
   // Add multipart request/reply for EXPERIMENTER.
-  result.insert({"REQUEST.EXPERIMENTER", MessageType{OFPT_MULTIPART_REQUEST, OFPMP_EXPERIMENTER}});
-  result.insert({"REPLY.EXPERIMENTER", MessageType{OFPT_MULTIPART_REPLY, OFPMP_EXPERIMENTER}});
+  result.insert({"REQUEST.EXPERIMENTER",
+                 MessageType{OFPT_MULTIPART_REQUEST, OFPMP_EXPERIMENTER}});
+  result.insert({"REPLY.EXPERIMENTER",
+                 MessageType{OFPT_MULTIPART_REPLY, OFPMP_EXPERIMENTER}});
 
   // Add raw_message type.
   result.insert({"_RAW_MESSAGE", MessageType{OFPT_RAW_MESSAGE}});
@@ -401,7 +405,8 @@ static const MessageTypeTable sMessageTypes = InitMessageTypes();
 
 OFP_END_EXIT_TIME_DESTRUCTORS
 
-llvm::StringRef ofp::yaml::ParseMessageType(llvm::StringRef scalar, void *ctxt, MessageType &value) {
+llvm::StringRef ofp::yaml::ParseMessageType(llvm::StringRef scalar, void *ctxt,
+                                            MessageType &value) {
   auto iter = sMessageTypes.find(scalar);
   if (iter != sMessageTypes.end()) {
     value = iter->second;

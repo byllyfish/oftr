@@ -290,7 +290,8 @@ TEST(decoder, ofmp_flowrequest_v4) {
   testDecodeEncode(
       "041200401122334400010000000000000100000000000002000000030000000000000000"
       "0000000400000000000000050001000C800000041234567800000000",
-      "---\ntype:            REQUEST.FLOW_DESC\nflags:           [  ]\nxid:         "
+      "---\ntype:            REQUEST.FLOW_DESC\nflags:           [  ]\nxid:    "
+      "     "
       "    0x11223344\nversion:         0x04\nmsg:             \n  table_id:   "
       "     0x01\n  out_port:        0x00000002\n  out_group:       "
       "0x00000003\n  cookie:          0x0000000000000004\n  cookie_mask:     "
@@ -303,7 +304,8 @@ TEST(decoder, ofmp_flowrequest_v1) {
       "011000381122334400010000003820FE567"
       "8000000000000000000000000000000000000000000"
       "0000000000000000000000000011002222",
-      "---\ntype:            REQUEST.FLOW_DESC\nflags:           [  ]\nxid:         "
+      "---\ntype:            REQUEST.FLOW_DESC\nflags:           [  ]\nxid:    "
+      "     "
       "    0x11223344\nversion:         0x01\nmsg:             \n  table_id:   "
       "     0x11\n  out_port:        0x00002222\n  out_group:       "
       "0x00000000\n  cookie:          0x0000000000000000\n  cookie_mask:     "
@@ -316,7 +318,8 @@ TEST(decoder, ofmp_aggregaterequest_v4) {
       "04120040112233440002000000000000110000002222222233333333000"
       "00000444444444444444455555555555555550001000C80000004123456"
       "7800000000",
-      "---\ntype:            REQUEST.AGGREGATE_STATS\nflags:           [  ]\nxid:    "
+      "---\ntype:            REQUEST.AGGREGATE_STATS\nflags:           [  "
+      "]\nxid:    "
       "         0x11223344\nversion:         0x04\nmsg:             \n  "
       "table_id:        0x11\n  out_port:        0x22222222\n  out_group:      "
       " 0x33333333\n  cookie:          0x4444444444444444\n  cookie_mask:     "
@@ -329,7 +332,8 @@ TEST(decoder, ofmp_aggregaterequest_v1) {
       "011000381122334400020000003820FE567"
       "8000000000000000000000000000000000000000000"
       "0000000000000000000000000011002222",
-      "---\ntype:            REQUEST.AGGREGATE_STATS\nflags:           [  ]\nxid:    "
+      "---\ntype:            REQUEST.AGGREGATE_STATS\nflags:           [  "
+      "]\nxid:    "
       "         0x11223344\nversion:         0x01\nmsg:             \n  "
       "table_id:        0x11\n  out_port:        0x00002222\n  out_group:      "
       " 0x00000000\n  cookie:          0x0000000000000000\n  cookie_mask:     "
@@ -342,7 +346,8 @@ TEST(decoder, ofmp_flowreply_v4) {
       "0413005811223344000100000000000000480100000000020000000300"
       "0400050006000700000000000000000000000800000000000000090000"
       "00000000000A0001000C8000000412345678000000000001000801000000",
-      "---\ntype:            REPLY.FLOW_DESC\nflags:           [  ]\nxid:           "
+      "---\ntype:            REPLY.FLOW_DESC\nflags:           [  ]\nxid:      "
+      "     "
       "  0x11223344\nversion:         0x04\nmsg:             \n  - table_id:   "
       "     0x01\n    duration:        2.000000003\n    priority:        "
       "0x0004\n    idle_timeout:    0x0005\n  "
@@ -363,7 +368,8 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "000330044005500660077000000000000000000000088999999999999"
       "9999AAAAAAAAAAAAAAAA0001002080000004123456788000080610203"
       "040506080000606AABBCCDDEEFF0001000801000000",
-      "---\ntype:            REPLY.FLOW_DESC\nflags:           [  ]\nxid:           "
+      "---\ntype:            REPLY.FLOW_DESC\nflags:           [  ]\nxid:      "
+      "     "
       "  0x11223344\nversion:         0x04\nmsg:             \n  - table_id:   "
       "     0x01\n    duration:        2.000000003\n    priority:        "
       "0x0004\n    idle_timeout:    0x0005\n  "
@@ -414,7 +420,8 @@ TEST(decoder, ofmp_flowreply2_v1) {
       "00601100003820F25678102030405060AABBCCDDEEFF0000000000000000000000000000"
       "000000000000000000000022000000330044005500660000000000000000000000000088"
       "9999999999999999AAAAAAAAAAAAAAAA00000008EEEEFFFF",
-      "---\ntype:            REPLY.FLOW_DESC\nflags:           [  ]\nxid:           "
+      "---\ntype:            REPLY.FLOW_DESC\nflags:           [  ]\nxid:      "
+      "     "
       "  0x11223344\nversion:         0x01\nmsg:             \n  - table_id:   "
       "     0x01\n    duration:        2.000000003\n    priority:        "
       "0x0004\n    idle_timeout:    0x0005\n  "
@@ -443,7 +450,8 @@ TEST(decoder, ofmp_aggregatereply_v4) {
   testDecodeEncode(
       "041300281111111100022222000000003333333333333330444444444444444055555550"
       "00000000",
-      "---\ntype:            REPLY.AGGREGATE_STATS\nflags:           [ '0x00002222' "
+      "---\ntype:            REPLY.AGGREGATE_STATS\nflags:           [ "
+      "'0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x04\nmsg:             "
       "\n  packet_count:    0x3333333333333330\n  byte_count:      "
       "0x4444444444444440\n  flow_count:      0x55555550\n...\n");
@@ -453,7 +461,8 @@ TEST(decoder, ofmp_aggregatereply_v1) {
   testDecodeEncode(
       "01110024111111110002222233333333333333304444444444444440555555500000000"
       "0",
-      "---\ntype:            REPLY.AGGREGATE_STATS\nflags:           [ '0x00002222' "
+      "---\ntype:            REPLY.AGGREGATE_STATS\nflags:           [ "
+      "'0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x01\nmsg:             "
       "\n  packet_count:    0x3333333333333330\n  byte_count:      "
       "0x4444444444444440\n  flow_count:      0x55555550\n...\n");
@@ -463,7 +472,8 @@ TEST(decoder, ofmp_aggregatereply_v6) {
   testDecodeEncode(
       "061300381111111100020000000000000000002480020808333333333333333080020A08"
       "4444444444444440800206045555555000000000",
-      "---\ntype:            REPLY.AGGREGATE_STATS\nflags:           [  ]\nxid:      "
+      "---\ntype:            REPLY.AGGREGATE_STATS\nflags:           [  "
+      "]\nxid:      "
       "       0x11111111\nversion:         0x06\nmsg:             \n  "
       "packet_count:    0x3333333333333330\n  byte_count:      "
       "0x4444444444444440\n  flow_count:      0x55555550\n...\n");
@@ -473,7 +483,8 @@ TEST(decoder, ofmp_tablestats_v4) {
   testDecodeEncode(
       "041300401111111100032222000000003300000044444440555555555555555066666666"
       "6666666077000000888888809999999999999990AAAAAAAAAAAAAAA0",
-      "---\ntype:            REPLY.TABLE_STATS\nflags:           [ '0x00002222' "
+      "---\ntype:            REPLY.TABLE_STATS\nflags:           [ "
+      "'0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x04\nmsg:             "
       "\n  - table_id:        0x33\n    name:            ''\n    wildcards:    "
       "   0x00000000\n    max_entries:     0x00000000\n    active_count:    "
@@ -490,7 +501,8 @@ TEST(decoder, ofmp_tablestats_v1) {
       "000000000000000000000000444444405555555066666660777777777777777088888888"
       "88888880110000005461626C652032000000000000000000000000000000000000000000"
       "0000000099999990AAAAAAA0BBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0",
-      "---\ntype:            REPLY.TABLE_STATS\nflags:           [ '0x00002222' "
+      "---\ntype:            REPLY.TABLE_STATS\nflags:           [ "
+      "'0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x01\nmsg:             "
       "\n  - table_id:        0x33\n    name:            Table 1\n    "
       "wildcards:       0x44444440\n    max_entries:     0x55555550\n    "
@@ -618,7 +630,8 @@ TEST(decoder, ofmp_queuestats_v4) {
   testDecodeEncode(
       "041300381111111100052222000000003333333044444440555555555555555066666666"
       "6666666077777777777777701111111022222220",
-      "---\ntype:            REPLY.QUEUE_STATS\nflags:           [ '0x00002222' "
+      "---\ntype:            REPLY.QUEUE_STATS\nflags:           [ "
+      "'0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x04\nmsg:             "
       "\n  - port_no:         0x33333330\n    queue_id:        0x44444440\n    "
       "tx_packets:      0x6666666666666660\n    tx_bytes:        "
@@ -630,7 +643,8 @@ TEST(decoder, ofmp_queuestats_v1) {
   testDecodeEncode(
       "0111002C1111111100052222333000004444444055555555555555506666666666666660"
       "7777777777777770",
-      "---\ntype:            REPLY.QUEUE_STATS\nflags:           [ '0x00002222' "
+      "---\ntype:            REPLY.QUEUE_STATS\nflags:           [ "
+      "'0x00002222' "
       "]\nxid:             0x11111111\nversion:         0x01\nmsg:             "
       "\n  - port_no:         0x00003330\n    queue_id:        0x44444440\n    "
       "tx_packets:      0x6666666666666660\n    tx_bytes:        "
@@ -1585,19 +1599,21 @@ TEST(decoder, ofmp_portstats_v1_request) {
 }
 
 TEST(decoder, ofmp_queuestats_v4_request) {
-  testDecodeEncode("041200181111111100050000000000002222222233333333",
-                   "---\ntype:            REQUEST.QUEUE_STATS\nflags:           [  "
-                   "]\nxid:             0x11111111\nversion:         "
-                   "0x04\nmsg:             \n  port_no:         0x22222222\n  "
-                   "queue_id:        0x33333333\n...\n");
+  testDecodeEncode(
+      "041200181111111100050000000000002222222233333333",
+      "---\ntype:            REQUEST.QUEUE_STATS\nflags:           [  "
+      "]\nxid:             0x11111111\nversion:         "
+      "0x04\nmsg:             \n  port_no:         0x22222222\n  "
+      "queue_id:        0x33333333\n...\n");
 }
 
 TEST(decoder, ofmp_queuestats_v1_request) {
-  testDecodeEncode("0110001411111111000500002222000033333333",
-                   "---\ntype:            REQUEST.QUEUE_STATS\nflags:           [  "
-                   "]\nxid:             0x11111111\nversion:         "
-                   "0x01\nmsg:             \n  port_no:         0x00002222\n  "
-                   "queue_id:        0x33333333\n...\n");
+  testDecodeEncode(
+      "0110001411111111000500002222000033333333",
+      "---\ntype:            REQUEST.QUEUE_STATS\nflags:           [  "
+      "]\nxid:             0x11111111\nversion:         "
+      "0x01\nmsg:             \n  port_no:         0x00002222\n  "
+      "queue_id:        0x33333333\n...\n");
 }
 
 TEST(decoder, ofp_metermod_v4) {
@@ -1617,7 +1633,8 @@ TEST(decoder, ofmp_aggregatestatsrequest_v1) {
   testDecodeEncode(
       "0110003800000018 00020000 003820ff0000000000000000000000000000 "
       "00000000000000000000000000000000 0000000000000800ffff",
-      "---\ntype:            REQUEST.AGGREGATE_STATS\nflags:           [  ]\nxid:    "
+      "---\ntype:            REQUEST.AGGREGATE_STATS\nflags:           [  "
+      "]\nxid:    "
       "         0x00000018\nversion:         0x01\nmsg:             \n  "
       "table_id:        0x08\n  out_port:        ANY\n  out_group:       "
       "0x00000000\n  cookie:          0x0000000000000000\n  cookie_mask:     "
@@ -2169,7 +2186,8 @@ TEST(decoder, ofmp_groupstats_v3) {
   testDecodeEncode(
       "031300400000000000060000000000000030000000000001000000020000000010000000"
       "00009999200000000000AAAA300000000000BBBB400000000000CCCC",
-      "---\ntype:            REPLY.GROUP_STATS\nflags:           [  ]\nxid:          "
+      "---\ntype:            REPLY.GROUP_STATS\nflags:           [  ]\nxid:    "
+      "      "
       "   0x00000000\nversion:         0x03\nmsg:             \n  - group_id:  "
       "      0x00000001\n    ref_count:       0x00000002\n    packet_count:    "
       "0x1000000000009999\n    byte_count:      0x200000000000AAAA\n    "
@@ -2183,7 +2201,8 @@ TEST(decoder, ofmp_groupstats_v3_2) {
       "00009999200000000000AAAA300000000000BBBB400000000000CCCC0030000000000001"
       "00000002000000001000000000009999200000000000AAAA300000000000BBBB40000000"
       "0000CCCC",
-      "---\ntype:            REPLY.GROUP_STATS\nflags:           [  ]\nxid:          "
+      "---\ntype:            REPLY.GROUP_STATS\nflags:           [  ]\nxid:    "
+      "      "
       "   0x00000000\nversion:         0x03\nmsg:             \n  - group_id:  "
       "      0x00000001\n    ref_count:       0x00000002\n    packet_count:    "
       "0x1000000000009999\n    byte_count:      0x200000000000AAAA\n    "

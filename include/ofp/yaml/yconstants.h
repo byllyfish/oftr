@@ -24,7 +24,8 @@ std::string AllFlags() {
   return rs.str();
 }
 
-llvm::StringRef ParseMessageType(llvm::StringRef name, void *ctxt, MessageType &msgType);
+llvm::StringRef ParseMessageType(llvm::StringRef name, void *ctxt,
+                                 MessageType &msgType);
 
 }  // namespace yaml
 }  // namespace ofp

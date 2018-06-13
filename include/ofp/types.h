@@ -43,7 +43,7 @@ static_assert(std::is_same<std::uint8_t, unsigned char>::value,
       _Pragma("clang diagnostic ignored \"-Wused-but-marked-unused\"")
 #define OFP_END_IGNORE_USED_BUT_UNUSED _Pragma("clang diagnostic pop")
 #define OFP_BEGIN_EXIT_TIME_DESTRUCTORS \
-  _Pragma("clang diagnostic push")       \
+  _Pragma("clang diagnostic push")      \
       _Pragma("clang diagnostic ignored \"-Wexit-time-destructors\"")
 #define OFP_END_EXIT_TIME_DESTRUCTORS _Pragma("clang diagnostic pop")
 #else
