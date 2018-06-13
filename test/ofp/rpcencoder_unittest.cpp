@@ -11,13 +11,13 @@ TEST(rpcencoder, ofp_send_invalid_type) {
   // rpc call does not have an error. We are only testing *invalid* rpc calls.
 
   rpc::RpcEncoder encoder{
-      R"""({"id":321,"method":"OFP.SEND","params":{"type":"foo"}})""", nullptr,
+      R"""({"id":321,"method":"OFP.SEND","params":{"type":"err"}})""", nullptr,
       nullptr};
 
   EXPECT_EQ(
-      "YAML:1:48: error: unknown value \"foo\" Did you mean "
-      "\"HELLO\"?\n{\"id\":321,\"method\":\"OFP.SEND\",\"params\":{\"type\":"
-      "\"foo\"}}\n                                               ^~~~~\n",
+      "YAML:1:48: error: unknown value \"err\" Did you mean "
+      "\"ERROR\"?\n{\"id\":321,\"method\":\"OFP.SEND\",\"params\":{\"type\":"
+      "\"err\"}}\n                                               ^~~~~\n",
       encoder.error());
 }
 

@@ -24,6 +24,8 @@ std::string AllFlags() {
   return rs.str();
 }
 
+llvm::StringRef ParseMessageType(llvm::StringRef name, void *ctxt, MessageType &msgType);
+
 }  // namespace yaml
 }  // namespace ofp
 
@@ -165,24 +167,7 @@ struct ScalarTraits<ofp::MessageType> {
 
   static StringRef input(StringRef scalar, void *ctxt,
                          ofp::MessageType &value) {
-    if (scalar.startswith_lower("request.")) {
-      value.type_ = ofp::OFPT_MULTIPART_REQUEST;
-      return ScalarTraits<ofp::OFPMultipartType>::input(scalar.substr(8), ctxt,
-                                                        value.subtype_);
-
-    } else if (scalar.startswith_lower("reply.")) {
-      value.type_ = ofp::OFPT_MULTIPART_REPLY;
-      return ScalarTraits<ofp::OFPMultipartType>::input(scalar.substr(6), ctxt,
-                                                        value.subtype_);
-
-    } else if (scalar.equals_lower("_raw_message")) {
-      value.type_ = ofp::OFPT_RAW_MESSAGE;
-      return "";
-
-    } else {
-      value.subtype_ = ofp::OFPMP_UNSUPPORTED;
-      return ScalarTraits<ofp::OFPType>::input(scalar, ctxt, value.type_);
-    }
+    return ofp::yaml::ParseMessageType(scalar, ctxt, value);
   }
 
   static bool mustQuote(StringRef) { return false; }

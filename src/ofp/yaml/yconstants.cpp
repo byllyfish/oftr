@@ -375,15 +375,22 @@ static MessageTypeTable InitMessageTypes() {
   // Add all multipart requests and replies.
   for (UInt16 mpType = 0; mpType < ArrayLength(sMultipartTypes); ++mpType) {
     MessageType request{OFPT_MULTIPART_REQUEST, static_cast<OFPMultipartType>(mpType)};
-    std::string name = sMultipartTypes[mpType];
-    name += "_REQUEST";
+    std::string name = "REQUEST.";
+    name += sMultipartTypes[mpType];
     result.insert({name, request});
 
     MessageType reply{OFPT_MULTIPART_REPLY, static_cast<OFPMultipartType>(mpType)};
-    name = sMultipartTypes[mpType];
-    name += "_REPLY";
+    name = "REPLY.";
+    name += sMultipartTypes[mpType];
     result.insert({name, reply});
   }
+
+  // Add multipart request/reply for EXPERIMENTER.
+  result.insert({"REQUEST.EXPERIMENTER", MessageType{OFPT_MULTIPART_REQUEST, OFPMP_EXPERIMENTER}});
+  result.insert({"REPLY.EXPERIMENTER", MessageType{OFPT_MULTIPART_REPLY, OFPMP_EXPERIMENTER}});
+
+  // Add raw_message type.
+  result.insert({"_RAW_MESSAGE", MessageType{OFPT_RAW_MESSAGE}});
 
   return result;
 }
@@ -393,5 +400,44 @@ OFP_BEGIN_EXIT_TIME_DESTRUCTORS
 static const MessageTypeTable sMessageTypes = InitMessageTypes();
 
 OFP_END_EXIT_TIME_DESTRUCTORS
+
+llvm::StringRef ofp::yaml::ParseMessageType(llvm::StringRef scalar, void *ctxt, MessageType &value) {
+  auto iter = sMessageTypes.find(scalar);
+  if (iter != sMessageTypes.end()) {
+    value = iter->second;
+    return "";
+  }
+
+  if (scalar.startswith_lower("request.0x")) {
+    OFPMultipartType subtype;
+    if (ofp::yaml::ParseUnsignedInteger(scalar.substr(8), &subtype)) {
+      value = MessageType{ofp::OFPT_MULTIPART_REQUEST, subtype};
+      return "";
+    }
+    return "Invalid integer multipart type";
+  }
+
+  if (scalar.startswith_lower("reply.0x")) {
+    OFPMultipartType subtype;
+    if (ofp::yaml::ParseUnsignedInteger(scalar.substr(6), &subtype)) {
+      value = MessageType{ofp::OFPT_MULTIPART_REPLY, subtype};
+      return "";
+    }
+    return "Invalid integer multipart type";
+  }
+
+  OFPType typeInt = OFPT_UNSUPPORTED;
+  if (ofp::yaml::ParseUnsignedInteger(scalar, &typeInt)) {
+    value = MessageType{typeInt};
+    return "";
+  }
+
+  std::vector<llvm::StringRef> allNames;
+  for (auto nameIter : sMessageTypes.keys()) {
+    allNames.push_back(nameIter);
+  }
+
+  return ofp::yaml::SetEnumError(ctxt, scalar, allNames);
+}
 
 OFP_END_IGNORE_GLOBAL_CONSTRUCTOR
