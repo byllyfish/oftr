@@ -4,6 +4,8 @@
 #ifndef OFP_YAML_SETERROR_H_
 #define OFP_YAML_SETERROR_H_
 
+#include "ofp/yaml/yllvm.h"
+
 namespace ofp {
 namespace yaml {
 
