@@ -24,28 +24,28 @@ bool MultipartRequest::validateInput(Validation *context) const {
   switch (requestType()) {
     case OFPMP_DESC:
       return context->validateEmpty(requestBody(), OFP_VERSION_1);
-    case OFPMP_FLOW:
+    case OFPMP_FLOW_DESC:
       return context->validate<MPFlowStatsRequest>(requestBody(),
                                                    OFP_VERSION_1);
-    case OFPMP_AGGREGATE:
+    case OFPMP_AGGREGATE_STATS:
       return context->validate<MPAggregateStatsRequest>(requestBody(),
                                                         OFP_VERSION_1);
-    case OFPMP_TABLE:
+    case OFPMP_TABLE_STATS:
       return context->validateEmpty(requestBody(), OFP_VERSION_1);
     case OFPMP_PORT_STATS:
       return context->validate<MPPortStatsRequest>(requestBody(),
                                                    OFP_VERSION_1);
-    case OFPMP_QUEUE:
+    case OFPMP_QUEUE_STATS:
       return context->validate<MPQueueStatsRequest>(requestBody(),
                                                     OFP_VERSION_1);
-    case OFPMP_GROUP:
+    case OFPMP_GROUP_STATS:
       return context->validate<MPGroupStatsRequest>(requestBody(),
                                                     OFP_VERSION_2);
     case OFPMP_GROUP_DESC:
       return context->validateEmpty(requestBody(), OFP_VERSION_2);
     case OFPMP_GROUP_FEATURES:
       return context->validateEmpty(requestBody(), OFP_VERSION_3);
-    case OFPMP_METER:
+    case OFPMP_METER_STATS:
       return context->validate<MPMeterStatsRequest>(requestBody(),
                                                     OFP_VERSION_4);
     case OFPMP_METER_CONFIG:

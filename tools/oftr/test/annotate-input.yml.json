@@ -360,7 +360,7 @@
       ], 
       "cookie_mask": 18446744073709551615
     }, 
-    "type": "REQUEST.FLOW", 
+    "type": "REQUEST.FLOW_DESC", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -401,7 +401,7 @@
         ]
       }
     ], 
-    "type": "REPLY.FLOW", 
+    "type": "REPLY.FLOW_DESC", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -422,7 +422,7 @@
       ], 
       "cookie_mask": 18446744073709551615
     }, 
-    "type": "REQUEST.AGGREGATE", 
+    "type": "REQUEST.AGGREGATE_STATS", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -434,7 +434,7 @@
       "byte_count": 18446744073709551615, 
       "flow_count": 4294967295
     }, 
-    "type": "REPLY.AGGREGATE", 
+    "type": "REPLY.AGGREGATE_STATS", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -442,7 +442,7 @@
   }, 
   {
     "msg": {}, 
-    "type": "REQUEST.TABLE", 
+    "type": "REQUEST.TABLE_STATS", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -457,7 +457,7 @@
         "active_count": 4294967295
       }
     ], 
-    "type": "REPLY.TABLE", 
+    "type": "REPLY.TABLE_STATS", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -506,7 +506,7 @@
       "port_no": "CONTROLLER", 
       "queue_id": "ALL"
     }, 
-    "type": "REQUEST.QUEUE", 
+    "type": "REQUEST.QUEUE_STATS", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -523,7 +523,7 @@
         "port_no": "CONTROLLER"
       }
     ], 
-    "type": "REPLY.QUEUE", 
+    "type": "REPLY.QUEUE_STATS", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -567,7 +567,7 @@
     "msg": {
       "group_id": "ANY"
     }, 
-    "type": "REQUEST.GROUP", 
+    "type": "REQUEST.GROUP_STATS", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -589,7 +589,7 @@
         "ref_count": 4294967295
       }
     ], 
-    "type": "REPLY.GROUP", 
+    "type": "REPLY.GROUP_STATS", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -673,7 +673,7 @@
     "msg": {
       "meter_id": "ALL"
     }, 
-    "type": "REQUEST.METER", 
+    "type": "REQUEST.METER_STATS", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -695,7 +695,7 @@
         "byte_in_count": 18446744073709551615
       }
     ], 
-    "type": "REPLY.METER", 
+    "type": "REPLY.METER_STATS", 
     "version": 4, 
     "flags": [
       "MORE"

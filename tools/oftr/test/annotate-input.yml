@@ -223,7 +223,7 @@ msg:
   dp_desc: '................................................................................................................................................................................................................................................................'
 ---
 version: 0x04
-type: REQUEST.FLOW
+type: REQUEST.FLOW_DESC
 flags: [ 'MORE' ]
 msg:
   table_id: ALL
@@ -237,7 +237,7 @@ msg:
       mask: 'ff:ff:ff:ff:ff:ff'
 ---
 version: 0x04
-type: REPLY.FLOW
+type: REPLY.FLOW_DESC
 flags: [ 'MORE' ]
 msg:
   - table_id: ALL
@@ -261,7 +261,7 @@ msg:
             max_len: NO_BUFFER
 ---
 version: 0x04
-type: REQUEST.AGGREGATE
+type: REQUEST.AGGREGATE_STATS
 flags: [ 'MORE' ]
 msg:
   table_id: ALL
@@ -275,7 +275,7 @@ msg:
       mask: 'ff:ff:ff:ff:ff:ff'
 ---
 version: 0x04
-type: REPLY.AGGREGATE
+type: REPLY.AGGREGATE_STATS
 flags: [ 'MORE' ]
 msg:
   packet_count: 0xffffffffffffffff
@@ -283,12 +283,12 @@ msg:
   flow_count: 0xffffffff
 ---
 version: 0x04
-type: REQUEST.TABLE
+type: REQUEST.TABLE_STATS
 flags: [ 'MORE' ]
 msg: {}
 ---
 version: 0x04
-type: REPLY.TABLE
+type: REPLY.TABLE_STATS
 flags: [ 'MORE' ]
 msg:
   - table_id: ALL
@@ -324,14 +324,14 @@ msg:
     properties:
 ---
 version: 0x04
-type: REQUEST.QUEUE
+type: REQUEST.QUEUE_STATS
 flags: [ 'MORE' ]
 msg:
   port_no: CONTROLLER
   queue_id: ALL
 ---
 version: 0x04
-type: REPLY.QUEUE
+type: REPLY.QUEUE_STATS
 flags: [ 'MORE' ]
 msg:
   - port_no: CONTROLLER
@@ -363,13 +363,13 @@ msg:
         data: ffffffff
 ---
 version: 0x04
-type: REQUEST.GROUP
+type: REQUEST.GROUP_STATS
 flags: [ 'MORE' ]
 msg:
   group_id: ANY
 ---
 version: 0x04
-type: REPLY.GROUP
+type: REPLY.GROUP_STATS
 flags: [ 'MORE' ]
 msg:
   - group_id: ANY
@@ -422,13 +422,13 @@ msg:
   actions_ff: [ 'SET_VLAN_VID' ]
 ---
 version: 0x04
-type: REQUEST.METER
+type: REQUEST.METER_STATS
 flags: [ 'MORE' ]
 msg:
   meter_id: ALL
 ---
 version: 0x04
-type: REPLY.METER
+type: REPLY.METER_STATS
 flags: [ 'MORE' ]
 msg:
   - meter_id: ALL

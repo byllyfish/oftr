@@ -662,7 +662,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE
+type:            REPLY.TABLE_STATS
 flags:           [  ]
 xid:             0x3609080E
 version:         0x01
@@ -3068,7 +3068,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE
+type:            REPLY.TABLE_STATS
 flags:           [  ]
 xid:             0x36090823
 version:         0x01
@@ -4987,7 +4987,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE
+type:            REPLY.TABLE_STATS
 flags:           [  ]
 xid:             0x36090827
 version:         0x01
@@ -6899,7 +6899,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE
+type:            REPLY.TABLE_STATS
 flags:           [  ]
 xid:             0x3609082E
 version:         0x01

@@ -45,13 +45,14 @@ static const UInt8 *findIllegalUtf8(const UInt8 *begin, const UInt8 *end) {
 // the invalid sequence "\xC1\x9C" is replaced by "??". The value
 // "\x41\xC2\x3E\x42" is replaced by "\x41?\x3E\x42"
 // This transformation will never change the number of bytes in the string.
+// FIXME(bfish): Use 'backslashreplace' instead?
 
 std::string ofp::detail::validUtf8String(const char *b, const char *e) {
   assert(b != nullptr);
   assert(b <= e);
 
-  const UInt8 *pos = reinterpret_cast<const UInt8 *>(b);
-  const UInt8 *end = reinterpret_cast<const UInt8 *>(e);
+  const UInt8 *pos = BytePtr(b);
+  const UInt8 *end = BytePtr(e);
 
   std::string result;
 
