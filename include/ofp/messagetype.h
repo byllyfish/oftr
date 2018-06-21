@@ -19,6 +19,10 @@ class MessageType {
   OFPType type() const { return type_; }
   OFPMultipartType subtype() const { return subtype_; }
 
+  bool operator==(const MessageType &rhs) const {
+    return type_ == rhs.type_ && subtype_ == rhs.subtype_;
+  }
+
  private:
   OFPType type_ = OFPT_UNSUPPORTED;
   OFPMultipartType subtype_ = OFPMP_UNSUPPORTED;

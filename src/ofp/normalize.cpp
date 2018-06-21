@@ -550,10 +550,10 @@ void Normalize::normalizeMultipartRequestV1() {
       reinterpret_cast<const MultipartRequest *>(header());
 
   OFPMultipartType reqType = multipartReq->requestType();
-  if (reqType == OFPMP_FLOW || reqType == OFPMP_AGGREGATE) {
+  if (reqType == OFPMP_FLOW_DESC || reqType == OFPMP_AGGREGATE_STATS) {
     // Both requests have the same structure.
     normalizeMPFlowRequestV1();
-  } else if (reqType == OFPMP_PORT_STATS || reqType == OFPMP_QUEUE) {
+  } else if (reqType == OFPMP_PORT_STATS || reqType == OFPMP_QUEUE_STATS) {
     // Both requests have a port number that needs to be converted as the
     // first field.
     normalizeMPPortStatsRequestV1();
@@ -578,7 +578,7 @@ void Normalize::normalizeMultipartReplyV1() {
   OFPMultipartType replyType = multipartReply->replyType();
   size_t offset = sizeof(MultipartReply);
 
-  if (replyType == OFPMP_FLOW) {
+  if (replyType == OFPMP_FLOW_DESC) {
     while (offset < buf_.size())
       normalizeMPFlowReplyV1(&offset);
     assert(offset == buf_.size());
@@ -586,7 +586,7 @@ void Normalize::normalizeMultipartReplyV1() {
     while (offset < buf_.size())
       normalizeMPPortStatsReplyV1(&offset);
     assert(offset == buf_.size());
-  } else if (replyType == OFPMP_QUEUE) {
+  } else if (replyType == OFPMP_QUEUE_STATS) {
     while (offset < buf_.size())
       normalizeMPPortOrQueueStatsReplyV1(&offset, 32);
     assert(offset == buf_.size());
@@ -634,11 +634,11 @@ void Normalize::normalizeMultipartReplyV3() {
     while (offset < buf_.size())
       normalizeMPPortStatsReplyV2(&offset);
     assert(offset == buf_.size());
-  } else if (replyType == OFPMP_QUEUE) {
+  } else if (replyType == OFPMP_QUEUE_STATS) {
     while (offset < buf_.size())
       normalizeMPPortOrQueueStatsReplyV3(&offset, 32);
     assert(offset == buf_.size());
-  } else if (replyType == OFPMP_GROUP) {
+  } else if (replyType == OFPMP_GROUP_STATS) {
     while (offset < buf_.size())
       normalizeMPGroupStatsReplyV3(&offset, 32);
     assert(offset == buf_.size());
@@ -666,7 +666,7 @@ void Normalize::normalizeMultipartReplyV4() {
     assert(offset == buf_.size());
   } else if (replyType == OFPMP_PORT_DESC) {
     normalizeMPPortDescReplyV4();
-  } else if (replyType == OFPMP_TABLE) {
+  } else if (replyType == OFPMP_TABLE_STATS) {
     while (offset < buf_.size())
       normalizeMPTableStatsReplyV4(&offset);
     assert(offset == buf_.size());
@@ -686,7 +686,7 @@ void Normalize::normalizeMultipartReplyV5() {
   OFPMultipartType replyType = multipartReply->replyType();
   size_t offset = sizeof(MultipartReply);
 
-  if (replyType == OFPMP_TABLE) {
+  if (replyType == OFPMP_TABLE_STATS) {
     while (offset < buf_.size())
       normalizeMPTableStatsReplyV4(&offset);
     assert(offset == buf_.size());

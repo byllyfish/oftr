@@ -1,5 +1,11 @@
 = Changelog
 
+== Version 0.49 (20 June 2018)
+
+- Rename multipart requests/replies: FLOW -> FLOW_DESC, AGGREGATE -> AGGREGATE_STATS, TABLE -> TABLE_STATS, QUEUE -> QUEUE_STATS, GROUP -> GROUP_STATS, METER -> METER_STATS.
+- Disable the -Wpsabi warning on ARM/GCC 7.0.
+- Update boringssl and googletest modules.
+
 == Version 0.48 (28 April 2018)
 
 - Support for RPC over unix domain socket.
