@@ -34,7 +34,7 @@ struct ScalarTraits<ofp::IPv4Address> {
     return "";
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 };
 
 template <>
@@ -63,7 +63,7 @@ struct ScalarTraits<ofp::IPv6Address> {
   // e.g. YAML 1.1:  2001:0:0:0:0:59:9:59 ==> 5601519360212999
   //
   // Always quote the IPv6Address.
-  static bool mustQuote(StringRef) { return true; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::Single; }
 };
 
 template <>
@@ -91,7 +91,7 @@ struct ScalarTraits<ofp::MacAddress> {
   // e.g. 33:33:00:00:00:00 ==> 26088480000
   //
   // Always quote the MacAddress.
-  static bool mustQuote(StringRef) { return true; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::Single; }
 };
 
 template <>
@@ -115,7 +115,7 @@ struct ScalarTraits<ofp::IPv6Endpoint> {
   }
 
   // Quote IPv6Endpoint if it begins with '['.
-  static bool mustQuote(StringRef s) { return !s.empty() && s.front() == '['; }
+  static QuotingType mustQuote(StringRef s) { return (!s.empty() && s.front() == '[') ? QuotingType::Single : QuotingType::None; }
 };
 
 }  // namespace yaml

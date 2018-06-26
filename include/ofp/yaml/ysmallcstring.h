@@ -26,7 +26,7 @@ struct ScalarTraits<ofp::SmallCString<Size>> {
     return "";
   }
 
-  static bool mustQuote(StringRef s) { return needsQuotes(s); }
+  static QuotingType mustQuote(StringRef s) { return needsQuotes(s); }
 };
 
 }  // namespace yaml

@@ -57,6 +57,7 @@ INCLUDES=(
 	include/llvm/ADT/None.h
 	include/llvm/ADT/Optional.h
 	include/llvm/ADT/PointerIntPair.h
+	include/llvm/ADT/PointerUnion.h
 	include/llvm/ADT/simple_ilist.h
 	include/llvm/ADT/SmallPtrSet.h
 	include/llvm/ADT/SmallString.h
@@ -66,6 +67,7 @@ INCLUDES=(
 	include/llvm/ADT/StringMap.h
 	include/llvm/ADT/StringRef.h
 	include/llvm/ADT/StringSwitch.h
+	include/llvm/ADT/Triple.h
 	include/llvm/ADT/Twine.h
 	include/llvm/Config/abi-breaking.h.cmake
 	include/llvm/Config/config.h.cmake
@@ -79,8 +81,8 @@ INCLUDES=(
 	include/llvm/Support/CommandLine.h
 	include/llvm/Support/Compiler.h
 	include/llvm/Support/ConvertUTF.h
-	include/llvm/Support/DataTypes.h.cmake
 	include/llvm/Support/Debug.h
+	include/llvm/Support/DJB.h
 	include/llvm/Support/Endian.h
 	include/llvm/Support/Errc.h
 	include/llvm/Support/Errno.h
@@ -98,6 +100,7 @@ INCLUDES=(
 	include/llvm/Support/ManagedStatic.h
 	include/llvm/Support/MathExtras.h
 	include/llvm/Support/MD5.h
+	include/llvm/Support/MemAlloc.h
 	include/llvm/Support/Memory.h
 	include/llvm/Support/MemoryBuffer.h
 	include/llvm/Support/Mutex.h
@@ -112,17 +115,22 @@ INCLUDES=(
 	include/llvm/Support/ReverseIteration.h
 	include/llvm/Support/Signals.h
 	include/llvm/Support/SMLoc.h
+	include/llvm/Support/SmallVectorMemoryBuffer.h
 	include/llvm/Support/SourceMgr.h
 	include/llvm/Support/StringSaver.h
 	include/llvm/Support/SwapByteOrder.h
+	include/llvm/Support/TargetParser.h
 	include/llvm/Support/Threading.h
 	include/llvm/Support/thread.h
 	include/llvm/Support/type_traits.h
+	include/llvm/Support/Unicode.h
+	include/llvm/Support/UnicodeCharRanges.h
 	include/llvm/Support/Valgrind.h
 	include/llvm/Support/WindowsError.h
 	include/llvm/Support/YAMLParser.h
 	include/llvm/Support/YAMLTraits.h
 	include/llvm-c/Core.h
+	include/llvm-c/DataTypes.h
 	include/llvm-c/Support.h
 	include/llvm-c/Types.h
 )
@@ -156,7 +164,9 @@ SOURCES=(
 	Support/StringRef.cpp
 	Support/StringSaver.cpp
 	Support/Threading.cpp
+	Support/Triple.cpp
 	Support/Twine.cpp
+	Support/Unicode.cpp
 	Support/Unix/Memory.inc
 	Support/Unix/Path.inc
 	Support/Unix/Process.inc
@@ -195,9 +205,9 @@ done
 # Apply patches.
 
 patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
-patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
+#patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
 patch "${WORKING_DIR}/src/Support/YAMLParser.cpp" "$WORKING_DIR/src/YAMLParser.cpp.diff"
-patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
+#patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
 patch "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" "$WORKING_DIR/src/YAMLParserTest.cpp.diff"
 patch "${WORKING_DIR}/include/llvm/Support/CommandLine.h" "$WORKING_DIR/src/CommandLine.h.diff"
 

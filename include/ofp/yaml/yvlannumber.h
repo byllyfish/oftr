@@ -40,7 +40,7 @@ struct ScalarTraits<ofp::VlanNumber> {
 #endif  // VLAN_FORMAT_DISPLAY
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 
   using json_type = ofp::VlanNumber;
 };

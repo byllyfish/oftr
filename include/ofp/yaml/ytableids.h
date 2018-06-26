@@ -34,7 +34,7 @@ struct ScalarTraits<ofp::detail::TableIDInserter> {
     return result;
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 };
 
 template <>

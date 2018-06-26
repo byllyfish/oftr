@@ -42,7 +42,7 @@ struct ScalarTraits<ofp::ActionID> {
     return result;
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 };
 
 template <>
@@ -62,7 +62,7 @@ struct ScalarTraits<ofp::detail::ActionIDInserter> {
     return result;
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 };
 
 template <>

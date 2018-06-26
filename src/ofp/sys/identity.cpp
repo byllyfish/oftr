@@ -435,7 +435,7 @@ std::error_code Identity::prepareKeyLogFile(SSL_CTX *ctx,
 
   std::error_code err;
   keyLogFile_.reset(new llvm::raw_fd_ostream{
-      keyLogFile, err, fs::F_Append | fs::F_RW | fs::F_Text});
+      keyLogFile, err, fs::F_Append | fs::F_Text});
   if (err) {
     log_error("Identity: Failed to open file:", keyLogFile);
     return err;

@@ -36,7 +36,7 @@ struct ScalarTraits<ofp::DatapathID> {
   // e.g. 10:00:00:00:00:00:00:01 ==> 27993600000001
   //
   // Always quote the DatapathID.
-  static bool mustQuote(StringRef) { return true; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::Single; }
 };
 
 }  // namespace yaml
