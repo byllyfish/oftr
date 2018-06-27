@@ -408,7 +408,7 @@ TEST(yamlio, test_illegal_utf8_surrogate_pair) {
   llvm::raw_string_ostream rss{result};
   llvm::yaml::Output yout{rss};
   yout << t;
-  EXPECT_EQ(rss.str(), "---\na:               62\nb:               '\xD8\x01\xDC\x37'\nc:               false\n...\n");
+  EXPECT_EQ(rss.str(), "---\na:               62\nb:               \"\xEF\xBF\xBD\"\nc:               false\n...\n");
 }
 
 TEST(yamlio, test_illegal_utf8_low_surrogate) {
@@ -427,7 +427,7 @@ TEST(yamlio, test_illegal_utf8_low_surrogate) {
   llvm::raw_string_ostream rss{result};
   llvm::yaml::Output yout{rss};
   yout << t;
-  EXPECT_EQ(rss.str(), "---\na:               91\nb:               '\xDC\xFE'\nc:               false\n...\n");
+  EXPECT_EQ(rss.str(), "---\na:               91\nb:               \"\xEF\xBF\xBD\"\nc:               false\n...\n");
 }
 
 TEST(yamlio, test_invalid_octal) {

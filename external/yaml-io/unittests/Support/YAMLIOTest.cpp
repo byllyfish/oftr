@@ -315,7 +315,7 @@ TEST(YAMLIO, NoQuotesForTab) {
   }
   auto ExpectedPrefix = "---\n"
                         "str1:            aba\tcaba\n";
-  EXPECT_EQ(Serialized, ExpectedPrefix);
+  EXPECT_TRUE(llvm::StringRef{Serialized}.startswith(ExpectedPrefix));
 }
 
 //===----------------------------------------------------------------------===//
