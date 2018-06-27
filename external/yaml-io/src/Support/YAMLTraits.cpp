@@ -700,7 +700,7 @@ void Output::scalarString(StringRef &S, QuotingType MustQuote) {
   // present, and will be escaped using a variety of unicode-scalar and special short-form
   // escapes. This is handled in yaml::escape.
   if (MustQuote == QuotingType::Double) {
-    output(yaml::escape(Base, /* EscapePrintable= */ false));
+    output(yaml::escape(S, /* EscapePrintable= */ false));
     this->outputUpToEndOfLine(Quote);
     return;
   }
