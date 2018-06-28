@@ -1,6 +1,6 @@
---- ../../../llvm_git/llvm/include/llvm/Support/CommandLine.h	2017-12-09 16:02:38.000000000 -0700
-+++ ./include/llvm/Support/CommandLine.h	2017-12-15 16:08:08.000000000 -0700
-@@ -1593,7 +1593,7 @@
+--- ../../../llvm_git/llvm/include/llvm/Support/CommandLine.h	2018-06-23 19:55:21.000000000 -0700
++++ ./include/llvm/Support/CommandLine.h	2018-06-26 22:05:22.000000000 -0700
+@@ -1597,7 +1597,7 @@
  // This makes us exactly compatible with the bits in all cases that it is used.
  //
  template <class DataType> class bits_storage<DataType, bool> {

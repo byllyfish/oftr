@@ -1,13 +1,6 @@
---- ../../../llvm_git/llvm/include/llvm/Support/YAMLTraits.h	2017-12-09 16:02:38.000000000 -0700
-+++ ./include/llvm/Support/YAMLTraits.h	2017-12-15 16:08:08.000000000 -0700
-@@ -12,13 +12,14 @@
- 
- #include "llvm/ADT/Optional.h"
- #include "llvm/ADT/SmallVector.h"
-+#include "llvm/ADT/SmallString.h"
- #include "llvm/ADT/StringMap.h"
- #include "llvm/ADT/StringRef.h"
- #include "llvm/ADT/Twine.h"
+--- ../../../llvm_git/llvm/include/llvm/Support/YAMLTraits.h	2018-06-23 19:55:21.000000000 -0700
++++ ./include/llvm/Support/YAMLTraits.h	2018-06-26 22:05:22.000000000 -0700
+@@ -19,7 +19,7 @@
  #include "llvm/Support/AlignOf.h"
  #include "llvm/Support/Allocator.h"
  #include "llvm/Support/Endian.h"
@@ -16,15 +9,15 @@
  #include "llvm/Support/SourceMgr.h"
  #include "llvm/Support/YAMLParser.h"
  #include "llvm/Support/raw_ostream.h"
-@@ -148,6 +149,7 @@
-   //static bool mustQuote(StringRef);
+@@ -154,6 +154,7 @@
+   //static QuotingType mustQuote(StringRef);
  };
  
 +
  /// This class should be specialized by type that requires custom conversion
  /// to/from a YAML literal block scalar. For example:
  ///
-@@ -285,6 +287,20 @@
+@@ -291,6 +292,20 @@
        (sizeof(test<ScalarTraits<T>>(nullptr, nullptr, nullptr)) == 1);
  };
  
@@ -45,7 +38,7 @@
  // Test if BlockScalarTraits<T> is defined on type T.
  template <class T>
  struct has_BlockScalarTraits
-@@ -360,6 +376,22 @@
+@@ -366,6 +381,22 @@
    static bool const value = (sizeof(test<MappingTraits<T>>(nullptr)) == 1);
  };
  
@@ -68,7 +61,7 @@
  // Test if SequenceTraits<T> is defined on type T.
  template <class T>
  struct has_SequenceMethodTraits
-@@ -376,6 +408,21 @@
+@@ -382,6 +413,21 @@
    static bool const value =  (sizeof(test<SequenceTraits<T>>(nullptr)) == 1);
  };
  
@@ -90,7 +83,7 @@
  // Test if CustomMappingTraits<T> is defined on type T.
  template <class T>
  struct has_CustomMappingTraits
-@@ -425,7 +472,8 @@
+@@ -431,7 +477,8 @@
  // Test if SequenceTraits<T> is defined on type T
  template<typename T>
  struct has_SequenceTraits : public std::integral_constant<bool,
@@ -100,7 +93,7 @@
  
  // Test if DocumentListTraits<T> is defined on type T
  template <class T>
-@@ -443,6 +491,53 @@
+@@ -449,6 +496,53 @@
    static bool const value = (sizeof(test<DocumentListTraits<T>>(nullptr))==1);
  };
  
@@ -154,7 +147,7 @@
  inline bool isNumber(StringRef S) {
    static const char OctalChars[] = "01234567";
    if (S.startswith("0") &&
-@@ -465,8 +560,7 @@
+@@ -471,8 +565,7 @@
    if (S.equals(".inf") || S.equals(".Inf") || S.equals(".INF"))
      return true;
  
@@ -164,7 +157,7 @@
      return true;
  
    return false;
-@@ -550,6 +644,7 @@
+@@ -602,6 +695,7 @@
    virtual ~IO();
  
    virtual bool outputting() = 0;
@@ -172,19 +165,19 @@
  
    virtual unsigned beginSequence() = 0;
    virtual bool preflightElement(unsigned, void *&) = 0;
-@@ -580,8 +675,11 @@
+@@ -632,8 +726,11 @@
    virtual bool beginBitSetScalar(bool &) = 0;
    virtual bool bitSetMatch(const char*, bool) = 0;
    virtual void endBitSetScalar() = 0;
 +  virtual bool bitSetMatchOther(uint32_t &) = 0;
 +  virtual StringRef bitSetCaseUnmatched() = 0;
  
-   virtual void scalarString(StringRef &, bool) = 0;
+   virtual void scalarString(StringRef &, QuotingType) = 0;
 +  virtual void scalarJson(StringRef) {}
    virtual void blockScalarString(StringRef &) = 0;
  
    virtual void setError(const Twine &) = 0;
-@@ -640,6 +738,15 @@
+@@ -692,6 +789,15 @@
        Val = Val | ConstVal;
    }
  
@@ -200,7 +193,7 @@
    void *getContext();
    void setContext(void *);
  
-@@ -658,8 +765,8 @@
+@@ -710,8 +816,8 @@
      mapOptionalWithContext(Key, Val, Ctx);
    }
  
@@ -211,7 +204,7 @@
      EmptyContext Ctx;
      mapOptionalWithContext(Key, Val, Default, Ctx);
    }
-@@ -685,8 +792,8 @@
+@@ -737,8 +843,8 @@
      this->processKey(Key, Val, false, Ctx);
    }
  
@@ -222,7 +215,7 @@
                                Context &Ctx) {
      this->processKeyWithDefault(Key, Val, Default, false, Ctx);
    }
-@@ -714,8 +821,8 @@
+@@ -766,8 +872,8 @@
      }
    }
  
@@ -233,7 +226,7 @@
                               bool Required, Context &Ctx) {
      void *SaveInfo;
      bool UseDefault;
-@@ -778,12 +885,57 @@
+@@ -830,12 +936,57 @@
    }
  }
  
@@ -274,7 +267,7 @@
 +  }
 +  else {
 +    StringRef Str;
-+    io.scalarString(Str, false);  // call mustQuote on Input?
++    io.scalarString(Str, QuotingType::None);  // call mustQuote on Input?
 +    StringRef Result = ScalarTraits<T>::input(Str, io.getContext(), Val);
 +    if ( !Result.empty() ) {
 +      io.setError(llvm::Twine(Result));
@@ -294,7 +287,7 @@
      ScalarTraits<T>::output(Val, io.getContext(), Buffer);
      StringRef Str = Buffer.str();
      io.scalarString(Str, ScalarTraits<T>::mustQuote(Str));
-@@ -878,6 +1030,57 @@
+@@ -930,6 +1081,57 @@
    char missing_yaml_trait_for_type[sizeof(MissingTrait<T>)];
  }
  
@@ -352,7 +345,7 @@
  template <typename T, typename Context>
  typename std::enable_if<has_SequenceTraits<T>::value, void>::type
  yamlize(IO &io, T &Seq, bool, Context &Ctx) {
-@@ -905,6 +1108,7 @@
+@@ -957,6 +1159,7 @@
      }
      io.endSequence();
    }
@@ -360,140 +353,140 @@
  }
  
  template<>
-@@ -912,6 +1116,7 @@
+@@ -964,6 +1167,7 @@
    static void output(const bool &, void* , raw_ostream &);
    static StringRef input(StringRef, void *, bool &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = bool;
  };
  
  template<>
-@@ -933,6 +1138,7 @@
+@@ -985,6 +1189,7 @@
    static void output(const uint8_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, uint8_t &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = uint8_t;
  };
  
  template<>
-@@ -940,6 +1146,7 @@
+@@ -992,6 +1197,7 @@
    static void output(const uint16_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, uint16_t &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = uint16_t;
  };
  
  template<>
-@@ -947,6 +1154,7 @@
+@@ -999,6 +1205,7 @@
    static void output(const uint32_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, uint32_t &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = uint32_t;
  };
  
  template<>
-@@ -954,6 +1162,7 @@
+@@ -1006,6 +1213,7 @@
    static void output(const uint64_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, uint64_t &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = uint64_t;
  };
  
  template<>
-@@ -961,6 +1170,7 @@
+@@ -1013,6 +1221,7 @@
    static void output(const int8_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, int8_t &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = int8_t;
  };
  
  template<>
-@@ -968,6 +1178,7 @@
+@@ -1020,6 +1229,7 @@
    static void output(const int16_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, int16_t &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = int16_t;
  };
  
  template<>
-@@ -975,6 +1186,7 @@
+@@ -1027,6 +1237,7 @@
    static void output(const int32_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, int32_t &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = int32_t;
  };
  
  template<>
-@@ -982,6 +1194,7 @@
+@@ -1034,6 +1245,7 @@
    static void output(const int64_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, int64_t &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = int64_t;
  };
  
  template<>
-@@ -989,6 +1202,7 @@
+@@ -1041,6 +1253,7 @@
    static void output(const float &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, float &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = float;
  };
  
  template<>
-@@ -996,6 +1210,7 @@
+@@ -1048,6 +1261,7 @@
    static void output(const double &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, double &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = double;
  };
  
  // For endian types, we just use the existing ScalarTraits for the underlying
-@@ -1148,6 +1363,8 @@
+@@ -1200,6 +1414,8 @@
    bool beginBitSetScalar(bool &) override;
    bool bitSetMatch(const char *, bool ) override;
    void endBitSetScalar() override;
 +  bool bitSetMatchOther(uint32_t &) override;
 +  StringRef bitSetCaseUnmatched() override;
-   void scalarString(StringRef &, bool) override;
+   void scalarString(StringRef &, QuotingType) override;
    void blockScalarString(StringRef &) override;
    void setError(const Twine &message) override;
-@@ -1293,6 +1510,8 @@
+@@ -1345,6 +1561,8 @@
    bool beginBitSetScalar(bool &) override;
    bool bitSetMatch(const char *, bool ) override;
    void endBitSetScalar() override;
 +  bool bitSetMatchOther(uint32_t &) override;
 +  StringRef bitSetCaseUnmatched() override;
-   void scalarString(StringRef &, bool) override;
+   void scalarString(StringRef &, QuotingType) override;
    void blockScalarString(StringRef &) override;
    void setError(const Twine &message) override;
-@@ -1372,6 +1591,7 @@
+@@ -1424,6 +1642,7 @@
    static void output(const Hex8 &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, Hex8 &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = uint8_t;
  };
  
  template<>
-@@ -1379,6 +1599,7 @@
+@@ -1431,6 +1650,7 @@
    static void output(const Hex16 &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, Hex16 &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = uint16_t;
  };
  
  template<>
-@@ -1386,6 +1607,7 @@
+@@ -1438,6 +1658,7 @@
    static void output(const Hex32 &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, Hex32 &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = uint32_t;
  };
  
  template<>
-@@ -1393,6 +1615,7 @@
+@@ -1445,6 +1666,7 @@
    static void output(const Hex64 &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, Hex64 &);
-   static bool mustQuote(StringRef) { return false; }
+   static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 +  using json_type = uint64_t;
  };
  

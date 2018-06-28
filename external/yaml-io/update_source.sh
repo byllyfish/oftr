@@ -30,7 +30,9 @@ if [ "$LLVM_PATCH_DEV" = 1 ]; then
 	diff -u "${LLVM_SOURCE_DIR}/lib/Support/YAMLParser.cpp" "${WORKING_DIR}/src/Support/YAMLParser.cpp" > "$WORKING_DIR/src/YAMLParser.cpp.diff" || true
 	diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/YAMLTraits.h" "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" > "$WORKING_DIR/src/YAMLTraits.h.diff" || true
 	diff -u "${LLVM_SOURCE_DIR}/unittests/Support/YAMLParserTest.cpp" "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" > "$WORKING_DIR/src/YAMLParserTest.cpp.diff" || true
+	diff -u "${LLVM_SOURCE_DIR}/unittests/Support/YAMLIOTest.cpp" "${WORKING_DIR}/unittests/Support/YAMLIOTest.cpp" > "$WORKING_DIR/src/YAMLIOTest.cpp.diff" || true
 	diff -u "${LLVM_SOURCE_DIR}/include/llvm/Support/CommandLine.h" "${WORKING_DIR}/include/llvm/Support/CommandLine.h" > "$WORKING_DIR/src/CommandLine.h.diff" || true
+	diff -u "${LLVM_SOURCE_DIR}/lib/Support/CommandLine.cpp" "${WORKING_DIR}/src/Support/CommandLine.cpp" > "$WORKING_DIR/src/CommandLine.cpp.diff" || true
 fi
 
 # Include files to copy from llvm source tree.
@@ -164,7 +166,6 @@ SOURCES=(
 	Support/StringRef.cpp
 	Support/StringSaver.cpp
 	Support/Threading.cpp
-	Support/Triple.cpp
 	Support/Twine.cpp
 	Support/Unicode.cpp
 	Support/Unix/Memory.inc
@@ -205,10 +206,12 @@ done
 # Apply patches.
 
 patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
-#patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
+patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
 patch "${WORKING_DIR}/src/Support/YAMLParser.cpp" "$WORKING_DIR/src/YAMLParser.cpp.diff"
-#patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
+patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
 patch "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" "$WORKING_DIR/src/YAMLParserTest.cpp.diff"
+patch "${WORKING_DIR}/unittests/Support/YAMLIOTest.cpp" "$WORKING_DIR/src/YAMLIOTest.cpp.diff"
 patch "${WORKING_DIR}/include/llvm/Support/CommandLine.h" "$WORKING_DIR/src/CommandLine.h.diff"
+patch "${WORKING_DIR}/src/Support/CommandLine.cpp" "$WORKING_DIR/src/CommandLine.cpp.diff"
 
 exit 0

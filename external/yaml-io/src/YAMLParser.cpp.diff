@@ -1,6 +1,6 @@
---- ../../../llvm_git/llvm/lib/Support/YAMLParser.cpp	2017-12-09 16:02:39.000000000 -0700
-+++ ./src/Support/YAMLParser.cpp	2017-12-22 13:31:48.000000000 -0700
-@@ -929,12 +929,13 @@
+--- ../../../llvm_git/llvm/lib/Support/YAMLParser.cpp	2018-06-23 19:55:22.000000000 -0700
++++ ./src/Support/YAMLParser.cpp	2018-06-26 22:05:22.000000000 -0700
+@@ -933,12 +933,13 @@
  }
  
  bool Scanner::consume(uint32_t Expected) {
@@ -18,7 +18,7 @@
    if (uint8_t(*Current) == Expected) {
      ++Current;
      ++Column;
-@@ -1389,6 +1390,12 @@
+@@ -1393,6 +1394,12 @@
    Token T;
    T.Kind = Token::TK_Scalar;
    T.Range = StringRef(Start, Current - Start);
@@ -31,7 +31,7 @@
    TokenQueue.push_back(T);
  
    // Plain scalars can be simple keys.
-@@ -2308,7 +2315,7 @@
+@@ -2312,7 +2319,7 @@
    case Token::TK_Anchor:
      if (AnchorInfo.Kind == Token::TK_Anchor) {
        setError("Already encountered an anchor for this node!", T);
@@ -40,7 +40,7 @@
      }
      AnchorInfo = getNext(); // Consume TK_Anchor.
      T = peekNext();
-@@ -2316,7 +2323,7 @@
+@@ -2320,7 +2327,7 @@
    case Token::TK_Tag:
      if (TagInfo.Kind == Token::TK_Tag) {
        setError("Already encountered a tag for this node!", T);
@@ -49,7 +49,7 @@
      }
      TagInfo = getNext(); // Consume TK_Tag.
      T = peekNext();
-@@ -2362,6 +2369,11 @@
+@@ -2366,6 +2373,11 @@
                   , AnchorInfo.Range.substr(1)
                   , TagInfo.Range
                   , MappingNode::MT_Flow);
@@ -61,7 +61,7 @@
    case Token::TK_Scalar:
      getNext();
      return new (NodeAllocator)
-@@ -2392,7 +2404,8 @@
+@@ -2396,7 +2408,8 @@
      //       !!null null.
      return new (NodeAllocator) NullNode(stream.CurrentDoc);
    case Token::TK_Error:
