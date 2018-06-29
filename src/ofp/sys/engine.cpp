@@ -224,13 +224,7 @@ void Engine::stop(Milliseconds timeout) {
   if (timeout == 0_ms) {
     io_.stop();
   } else {
-    asio::error_code error;
-    stopTimer_.expires_after(timeout, error);
-    if (error) {
-      io_.stop();
-      return;
-    }
-
+    stopTimer_.expires_after(timeout);
     stopTimer_.async_wait([this](const asio::error_code &err) {
       if (err != asio::error::operation_aborted) {
         io_.stop();
@@ -465,9 +459,7 @@ std::vector<Connection *>::const_iterator Engine::findConnIter(
 }
 
 void Engine::asyncIdle() {
-  asio::error_code error;
-
-  idleTimer_.expires_after(1000_ms, error);
+  idleTimer_.expires_after(1000_ms);
   idleTimer_.async_wait([this](const asio::error_code &err) {
     if (!err) {
       TimePoint now = TimeClock::now();

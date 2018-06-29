@@ -133,10 +133,7 @@ void RpcConnection::rpcRequestInvalid(llvm::StringRef errorMsg) {
 void RpcConnection::asyncMetrics(Milliseconds interval) {
   logMetrics();
 
-  asio::error_code error;
-  metricTimer_.expires_after(interval, error);
-  assert(!error);
-
+  metricTimer_.expires_after(interval);
   metricTimer_.async_wait([this, interval](const asio::error_code &err) {
     if (!err) {
       asyncMetrics(interval);
