@@ -1,5 +1,5 @@
 --- ../../../llvm_git/llvm/include/llvm/Support/YAMLTraits.h	2018-06-23 19:55:21.000000000 -0700
-+++ ./include/llvm/Support/YAMLTraits.h	2018-06-26 22:05:22.000000000 -0700
++++ ./include/llvm/Support/YAMLTraits.h	2018-06-27 21:30:37.000000000 -0700
 @@ -19,7 +19,7 @@
  #include "llvm/Support/AlignOf.h"
  #include "llvm/Support/Allocator.h"

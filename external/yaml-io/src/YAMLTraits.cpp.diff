@@ -1,5 +1,5 @@
 --- ../../../llvm_git/llvm/lib/Support/YAMLTraits.cpp	2018-06-23 19:55:22.000000000 -0700
-+++ ./src/Support/YAMLTraits.cpp	2018-06-26 22:05:22.000000000 -0700
++++ ./src/Support/YAMLTraits.cpp	2018-06-27 21:30:37.000000000 -0700
 @@ -331,6 +331,45 @@
    }
  }

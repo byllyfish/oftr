@@ -1,5 +1,5 @@
 --- ../../../llvm_git/llvm/lib/Support/CommandLine.cpp	2018-06-23 19:55:22.000000000 -0700
-+++ ./src/Support/CommandLine.cpp	2018-06-27 21:28:16.000000000 -0700
++++ ./src/Support/CommandLine.cpp	2018-06-29 11:42:07.000000000 -0700
 @@ -25,7 +25,7 @@
  #include "llvm/ADT/SmallString.h"
  #include "llvm/ADT/StringExtras.h"
@@ -19,3 +19,12 @@
           newArgv);
    argv = &newArgv[0];
    argc = static_cast<int>(newArgv.size());
+@@ -1597,7 +1596,7 @@
+ 
+ bool parser<float>::parse(Option &O, StringRef ArgName, StringRef Arg,
+                           float &Val) {
+-  double dVal;
++  double dVal = 0.0;
+   if (parseDouble(O, Arg, dVal))
+     return true;
+   Val = (float)dVal;
