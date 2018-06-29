@@ -1596,7 +1596,7 @@ bool parser<double>::parse(Option &O, StringRef ArgName, StringRef Arg,
 
 bool parser<float>::parse(Option &O, StringRef ArgName, StringRef Arg,
                           float &Val) {
-  double dVal;
+  double dVal = 0.0;
   if (parseDouble(O, Arg, dVal))
     return true;
   Val = (float)dVal;
