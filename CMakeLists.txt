@@ -87,6 +87,14 @@ if(NOT LIBOFP_ENABLE_OPENSSL)
   message(STATUS "openssl is disabled.")
 endif()
 
+# You can build with the system provided version of openssl.
+
+set(LIBOFP_USE_BORINGSSL TRUE CACHE BOOL "Use BoringSSL (default)")
+
+if(NOT LIBOFP_USE_BORINGSSL)
+  message(STATUS "Using system-provided openssl instead of BoringSSL.")
+endif()
+
 # You can disable the valgrind memcheck tests.
 
 set(LIBOFP_ENABLE_MEMCHECK_TESTS TRUE CACHE BOOL "Enable additional valgrind memcheck tests")
@@ -134,7 +142,7 @@ set(LIBOFP_SYSTEM_INCLUDES
   "${CMAKE_SOURCE_DIR}/external/yaml-io/include"
 )
 
-if(LIBOFP_ENABLE_OPENSSL)
+if(LIBOFP_ENABLE_OPENSSL AND LIBOFP_USE_BORINGSSL)
   set(LIBOFP_SYSTEM_INCLUDES 
     ${LIBOFP_SYSTEM_INCLUDES}
     "${CMAKE_SOURCE_DIR}/external/boringssl/include")
@@ -562,7 +570,7 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_SYSTEM_WARNINGS}")
 # Add subdirectories of third party projects.
 
 add_subdirectory(external/yaml-io)
-if(LIBOFP_ENABLE_OPENSSL)
+if(LIBOFP_ENABLE_OPENSSL AND LIBOFP_USE_BORINGSSL)
   # Boringssl uses the __FILE__ predefined macro in "openssl/err.h". Redefine
   # __FILE__ to __func__ just for boringssl. (TODO)
   add_subdirectory(external/boringssl)
