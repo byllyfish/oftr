@@ -492,6 +492,15 @@ if(LIBOFP_ENABLE_LIBPCAP)
   endif()
 endif()
 
+if(LIBOFP_ENABLE_OPENSSL)
+  if(LIBOFP_USE_BORINGSSL)
+    set(HAVE_SSL_CTX_SET_KEYLOG_CALLBACK 1)
+  else()
+    set(CMAKE_REQUIRED_LIBRARIES ssl)
+    check_symbol_exists(SSL_CTX_set_keylog_callback openssl/ssl.h HAVE_SSL_CTX_SET_KEYLOG_CALLBACK)
+  endif()
+endif()
+
 #-------------------------------------------------------------------------------
 # Build Library
 #-------------------------------------------------------------------------------
