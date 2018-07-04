@@ -11,7 +11,6 @@ namespace ofp {
 
 class Channel;
 class Message;
-class Exception;
 
 namespace sys {
 class Connection;

@@ -183,8 +183,12 @@ void DefaultHandshake::installNewChannelListener(Message *message) {
 
   if (listenerFactory_) {
     ChannelListener *newListener = listenerFactory_();
-    channel_->setChannelListener(newListener);
+
+    // Invoke onChannelUp on new listener before replacing channel
+    // listener. New listener can access DefaultHandshake data using
+    // channelListener() accessor.
     newListener->onChannelUp(channel_);
+    channel_->setChannelListener(newListener);
 
     if (message)
       newListener->onMessage(message);
