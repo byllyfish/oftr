@@ -133,9 +133,6 @@ void DefaultHandshake::onHello(const Message *message) {
     channel_->setKeepAliveTimeout(kRawKeepAliveTimeout);
     installNewChannelListener();
   }
-
-  // TODO(bfish): handle case where we reconnected with a startingVersion of 1
-  // but the other end supports a higher version number.
 }
 
 void DefaultHandshake::onFeaturesReply(Message *message) {
