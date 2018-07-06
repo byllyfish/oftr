@@ -54,14 +54,32 @@ void RpcConnection::onRpcSetFilter(RpcSetFilter *set) {
   server_->onRpcSetFilter(this, set);
 }
 
-void RpcConnection::onChannel(Channel *channel, const char *status) {
+void RpcConnection::onChannelUp(Channel *channel) {
   RpcChannel notification;
-  notification.params.type = std::string("CHANNEL_") + status;
+  notification.params.type = "CHANNEL_UP";
   notification.params.time = Timestamp::now();
   notification.params.connId = channel->connectionId();
   notification.params.datapathId = channel->datapathId();
-  notification.params.endpoint = channel->remoteEndpoint();
+  notification.params.msg.endpoint = channel->remoteEndpoint();
   notification.params.version = channel->version();
+
+  DefaultHandshake *handshake = reinterpret_cast<DefaultHandshake *>(channel->channelListener());
+  if (handshake) {
+    notification.params.msg.features = handshake->featuresReply();
+  }
+
+  rpcReply(&notification);
+}
+
+void RpcConnection::onChannelDown(Channel *channel) {
+  RpcChannel notification;
+  notification.params.type = "CHANNEL_DOWN";
+  notification.params.time = Timestamp::now();
+  notification.params.connId = channel->connectionId();
+  notification.params.datapathId = channel->datapathId();
+  notification.params.msg.endpoint = channel->remoteEndpoint();
+  notification.params.version = channel->version();
+
   rpcReply(&notification);
 }
 

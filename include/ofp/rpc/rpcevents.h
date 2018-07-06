@@ -13,6 +13,9 @@
 #include "ofp/yaml/encoder.h"
 
 namespace ofp {
+
+class FeaturesReply;
+
 namespace rpc {
 
 /// The maximum RPC message size is 1MB.
@@ -306,13 +309,18 @@ struct RpcSetFilterResponse {
 struct RpcChannel {
   std::string toJson();
 
+  struct ParamsMsg {
+    IPv6Endpoint endpoint;
+    const FeaturesReply *features = nullptr;
+  };
+
   struct Params {
     std::string type;
     Timestamp time;
     UInt64 connId = 0;
     DatapathID datapathId;
-    IPv6Endpoint endpoint;
     UInt8 version{};
+    ParamsMsg msg;
   };
 
   Params params;

@@ -131,7 +131,7 @@ void DefaultHandshake::onHello(const Message *message) {
 
   } else {
     channel_->setKeepAliveTimeout(kRawKeepAliveTimeout);
-    installNewChannelListener(nullptr);
+    installNewChannelListener();
   }
 
   // TODO(bfish): handle case where we reconnected with a startingVersion of 1
@@ -165,7 +165,8 @@ void DefaultHandshake::onFeaturesReply(Message *message) {
       clearChannelListener();
 
     } else {
-      installNewChannelListener(message);
+      featuresReply_.set(msg, msg->msgLength());
+      installNewChannelListener();
     }
 
   } else {
@@ -178,7 +179,7 @@ void DefaultHandshake::onError(const Message *message) {
   log_warning("DefaultHandshake: Received error message");
 }
 
-void DefaultHandshake::installNewChannelListener(Message *message) {
+void DefaultHandshake::installNewChannelListener() {
   assert(channel_->channelListener() == this);
 
   if (listenerFactory_) {
@@ -189,10 +190,6 @@ void DefaultHandshake::installNewChannelListener(Message *message) {
     // channelListener() accessor.
     newListener->onChannelUp(channel_);
     channel_->setChannelListener(newListener);
-
-    if (message)
-      newListener->onMessage(message);
-
     ChannelListener::dispose(this);
 
   } else {

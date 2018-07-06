@@ -371,12 +371,12 @@ void RpcServer::onRpcSetFilter(RpcConnection *conn, RpcSetFilter *set) {
 
 void RpcServer::onChannelUp(Channel *channel) {
   if (oneConn_)
-    oneConn_->onChannel(channel, "UP");
+    oneConn_->onChannelUp(channel);
 }
 
 void RpcServer::onChannelDown(Channel *channel) {
   if (oneConn_)
-    oneConn_->onChannel(channel, "DOWN");
+    oneConn_->onChannelDown(channel);
 }
 
 void RpcServer::onMessage(Channel *channel, Message *message) {

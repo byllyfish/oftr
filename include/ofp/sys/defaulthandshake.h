@@ -7,8 +7,11 @@
 #include "ofp/channellistener.h"
 #include "ofp/driver.h"
 #include "ofp/protocolversions.h"
+#include "ofp/bytelist.h"
 
 namespace ofp {
+
+class FeaturesReply;
 
 namespace sys {
 class Connection;
@@ -32,6 +35,11 @@ class DefaultHandshake : public ChannelListener {
   void setStartingXid(UInt32 xid) { startingXid_ = xid; }
   void setConnection(sys::Connection *channel) { channel_ = channel; }
 
+  const FeaturesReply *featuresReply() const { 
+    if (featuresReply_.empty()) return nullptr;
+    return reinterpret_cast<const FeaturesReply *>(featuresReply_.data());
+  }
+
  private:
   sys::Connection *channel_;
   ProtocolVersions versions_;
@@ -39,12 +47,13 @@ class DefaultHandshake : public ChannelListener {
   ChannelOptions options_;
   UInt32 startingXid_ = 0;
   TimePoint timeStarted_;
+  ByteList featuresReply_;
 
   void onHello(const Message *message);
   void onFeaturesReply(Message *message);
   void onError(const Message *message);
 
-  void installNewChannelListener(Message *message);
+  void installNewChannelListener();
   void clearChannelListener();
 
   bool wantFeatures() const {

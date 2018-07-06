@@ -11,6 +11,7 @@
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/yratelimiter.h"
 #include "ofp/yaml/ytimestamp.h"
+#include "ofp/yaml/yfeaturesreply.h"
 
 LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::RpcConnectionStats)
 LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::FilterTableEntry)
@@ -413,8 +414,21 @@ struct MappingTraits<ofp::rpc::RpcChannel::Params> {
     io.mapRequired("time", params.time);
     io.mapRequired("conn_id", params.connId);
     io.mapOptional("datapath_id", params.datapathId, ofp::DatapathID{});
-    io.mapRequired("endpoint", params.endpoint);
     io.mapRequired("version", params.version);
+
+    if (params.type == "CHANNEL_UP") {
+      io.mapRequired("msg", params.msg);
+    }
+  }
+};
+
+template <>
+struct MappingTraits<ofp::rpc::RpcChannel::ParamsMsg> {
+  static void mapping(IO &io, ofp::rpc::RpcChannel::ParamsMsg &msg) {
+    io.mapRequired("endpoint", msg.endpoint);
+
+    if (msg.features)
+      io.mapRequired("features", *const_cast<ofp::FeaturesReply *>(msg.features));
   }
 };
 
