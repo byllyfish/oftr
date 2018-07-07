@@ -8,6 +8,7 @@
 #include "ofp/driver.h"
 #include "ofp/protocolversions.h"
 #include "ofp/bytelist.h"
+#include "ofp/portrange.h"
 
 namespace ofp {
 
@@ -41,16 +42,26 @@ class DefaultHandshake : public ChannelListener {
   }
 
  private:
+
+  enum HandshakeState {
+    kHandshakeInit,
+    kSentHello,
+    kSentFeaturesRequest,
+    kSentPortRequest
+  };
+
   sys::Connection *channel_;
   ProtocolVersions versions_;
   Factory listenerFactory_;
   ChannelOptions options_;
   UInt32 startingXid_ = 0;
+  HandshakeState state_ = kHandshakeInit;
   TimePoint timeStarted_;
   ByteList featuresReply_;
 
   void onHello(const Message *message);
   void onFeaturesReply(Message *message);
+  void onPortDescReply(Message *message);
   void onError(const Message *message);
 
   void installNewChannelListener();
@@ -59,6 +70,11 @@ class DefaultHandshake : public ChannelListener {
   bool wantFeatures() const {
     return (options_ & ChannelOptions::FEATURES_REQ) != 0;
   }
+
+  void sendHello();
+  void sendFeaturesRequest();
+  void sendPortDescRequest();
+  void appendPortsToFeaturesReply(PortRange ports);
 };
 
 OFP_END_IGNORE_PADDING

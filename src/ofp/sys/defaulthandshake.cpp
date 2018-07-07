@@ -8,6 +8,8 @@
 #include "ofp/featuresreply.h"
 #include "ofp/headeronly.h"
 #include "ofp/hello.h"
+#include "ofp/multipartrequest.h"
+#include "ofp/multipartreply.h"
 #include "ofp/log.h"
 #include "ofp/message.h"
 #include "ofp/sys/connection.h"
@@ -30,13 +32,10 @@ DefaultHandshake::DefaultHandshake(Connection *channel, ChannelOptions options,
 
 void DefaultHandshake::onChannelUp(Channel *channel) {
   assert(channel == channel_);
+  assert(state_ == kHandshakeInit);
 
   channel->setStartingXid(startingXid_);
-
-  HelloBuilder msg{versions_};
-  msg.send(channel_);
-
-  timeStarted_ = TimeClock::now();
+  sendHello();
 }
 
 void DefaultHandshake::onChannelDown(Channel *channel) {
@@ -72,6 +71,12 @@ void DefaultHandshake::onMessage(Message *message) {
       onError(message);
       break;
 
+    case MultipartReply::type():
+      if (message->subtype() == OFPMP_PORT_DESC) {
+        onPortDescReply(message);
+      }
+      break;
+
     default:
       log_warning("DefaultHandshake: Ignored message type", message->type(),
                   std::make_pair("connid", message->source()->connectionId()));
@@ -80,6 +85,11 @@ void DefaultHandshake::onMessage(Message *message) {
 }
 
 void DefaultHandshake::onHello(const Message *message) {
+  if (state_ > kSentHello) {
+    log_warning("DefaultHandshake: Extra Hello message");
+    return;
+  }
+
   const Hello *msg = Hello::cast(message);
   if (!msg) {
     log_warning("DefaultHandshake: Invalid Hello message");
@@ -124,10 +134,7 @@ void DefaultHandshake::onHello(const Message *message) {
 
   if (wantFeatures()) {
     channel_->setKeepAliveTimeout(kControllerKeepAliveTimeout);
-
-    FeaturesRequestBuilder reply{};
-    reply.send(channel_);
-    timeStarted_ = TimeClock::now();
+    sendFeaturesRequest();
 
   } else {
     channel_->setKeepAliveTimeout(kRawKeepAliveTimeout);
@@ -136,9 +143,8 @@ void DefaultHandshake::onHello(const Message *message) {
 }
 
 void DefaultHandshake::onFeaturesReply(Message *message) {
-  // Only a controller should be receiving a features reply message.
-  if (!wantFeatures()) {
-    log_warning("DefaultHandshake: Unexpected FeaturesReply message");
+  if (state_ != kSentFeaturesRequest) {
+    log_warning("DefaultHandshake: Odd FeaturesReply message");
     return;
   }
 
@@ -163,13 +169,36 @@ void DefaultHandshake::onFeaturesReply(Message *message) {
 
     } else {
       featuresReply_.set(msg, msg->msgLength());
-      installNewChannelListener();
+      if (channel_->version() > OFP_VERSION_1) {
+        // Still need to request port information.
+        sendPortDescRequest();
+      } else {
+        // V1 FeaturesReply includes port information.
+        installNewChannelListener();
+      }
     }
 
   } else {
     log_debug("DefaultHandshake::onFeaturesReply: postDatapath failed");
     channel_->shutdown();
   }
+}
+
+void DefaultHandshake::onPortDescReply(Message *message) {
+  if (state_ != kSentPortRequest) {
+    log_warning("DefaultHandshake: Odd PortDesc message");
+    return;
+  }
+
+  const MultipartReply *msg = MultipartReply::cast(message);
+  if (!msg) {
+    log_warning("DefaultHandshake: Invalid FeaturesReply message");
+    return;
+  }
+
+  PortRange ports = ByteRange{msg->replyBody(), msg->replyBodySize()};
+  appendPortsToFeaturesReply(ports);
+  installNewChannelListener();
 }
 
 void DefaultHandshake::onError(const Message *message) {
@@ -199,4 +228,41 @@ void DefaultHandshake::clearChannelListener() {
 
   channel_->setChannelListener(nullptr);
   ChannelListener::dispose(this);
+}
+
+void DefaultHandshake::sendHello() {
+  HelloBuilder msg{versions_};
+  msg.send(channel_);
+  state_ = kSentHello;
+  timeStarted_ = TimeClock::now();
+}
+
+void DefaultHandshake::sendFeaturesRequest() {
+  FeaturesRequestBuilder reply{};
+  reply.send(channel_);
+  state_ = kSentFeaturesRequest;
+  timeStarted_ = TimeClock::now();
+}
+
+void DefaultHandshake::sendPortDescRequest() {
+  MultipartRequestBuilder msg;
+  msg.setRequestType(OFPMP_PORT_DESC);
+  msg.send(channel_);
+  state_ = kSentPortRequest;
+  timeStarted_ = TimeClock::now();
+}
+
+void DefaultHandshake::appendPortsToFeaturesReply(PortRange ports) {
+  assert(featuresReply_.size() > 0);
+  
+  if (ports.empty())
+    return;
+
+  Header *header = reinterpret_cast<Header *>(featuresReply_.mutableData());
+  assert((header->length() % 8) == 0);
+
+  size_t newLength = header->length() + ports.size();
+  header->setLength(newLength);
+
+  featuresReply_.add(ports.data(), ports.size());
 }
