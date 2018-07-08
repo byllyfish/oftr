@@ -4,11 +4,11 @@
 #ifndef OFP_SYS_DEFAULTHANDSHAKE_H_
 #define OFP_SYS_DEFAULTHANDSHAKE_H_
 
+#include "ofp/bytelist.h"
 #include "ofp/channellistener.h"
 #include "ofp/driver.h"
-#include "ofp/protocolversions.h"
-#include "ofp/bytelist.h"
 #include "ofp/portrange.h"
+#include "ofp/protocolversions.h"
 
 namespace ofp {
 
@@ -36,13 +36,13 @@ class DefaultHandshake : public ChannelListener {
   void setStartingXid(UInt32 xid) { startingXid_ = xid; }
   void setConnection(sys::Connection *channel) { channel_ = channel; }
 
-  const FeaturesReply *featuresReply() const { 
-    if (featuresReply_.empty()) return nullptr;
+  const FeaturesReply *featuresReply() const {
+    if (featuresReply_.empty())
+      return nullptr;
     return reinterpret_cast<const FeaturesReply *>(featuresReply_.data());
   }
 
  private:
-
   enum HandshakeState {
     kHandshakeInit,
     kSentHello,

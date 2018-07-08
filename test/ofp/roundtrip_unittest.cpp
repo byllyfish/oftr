@@ -100,8 +100,9 @@ class TestAgent : public ChannelListener {
       reply.setDatapathId(dpid);
       reply.send(message->source());
 
-    } else if (message->type() == OFPT_MULTIPART_REQUEST && message->subtype() == OFPMP_PORT_DESC) {
-      PortList ports;   // empty for now
+    } else if (message->type() == OFPT_MULTIPART_REQUEST &&
+               message->subtype() == OFPMP_PORT_DESC) {
+      PortList ports;  // empty for now
 
       MultipartReplyBuilder reply;
       reply.setReplyType(OFPMP_PORT_DESC);

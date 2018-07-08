@@ -198,9 +198,10 @@ static const VersionInfo sVersionInfo[] = {{"TLS1.0", TLS1_VERSION},
                                            {"TLS1.1", TLS1_1_VERSION},
                                            {"TLS1.2", TLS1_2_VERSION}
 #if defined(TLS1_3_VERSION)
-                                           ,{"TLS1.3", TLS1_3_VERSION}
-#endif // defined(TLS1_3_VERSION)
-                                          };
+                                           ,
+                                           {"TLS1.3", TLS1_3_VERSION}
+#endif  // defined(TLS1_3_VERSION)
+};
 
 static UInt16 sParseVersionCode(llvm::StringRef vers) {
   for (size_t i = 0; i < ArrayLength(sVersionInfo); ++i) {
@@ -429,8 +430,8 @@ std::error_code Identity::prepareKeyLogFile(SSL_CTX *ctx,
   assert(!keyLogFile.empty());
 
   std::error_code err;
-  keyLogFile_.reset(new llvm::raw_fd_ostream{
-      keyLogFile, err, fs::F_Append | fs::F_Text});
+  keyLogFile_.reset(
+      new llvm::raw_fd_ostream{keyLogFile, err, fs::F_Append | fs::F_Text});
   if (err) {
     log_error("Identity: Failed to open file:", keyLogFile);
     return err;

@@ -115,7 +115,10 @@ struct ScalarTraits<ofp::IPv6Endpoint> {
   }
 
   // Quote IPv6Endpoint if it begins with '['.
-  static QuotingType mustQuote(StringRef s) { return (!s.empty() && s.front() == '[') ? QuotingType::Single : QuotingType::None; }
+  static QuotingType mustQuote(StringRef s) {
+    return (!s.empty() && s.front() == '[') ? QuotingType::Single
+                                            : QuotingType::None;
+  }
 };
 
 }  // namespace yaml

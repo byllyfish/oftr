@@ -8,10 +8,10 @@
 #include "ofp/yaml/yaddress.h"
 #include "ofp/yaml/ybytelist.h"
 #include "ofp/yaml/ydatapathid.h"
+#include "ofp/yaml/yfeaturesreply.h"
 #include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/yratelimiter.h"
 #include "ofp/yaml/ytimestamp.h"
-#include "ofp/yaml/yfeaturesreply.h"
 
 LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::RpcConnectionStats)
 LLVM_YAML_IS_SEQUENCE_VECTOR(ofp::rpc::FilterTableEntry)
@@ -428,7 +428,8 @@ struct MappingTraits<ofp::rpc::RpcChannel::ParamsMsg> {
     io.mapRequired("endpoint", msg.endpoint);
 
     if (msg.features)
-      io.mapRequired("features", *const_cast<ofp::FeaturesReply *>(msg.features));
+      io.mapRequired("features",
+                     *const_cast<ofp::FeaturesReply *>(msg.features));
   }
 };
 

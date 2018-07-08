@@ -24,7 +24,8 @@ void TestAgent::onMessage(Message *message) {
     BarrierReplyBuilder reply{message};
     reply.send(message->source());
 
-  } else if (message->type() == OFPT_MULTIPART_REQUEST && message->subtype() == OFPMP_PORT_DESC) {
+  } else if (message->type() == OFPT_MULTIPART_REQUEST &&
+             message->subtype() == OFPMP_PORT_DESC) {
     PortBuilder port;
     port.setPortNo(1);
     port.setName("port 1");

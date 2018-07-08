@@ -8,10 +8,10 @@
 #include "ofp/featuresreply.h"
 #include "ofp/headeronly.h"
 #include "ofp/hello.h"
-#include "ofp/multipartrequest.h"
-#include "ofp/multipartreply.h"
 #include "ofp/log.h"
 #include "ofp/message.h"
+#include "ofp/multipartreply.h"
+#include "ofp/multipartrequest.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/engine.h"
 
@@ -254,7 +254,7 @@ void DefaultHandshake::sendPortDescRequest() {
 
 void DefaultHandshake::appendPortsToFeaturesReply(PortRange ports) {
   assert(featuresReply_.size() > 0);
-  
+
   if (ports.empty())
     return;
 

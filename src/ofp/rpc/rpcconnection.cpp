@@ -63,7 +63,8 @@ void RpcConnection::onChannelUp(Channel *channel) {
   notification.params.msg.endpoint = channel->remoteEndpoint();
   notification.params.version = channel->version();
 
-  DefaultHandshake *handshake = reinterpret_cast<DefaultHandshake *>(channel->channelListener());
+  DefaultHandshake *handshake =
+      reinterpret_cast<DefaultHandshake *>(channel->channelListener());
   if (handshake) {
     notification.params.msg.features = handshake->featuresReply();
   }

@@ -54,7 +54,9 @@ class OutputJson : public llvm::yaml::IO {
 
   void scalarString(llvm::StringRef &S, llvm::yaml::QuotingType) override;
   void scalarJson(llvm::StringRef s) override { output(s); }
-  void blockScalarString(llvm::StringRef &S) override { scalarString(S, llvm::yaml::QuotingType::Double); }
+  void blockScalarString(llvm::StringRef &S) override {
+    scalarString(S, llvm::yaml::QuotingType::Double);
+  }
 
   void setError(const llvm::Twine &message) override;
 
