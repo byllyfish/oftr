@@ -5,6 +5,7 @@
 #define OFP_YAML_YSMALLCSTRING_H_
 
 #include "ofp/smallcstring.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace llvm {
 namespace yaml {
