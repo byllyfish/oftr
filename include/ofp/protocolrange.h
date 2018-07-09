@@ -26,6 +26,7 @@ class ProtocolRange {
 
   const UInt8 *data() const { return range_.data(); }
   size_t size() const { return range_.size(); }
+  bool empty() const { return range_.empty(); }
   ByteRange toByteRange() const { return range_; }
 
   size_t itemCount() const { return Iterator::itemCount(range_); }

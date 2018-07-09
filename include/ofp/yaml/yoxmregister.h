@@ -24,7 +24,7 @@ struct ScalarTraits<ofp::OXMRegister> {
     return "";
   }
 
-  static bool mustQuote(StringRef) { return true; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::Single; }
 };
 
 }  // namespace yaml

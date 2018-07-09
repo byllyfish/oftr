@@ -76,7 +76,7 @@ yamlize(IO &io, ofp::Big<T> &Val, bool ignore, EmptyContext &Ctx) {
         return "";                                                          \
       return ofp::yaml::SetEnumError(ctxt, scalar, converter.listAll());    \
     }                                                                       \
-    static bool mustQuote(StringRef) { return false; }                      \
+    static QuotingType mustQuote(StringRef) { return QuotingType::None; }   \
   };
 
 YAML_ENUM_CONVERTER(ofp::yaml::EnumConverter, ofp::OFPType,
@@ -146,7 +146,7 @@ struct ScalarTraits<ofp::OFPErrorCode> {
     return ofp::yaml::SetEnumError(ctxt, scalar, converter.listAll());
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 };
 
 template <>
@@ -171,7 +171,7 @@ struct ScalarTraits<ofp::MessageType> {
     return ofp::yaml::ParseMessageType(scalar, ctxt, value);
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 };
 
 #define OFP_YAML_BITCASE(prefix, name) \

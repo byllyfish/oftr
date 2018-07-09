@@ -33,7 +33,7 @@ struct ScalarTraits<ofp::ByteRange> {
     return "Not supported.";
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 
   using json_type = JsonByteRange;
 };
@@ -56,7 +56,7 @@ struct ScalarTraits<ofp::ByteList> {
     return "";
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 
   using json_type = JsonByteRange;
 };

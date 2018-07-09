@@ -93,7 +93,7 @@ TEST(outputjson, scalarString) {
     std::string result;
     llvm::raw_string_ostream rss{result};
     OutputJson out{rss};
-    out.scalarString(s, false);
+    out.scalarString(s, llvm::yaml::QuotingType::None);
     // log_debug("->", rss.str());
     return result;
   };

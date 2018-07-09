@@ -46,7 +46,7 @@ struct ScalarTraits<ofp::PortNumber> {
     return err;
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 
   using json_type = ofp::PortNumber;
 };

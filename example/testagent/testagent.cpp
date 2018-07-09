@@ -24,6 +24,21 @@ void TestAgent::onMessage(Message *message) {
     BarrierReplyBuilder reply{message};
     reply.send(message->source());
 
+  } else if (message->type() == OFPT_MULTIPART_REQUEST &&
+             message->subtype() == OFPMP_PORT_DESC) {
+    PortBuilder port;
+    port.setPortNo(1);
+    port.setName("port 1");
+    port.setHwAddr(MacAddress{"0e:00:00:00:00:01"});
+
+    PortList ports;
+    ports.add(port);
+
+    MultipartReplyBuilder reply;
+    reply.setReplyType(OFPMP_PORT_DESC);
+    reply.setReplyBody(ports.data(), ports.size());
+    reply.send(message->source());
+
   } else if (message->isRequestType()) {
     ErrorBuilder error{message->xid()};
     error.setErrorCode(OFPBRC_BAD_TYPE);

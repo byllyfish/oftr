@@ -165,7 +165,7 @@ static const char *const ControlReplacement[] = {
 
 static_assert(ofp::ArrayLength(ControlReplacement) == 0x20, "Unexpected size");
 
-void OutputJson::scalarString(StringRef &S, bool MustQuote) {
+void OutputJson::scalarString(StringRef &S, llvm::yaml::QuotingType) {
   // Output value wrapped in double-quotes. Escape any embedded double-quotes
   // or backslashes in the string. Replace control characters (ASCII < 32)
   // with \b, \t, \n, \f, \r or \uxxxx.

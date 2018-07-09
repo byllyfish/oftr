@@ -27,7 +27,7 @@ struct ScalarTraits<ofp::rpc::RateLimiter> {
     return "";
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 };
 
 }  // namespace yaml

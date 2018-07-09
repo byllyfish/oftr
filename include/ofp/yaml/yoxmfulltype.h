@@ -55,7 +55,7 @@ struct ScalarTraits<ofp::OXMFullType> {
     return ofp::yaml::SetEnumError(ctxt, scalar, ofp::OXMFullType::listAll());
   }
 
-  static bool mustQuote(StringRef) { return false; }
+  static QuotingType mustQuote(StringRef) { return QuotingType::None; }
 };
 
 }  // namespace yaml

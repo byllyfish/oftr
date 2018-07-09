@@ -629,7 +629,7 @@ msg:
   reason:          ADD
   port_no:         0x00000007
   hw_addr:         'f2:0b:a4:d0:3f:70'
-  name:            '私のポート'
+  name:            "私のポート"
   config:          [  ]
   state:           [ LIVE ]
   ethernet:        
@@ -1539,7 +1539,7 @@ msg:
   reason:          ADD
   port_no:         0x00000007
   hw_addr:         'f2:0b:a4:d0:3f:70'
-  name:            '私のポート'
+  name:            "私のポート"
   config:          [  ]
   state:           [ LIVE ]
   ethernet:        
@@ -2652,7 +2652,7 @@ xid:             0x00000000
 version:         0x04
 msg:             
   - table_id:        0x00
-    name:            '私のテーブル'
+    name:            "私のテーブル"
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
     config:          [  ]
@@ -5275,7 +5275,7 @@ xid:             0x00000000
 version:         0x05
 msg:             
   - table_id:        0x00
-    name:            '私のテーブル'
+    name:            "私のテーブル"
     metadata_match:  0xFFFFFFFFFFFFFFFF
     metadata_write:  0xFFFFFFFFFFFFFFFF
     config:          [  ]

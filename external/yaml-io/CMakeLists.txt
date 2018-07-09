@@ -30,6 +30,7 @@ set(YAMLIO_SOURCES
     src/Support/StringSaver.cpp
 	src/Support/Threading.cpp
 	src/Support/Twine.cpp
+	src/Support/Unicode.cpp
 	src/Support/Valgrind.cpp
 	src/Support/YAMLParser.cpp
 	src/Support/YAMLTraits.cpp

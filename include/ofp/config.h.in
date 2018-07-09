@@ -39,4 +39,8 @@
 #cmakedefine01 HAVE_PCAP_OPEN_OFFLINE_WITH_TSTAMP_PRECISION
 #cmakedefine01 HAVE_PCAP_OPEN_DEAD_WITH_TSTAMP_PRECISION
 
+// These variables control openssl capabilities.
+
+#cmakedefine01 HAVE_SSL_CTX_SET_KEYLOG_CALLBACK
+
 #endif  // OFP_CONFIG_H_  // NOLINT

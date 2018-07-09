@@ -4,11 +4,15 @@
 #ifndef OFP_SYS_DEFAULTHANDSHAKE_H_
 #define OFP_SYS_DEFAULTHANDSHAKE_H_
 
+#include "ofp/bytelist.h"
 #include "ofp/channellistener.h"
 #include "ofp/driver.h"
+#include "ofp/portrange.h"
 #include "ofp/protocolversions.h"
 
 namespace ofp {
+
+class FeaturesReply;
 
 namespace sys {
 class Connection;
@@ -32,24 +36,45 @@ class DefaultHandshake : public ChannelListener {
   void setStartingXid(UInt32 xid) { startingXid_ = xid; }
   void setConnection(sys::Connection *channel) { channel_ = channel; }
 
+  const FeaturesReply *featuresReply() const {
+    if (featuresReply_.empty())
+      return nullptr;
+    return reinterpret_cast<const FeaturesReply *>(featuresReply_.data());
+  }
+
  private:
+  enum HandshakeState {
+    kHandshakeInit,
+    kSentHello,
+    kSentFeaturesRequest,
+    kSentPortRequest
+  };
+
   sys::Connection *channel_;
   ProtocolVersions versions_;
   Factory listenerFactory_;
   ChannelOptions options_;
   UInt32 startingXid_ = 0;
+  HandshakeState state_ = kHandshakeInit;
   TimePoint timeStarted_;
+  ByteList featuresReply_;
 
   void onHello(const Message *message);
   void onFeaturesReply(Message *message);
+  void onPortDescReply(Message *message);
   void onError(const Message *message);
 
-  void installNewChannelListener(Message *message);
+  void installNewChannelListener();
   void clearChannelListener();
 
   bool wantFeatures() const {
     return (options_ & ChannelOptions::FEATURES_REQ) != 0;
   }
+
+  void sendHello();
+  void sendFeaturesRequest();
+  void sendPortDescRequest();
+  void appendPortsToFeaturesReply(PortRange ports);
 };
 
 OFP_END_IGNORE_PADDING

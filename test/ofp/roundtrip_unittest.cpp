@@ -30,6 +30,7 @@ class TestController : public ChannelListener {
     EXPECT_EQ(dpid, channel->datapathId());
     EXPECT_EQ(0, channel->auxiliaryId());
 
+    // TODO(bfish): Check DefaultHandshake parameters.
     channel->driver()->stop(1000_ms);
 
     if (GLOBAL_shutdownCount > 0) {
@@ -92,12 +93,22 @@ class TestAgent : public ChannelListener {
   void onMessage(Message *message) override {
     log_debug("TestAgent::onMessage",
               std::make_pair("connid", message->source()->connectionId()));
-    EXPECT_EQ(OFPT_FEATURES_REQUEST, message->type());
 
-    DatapathID dpid{0x1234, MacAddress{"A1:B2:C3:D4:E5:F6"}};
-    FeaturesReplyBuilder reply{message->xid()};
-    reply.setDatapathId(dpid);
-    reply.send(message->source());
+    if (message->type() == OFPT_FEATURES_REQUEST) {
+      DatapathID dpid{0x1234, MacAddress{"A1:B2:C3:D4:E5:F6"}};
+      FeaturesReplyBuilder reply{message->xid()};
+      reply.setDatapathId(dpid);
+      reply.send(message->source());
+
+    } else if (message->type() == OFPT_MULTIPART_REQUEST &&
+               message->subtype() == OFPMP_PORT_DESC) {
+      PortList ports;  // empty for now
+
+      MultipartReplyBuilder reply;
+      reply.setReplyType(OFPMP_PORT_DESC);
+      reply.setReplyBody(ports.data(), ports.size());
+      reply.send(message->source());
+    }
   }
 
   static ChannelListener *factory() { return new TestAgent; }
