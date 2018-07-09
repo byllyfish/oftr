@@ -51,6 +51,8 @@ class ProtocolMsg {
   ByteRange msgBody() const {
     return ByteRange{msgHeader() + 1, msgHeader()->length() - sizeof(Header)};
   }
+
+  size_t msgLength() const { return msgHeader()->length(); }
 };
 
 }  // namespace ofp

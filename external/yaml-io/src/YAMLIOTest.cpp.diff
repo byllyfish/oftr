@@ -1,0 +1,29 @@
+--- ../../../llvm_git/llvm/unittests/Support/YAMLIOTest.cpp	2018-06-23 19:55:32.000000000 -0700
++++ ./unittests/Support/YAMLIOTest.cpp	2018-06-27 21:30:38.000000000 -0700
+@@ -13,7 +13,7 @@
+ #include "llvm/Support/Endian.h"
+ #include "llvm/Support/Format.h"
+ #include "llvm/Support/YAMLTraits.h"
+-#include "gmock/gmock.h"
++//#include "gmock/gmock.h"
+ #include "gtest/gtest.h"
+ 
+ using llvm::yaml::Input;
+@@ -26,7 +26,7 @@
+ using llvm::yaml::Hex16;
+ using llvm::yaml::Hex32;
+ using llvm::yaml::Hex64;
+-using ::testing::StartsWith;
++//using ::testing::StartsWith;
+ 
+ 
+ 
+@@ -315,7 +315,7 @@
+   }
+   auto ExpectedPrefix = "---\n"
+                         "str1:            aba\tcaba\n";
+-  EXPECT_THAT(Serialized, StartsWith(ExpectedPrefix));
++  EXPECT_TRUE(llvm::StringRef{Serialized}.startswith(ExpectedPrefix));
+ }
+ 
+ //===----------------------------------------------------------------------===//

@@ -50,7 +50,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.49.0)
+set(Libofp_VERSION 0.50.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -85,6 +85,14 @@ set(LIBOFP_ENABLE_OPENSSL TRUE CACHE BOOL "Enable use of openssl")
 
 if(NOT LIBOFP_ENABLE_OPENSSL)
   message(STATUS "openssl is disabled.")
+endif()
+
+# You can build with the system provided version of openssl.
+
+set(LIBOFP_USE_BORINGSSL TRUE CACHE BOOL "Use BoringSSL (default)")
+
+if(NOT LIBOFP_USE_BORINGSSL)
+  message(STATUS "Using system-provided openssl instead of BoringSSL.")
 endif()
 
 # You can disable the valgrind memcheck tests.
@@ -134,7 +142,7 @@ set(LIBOFP_SYSTEM_INCLUDES
   "${CMAKE_SOURCE_DIR}/external/yaml-io/include"
 )
 
-if(LIBOFP_ENABLE_OPENSSL)
+if(LIBOFP_ENABLE_OPENSSL AND LIBOFP_USE_BORINGSSL)
   set(LIBOFP_SYSTEM_INCLUDES 
     ${LIBOFP_SYSTEM_INCLUDES}
     "${CMAKE_SOURCE_DIR}/external/boringssl/include")
@@ -484,6 +492,15 @@ if(LIBOFP_ENABLE_LIBPCAP)
   endif()
 endif()
 
+if(LIBOFP_ENABLE_OPENSSL)
+  if(LIBOFP_USE_BORINGSSL)
+    set(HAVE_SSL_CTX_SET_KEYLOG_CALLBACK 1)
+  else()
+    set(CMAKE_REQUIRED_LIBRARIES ssl)
+    check_symbol_exists(SSL_CTX_set_keylog_callback openssl/ssl.h HAVE_SSL_CTX_SET_KEYLOG_CALLBACK)
+  endif()
+endif()
+
 #-------------------------------------------------------------------------------
 # Build Library
 #-------------------------------------------------------------------------------
@@ -562,7 +579,7 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_SYSTEM_WARNINGS}")
 # Add subdirectories of third party projects.
 
 add_subdirectory(external/yaml-io)
-if(LIBOFP_ENABLE_OPENSSL)
+if(LIBOFP_ENABLE_OPENSSL AND LIBOFP_USE_BORINGSSL)
   # Boringssl uses the __FILE__ predefined macro in "openssl/err.h". Redefine
   # __FILE__ to __func__ just for boringssl. (TODO)
   add_subdirectory(external/boringssl)

@@ -42,7 +42,8 @@ class RpcConnection : public std::enable_shared_from_this<RpcConnection> {
     writeEvent(response->toJson());
   }
 
-  void onChannel(Channel *channel, const char *status);
+  void onChannelUp(Channel *channel);
+  void onChannelDown(Channel *channel);
   void onMessage(Channel *channel, const Message *message);
 
   void rpcAlert(Channel *channel, const std::string &alert,

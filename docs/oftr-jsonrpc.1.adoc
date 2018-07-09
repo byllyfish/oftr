@@ -139,7 +139,9 @@ Open an outgoing OpenFlow connection to the specified host and port.
 *tls_id*:: Identifier for TLS/DTLS identity to use. See OFP.ADD_IDENTITY.
 
 *options*:: List of additional options that control the connection.
-    - *FEATURES_REQ* = Send a FEATURES_REQUEST to obtain datapath_id from other end.
+    - *FEATURES_REQ* = Send a FEATURES_REQUEST to obtain datapath_id from other end. If
+      the OpenFlow version is 1.1 or later, also send a multipart PORT_DESC request
+      to obtain the port information.
     - *CONNECT_UDP* = Use UDP instead of TCP. (Not supported with FEATURES_REQ)
     - *NO_VERSION_CHECK* = Permit messages with other versions after HELLO negotiation.
 
@@ -157,8 +159,9 @@ The reply is sent when the connection is established. The reply contains the uni
 connection ID associated with the new connection.
 
 If `FEATURES_REQ` option is specified, send a FEATURES_REQUEST message to obtain
-the datapath_id from the other end. The channel will be reported up when this 
-transaction completes, and the connection is assigned a datapath_id.
+the datapath_id from the other end. For OpenFlow version 1.1 or later, also send a
+multipart PORT_DESC request to obtain port information. The channel will be reported
+up when this extended handshake completes.
 
 If `CONNECT_UDP` option is specified, make an auxiliary connection via UDP to the
 specified endpoint.
@@ -191,7 +194,9 @@ Listen for incoming OpenFlow connections on the specified interface and port.
 *tls_id*:: TLS identity to use for securing the connection. The default identity is 0 (normally plaintext).
 
 *options*:: List of additional options that control the connection.
-    - *FEATURES_REQ* = Send a FEATURES_REQUEST to obtain datapath_id from other end.
+    - *FEATURES_REQ* = Send a FEATURES_REQUEST to obtain datapath_id from other end.  If
+      the OpenFlow version is 1.1 or later, also send a multipart PORT_DESC request
+      to obtain the port information.
     - *AUXILIARY* = Support auxiliary connections over TCP (requires FEATURES_REQ).
     - *LISTEN_UDP* = Support auxiliary connections over UDP also (requires AUXILIARY).
     - *NO_VERSION_CHECK* = Permit messages with other versions after HELLO negotiation.
@@ -210,8 +215,9 @@ This command listens for incoming connections from OpenFlow switches. The reply 
 a unique connection ID representing the listener.
 
 If `FEATURES_REQ` option is specified, send a FEATURES_REQUEST message to obtain
-the datapath_id from the other end. The channel will be reported up when this 
-transaction completes, and the connection is assigned a datapath_id.
+the datapath_id from the other end. For OpenFlow version 1.1 or later, also send a
+multipart PORT_DESC request to obtain port information. The channel will be reported
+up when this extended handshake completes.
 
 If `AUXILIARY` option is specified, support auxiliary OpenFlow connections.
 
@@ -407,11 +413,21 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format
 
   method: OFP.MESSAGE
   params:
-    type: CHANNEL_UP | CHANNEL_DOWN
+    type: CHANNEL_UP
     time: Timestamp
     conn_id: UInt64
     datapath_id: DatapathID  # Optional
-    endpoint: IPEndpoint
+    version: UInt8
+    msg:
+      endpoint: IPEndpoint
+      features: FeaturesReply
+
+  method: OFP.MESSAGE
+  params:
+    type: CHANNEL_DOWN
+    time: Timestamp
+    conn_id: UInt64
+    datapath_id: DatapathID  # Optional
     version: UInt8
 
   method: OFP.MESSAGE
@@ -434,8 +450,8 @@ The `type` attribute specifies the type of message. See _oftr-schema_ man page
 for attributes used in OpenFlow messages.
 
 The `CHANNEL_UP` message is sent when an OpenFlow channel comes up. If the
-`FEATURES_REQ` option is specified, the channel is not considered up until we know
-the datapath_id of the connection from the FEATURES_REPLY. If `FEATURES_REQ` is 
+`FEATURES_REQ` option is specified, the channel is not considered up until we obtain
+the datapath_id and port list from the connected switch. If `FEATURES_REQ` is 
 not specified, the channel up message is sent after the first
 HELLO messages are exchanged, and the datapath_id parameter is not included.
 

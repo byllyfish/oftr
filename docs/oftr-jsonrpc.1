@@ -2,12 +2,12 @@
 .\"     Title: oftr-jsonrpc
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 02/07/2018
+.\"      Date: 07/08/2018
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "OFTR\-JSONRPC" "1" "02/07/2018" "\ \&" "\ \&"
+.TH "OFTR\-JSONRPC" "1" "07/08/2018" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -396,7 +396,7 @@ List of additional options that control the connection\&.
 .IP \(bu 2.3
 .\}
 \fBFEATURES_REQ\fR
-= Send a FEATURES_REQUEST to obtain datapath_id from other end\&.
+= Send a FEATURES_REQUEST to obtain datapath_id from other end\&. If the OpenFlow version is 1\&.1 or later, also send a multipart PORT_DESC request to obtain the port information\&.
 .RE
 .sp
 .RS 4
@@ -461,7 +461,7 @@ Unique, non\-zero identifier representing the new connection\&.
 .sp
 The reply is sent when the connection is established\&. The reply contains the unique connection ID associated with the new connection\&.
 .sp
-If FEATURES_REQ option is specified, send a FEATURES_REQUEST message to obtain the datapath_id from the other end\&. The channel will be reported up when this transaction completes, and the connection is assigned a datapath_id\&.
+If FEATURES_REQ option is specified, send a FEATURES_REQUEST message to obtain the datapath_id from the other end\&. For OpenFlow version 1\&.1 or later, also send a multipart PORT_DESC request to obtain port information\&. The channel will be reported up when this extended handshake completes\&.
 .sp
 If CONNECT_UDP option is specified, make an auxiliary connection via UDP to the specified endpoint\&.
 .sp
@@ -523,7 +523,7 @@ List of additional options that control the connection\&.
 .IP \(bu 2.3
 .\}
 \fBFEATURES_REQ\fR
-= Send a FEATURES_REQUEST to obtain datapath_id from other end\&.
+= Send a FEATURES_REQUEST to obtain datapath_id from other end\&. If the OpenFlow version is 1\&.1 or later, also send a multipart PORT_DESC request to obtain the port information\&.
 .RE
 .sp
 .RS 4
@@ -600,7 +600,7 @@ Unique, non\-zero identifier representing the listening connection\&.
 .sp
 This command listens for incoming connections from OpenFlow switches\&. The reply contains a unique connection ID representing the listener\&.
 .sp
-If FEATURES_REQ option is specified, send a FEATURES_REQUEST message to obtain the datapath_id from the other end\&. The channel will be reported up when this transaction completes, and the connection is assigned a datapath_id\&.
+If FEATURES_REQ option is specified, send a FEATURES_REQUEST message to obtain the datapath_id from the other end\&. For OpenFlow version 1\&.1 or later, also send a multipart PORT_DESC request to obtain port information\&. The channel will be reported up when this extended handshake completes\&.
 .sp
 If AUXILIARY option is specified, support auxiliary OpenFlow connections\&.
 .sp
@@ -964,11 +964,29 @@ params:
 .nf
 method: OFP\&.MESSAGE
 params:
-  type: CHANNEL_UP | CHANNEL_DOWN
+  type: CHANNEL_UP
   time: Timestamp
   conn_id: UInt64
   datapath_id: DatapathID  # Optional
-  endpoint: IPEndpoint
+  version: UInt8
+  msg:
+    endpoint: IPEndpoint
+    features: FeaturesReply
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+method: OFP\&.MESSAGE
+params:
+  type: CHANNEL_DOWN
+  time: Timestamp
+  conn_id: UInt64
+  datapath_id: DatapathID  # Optional
   version: UInt8
 .fi
 .if n \{\
@@ -1005,7 +1023,7 @@ The OFP\&.MESSAGE event is sent when an OpenFlow message is received\&. There ar
 .sp
 The type attribute specifies the type of message\&. See \fIoftr\-schema\fR man page for attributes used in OpenFlow messages\&.
 .sp
-The CHANNEL_UP message is sent when an OpenFlow channel comes up\&. If the FEATURES_REQ option is specified, the channel is not considered up until we know the datapath_id of the connection from the FEATURES_REPLY\&. If FEATURES_REQ is not specified, the channel up message is sent after the first HELLO messages are exchanged, and the datapath_id parameter is not included\&.
+The CHANNEL_UP message is sent when an OpenFlow channel comes up\&. If the FEATURES_REQ option is specified, the channel is not considered up until we obtain the datapath_id and port list from the connected switch\&. If FEATURES_REQ is not specified, the channel up message is sent after the first HELLO messages are exchanged, and the datapath_id parameter is not included\&.
 .sp
 The CHANNEL_DOWN message is sent when an OpenFlow channel goes down\&.
 .sp

@@ -6,6 +6,7 @@
 
 #include "ofp/port.h"
 #include "ofp/portlist.h"
+#include "ofp/yaml/yportnumber.h"
 #include "ofp/yaml/yportproperty.h"
 #include "ofp/yaml/ysmallcstring.h"
 

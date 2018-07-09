@@ -5,6 +5,7 @@
 #define OFP_YAML_YSMALLCSTRING_H_
 
 #include "ofp/smallcstring.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace llvm {
 namespace yaml {
@@ -26,7 +27,7 @@ struct ScalarTraits<ofp::SmallCString<Size>> {
     return "";
   }
 
-  static bool mustQuote(StringRef s) { return needsQuotes(s); }
+  static QuotingType mustQuote(StringRef s) { return needsQuotes(s); }
 };
 
 }  // namespace yaml

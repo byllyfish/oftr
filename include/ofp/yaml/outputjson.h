@@ -52,9 +52,11 @@ class OutputJson : public llvm::yaml::IO {
   bool bitSetMatchOther(uint32_t &) override;
   llvm::StringRef bitSetCaseUnmatched() override;
 
-  void scalarString(llvm::StringRef &S, bool) override;
+  void scalarString(llvm::StringRef &S, llvm::yaml::QuotingType) override;
   void scalarJson(llvm::StringRef s) override { output(s); }
-  void blockScalarString(llvm::StringRef &S) override { scalarString(S, true); }
+  void blockScalarString(llvm::StringRef &S) override {
+    scalarString(S, llvm::yaml::QuotingType::Double);
+  }
 
   void setError(const llvm::Twine &message) override;
 

@@ -27,10 +27,10 @@ if [ "$TRAVIS_OS_NAME" = "linux" ]; then
     cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true -DLIBOFP_ENABLE_MEMCHECK_TESTS=false ..
     MAKEFLAGS=-j4 ctest -j4 -D Experimental
 
-	# Run zof integration tests too.
+	# Run zof integration tests too (use develop branch).
 	export ZOF_OFTR_PATH="$(pwd)/tools/oftr/oftr"
 	$ZOF_OFTR_PATH version
-	git clone --depth=1 "https://github.com/byllyfish/zof.git"
+	git clone --depth=1 --single-branch -b develop "https://github.com/byllyfish/zof.git"
 	cd zof
 	eval "$(pyenv init -)"
 	pyenv install 3.5.2
