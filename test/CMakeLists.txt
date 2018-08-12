@@ -113,6 +113,7 @@ if(LIBOFP_ENABLE_JSONRPC)
 		ofp/driver_unittest.cpp
 		ofp/roundtrip_unittest.cpp
 		ofp/rpcencoder_unittest.cpp
+		ofp/rpcevents_unittest.cpp
 		ofp/rpc/filteractiongenericreply_unittest.cpp
 		ofp/rpc/filtertable_unittest.cpp
 		ofp/rpc/ratelimiter_unittest.cpp
