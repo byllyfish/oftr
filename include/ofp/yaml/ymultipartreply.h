@@ -37,8 +37,8 @@ msg:
   serial_num: Str32
   dp_desc: Str256
 
-{Message/Reply.Table}
-type: REPLY.TABLE
+{Message/Reply.TableStats}
+type: REPLY.TABLE_STATS
 msg:
   - table_id: TableNumber
     name: Str32
@@ -82,8 +82,8 @@ msg:
   max_bands: UInt8
   max_color: UInt8
 
-{Message/Reply.Flow}
-type: REPLY.FLOW
+{Message/Reply.FlowDesc}
+type: REPLY.FLOW_DESC
 msg:
   - table_id: TableNumber
     duration: DurationSec
@@ -98,7 +98,7 @@ msg:
     instructions: [Instruction]
 
 {Message/Reply.Aggregate}
-type: REPLY.AGGREGATE
+type: REPLY.AGGREGATE_STATS
 msg:
   packet_count: UInt64
   byte_count: UInt64
@@ -135,7 +135,7 @@ msg:
       bias_current: UInt16
       temperature: UInt16
 
-{Message/Reply.Queue}
+{Message/Reply.QueueStats}
 type: REPLY.QUEUE
 msg:
   - port_no: PortNumber
@@ -161,8 +161,8 @@ msg:
     meter_id: MeterNumber
     bands: [MeterBand]
 
-{Message/Reply.Meter}
-type: REPLY.METER
+{Message/Reply.MeterStats}
+type: REPLY.METER_STATS
 msg:
   - meter_id: MeterNumber
     flow_count: UInt32
@@ -171,8 +171,8 @@ msg:
     duration: DurationSec
     bands: [PacketCounter]
 
-{Message/Reply.Group}
-type: REPLY.GROUP
+{Message/Reply.GroupStats}
+type: REPLY.GROUP_STATS
 msg:
   - group_id: GroupNumber
     ref_count: UInt32
