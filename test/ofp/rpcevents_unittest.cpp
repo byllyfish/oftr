@@ -1,3 +1,6 @@
+// Copyright (c) 2015-2018 William W. Fisher (at gmail dot com)
+// This file is distributed under the MIT License.
+
 #include "ofp/rpc/rpcevents.h"
 #include "ofp/unittest.h"
 
