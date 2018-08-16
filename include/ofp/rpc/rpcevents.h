@@ -348,7 +348,7 @@ OFP_END_IGNORE_PADDING
 
 // Trim error message that ends with "\n   ^".
 inline void TrimErrorMessage(std::string &msg) {
-  size_t pos = msg.find_last_not_of("\n ^");
+  size_t pos = msg.find_last_not_of("\n ^~");
   if (pos != std::string::npos) {
     msg.erase(pos + 1);
   }

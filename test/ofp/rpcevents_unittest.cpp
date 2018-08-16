@@ -5,9 +5,9 @@
 #include "ofp/unittest.h"
 
 TEST(rpcevents, test_TrimErrorMessage) {
-  std::string msg1 = "x\n     ^";
+  std::string msg1 = "\n^~x\n     ^~~~~~";
   ofp::rpc::TrimErrorMessage(msg1);
-  EXPECT_EQ(msg1, "x");
+  EXPECT_EQ(msg1, "\n^~x");
 
   std::string msg2 = "";
   ofp::rpc::TrimErrorMessage(msg2);
