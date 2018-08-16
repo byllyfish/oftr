@@ -102,6 +102,8 @@ TEST(macaddress, single_hex) {
   MacAddress a;
 
   EXPECT_FALSE(a.parse("0e:00:00:00:0:73"));
+  EXPECT_FALSE(a.parse("e:00:00:00:00:01"));
+  EXPECT_FALSE(a.parse("0e:00:00:00:00:1"));
   EXPECT_FALSE(a.parse("1:2:3:4:5:6"));
 }
 
