@@ -90,7 +90,7 @@ TEST(macaddress, integer) {
   EXPECT_EQ("00:00:ff:aa:bb:cc", a.toString());
 
   EXPECT_FALSE(a.parse("0x0000ffaabbcc"));
-  //EXPECT_EQ("00:00:ff:aa:bb:cc", a.toString());
+  // EXPECT_EQ("00:00:ff:aa:bb:cc", a.toString());
 
   EXPECT_FALSE(a.parse("0000ffaabbc"));
   EXPECT_FALSE(a.parse("0000ffaabbccd"));

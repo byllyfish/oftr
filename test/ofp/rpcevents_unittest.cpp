@@ -1,6 +1,5 @@
-#include "ofp/unittest.h"
 #include "ofp/rpc/rpcevents.h"
-
+#include "ofp/unittest.h"
 
 TEST(rpcevents, test_TrimErrorMessage) {
   std::string msg1 = "x\n     ^";
