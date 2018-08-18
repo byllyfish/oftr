@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.51 (18 August 2018)
+
+- Accept MAC addresses with a single hex digit between delimiters. (Issue #15)
+- Fix "oftr help" schema to reflect event renaming in oftr 0.49.
+- Trim CHANNEL_ALERT messages that end with "\n    ^~~~~~".
+- Update boringssl and googletest modules.
+
 == Version 0.50 (8 July 2018)
 
 - CHANNEL_UP message now includes FeaturesReply (with PortDesc) when using FEATURES_REQ option.
