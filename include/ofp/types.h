@@ -294,7 +294,7 @@ extern template char *RawDataToHexDelimitedLowercase(
 
 /// Convert a hexadecimal string with each hex-pair delimited by ':'.
 ///
-/// There must be one or two hex digits between each ':'. A single 
+/// There must be one or two hex digits between each ':'. A single
 /// hex digit 'h' is treated as if prefixed by 0, e.g. '0h'. Anything
 /// other than a hex digit or ':' is treated as an error.
 ///

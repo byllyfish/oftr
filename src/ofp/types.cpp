@@ -244,7 +244,6 @@ size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data,
   return 0;
 }
 
-
 std::string ofp::HexToRawData(const std::string &hex) {
   std::string result;
   result.reserve(hex.size() / 2);
