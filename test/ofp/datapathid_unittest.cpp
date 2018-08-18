@@ -39,9 +39,15 @@ TEST(datapathid, test) {
 
   DatapathID f;
   // There must be enough data to fill 8 bytes...
-  EXPECT_FALSE(f.parse("aa:bb:cc:dd:aa:bb:cc:d"));
+  EXPECT_FALSE(f.parse("aa:bb:cc:dd:aa:bb:cc"));
+
+  EXPECT_TRUE(f.parse("a:b:c:d:a:b:c:d"));
+  EXPECT_HEX("0a:0b:0c:0d:0a:0b:0c:0d", &f, sizeof(f));
+  EXPECT_TRUE(f.parse("aa:bb:cc:dd:aa:bb:cc:d"));
+  EXPECT_HEX("aa:bb:cc:dd:aa:bb:cc:0d", &f, sizeof(f));
   EXPECT_TRUE(f.parse("aa:bb:cc:dd:aa:bb:cc:dd"));
   EXPECT_HEX("aa:bb:cc:dd:aa:bb:cc:dd", &f, sizeof(f));
+
   // It's NOT okay to pass more data than necessary...
   EXPECT_FALSE(f.parse("aa:bb:cc:dd:aa:bb:cc:dd:ee"));
 
