@@ -50,7 +50,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.50.0)
+set(Libofp_VERSION 0.51.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -185,7 +185,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(LIBOFP_C_FLAGS "${LIBOFP_C_FLAGS} -pie -fPIE -rdynamic")
   set(LIBOFP_CXX_FLAGS "${LIBOFP_CXX_FLAGS} -pie -fPIE -rdynamic")
   # Also, disable the -Wpsabi warning on ARM/GCC 7.0. (https://gcc.gnu.org/gcc-7/changes.html)
-  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7.0)
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6.3)
     set(LIBOFP_WARNINGS_DISABLED "${LIBOFP_WARNINGS_DISABLED} -Wno-psabi")
   endif()
 endif()

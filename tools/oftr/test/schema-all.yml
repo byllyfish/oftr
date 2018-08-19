@@ -463,7 +463,7 @@ Message/Request.Desc:
   _file: !optout String
   type: REQUEST.DESC
   
-Message/Request.Table: 
+Message/Request.TableStats: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
@@ -474,7 +474,7 @@ Message/Request.Table:
   src: !optout IPEndpoint
   dst: !optout IPEndpoint
   _file: !optout String
-  type: REQUEST.TABLE
+  type: REQUEST.TABLE_STATS
   
 Message/Request.PortDesc: 
   version: !opt UInt8
@@ -528,7 +528,7 @@ Message/Request.MeterFeatures:
   _file: !optout String
   type: REQUEST.METER_FEATURES
   
-Message/Request.Flow: 
+Message/Request.FlowDesc: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
@@ -539,7 +539,7 @@ Message/Request.Flow:
   src: !optout IPEndpoint
   dst: !optout IPEndpoint
   _file: !optout String
-  type: REQUEST.FLOW
+  type: REQUEST.FLOW_DESC
   msg:
     table_id: TableNumber
     out_port: PortNumber
@@ -548,7 +548,7 @@ Message/Request.Flow:
     cookie_mask: UInt64
     match: [Field]
   
-Message/Request.Aggregate: 
+Message/Request.AggregateStats: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
@@ -559,7 +559,7 @@ Message/Request.Aggregate:
   src: !optout IPEndpoint
   dst: !optout IPEndpoint
   _file: !optout String
-  type: REQUEST.AGGREGATE
+  type: REQUEST.AGGREGATE_STATS
   msg:
     table_id: TableNumber
     out_port: PortNumber
@@ -583,7 +583,7 @@ Message/Request.PortStats:
   msg:
     port_no: PortNumber
   
-Message/Request.Queue: 
+Message/Request.QueueStats: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
@@ -594,7 +594,7 @@ Message/Request.Queue:
   src: !optout IPEndpoint
   dst: !optout IPEndpoint
   _file: !optout String
-  type: REQUEST.QUEUE
+  type: REQUEST.QUEUE_STATS
   msg:
     port_no: PortNumber
     queue_id: QueueNumber
@@ -630,7 +630,7 @@ Message/Request.MeterConfig:
   msg:
     meter_id: MeterNumber
   
-Message/Request.Meter: 
+Message/Request.MeterStats: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
@@ -641,11 +641,11 @@ Message/Request.Meter:
   src: !optout IPEndpoint
   dst: !optout IPEndpoint
   _file: !optout String
-  type: REQUEST.METER
+  type: REQUEST.METER_STATS
   msg:
     meter_id: MeterNumber
   
-Message/Request.Group: 
+Message/Request.GroupStats: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
@@ -656,7 +656,7 @@ Message/Request.Group:
   src: !optout IPEndpoint
   dst: !optout IPEndpoint
   _file: !optout String
-  type: REQUEST.GROUP
+  type: REQUEST.GROUP_STATS
   msg:
     group_id: GroupNumber
   
@@ -765,7 +765,7 @@ Message/Reply.Desc:
     serial_num: Str32
     dp_desc: Str256
   
-Message/Reply.Table: 
+Message/Reply.TableStats: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
@@ -776,7 +776,7 @@ Message/Reply.Table:
   src: !optout IPEndpoint
   dst: !optout IPEndpoint
   _file: !optout String
-  type: REPLY.TABLE
+  type: REPLY.TABLE_STATS
   msg:
     - table_id: TableNumber
       name: Str32
@@ -860,7 +860,7 @@ Message/Reply.MeterFeatures:
     max_bands: UInt8
     max_color: UInt8
   
-Message/Reply.Flow: 
+Message/Reply.FlowDesc: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
@@ -871,7 +871,7 @@ Message/Reply.Flow:
   src: !optout IPEndpoint
   dst: !optout IPEndpoint
   _file: !optout String
-  type: REPLY.FLOW
+  type: REPLY.FLOW_DESC
   msg:
     - table_id: TableNumber
       duration: DurationSec
@@ -896,7 +896,7 @@ Message/Reply.Aggregate:
   src: !optout IPEndpoint
   dst: !optout IPEndpoint
   _file: !optout String
-  type: REPLY.AGGREGATE
+  type: REPLY.AGGREGATE_STATS
   msg:
     packet_count: UInt64
     byte_count: UInt64
@@ -943,7 +943,7 @@ Message/Reply.PortStats:
         bias_current: UInt16
         temperature: UInt16
   
-Message/Reply.Queue: 
+Message/Reply.QueueStats: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
@@ -999,7 +999,7 @@ Message/Reply.MeterConfig:
       meter_id: MeterNumber
       bands: [MeterBand]
   
-Message/Reply.Meter: 
+Message/Reply.MeterStats: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
@@ -1010,7 +1010,7 @@ Message/Reply.Meter:
   src: !optout IPEndpoint
   dst: !optout IPEndpoint
   _file: !optout String
-  type: REPLY.METER
+  type: REPLY.METER_STATS
   msg:
     - meter_id: MeterNumber
       flow_count: UInt32
@@ -1019,7 +1019,7 @@ Message/Reply.Meter:
       duration: DurationSec
       bands: [PacketCounter]
   
-Message/Reply.Group: 
+Message/Reply.GroupStats: 
   version: !opt UInt8
   datapath_id: !opt DatapathID
   xid: !opt UInt32
@@ -1030,7 +1030,7 @@ Message/Reply.Group:
   src: !optout IPEndpoint
   dst: !optout IPEndpoint
   _file: !optout String
-  type: REPLY.GROUP
+  type: REPLY.GROUP_STATS
   msg:
     - group_id: GroupNumber
       ref_count: UInt32

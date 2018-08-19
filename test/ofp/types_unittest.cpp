@@ -208,18 +208,36 @@ TEST(types, HexDelimitedToRawData) {
   EXPECT_EQ(2, HexDelimitedToRawData("ff:FF", buf, sizeof(buf)));
   EXPECT_HEX("FF FF", buf, 2);
 
+  EXPECT_EQ(1, HexDelimitedToRawData("9", buf, sizeof(buf)));
+  EXPECT_HEX("09", buf, 1);
+  EXPECT_EQ(1, HexDelimitedToRawData("d", buf, sizeof(buf)));
+  EXPECT_HEX("0d", buf, 1);
+  EXPECT_EQ(2, HexDelimitedToRawData("00:3", buf, sizeof(buf)));
+  EXPECT_HEX("00 03", buf, 2);
+  EXPECT_EQ(2, HexDelimitedToRawData("ff:f", buf, sizeof(buf)));
+  EXPECT_HEX("FF 0F", buf, 2);
+  EXPECT_EQ(2, HexDelimitedToRawData("f:ff", buf, sizeof(buf)));
+  EXPECT_HEX("0F FF", buf, 2);
+  EXPECT_EQ(2, HexDelimitedToRawData("f:f", buf, sizeof(buf)));
+  EXPECT_HEX("0F 0F", buf, 2);
+
   EXPECT_EQ(0, HexDelimitedToRawData("", buf, sizeof(buf)));
-  EXPECT_EQ(0, HexDelimitedToRawData("0", buf, sizeof(buf)));
-  EXPECT_EQ(0, HexDelimitedToRawData("f", buf, sizeof(buf)));
   EXPECT_EQ(0, HexDelimitedToRawData("00:00:00", buf, sizeof(buf)));
   EXPECT_EQ(0, HexDelimitedToRawData("000", buf, sizeof(buf)));
   EXPECT_EQ(0, HexDelimitedToRawData("00:", buf, sizeof(buf)));
   EXPECT_EQ(0, HexDelimitedToRawData(":00", buf, sizeof(buf)));
-  EXPECT_EQ(0, HexDelimitedToRawData("00:0", buf, sizeof(buf)));
   EXPECT_EQ(0, HexDelimitedToRawData("00:00:", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexDelimitedToRawData("00:00:0", buf, sizeof(buf)));
   EXPECT_EQ(0, HexDelimitedToRawData("ff:ff:ff", buf, sizeof(buf)));
   EXPECT_EQ(0, HexDelimitedToRawData("ff:f ", buf, sizeof(buf)));
   EXPECT_EQ(0, HexDelimitedToRawData(" ff:ff", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexDelimitedToRawData("012", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexDelimitedToRawData("01:023", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexDelimitedToRawData("01::2", buf, sizeof(buf)));
+
+  EXPECT_EQ(0, HexDelimitedToRawData("f:g", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexDelimitedToRawData("fg", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexDelimitedToRawData("g:f", buf, sizeof(buf)));
 }
 
 static void watchdogtimer() {
