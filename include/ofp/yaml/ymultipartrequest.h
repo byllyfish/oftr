@@ -26,8 +26,8 @@ const char *const kMultipartRequestSchema = R"""(
 {Message/Request.Desc}
 type: REQUEST.DESC
 
-{Message/Request.Table}
-type: REQUEST.TABLE
+{Message/Request.TableStats}
+type: REQUEST.TABLE_STATS
 
 {Message/Request.PortDesc}
 type: REQUEST.PORT_DESC
@@ -41,8 +41,8 @@ type: REQUEST.GROUP_FEATURES
 {Message/Request.MeterFeatures}
 type: REQUEST.METER_FEATURES
 
-{Message/Request.Flow}
-type: REQUEST.FLOW
+{Message/Request.FlowDesc}
+type: REQUEST.FLOW_DESC
 msg:
   table_id: TableNumber
   out_port: PortNumber
@@ -51,8 +51,8 @@ msg:
   cookie_mask: UInt64
   match: [Field]
 
-{Message/Request.Aggregate}
-type: REQUEST.AGGREGATE
+{Message/Request.AggregateStats}
+type: REQUEST.AGGREGATE_STATS
 msg:
   table_id: TableNumber
   out_port: PortNumber
@@ -66,8 +66,8 @@ type: REQUEST.PORT_STATS
 msg:
   port_no: PortNumber
 
-{Message/Request.Queue}
-type: REQUEST.QUEUE
+{Message/Request.QueueStats}
+type: REQUEST.QUEUE_STATS
 msg:
   port_no: PortNumber
   queue_id: QueueNumber
@@ -83,13 +83,13 @@ type: REQUEST.METER_CONFIG
 msg:
   meter_id: MeterNumber
 
-{Message/Request.Meter}
-type: REQUEST.METER
+{Message/Request.MeterStats}
+type: REQUEST.METER_STATS
 msg:
   meter_id: MeterNumber
 
-{Message/Request.Group}
-type: REQUEST.GROUP
+{Message/Request.GroupStats}
+type: REQUEST.GROUP_STATS
 msg:
   group_id: GroupNumber
 

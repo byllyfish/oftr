@@ -89,8 +89,33 @@ TEST(macaddress, integer) {
   EXPECT_TRUE(a.parse("0000ffaabbcc"));
   EXPECT_EQ("00:00:ff:aa:bb:cc", a.toString());
 
+  EXPECT_FALSE(a.parse("0x0000ffaabbcc"));
+  // EXPECT_EQ("00:00:ff:aa:bb:cc", a.toString());
+
   EXPECT_FALSE(a.parse("0000ffaabbc"));
   EXPECT_FALSE(a.parse("0000ffaabbccd"));
   EXPECT_FALSE(a.parse(" 12345678123"));
   EXPECT_FALSE(a.parse("12345678123 "));
+}
+
+TEST(macaddress, single_hex) {
+  MacAddress a;
+
+  EXPECT_TRUE(a.parse("0e:00:00:00:0:73"));
+  EXPECT_EQ("0e:00:00:00:00:73", a.toString());
+  EXPECT_TRUE(a.parse("e:00:00:00:00:01"));
+  EXPECT_EQ("0e:00:00:00:00:01", a.toString());
+  EXPECT_TRUE(a.parse("0e:00:00:00:00:1"));
+  EXPECT_EQ("0e:00:00:00:00:01", a.toString());
+  EXPECT_TRUE(a.parse("1:2:3:4:5:6"));
+  EXPECT_EQ("01:02:03:04:05:06", a.toString());
+
+  EXPECT_FALSE(a.parse("1:2:3:4:5:"));
+  EXPECT_FALSE(a.parse("1:2:3:4:5"));
+}
+
+TEST(macaddress, dash_delimiter) {
+  MacAddress a;
+
+  EXPECT_FALSE(a.parse("01-02-03-04-05-06"));
 }

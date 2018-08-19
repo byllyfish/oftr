@@ -66,3 +66,19 @@ TEST(ymatch, decodeMatchYamlPortNumber) {
   ++iter;
   EXPECT_EQ(fields.end(), iter);
 }
+
+TEST(ymatch, decodeMatchCaseSensitive) {
+  MatchBuilder match;
+
+  std::string input{
+      R"""(---
+- field: in_port
+  value: 1
+...
+)"""};
+
+  llvm::yaml::Input yin{input, nullptr, diagnosticHandler, nullptr};
+  yin >> match;
+
+  EXPECT_TRUE(yin.error());
+}

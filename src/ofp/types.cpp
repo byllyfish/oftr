@@ -187,32 +187,60 @@ size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data,
   UInt8 *begin = MutableBytePtr(data);
   UInt8 *end = begin + length;
   UInt8 *out = begin;
+  const char *input = s.data();
+  size_t input_left = s.size();
 
-  while (s.size() >= 2 && out < end) {
-    char a = s[0];
-    char b = s[1];
-    if (!std::isxdigit(a) || !std::isxdigit(b)) {
-      // Invalid hex digit.
-      break;
+  while (input_left >= 2) {
+    if (out >= end) {
+      return 0;
+    }
+
+    char a = *input++;
+    char b = *input++;
+    input_left -= 2;
+
+    if (!isxdigit(a)) {
+      return 0;
+    }
+
+    if (b == ':') {
+      // Single hex digit case.
+      *out++ = UInt8_narrow_cast(FromHex(a));
+      continue;
+    }
+
+    if (!isxdigit(b)) {
+      return 0;
     }
 
     *out++ = UInt8_narrow_cast((FromHex(a) << 4) | FromHex(b));
 
-    if (s.size() == 2) {
-      // Valid input.
+    if (input_left == 0) {
       return Unsigned_cast(out - begin);
     }
-    assert(s.size() >= 3);
 
-    if (s[2] != ':') {
-      // Delimiter must be ':'.
-      break;
+    char delimiter = *input++;
+    if (delimiter != ':') {
+      return 0;
     }
-
-    s = s.drop_front(3);
+    --input_left;
   }
 
-  // Invalid input.
+  if (input_left == 1) {
+    if (out >= end) {
+      return 0;
+    }
+
+    // Trailing single hex digit.
+    char last = *input;
+    if (!isxdigit(last)) {
+      return 0;
+    }
+
+    *out++ = UInt8_narrow_cast(FromHex(last));
+    return Unsigned_cast(out - begin);
+  }
+
   return 0;
 }
 
