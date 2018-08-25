@@ -582,6 +582,11 @@ add_subdirectory(external/yaml-io)
 if(LIBOFP_ENABLE_OPENSSL AND LIBOFP_USE_BORINGSSL)
   # Boringssl uses the __FILE__ predefined macro in "openssl/err.h". Redefine
   # __FILE__ to __func__ just for boringssl. (TODO)
+  # Some tests use alignas(64) which elicits a warning on GCC 7.0+/ARM.
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7.0)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=attributes")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error=attributes")
+  endif()
   add_subdirectory(external/boringssl)
 endif()
 
