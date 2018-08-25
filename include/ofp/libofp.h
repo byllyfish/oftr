@@ -72,8 +72,10 @@ LIBOFP_EXPORT int libofp_decode(libofp_buffer *result,
 LIBOFP_EXPORT void libofp_buffer_free(libofp_buffer *buffer) LIBOFP_USED;
 
 #define OFTR_VERSION 0
-#define OFTR_ENCODE 1
-#define OFTR_DECODE 2
+#define OFTR_ENCODE_OPENFLOW 1
+#define OFTR_DECODE_OPENFLOW 2
+#define OFTR_ENCODE_PACKET 3
+#define OFTR_DECODE_PACKET 4
 
 /// Invoke a library function synchronously.
 ///
@@ -85,8 +87,10 @@ LIBOFP_EXPORT void libofp_buffer_free(libofp_buffer *buffer) LIBOFP_USED;
 ///      the operation (opcode & 0xFF). Depending on the operation, the other
 ///      bits may represent flags or OF version.
 ///       0 = get sw version  [ 0x0 | 0x0 | 0x0 | 0x0 ]
-///       1 = encode          [ OF-version | 0x0 | 0x0 | 0x1 ]
-///       2 = decode          [ 0x0 | 0x0 | 0x0 | 0x02 ]
+///       1 = encode-openflow [ OF-version | 0x0 | 0x0 | 0x1 ]
+///       2 = decode-openflow [ 0x0 | 0x0 | 0x0 | 0x02 ]
+///       3 = encode-packet   [ 0x0 | 0x0 | 0x0 | 0x03 ]
+///       4 = decode-packet   [ 0x0 | 0x0 | 0x0 | 0x04 ]
 ///   input: Input buffer
 ///   input_len: Input buffer size
 ///   output: Mutable output buffer
