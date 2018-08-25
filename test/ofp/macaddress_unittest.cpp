@@ -112,6 +112,10 @@ TEST(macaddress, single_hex) {
 
   EXPECT_FALSE(a.parse("1:2:3:4:5:"));
   EXPECT_FALSE(a.parse("1:2:3:4:5"));
+
+  // Delimited; exactly 12 bytes long.
+  EXPECT_TRUE(a.parse("00:1:1:1:1:1"));
+  EXPECT_EQ("00:01:01:01:01:01", a.toString());
 }
 
 TEST(macaddress, dash_delimiter) {

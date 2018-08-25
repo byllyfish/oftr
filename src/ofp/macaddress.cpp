@@ -13,6 +13,10 @@ MacAddress::MacAddress(llvm::StringRef s) {
 }
 
 bool MacAddress::parse(llvm::StringRef s) {
+  if (HexDelimitedToRawData(s, addr_.data(), addr_.size()) == addr_.size()) {
+    return true;
+  }
+
   // If string is exactly 12 chars, check if we can parse it as hex.
   if (s.size() == 12) {
     UInt64 n;
@@ -23,7 +27,7 @@ bool MacAddress::parse(llvm::StringRef s) {
     return true;
   }
 
-  return HexDelimitedToRawData(s, addr_.data(), addr_.size()) == addr_.size();
+  return false;
 }
 
 namespace ofp {
