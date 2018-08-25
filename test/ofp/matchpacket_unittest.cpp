@@ -740,3 +740,11 @@ TEST(matchpacket, lldp_custom) {
       "'Port_DESCR'\n- field:           X_LLDP_ORG_SPECIFIC\n  value:          "
       " '0x12bb 0x2 01406500'\n...\n");
 }
+
+TEST(matchpacket, ipv6_unknown_ip_proto) {
+  // The current implementation doesn't add IP_PROTO if it's not TCP, UDP or ICMPv6.
+  testPacket(
+      "3333FF718C4C32FA25D4234186DD6000000000182AFF0000000000000000000000000000"
+      "0000FF0200000000000000000001FF718C4C",
+      "---\n- field:           ETH_DST\n  value:           '33:33:ff:71:8c:4c'\n- field:           ETH_SRC\n  value:           '32:fa:25:d4:23:41'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0xFF\n- field:           IPV6_SRC\n  value:           '::'\n- field:           IPV6_DST\n  value:           'ff02::1:ff71:8c4c'\n- field:           IPV6_EXTHDR\n  value:           0x0001\n...\n");
+}
