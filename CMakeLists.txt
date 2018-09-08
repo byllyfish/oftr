@@ -38,6 +38,11 @@ if(POLICY CMP0025)
   cmake_policy(SET CMP0025 NEW)
 endif()
 
+# Include file check macros honor CMAKE_REQUIRED_LIBRARIES (cmake 3.12)
+if(POLICY CMP0075)
+  cmake_policy(SET CMP0075 NEW)
+endif()
+
 project(Libofp)
 
 # Log version of cmake
