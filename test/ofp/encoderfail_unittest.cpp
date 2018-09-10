@@ -702,9 +702,11 @@ TEST(encoderfail, invalid_yaml4_fuzz) {
   EXPECT_HEX("", encoder.data(), encoder.size());
 }
 
+#if defined(NDEBUG)
 
 TEST(encoderfail, featuresreplyv4_missing_prop) {
-  // This triggered a clang asan failure on 2018-09-08...
+  // This triggered a clang asan failure on 2018-09-08; debug build only.
+  // clang 9.1.0 (clang-902.0.39.2)
   const char *input = R"""(
     type: FEATURES_REPLY
     version: 4
@@ -723,3 +725,5 @@ TEST(encoderfail, featuresreplyv4_missing_prop) {
   EXPECT_EQ("YAML:6:7: error: missing required key 'n_buffers'\n      datapath_id: '00:00:01:02:03:04:05:06'\n      ^\n", encoder.error());
   EXPECT_EQ(0, encoder.size());
 }
+
+#endif // defined(NDEBUG)

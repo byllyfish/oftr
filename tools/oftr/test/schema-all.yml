@@ -197,7 +197,7 @@ Message/FeaturesReply:
     auxiliary_id: !opt UInt8
     capabilities: [CapabilitiesFlags]
     actions: !optout [ActionTypeFlags]  # version=1
-    ports: [Port]
+    ports: !opt [Port]
   
 Message/GetConfigRequest: 
   version: !opt UInt8
