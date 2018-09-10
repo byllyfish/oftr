@@ -244,6 +244,36 @@ size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data,
   return 0;
 }
 
+size_t ofp::HexStrictToRawData(llvm::StringRef s, void *data, size_t length) {
+  UInt8 *begin = MutableBytePtr(data);
+  UInt8 *end = begin + length;
+  UInt8 *out = begin;
+  const char *input = s.data();
+  size_t input_left = s.size();
+
+  while (input_left >= 2) {
+    if (out >= end) {
+      return 0;
+    }
+
+    char a = *input++;
+    char b = *input++;
+    input_left -= 2;
+
+    if (!isxdigit(a) || !isxdigit(b)) {
+      return 0;
+    }
+
+    *out++ = UInt8_narrow_cast((FromHex(a) << 4) | FromHex(b));
+  }
+
+  if (input_left != 0) {
+    return 0;
+  }
+
+  return Unsigned_cast(out - begin);
+}
+
 std::string ofp::HexToRawData(const std::string &hex) {
   std::string result;
   result.reserve(hex.size() / 2);

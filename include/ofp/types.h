@@ -304,6 +304,14 @@ extern template char *RawDataToHexDelimitedLowercase(
 /// \return size of output or 0 if there is an error
 size_t HexDelimitedToRawData(llvm::StringRef s, void *data, size_t length);
 
+/// Convert a hexadecimal string with no delimiters or white space.
+///
+/// \param  s string containing 'hhhhhhhhhh'
+/// \param  data output buffer
+/// \param  length size of output buffer
+/// \return size of output or 0 if there is an error
+size_t HexStrictToRawData(llvm::StringRef s, void *data, size_t length);
+
 /// Convert a hexadecimal string to raw memory. Ignore non-hex digits and the
 /// odd final hex digit.
 ///

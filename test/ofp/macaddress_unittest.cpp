@@ -96,6 +96,7 @@ TEST(macaddress, integer) {
   EXPECT_FALSE(a.parse("0000ffaabbccd"));
   EXPECT_FALSE(a.parse(" 12345678123"));
   EXPECT_FALSE(a.parse("12345678123 "));
+  EXPECT_FALSE(a.parse("0x1234567809"));
 }
 
 TEST(macaddress, single_hex) {

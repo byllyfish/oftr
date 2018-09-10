@@ -240,6 +240,37 @@ TEST(types, HexDelimitedToRawData) {
   EXPECT_EQ(0, HexDelimitedToRawData("g:f", buf, sizeof(buf)));
 }
 
+
+TEST(types, HexStrictToRawData) {
+  UInt8 buf[2];
+
+  EXPECT_EQ(1, HexStrictToRawData("00", buf, sizeof(buf)));
+  EXPECT_HEX("00", buf, 1);
+  EXPECT_EQ(2, HexStrictToRawData("0000", buf, sizeof(buf)));
+  EXPECT_HEX("00 00", buf, 2);
+  EXPECT_EQ(1, HexStrictToRawData("fF", buf, sizeof(buf)));
+  EXPECT_HEX("FF", buf, 1);
+  EXPECT_EQ(2, HexStrictToRawData("ffFF", buf, sizeof(buf)));
+  EXPECT_HEX("FF FF", buf, 2);
+
+  EXPECT_EQ(1, HexStrictToRawData("09", buf, sizeof(buf)));
+  EXPECT_HEX("09", buf, 1);
+  EXPECT_EQ(1, HexStrictToRawData("0d", buf, sizeof(buf)));
+  EXPECT_HEX("0d", buf, 1);
+
+  EXPECT_EQ(0, HexStrictToRawData("010203", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexStrictToRawData("003", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexStrictToRawData("fff", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexStrictToRawData("", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexStrictToRawData("fg", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexStrictToRawData(" ff", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexStrictToRawData("ff ", buf, sizeof(buf)));
+
+  EXPECT_EQ(0, HexStrictToRawData("00:00:00", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexStrictToRawData("000", buf, sizeof(buf)));
+  EXPECT_EQ(0, HexStrictToRawData("00 00", buf, sizeof(buf)));
+}
+
 static void watchdogtimer() {
   SetWatchdogTimer(1);
   volatile UInt64 counter = 0;
