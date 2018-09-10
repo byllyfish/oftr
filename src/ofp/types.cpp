@@ -183,7 +183,7 @@ size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen,
 }
 
 size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data,
-                                  size_t length) {
+                                  size_t length, char delimiter) {
   UInt8 *begin = MutableBytePtr(data);
   UInt8 *end = begin + length;
   UInt8 *out = begin;
@@ -203,7 +203,7 @@ size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data,
       return 0;
     }
 
-    if (b == ':') {
+    if (b == delimiter) {
       // Single hex digit case.
       *out++ = UInt8_narrow_cast(FromHex(a));
       continue;
@@ -219,8 +219,8 @@ size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data,
       return Unsigned_cast(out - begin);
     }
 
-    char delimiter = *input++;
-    if (delimiter != ':') {
+    char delim = *input++;
+    if (delim != delimiter) {
       return 0;
     }
     --input_left;

@@ -18,7 +18,12 @@ bool MacAddress::parse(llvm::StringRef s) {
   }
 
   // If string is exactly 12 chars, check if we can parse it as hex.
-  return (s.size() == 12 && HexStrictToRawData(s, addr_.data(), addr_.size()) == addr_.size());
+  if (s.size() == 12 && HexStrictToRawData(s, addr_.data(), addr_.size()) == addr_.size()) {
+    return true;
+  }
+
+  // Handle MAC address with hyphen for delimiter.
+  return HexDelimitedToRawData(s, addr_.data(), addr_.size(), '-') == addr_.size();
 }
 
 namespace ofp {
