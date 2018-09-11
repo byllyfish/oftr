@@ -748,3 +748,20 @@ TEST(matchpacket, ipv6_unknown_ip_proto) {
       "0000FF0200000000000000000001FF718C4C",
       "---\n- field:           ETH_DST\n  value:           '33:33:ff:71:8c:4c'\n- field:           ETH_SRC\n  value:           '32:fa:25:d4:23:41'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0xFF\n- field:           IPV6_SRC\n  value:           '::'\n- field:           IPV6_DST\n  value:           'ff02::1:ff71:8c4c'\n- field:           IPV6_EXTHDR\n  value:           0x0001\n...\n");
 }
+
+TEST(matchpacket, tcp6_with_hopbyhop_routing_ext_hdrs) {
+  // <Ether  type=0x86dd |<IPv6  nh=Hop-by-Hop Option Header |<IPv6ExtHdrHopByHop  nh=Routing Header |<IPv6ExtHdrRouting  nh=TCP |<TCP  sport=2 dport=1 flags=S |>>>>>
+  testPacket("FFFFFFFFFFFF00000000000086DD600000000024004000000000000000000000000000000001000000000000000000000000000000012B000104000000000600000000000000000200010000000000000000500220008FDE0000", "---\n- field:           ETH_DST\n  value:           'ff:ff:ff:ff:ff:ff'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:00'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0x40\n- field:           IP_PROTO\n  value:           0x06\n- field:           IPV6_SRC\n  value:           '::1'\n- field:           IPV6_DST\n  value:           '::1'\n- field:           TCP_SRC\n  value:           0x0002\n- field:           TCP_DST\n  value:           0x0001\n- field:           NX_TCP_FLAGS\n  value:           0x0002\n- field:           IPV6_EXTHDR\n  value:           0x0060\n...\n");
+}
+
+TEST(matchpacket, sctp6_with_hopbyhop_routing_ext_hdrs) {
+  // <Ether  type=0x86dd |<IPv6  nh=Hop-by-Hop Option Header |<IPv6ExtHdrHopByHop  nh=Routing Header |<IPv6ExtHdrRouting  nh=SCTP |<SCTP  sport=1 dport=2 |>>>>>
+  // FIXME(bfish): IP_PROTO is missing
+  testPacket("FFFFFFFFFFFF00000000000086DD60000000001C004000000000000000000000000000000001000000000000000000000000000000012B0001040000000084000000000000000001000200000000FD988051", "---\n- field:           ETH_DST\n  value:           'ff:ff:ff:ff:ff:ff'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:00'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0x40\n- field:           IPV6_SRC\n  value:           '::1'\n- field:           IPV6_DST\n  value:           '::1'\n- field:           IPV6_EXTHDR\n  value:           0x0060\n- field:           X_PKT_POS\n  value:           0x0046\n...\n");
+}
+
+TEST(matchpacket, ipv6_with_hopbyhop_routing_ext_hdrs_only) {
+  // <Ether  type=0x86dd |<IPv6  nh=Hop-by-Hop Option Header |<IPv6ExtHdrHopByHop  nh=Routing Header |<IPv6ExtHdrRouting  nh=No Next Header |>>>>
+  // FIXME(bfish): IPV6_EXTHDR should be 0x61.
+  testPacket("FFFFFFFFFFFF00000000000086DD600000000010004000000000000000000000000000000001000000000000000000000000000000012B000104000000003B00000000000000", "---\n- field:           ETH_DST\n  value:           'ff:ff:ff:ff:ff:ff'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:00'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0x40\n- field:           IPV6_SRC\n  value:           '::1'\n- field:           IPV6_DST\n  value:           '::1'\n- field:           IPV6_EXTHDR\n  value:           0x0060\n...\n");
+}
