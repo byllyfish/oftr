@@ -66,7 +66,9 @@ inline void SmallCString<Size>::operator=(const std::string &s) {
   size_t len = std::min(s.length(), capacity());
   assert(len <= capacity());
   std::memcpy(&str_, s.data(), len);
-  std::memset(&str_[len], 0, capacity() - len);
+  if (capacity() != len) {
+    std::memset(&str_[len], 0, capacity() - len);
+  }
 }
 
 template <size_t Size>
@@ -74,7 +76,9 @@ inline void SmallCString<Size>::operator=(const char *cstr) {
   size_t len = detail::strlen(cstr, capacity());
   assert(len <= capacity());
   std::memcpy(&str_, cstr, len);
-  std::memset(&str_[len], 0, capacity() - len);
+  if (capacity() != len) {
+    std::memset(&str_[len], 0, capacity() - len);
+  }
 }
 
 }  // namespace ofp
