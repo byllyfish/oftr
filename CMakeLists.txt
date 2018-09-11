@@ -29,6 +29,10 @@
 #
 #    cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true ..
 #
+# To enable asan/ubsan in release builds (clang-only):
+#
+#    cmake -DLIBOFP_ENABLE_SANITIZE=true ..
+#
 
 # N.B. Trusty supports cmake 2.8.12 (unless you use cmake3 pkg).
 cmake_minimum_required(VERSION 2.8.11)
@@ -112,6 +116,13 @@ endif()
 set(LIBOFP_ENABLE_CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
 if(LIBOFP_ENABLE_CODE_COVERAGE)
   message(STATUS "Code coverage is enabled.")
+endif()
+
+# You can enable asan/ubsan sanitizers in release builds (clang-only). 
+
+set(LIBOFP_ENABLE_SANITIZE FALSE CACHE BOOL "Enable asan/ubsan sanitizers")
+if(LIBOFP_ENABLE_SANITIZE)
+  message(STATUS "asan/ubsan Sanitizers are enabled.")
 endif()
 
 # Require out of source builds.
@@ -430,13 +441,11 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
 endif()
 
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
-  #set(LIBOFP_FSANITIZE "-fsanitize=address,undefined -fsanitize-undefined-trap-on-error")
-  # [FIXME] Clang 9.0.0.9000037 in latest XCode is erroring in asyncConnect() when using
-  # undefined sanitizer, apparently inside asio callback (via lambda function).
-  set(LIBOFP_FSANITIZE "-fsanitize=address")
-else()
-  set(LIBOFP_FSANITIZE "")
+set(LIBOFP_FSANITIZE "")
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  if(CMAKE_BUILD_TYPE MATCHES "Debug" OR LIBOFP_ENABLE_SANITIZE)
+    set(LIBOFP_FSANITIZE "-fsanitize=address,undefined -fsanitize-undefined-trap-on-error")
+  endif()
 endif()
 
 # Enable Link Time Optimization in Release builds. After this step, these
