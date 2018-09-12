@@ -52,6 +52,7 @@ Help::~Help() = default;
 OFP_BEGIN_IGNORE_GLOBAL_CONSTRUCTOR
 
 static const char *const kMessageSchemas[] = {
+    llvm::yaml::kChannelSchema,
     llvm::yaml::kHelloSchema,
     llvm::yaml::kErrorSchema,
     llvm::yaml::kEchoRequestSchema,

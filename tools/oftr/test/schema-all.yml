@@ -75,32 +75,63 @@ Rpc/OFP.MESSAGE:
   method: !notify OFP.MESSAGE
   params: !notify Message
   
-Rpc/OFP.MESSAGE: 
-  method: !notify OFP.MESSAGE
-  params: !notify
-    type: CHANNEL_UP | CHANNEL_DOWN
-    time: Timestamp
-    conn_id: UInt64
-    datapath_id: !optout DatapathID
-    version: UInt8
-    endpoint: IPEndpoint
-  
-Rpc/OFP.MESSAGE: 
-  method: !notify OFP.MESSAGE
-  params: !notify
-    type: CHANNEL_ALERT
-    time: Timestamp
-    conn_id: UInt64
-    datapath_id: !optout DatapathID
-    xid: UInt32
-    alert: String
-    data: HexData
-  
 Rpc/rpc.error: 
   id: UInt64
   error:
     code: SInt32
     message: String
+  
+Message/ChannelUp: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [MultipartFlags]
+  time: !optout Timestamp
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
+  _file: !optout String
+  type: CHANNEL_UP
+  msg:
+    endpoint: IPEndpoint
+    features: !opt
+      datapath_id: DatapathID
+      n_buffers: UInt32
+      n_tables: UInt8
+      auxiliary_id: !opt UInt8
+      capabilities: [CapabilitiesFlags]
+      actions: !optout [ActionTypeFlags]  # version=1
+      ports: !opt [Port]
+  
+Message/ChannelDown: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [MultipartFlags]
+  time: !optout Timestamp
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
+  _file: !optout String
+  type: CHANNEL_DOWN
+  
+Message/ChannelAlert: 
+  version: !opt UInt8
+  datapath_id: !opt DatapathID
+  xid: !opt UInt32
+  conn_id: !opt UInt64
+  auxiliary_id: !opt UInt8
+  flags: !optout [MultipartFlags]
+  time: !optout Timestamp
+  src: !optout IPEndpoint
+  dst: !optout IPEndpoint
+  _file: !optout String
+  type: CHANNEL_ALERT
+  msg:
+    alert: String
+    data: HexData
   
 Message/Hello: 
   version: !opt UInt8

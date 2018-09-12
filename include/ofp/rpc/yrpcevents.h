@@ -97,32 +97,35 @@ result: !reply
 method: !notify OFP.MESSAGE
 params: !notify Message
 
-{Rpc/OFP.MESSAGE}
-method: !notify OFP.MESSAGE
-params: !notify
-  type: CHANNEL_UP | CHANNEL_DOWN
-  time: Timestamp
-  conn_id: UInt64
-  datapath_id: !optout DatapathID
-  version: UInt8
-  endpoint: IPEndpoint
-
-{Rpc/OFP.MESSAGE}
-method: !notify OFP.MESSAGE
-params: !notify
-  type: CHANNEL_ALERT
-  time: Timestamp
-  conn_id: UInt64
-  datapath_id: !optout DatapathID
-  xid: UInt32
-  alert: String
-  data: HexData
-
 {Rpc/rpc.error}
 id: UInt64
 error:
   code: SInt32
   message: String
+)""";
+
+const char *const kChannelSchema = R"""(
+{Message/ChannelUp}
+type: CHANNEL_UP
+msg:
+  endpoint: IPEndpoint
+  features: !opt
+    datapath_id: DatapathID
+    n_buffers: UInt32
+    n_tables: UInt8
+    auxiliary_id: !opt UInt8
+    capabilities: [CapabilitiesFlags]
+    actions: !optout [ActionTypeFlags]  # version=1
+    ports: !opt [Port]
+
+{Message/ChannelDown}
+type: CHANNEL_DOWN
+
+{Message/ChannelAlert}
+type: CHANNEL_ALERT
+msg:
+  alert: String
+  data: HexData
 )""";
 
 template <>
@@ -427,9 +430,10 @@ struct MappingTraits<ofp::rpc::RpcChannel::ParamsMsg> {
   static void mapping(IO &io, ofp::rpc::RpcChannel::ParamsMsg &msg) {
     io.mapRequired("endpoint", msg.endpoint);
 
-    if (msg.features)
+    if (msg.features) {
       io.mapRequired("features",
                      *const_cast<ofp::FeaturesReply *>(msg.features));
+    }
   }
 };
 
@@ -450,8 +454,16 @@ struct MappingTraits<ofp::rpc::RpcAlert::Params> {
     io.mapRequired("conn_id", params.connId);
     io.mapOptional("datapath_id", params.datapathId, ofp::DatapathID{});
     io.mapRequired("xid", params.xid);
-    io.mapRequired("alert", params.alert);
-    io.mapRequired("data", params.data);
+
+    io.mapRequired("msg", params.msg);
+  }
+};
+
+template <>
+struct MappingTraits<ofp::rpc::RpcAlert::ParamsMsg> {
+  static void mapping(IO &io, ofp::rpc::RpcAlert::ParamsMsg &msg) {
+    io.mapRequired("alert", msg.alert);
+    io.mapRequired("data", msg.data);
   }
 };
 

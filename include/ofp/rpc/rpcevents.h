@@ -331,14 +331,18 @@ struct RpcChannel {
 struct RpcAlert {
   std::string toJson();
 
+  struct ParamsMsg {
+    std::string alert;
+    ByteRange data;    
+  };
+
   struct Params {
     std::string type;
     Timestamp time;
     UInt64 connId = 0;
     DatapathID datapathId;
     UInt32 xid = 0;
-    std::string alert;
-    ByteRange data;
+    ParamsMsg msg;
   };
 
   Params params;
