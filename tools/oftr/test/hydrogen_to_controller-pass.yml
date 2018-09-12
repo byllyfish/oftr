@@ -101,8 +101,6 @@ msg:
       value:           0x00
     - field:           IPV6_ND_TARGET
       value:           'fe80::b4bc:75ff:feb4:99ba'
-    - field:           IPV6_EXTHDR
-      value:           0x0001
 ...
 ---
 type:            PORT_STATUS
@@ -160,8 +158,6 @@ msg:
       value:           0x00
     - field:           IPV6_ND_TARGET
       value:           'fe80::200:ff:fe00:2'
-    - field:           IPV6_EXTHDR
-      value:           0x0001
 ...
 ---
 type:            PACKET_IN
@@ -199,8 +195,6 @@ msg:
       value:           0x00
     - field:           IPV6_ND_TARGET
       value:           'fe80::200:ff:fe00:1'
-    - field:           IPV6_EXTHDR
-      value:           0x0001
 ...
 ---
 type:            PACKET_IN
@@ -275,8 +269,6 @@ msg:
       value:           0x85
     - field:           ICMPV6_CODE
       value:           0x00
-    - field:           IPV6_EXTHDR
-      value:           0x0001
     - field:           X_PKT_POS
       value:           0x003A
 ...
@@ -353,8 +345,6 @@ msg:
       value:           0x85
     - field:           ICMPV6_CODE
       value:           0x00
-    - field:           IPV6_EXTHDR
-      value:           0x0001
     - field:           X_PKT_POS
       value:           0x003A
 ...
@@ -431,8 +421,6 @@ msg:
       value:           0x85
     - field:           ICMPV6_CODE
       value:           0x00
-    - field:           IPV6_EXTHDR
-      value:           0x0001
     - field:           X_PKT_POS
       value:           0x003A
 ...
@@ -2558,8 +2546,6 @@ msg:
       value:           0x85
     - field:           ICMPV6_CODE
       value:           0x00
-    - field:           IPV6_EXTHDR
-      value:           0x0001
     - field:           X_PKT_POS
       value:           0x003A
 ...
@@ -2636,8 +2622,6 @@ msg:
       value:           0x85
     - field:           ICMPV6_CODE
       value:           0x00
-    - field:           IPV6_EXTHDR
-      value:           0x0001
     - field:           X_PKT_POS
       value:           0x003A
 ...
@@ -2675,8 +2659,6 @@ msg:
       value:           0x85
     - field:           ICMPV6_CODE
       value:           0x00
-    - field:           IPV6_EXTHDR
-      value:           0x0001
     - field:           X_PKT_POS
       value:           0x003A
 ...
@@ -2880,8 +2862,6 @@ msg:
       value:           0x85
     - field:           ICMPV6_CODE
       value:           0x00
-    - field:           IPV6_EXTHDR
-      value:           0x0001
     - field:           X_PKT_POS
       value:           0x003A
 ...
@@ -2919,8 +2899,6 @@ msg:
       value:           0x85
     - field:           ICMPV6_CODE
       value:           0x00
-    - field:           IPV6_EXTHDR
-      value:           0x0001
     - field:           X_PKT_POS
       value:           0x003A
 ...
@@ -2958,8 +2936,6 @@ msg:
       value:           0x85
     - field:           ICMPV6_CODE
       value:           0x00
-    - field:           IPV6_EXTHDR
-      value:           0x0001
     - field:           X_PKT_POS
       value:           0x003A
 ...

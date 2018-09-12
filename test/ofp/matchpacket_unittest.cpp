@@ -420,8 +420,7 @@ TEST(matchpacket, icmpv6) {
       "value:           'ff02::1:ff71:8c4c'\n- field:           ICMPV6_TYPE\n  "
       "value:           0x87\n- field:           ICMPV6_CODE\n  value:         "
       "  0x00\n- field:           IPV6_ND_TARGET\n  value:           "
-      "'fe80::fc0c:cdff:fe71:8c4c'\n- field:           IPV6_EXTHDR\n  value:   "
-      "        0x0001\n...\n");
+      "'fe80::fc0c:cdff:fe71:8c4c'\n...\n");
 
   // exact size
   testPacket(
@@ -435,8 +434,7 @@ TEST(matchpacket, icmpv6) {
       "IPV6_SRC\n  value:           '::'\n- field:           IPV6_DST\n  "
       "value:           'ff02::1:ff71:8c4c'\n- field:           ICMPV6_TYPE\n  "
       "value:           0x87\n- field:           ICMPV6_CODE\n  value:         "
-      "  0x00\n- field:           IPV6_EXTHDR\n  value:           "
-      "0x0001\n...\n");
+      "  0x00\n...\n");
 
   // 1 byte short
   testPacket(
@@ -448,8 +446,7 @@ TEST(matchpacket, icmpv6) {
       "0x86DD\n- field:           NX_IP_TTL\n  value:           0xFF\n- field: "
       "          IP_PROTO\n  value:           0x3A\n- field:           "
       "IPV6_SRC\n  value:           '::'\n- field:           IPV6_DST\n  "
-      "value:           'ff02::1:ff71:8c4c'\n- field:           IPV6_EXTHDR\n  "
-      "value:           0x0001\n- field:           X_PKT_POS\n  value:         "
+      "value:           'ff02::1:ff71:8c4c'\n- field:           X_PKT_POS\n  value:         "
       "  0x0036\n...\n");
 }
 
@@ -470,8 +467,7 @@ TEST(matchpacket, tcpv6) {
       "'8888:8888:8888:8888:8888:8888:8888:8888'\n- field:           "
       "IPV6_FLABEL\n  value:           0x00044444\n- field:           "
       "UDP_SRC\n  value:           0xBBBB\n- field:           UDP_DST\n  "
-      "value:           0xCCCC\n- field:           IPV6_EXTHDR\n  value:       "
-      "    0x0001\n- field:           X_PKT_POS\n  value:           "
+      "value:           0xCCCC\n- field:           X_PKT_POS\n  value:           "
       "0x003E\n...\n");
 }
 
@@ -492,8 +488,7 @@ TEST(matchpacket, udpv6) {
       "'8888:8888:8888:8888:8888:8888:8888:8888'\n- field:           "
       "IPV6_FLABEL\n  value:           0x00044444\n- field:           "
       "UDP_SRC\n  value:           0xBBBB\n- field:           UDP_DST\n  "
-      "value:           0xCCCC\n- field:           IPV6_EXTHDR\n  value:       "
-      "    0x0001\n...\n");
+      "value:           0xCCCC\n...\n");
 }
 
 TEST(matchpacket, lldp) {
@@ -622,8 +617,7 @@ TEST(matchpacket, icmpv6_nd_solicit) {
       " 0x87\n- field:           ICMPV6_CODE\n  value:           0x00\n- "
       "field:           IPV6_ND_TARGET\n  value:           "
       "'fc00::10:10:10:1'\n- field:           IPV6_ND_SLL\n  value:           "
-      "'be:d9:25:cb:d7:f0'\n- field:           IPV6_EXTHDR\n  value:           "
-      "0x0001\n...\n");
+      "'be:d9:25:cb:d7:f0'\n...\n");
 }
 
 TEST(matchpacket, icmpv6_nd_advertise) {
@@ -642,8 +636,7 @@ TEST(matchpacket, icmpv6_nd_advertise) {
       " 0x88\n- field:           ICMPV6_CODE\n  value:           0x00\n- "
       "field:           X_IPV6_ND_RES\n  value:           0x70000000\n- field: "
       "          IPV6_ND_TARGET\n  value:           'fc00::10:10:10:1'\n- "
-      "field:           IPV6_ND_TLL\n  value:           'be:d9:25:cb:d7:f0'\n- "
-      "field:           IPV6_EXTHDR\n  value:           0x0001\n...\n");
+      "field:           IPV6_ND_TLL\n  value:           'be:d9:25:cb:d7:f0'\n...\n");
 }
 
 TEST(matchpacket, icmpv6_nd_router_advert) {
@@ -658,7 +651,7 @@ TEST(matchpacket, icmpv6_nd_router_advert) {
       "IPV6_SRC\n  value:           'fc00::1'\n- field:           IPV6_DST\n  "
       "value:           'ff02::1:ff10:1'\n- field:           ICMPV6_TYPE\n  "
       "value:           0x85\n- field:           ICMPV6_CODE\n  value:         "
-      "  0x00\n- field:           IPV6_EXTHDR\n  value:           0x0001\n- "
+      "  0x00\n- "
       "field:           X_PKT_POS\n  value:           0x003A\n...\n");
 }
 
@@ -746,7 +739,7 @@ TEST(matchpacket, ipv6_unknown_ip_proto) {
   testPacket(
       "3333FF718C4C32FA25D4234186DD6000000000182AFF0000000000000000000000000000"
       "0000FF0200000000000000000001FF718C4C",
-      "---\n- field:           ETH_DST\n  value:           '33:33:ff:71:8c:4c'\n- field:           ETH_SRC\n  value:           '32:fa:25:d4:23:41'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0xFF\n- field:           IPV6_SRC\n  value:           '::'\n- field:           IPV6_DST\n  value:           'ff02::1:ff71:8c4c'\n- field:           IPV6_EXTHDR\n  value:           0x0001\n...\n");
+      "---\n- field:           ETH_DST\n  value:           '33:33:ff:71:8c:4c'\n- field:           ETH_SRC\n  value:           '32:fa:25:d4:23:41'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0xFF\n- field:           IP_PROTO\n  value:           0x2A\n- field:           IPV6_SRC\n  value:           '::'\n- field:           IPV6_DST\n  value:           'ff02::1:ff71:8c4c'\n...\n");
 }
 
 TEST(matchpacket, tcp6_with_hopbyhop_routing_ext_hdrs) {
@@ -757,11 +750,20 @@ TEST(matchpacket, tcp6_with_hopbyhop_routing_ext_hdrs) {
 TEST(matchpacket, sctp6_with_hopbyhop_routing_ext_hdrs) {
   // <Ether  type=0x86dd |<IPv6  nh=Hop-by-Hop Option Header |<IPv6ExtHdrHopByHop  nh=Routing Header |<IPv6ExtHdrRouting  nh=SCTP |<SCTP  sport=1 dport=2 |>>>>>
   // FIXME(bfish): IP_PROTO is missing
-  testPacket("FFFFFFFFFFFF00000000000086DD60000000001C004000000000000000000000000000000001000000000000000000000000000000012B0001040000000084000000000000000001000200000000FD988051", "---\n- field:           ETH_DST\n  value:           'ff:ff:ff:ff:ff:ff'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:00'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0x40\n- field:           IPV6_SRC\n  value:           '::1'\n- field:           IPV6_DST\n  value:           '::1'\n- field:           IPV6_EXTHDR\n  value:           0x0060\n- field:           X_PKT_POS\n  value:           0x0046\n...\n");
+  testPacket("FFFFFFFFFFFF00000000000086DD60000000001C004000000000000000000000000000000001000000000000000000000000000000012B0001040000000084000000000000000001000200000000FD988051", "---\n- field:           ETH_DST\n  value:           'ff:ff:ff:ff:ff:ff'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:00'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0x40\n- field:           IP_PROTO\n  value:           0x84\n- field:           IPV6_SRC\n  value:           '::1'\n- field:           IPV6_DST\n  value:           '::1'\n- field:           IPV6_EXTHDR\n  value:           0x0060\n- field:           X_PKT_POS\n  value:           0x0046\n...\n");
 }
 
 TEST(matchpacket, ipv6_with_hopbyhop_routing_ext_hdrs_only) {
   // <Ether  type=0x86dd |<IPv6  nh=Hop-by-Hop Option Header |<IPv6ExtHdrHopByHop  nh=Routing Header |<IPv6ExtHdrRouting  nh=No Next Header |>>>>
-  // FIXME(bfish): IPV6_EXTHDR should be 0x61.
-  testPacket("FFFFFFFFFFFF00000000000086DD600000000010004000000000000000000000000000000001000000000000000000000000000000012B000104000000003B00000000000000", "---\n- field:           ETH_DST\n  value:           'ff:ff:ff:ff:ff:ff'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:00'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0x40\n- field:           IPV6_SRC\n  value:           '::1'\n- field:           IPV6_DST\n  value:           '::1'\n- field:           IPV6_EXTHDR\n  value:           0x0060\n...\n");
+  testPacket("FFFFFFFFFFFF00000000000086DD600000000010004000000000000000000000000000000001000000000000000000000000000000012B000104000000003B00000000000000", "---\n- field:           ETH_DST\n  value:           'ff:ff:ff:ff:ff:ff'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:00'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0x40\n- field:           IP_PROTO\n  value:           0x3B\n- field:           IPV6_SRC\n  value:           '::1'\n- field:           IPV6_DST\n  value:           '::1'\n- field:           IPV6_EXTHDR\n  value:           0x0061\n...\n");
+}
+
+TEST(matchpacket, ipv6_nonext_hdr_only) {
+  // <Ether  type=0x86dd |<IPv6  nh=No Next Header |>>
+  testPacket("FFFFFFFFFFFF00000000000086DD6000000000003B400000000000000000000000000000000100000000000000000000000000000001", "---\n- field:           ETH_DST\n  value:           'ff:ff:ff:ff:ff:ff'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:00'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0x40\n- field:           IP_PROTO\n  value:           0x3B\n- field:           IPV6_SRC\n  value:           '::1'\n- field:           IPV6_DST\n  value:           '::1'\n- field:           IPV6_EXTHDR\n  value:           0x0001\n...\n");
+}
+
+TEST(matchpacket, ipv6_exthdr_incomplete) {
+  // <Ether  type=0x86dd |<IPv6  nh=Hop-by-Hop Option Header |>>
+  testPacket("FFFFFFFFFFFF00000000000086DD60000000000000400000000000000000000000000000000100000000000000000000000000000001", "---\n- field:           ETH_DST\n  value:           'ff:ff:ff:ff:ff:ff'\n- field:           ETH_SRC\n  value:           '00:00:00:00:00:00'\n- field:           ETH_TYPE\n  value:           0x86DD\n- field:           NX_IP_TTL\n  value:           0x40\n- field:           IP_PROTO\n  value:           0x00\n- field:           IPV6_SRC\n  value:           '::1'\n- field:           IPV6_DST\n  value:           '::1'\n...\n");
 }
