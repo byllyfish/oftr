@@ -332,7 +332,7 @@ struct RpcAlert {
   std::string toJson();
 
   struct ParamsMsg {
-    std::string alert;
+    std::string message;
     ByteRange data;    
   };
 

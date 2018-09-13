@@ -124,7 +124,7 @@ type: CHANNEL_DOWN
 {Message/ChannelAlert}
 type: CHANNEL_ALERT
 msg:
-  alert: String
+  message: String
   data: HexData
 )""";
 
@@ -462,7 +462,7 @@ struct MappingTraits<ofp::rpc::RpcAlert::Params> {
 template <>
 struct MappingTraits<ofp::rpc::RpcAlert::ParamsMsg> {
   static void mapping(IO &io, ofp::rpc::RpcAlert::ParamsMsg &msg) {
-    io.mapRequired("alert", msg.alert);
+    io.mapRequired("message", msg.message);
     io.mapRequired("data", msg.data);
   }
 };

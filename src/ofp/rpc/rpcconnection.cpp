@@ -127,9 +127,9 @@ void RpcConnection::rpcAlert(const DatapathID &datapathId, UInt64 connId,
   messageAlert.params.connId = connId;
   messageAlert.params.datapathId = datapathId;
   messageAlert.params.xid = xid;
-  messageAlert.params.msg.alert = alert;
+  messageAlert.params.msg.message = alert;
   messageAlert.params.msg.data = data;
-  ofp::rpc::TrimErrorMessage(messageAlert.params.msg.alert);
+  ofp::rpc::TrimErrorMessage(messageAlert.params.msg.message);
 
   rpcReply(&messageAlert);
 }

@@ -411,35 +411,6 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format
     time: Timestamp
     ...
 
-  method: OFP.MESSAGE
-  params:
-    type: CHANNEL_UP
-    time: Timestamp
-    conn_id: UInt64
-    datapath_id: DatapathID  # Optional
-    version: UInt8
-    msg:
-      endpoint: IPEndpoint
-      features: FeaturesReply
-
-  method: OFP.MESSAGE
-  params:
-    type: CHANNEL_DOWN
-    time: Timestamp
-    conn_id: UInt64
-    datapath_id: DatapathID  # Optional
-    version: UInt8
-
-  method: OFP.MESSAGE
-  params:
-    type: CHANNEL_ALERT
-    time: Timestamp
-    conn_id: UInt64
-    datapath_id: DatapathID  # Optional
-    xid: !optout UInt32
-    alert: String
-    data: HexString
-
 ==== Discussion
 
 The `OFP.MESSAGE` event is sent when an OpenFlow message is received. There
@@ -458,7 +429,7 @@ HELLO messages are exchanged, and the datapath_id parameter is not included.
 The `CHANNEL_DOWN` message is sent when an OpenFlow channel goes down.
 
 The `CHANNEL_ALERT` message is sent when something unusual or abnormal happens. The
-alert parameter contains the reason for the message. The contents of the data 
+message parameter contains the reason for the message. The contents of the data 
 parameter depend on the type of alert.
 
 Here are some examples of why an alert message might be sent.

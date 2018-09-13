@@ -130,7 +130,7 @@ Message/ChannelAlert:
   _file: !optout String
   type: CHANNEL_ALERT
   msg:
-    alert: String
+    message: String
     data: HexData
   
 Message/Hello: 
