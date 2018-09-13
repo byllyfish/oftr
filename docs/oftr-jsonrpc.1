@@ -2,12 +2,12 @@
 .\"     Title: oftr-jsonrpc
 .\"    Author: William W. Fisher <william.w.fisher@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 08/18/2018
+.\"      Date: 09/13/2018
 .\"    Manual: \ \&
 .\"    Source: \ \&
 .\"  Language: English
 .\"
-.TH "OFTR\-JSONRPC" "1" "08/18/2018" "\ \&" "\ \&"
+.TH "OFTR\-JSONRPC" "1" "09/13/2018" "\ \&" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -958,59 +958,6 @@ params:
 .RE
 .\}
 .sp
-.if n \{\
-.RS 4
-.\}
-.nf
-method: OFP\&.MESSAGE
-params:
-  type: CHANNEL_UP
-  time: Timestamp
-  conn_id: UInt64
-  datapath_id: DatapathID  # Optional
-  version: UInt8
-  msg:
-    endpoint: IPEndpoint
-    features: FeaturesReply
-.fi
-.if n \{\
-.RE
-.\}
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-method: OFP\&.MESSAGE
-params:
-  type: CHANNEL_DOWN
-  time: Timestamp
-  conn_id: UInt64
-  datapath_id: DatapathID  # Optional
-  version: UInt8
-.fi
-.if n \{\
-.RE
-.\}
-.sp
-.if n \{\
-.RS 4
-.\}
-.nf
-method: OFP\&.MESSAGE
-params:
-  type: CHANNEL_ALERT
-  time: Timestamp
-  conn_id: UInt64
-  datapath_id: DatapathID  # Optional
-  xid: !optout UInt32
-  alert: String
-  data: HexString
-.fi
-.if n \{\
-.RE
-.\}
-.sp
 .it 1 an-trap
 .nr an-no-space-flag 1
 .nr an-break-flag 1
@@ -1027,7 +974,7 @@ The CHANNEL_UP message is sent when an OpenFlow channel comes up\&. If the FEATU
 .sp
 The CHANNEL_DOWN message is sent when an OpenFlow channel goes down\&.
 .sp
-The CHANNEL_ALERT message is sent when something unusual or abnormal happens\&. The alert parameter contains the reason for the message\&. The contents of the data parameter depend on the type of alert\&.
+The CHANNEL_ALERT message is sent when something unusual or abnormal happens\&. The message parameter contains the reason for the message\&. The contents of the data parameter depend on the type of alert\&.
 .sp
 Here are some examples of why an alert message might be sent\&.
 .sp
@@ -1083,7 +1030,7 @@ Failure: Syntax or usage error in command line arguments\&.
 GitHub: https://github\&.com/byllyfish/oftr
 .SH "COPYING"
 .sp
-Copyright (C) 2015\-2017 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT License\&.
+Copyright (C) 2015\-2018 William W\&. Fisher\&. Free use of this software is granted under the terms of the MIT License\&.
 .SH "AUTHOR"
 .PP
 \fBWilliam W\&. Fisher\fR <\&william\&.w\&.fisher@gmail\&.com\&>
