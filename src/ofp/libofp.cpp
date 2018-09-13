@@ -50,8 +50,9 @@ static int32_t oftr_version(char *output, size_t output_len) {
   return buf_copy(output, output_len, buf.data(), buf.size(), false);
 }
 
-static int32_t oftr_encode_openflow(const char *input, size_t input_len, uint8_t version,
-                           char *output, size_t output_len) {
+static int32_t oftr_encode_openflow(const char *input, size_t input_len,
+                                    uint8_t version, char *output,
+                                    size_t output_len) {
   llvm::StringRef text{input, input_len};
   ofp::yaml::Encoder encoder{text, true, 1, version};
 
@@ -63,8 +64,8 @@ static int32_t oftr_encode_openflow(const char *input, size_t input_len, uint8_t
   return buf_copy(output, output_len, encoder.data(), encoder.size(), false);
 }
 
-static int32_t oftr_decode_openflow(const char *input, size_t input_len, char *output,
-                           size_t output_len) {
+static int32_t oftr_decode_openflow(const char *input, size_t input_len,
+                                    char *output, size_t output_len) {
   if (input_len < sizeof(ofp::Header)) {
     return buf_copy(output, output_len, "Buffer size < 8 bytes", true);
   }
@@ -103,7 +104,8 @@ int32_t oftr_call(uint32_t opcode, const char *input, size_t input_len,
     case OFTR_VERSION:
       return oftr_version(output, output_len);
     case OFTR_ENCODE_OPENFLOW:
-      return oftr_encode_openflow(input, input_len, (opcode >> 24), output, output_len);
+      return oftr_encode_openflow(input, input_len, (opcode >> 24), output,
+                                  output_len);
     case OFTR_DECODE_OPENFLOW:
       return oftr_decode_openflow(input, input_len, output, output_len);
     default:

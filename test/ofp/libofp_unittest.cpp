@@ -36,34 +36,39 @@ TEST(libofp, oftr_encode) {
   size_t msglen = strlen(msg);
   UInt32 vers = 1 << 24;
 
-  int len = oftr_call(OFTR_ENCODE_OPENFLOW + vers, msg, msglen, buffer, sizeof(buffer));
+  int len = oftr_call(OFTR_ENCODE_OPENFLOW + vers, msg, msglen, buffer,
+                      sizeof(buffer));
   EXPECT_GT(len, 0);
   EXPECT_HEX("0100000800000000", buffer, static_cast<size_t>(len));
 
   // Test empty input buffer.
-  len = oftr_call(OFTR_ENCODE_OPENFLOW + vers, nullptr, 0, buffer, sizeof(buffer));
+  len = oftr_call(OFTR_ENCODE_OPENFLOW + vers, nullptr, 0, buffer,
+                  sizeof(buffer));
   EXPECT_LT(len, 0);
   EXPECT_ASCII("YAML:1:1: error: not a document", buffer,
                static_cast<size_t>(-len));
 
   // Test passing empty buffers.
-  EXPECT_EQ(oftr_call(OFTR_ENCODE_OPENFLOW + vers, nullptr, 0, nullptr, 0), -31);
+  EXPECT_EQ(oftr_call(OFTR_ENCODE_OPENFLOW + vers, nullptr, 0, nullptr, 0),
+            -31);
 
   // Test passing empty output buffer.
-  EXPECT_EQ(oftr_call(OFTR_ENCODE_OPENFLOW + vers, msg, msglen, nullptr, 0), -8);
+  EXPECT_EQ(oftr_call(OFTR_ENCODE_OPENFLOW + vers, msg, msglen, nullptr, 0),
+            -8);
 
   // Test passing short output buffer.
   char small[5];
-  EXPECT_EQ(oftr_call(OFTR_ENCODE_OPENFLOW + vers, msg, msglen, small, sizeof(small)),
-            -8);
+  EXPECT_EQ(
+      oftr_call(OFTR_ENCODE_OPENFLOW + vers, msg, msglen, small, sizeof(small)),
+      -8);
 }
 
 TEST(libofp, oftr_decode) {
   char buffer[128];
   std::string msg = HexToRawData("0100000800000000");
 
-  int len =
-      oftr_call(OFTR_DECODE_OPENFLOW, msg.data(), msg.size(), buffer, sizeof(buffer));
+  int len = oftr_call(OFTR_DECODE_OPENFLOW, msg.data(), msg.size(), buffer,
+                      sizeof(buffer));
   EXPECT_EQ(len, 123);
   EXPECT_ASCII(
       "---\ntype:            HELLO\nxid:             0x00000000\nversion:      "
@@ -79,11 +84,12 @@ TEST(libofp, oftr_decode) {
   EXPECT_EQ(oftr_call(OFTR_DECODE_OPENFLOW, nullptr, 0, nullptr, 0), -21);
 
   // Test passing empty output buffer.
-  EXPECT_EQ(oftr_call(OFTR_DECODE_OPENFLOW, msg.data(), msg.size(), nullptr, 0), -123);
+  EXPECT_EQ(oftr_call(OFTR_DECODE_OPENFLOW, msg.data(), msg.size(), nullptr, 0),
+            -123);
 
   // Test passing short output buffer.
   char small[5];
-  EXPECT_EQ(
-      oftr_call(OFTR_DECODE_OPENFLOW, msg.data(), msg.size(), small, sizeof(small)),
-      -123);
+  EXPECT_EQ(oftr_call(OFTR_DECODE_OPENFLOW, msg.data(), msg.size(), small,
+                      sizeof(small)),
+            -123);
 }

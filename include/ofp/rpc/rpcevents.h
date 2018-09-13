@@ -333,7 +333,7 @@ struct RpcAlert {
 
   struct ParamsMsg {
     std::string message;
-    ByteRange data;    
+    ByteRange data;
   };
 
   struct Params {

@@ -240,7 +240,6 @@ TEST(types, HexDelimitedToRawData) {
   EXPECT_EQ(0, HexDelimitedToRawData("g:f", buf, sizeof(buf)));
 }
 
-
 TEST(types, HexStrictToRawData) {
   UInt8 buf[2];
 

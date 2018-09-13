@@ -722,8 +722,11 @@ TEST(encoderfail, featuresreplyv4_missing_prop) {
 
   Encoder encoder{input};
 
-  EXPECT_EQ("YAML:6:7: error: missing required key 'n_buffers'\n      datapath_id: '00:00:01:02:03:04:05:06'\n      ^\n", encoder.error());
+  EXPECT_EQ(
+      "YAML:6:7: error: missing required key 'n_buffers'\n      datapath_id: "
+      "'00:00:01:02:03:04:05:06'\n      ^\n",
+      encoder.error());
   EXPECT_EQ(0, encoder.size());
 }
 
-#endif // defined(NDEBUG)
+#endif  // defined(NDEBUG)

@@ -13,7 +13,7 @@ extern "C" {
 
 #define LIBOFP_EXPORT __attribute__((visibility("default")))
 #define LIBOFP_USED __attribute__((used))
-	
+
 #define OFTR_VERSION 0
 #define OFTR_ENCODE_OPENFLOW 1
 #define OFTR_DECODE_OPENFLOW 2

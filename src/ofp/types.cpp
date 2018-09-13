@@ -182,8 +182,8 @@ size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen,
   return Unsigned_cast(out - begin);
 }
 
-size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data,
-                                  size_t length, char delimiter) {
+size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data, size_t length,
+                                  char delimiter) {
   UInt8 *begin = MutableBytePtr(data);
   UInt8 *end = begin + length;
   UInt8 *out = begin;
