@@ -319,6 +319,7 @@ struct RpcChannel {
     Timestamp time;
     UInt64 connId = 0;
     DatapathID datapathId;
+    UInt32 xid = 0;
     UInt8 version{};
     ParamsMsg msg;
   };

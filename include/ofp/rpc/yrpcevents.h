@@ -415,10 +415,10 @@ struct MappingTraits<ofp::rpc::RpcChannel::Params> {
   static void mapping(IO &io, ofp::rpc::RpcChannel::Params &params) {
     io.mapRequired("type", params.type);
     io.mapRequired("time", params.time);
+    io.mapRequired("xid", params.xid);
+    io.mapRequired("version", params.version);
     io.mapRequired("conn_id", params.connId);
     io.mapOptional("datapath_id", params.datapathId, ofp::DatapathID{});
-    io.mapRequired("version", params.version);
-
     if (params.type == "CHANNEL_UP") {
       io.mapRequired("msg", params.msg);
     }
@@ -451,10 +451,9 @@ struct MappingTraits<ofp::rpc::RpcAlert::Params> {
   static void mapping(IO &io, ofp::rpc::RpcAlert::Params &params) {
     io.mapRequired("type", params.type);
     io.mapRequired("time", params.time);
+    io.mapRequired("xid", params.xid);
     io.mapRequired("conn_id", params.connId);
     io.mapOptional("datapath_id", params.datapathId, ofp::DatapathID{});
-    io.mapRequired("xid", params.xid);
-
     io.mapRequired("msg", params.msg);
   }
 };
