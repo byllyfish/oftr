@@ -14,7 +14,7 @@ echo "PYENV_ROOT:        ${PYENV_ROOT}"
 
 mkdir -p Build
 cd Build
-cmake ..
+cmake -DLIBOFP_ENABLE_SANITIZE=true ..
 MAKEFLAGS=-j4 ctest -j4 --output-on-failure -D Experimental
 cd ..
 

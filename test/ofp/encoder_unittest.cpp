@@ -388,6 +388,24 @@ TEST(encoder, featuresreplyv4) {
       "04060020000000BF000001020304050600000100FF0000000000000000000000");
 }
 
+TEST(encoder, featuresreplyv4_no_ports) {
+  const char *input = R"""(
+    type: FEATURES_REPLY
+    version: 4
+    xid: 0xBF
+    msg:
+      datapath_id: '00:00:01:02:03:04:05:06'
+      n_buffers: 256
+      n_tables: 255
+      auxiliary_id: 0
+      capabilities: []
+    )""";
+
+  testEncoderSuccess(
+      input, 0x20,
+      "04060020000000BF000001020304050600000100FF0000000000000000000000");
+}
+
 TEST(encoder, ofmp_flowrequest_v4) {
   const char *input = R"""(
     type: MULTIPART_REQUEST

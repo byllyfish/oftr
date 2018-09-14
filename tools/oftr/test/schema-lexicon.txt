@@ -11,7 +11,6 @@ actions_groups_sel
 active_count
 advertise
 advertised
-alert
 api_version
 apply_actions
 apply_actions_miss
@@ -54,6 +53,7 @@ ethertype
 eviction
 exp_type
 experimenter
+features
 field
 fl_offset
 flags

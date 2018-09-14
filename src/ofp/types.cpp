@@ -182,8 +182,8 @@ size_t ofp::HexToRawData(const std::string &hex, void *data, size_t maxlen,
   return Unsigned_cast(out - begin);
 }
 
-size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data,
-                                  size_t length) {
+size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data, size_t length,
+                                  char delimiter) {
   UInt8 *begin = MutableBytePtr(data);
   UInt8 *end = begin + length;
   UInt8 *out = begin;
@@ -203,7 +203,7 @@ size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data,
       return 0;
     }
 
-    if (b == ':') {
+    if (b == delimiter) {
       // Single hex digit case.
       *out++ = UInt8_narrow_cast(FromHex(a));
       continue;
@@ -219,8 +219,8 @@ size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data,
       return Unsigned_cast(out - begin);
     }
 
-    char delimiter = *input++;
-    if (delimiter != ':') {
+    char delim = *input++;
+    if (delim != delimiter) {
       return 0;
     }
     --input_left;
@@ -242,6 +242,36 @@ size_t ofp::HexDelimitedToRawData(llvm::StringRef s, void *data,
   }
 
   return 0;
+}
+
+size_t ofp::HexStrictToRawData(llvm::StringRef s, void *data, size_t length) {
+  UInt8 *begin = MutableBytePtr(data);
+  UInt8 *end = begin + length;
+  UInt8 *out = begin;
+  const char *input = s.data();
+  size_t input_left = s.size();
+
+  while (input_left >= 2) {
+    if (out >= end) {
+      return 0;
+    }
+
+    char a = *input++;
+    char b = *input++;
+    input_left -= 2;
+
+    if (!isxdigit(a) || !isxdigit(b)) {
+      return 0;
+    }
+
+    *out++ = UInt8_narrow_cast((FromHex(a) << 4) | FromHex(b));
+  }
+
+  if (input_left != 0) {
+    return 0;
+  }
+
+  return Unsigned_cast(out - begin);
 }
 
 std::string ofp::HexToRawData(const std::string &hex) {

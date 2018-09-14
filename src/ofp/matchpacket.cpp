@@ -57,8 +57,8 @@ static const MacAddress *findLLOption(const UInt8 *ptr, size_t length,
 //    IPV6_SRC
 //    IPV6_DST
 //    IPV6_FLABEL  (if non-zero)
-//    IP_PROTO     (fixme: only if recognized?)
-//    IPV6_EXTHDR
+//    IP_PROTO
+//    IPV6_EXTHDR  (if non-zero)
 //
 // When IP_PROTO == 0x06:
 //    TCP_SRC
@@ -386,6 +386,11 @@ void MatchPacket::decodeIPv6_NextHdr(const UInt8 *pkt, size_t length,
                                      UInt8 nextHdr) {
   UInt32 hdrFlags = 0;
 
+  if (nextHdr == pkt::IPv6Ext_NoNextHeader) {
+    hdrFlags |= OFPIEH_NONEXT;
+    match_.addOrderedUnchecked(OFB_IP_PROTO{nextHdr});
+  }
+
   while (nextHdr != pkt::IPv6Ext_NoNextHeader) {
     switch (nextHdr) {
       case PROTOCOL_TCP:
@@ -407,21 +412,25 @@ void MatchPacket::decodeIPv6_NextHdr(const UInt8 *pkt, size_t length,
         break;
 
       default:
-        // Record that we saw this extension header, then advance to
-        // the next.
-        nextHdr = nextIPv6ExtHdr(nextHdr, pkt, length, hdrFlags);
+        // Check for extension headers.
+        if (pkt::IPv6NextHeaderIsExtension(nextHdr)) {
+          nextHdr = nextIPv6ExtHdr(nextHdr, pkt, length, hdrFlags);
+        } else {
+          match_.addOrderedUnchecked(OFB_IP_PROTO{nextHdr});
+          nextHdr = pkt::IPv6Ext_NoNextHeader;
+        }
         break;
     }
   }
 
-  if (hdrFlags == 0) {
-    hdrFlags |= OFPIEH_NONEXT;
-  } else if (hdrFlags & OFPIEH_DEST_ROUTER) {
+  if (hdrFlags & OFPIEH_DEST_ROUTER) {
     hdrFlags = (hdrFlags & 0x0ffff) | OFPIEH_DEST;
   }
 
-  auto exthdr = static_cast<OFPIPv6ExtHdrFlags>(hdrFlags);
-  match_.addUnchecked(OFB_IPV6_EXTHDR{exthdr});
+  if (hdrFlags != 0) {
+    auto exthdr = static_cast<OFPIPv6ExtHdrFlags>(hdrFlags);
+    match_.addUnchecked(OFB_IPV6_EXTHDR{exthdr});
+  }
 }
 
 void MatchPacket::decodeICMPv4(const UInt8 *pkt, size_t length) {
@@ -575,6 +584,7 @@ UInt8 MatchPacket::nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt,
 
   auto ext = pkt::IPv6ExtHdr::cast(pkt, length);
   if (!ext) {
+    match_.addOrderedUnchecked(OFB_IP_PROTO{currHdr});
     return pkt::IPv6Ext_NoNextHeader;
   }
 
@@ -650,6 +660,11 @@ UInt8 MatchPacket::nextIPv6ExtHdr(UInt8 currHdr, const UInt8 *&pkt,
   pkt += extHdrLen;
   length -= extHdrLen;
   offset_ += extHdrLen;
+
+  if (nextHdr == pkt::IPv6Ext_NoNextHeader) {
+    flags |= OFPIEH_NONEXT;
+    match_.addOrderedUnchecked(OFB_IP_PROTO{nextHdr});
+  }
 
   return nextHdr;
 }

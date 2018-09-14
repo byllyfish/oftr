@@ -29,6 +29,10 @@
 #
 #    cmake -DLIBOFP_ENABLE_CODE_COVERAGE=true ..
 #
+# To enable asan/ubsan in release builds (clang-only):
+#
+#    cmake -DLIBOFP_ENABLE_SANITIZE=true ..
+#
 
 # N.B. Trusty supports cmake 2.8.12 (unless you use cmake3 pkg).
 cmake_minimum_required(VERSION 2.8.11)
@@ -36,6 +40,11 @@ cmake_minimum_required(VERSION 2.8.11)
 # Required for boringssl. (See external/boringssl/CMakeLists.txt)
 if(POLICY CMP0025)
   cmake_policy(SET CMP0025 NEW)
+endif()
+
+# Include file check macros honor CMAKE_REQUIRED_LIBRARIES (cmake 3.12)
+if(POLICY CMP0075)
+  cmake_policy(SET CMP0075 NEW)
 endif()
 
 project(Libofp)
@@ -50,7 +59,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.51.0)
+set(Libofp_VERSION 0.52.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -107,6 +116,13 @@ endif()
 set(LIBOFP_ENABLE_CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
 if(LIBOFP_ENABLE_CODE_COVERAGE)
   message(STATUS "Code coverage is enabled.")
+endif()
+
+# You can enable asan/ubsan sanitizers in release builds (clang-only). 
+
+set(LIBOFP_ENABLE_SANITIZE FALSE CACHE BOOL "Enable asan/ubsan sanitizers")
+if(LIBOFP_ENABLE_SANITIZE)
+  message(STATUS "asan/ubsan Sanitizers are enabled.")
 endif()
 
 # Require out of source builds.
@@ -425,13 +441,11 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
 endif()
 
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND CMAKE_BUILD_TYPE MATCHES "Debug")
-  #set(LIBOFP_FSANITIZE "-fsanitize=address,undefined -fsanitize-undefined-trap-on-error")
-  # [FIXME] Clang 9.0.0.9000037 in latest XCode is erroring in asyncConnect() when using
-  # undefined sanitizer, apparently inside asio callback (via lambda function).
-  set(LIBOFP_FSANITIZE "-fsanitize=address")
-else()
-  set(LIBOFP_FSANITIZE "")
+set(LIBOFP_FSANITIZE "")
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  if(CMAKE_BUILD_TYPE MATCHES "Debug" OR LIBOFP_ENABLE_SANITIZE)
+    set(LIBOFP_FSANITIZE "-fsanitize=address,undefined -fsanitize-undefined-trap-on-error")
+  endif()
 endif()
 
 # Enable Link Time Optimization in Release builds. After this step, these
@@ -582,6 +596,11 @@ add_subdirectory(external/yaml-io)
 if(LIBOFP_ENABLE_OPENSSL AND LIBOFP_USE_BORINGSSL)
   # Boringssl uses the __FILE__ predefined macro in "openssl/err.h". Redefine
   # __FILE__ to __func__ just for boringssl. (TODO)
+  # Some tests use alignas(64) which elicits a warning on GCC 7.0+/ARM.
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7.0)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=attributes")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error=attributes")
+  endif()
   add_subdirectory(external/boringssl)
 endif()
 
