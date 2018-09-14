@@ -13,17 +13,19 @@ MacAddress::MacAddress(llvm::StringRef s) {
 }
 
 bool MacAddress::parse(llvm::StringRef s) {
-  // If string is exactly 12 chars, check if we can parse it as hex.
-  if (s.size() == 12) {
-    UInt64 n;
-    if (s.getAsInteger<UInt64>(16, n))
-      return false;
-    Big64 val = n;
-    std::memcpy(&addr_, BytePtr(&val) + 2, sizeof(addr_));
+  if (HexDelimitedToRawData(s, addr_.data(), addr_.size()) == addr_.size()) {
     return true;
   }
 
-  return HexDelimitedToRawData(s, addr_.data(), addr_.size()) == addr_.size();
+  // If string is exactly 12 chars, check if we can parse it as hex.
+  if (s.size() == 12 &&
+      HexStrictToRawData(s, addr_.data(), addr_.size()) == addr_.size()) {
+    return true;
+  }
+
+  // Handle MAC address with hyphen for delimiter.
+  return HexDelimitedToRawData(s, addr_.data(), addr_.size(), '-') ==
+         addr_.size();
 }
 
 namespace ofp {

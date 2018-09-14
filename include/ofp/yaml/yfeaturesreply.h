@@ -22,7 +22,7 @@ msg:
   auxiliary_id: !opt UInt8
   capabilities: [CapabilitiesFlags]
   actions: !optout [ActionTypeFlags]  # version=1
-  ports: [Port]
+  ports: !opt [Port]
 )""";
 
 template <>
@@ -64,7 +64,7 @@ struct MappingTraits<ofp::FeaturesReplyBuilder> {
     msg.setActions(actions);
 
     PortList ports;
-    io.mapRequired("ports", ports);
+    io.mapOptional("ports", ports);
     msg.setPorts(ports);
   }
 };
