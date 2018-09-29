@@ -1992,6 +1992,14 @@ TEST(decoder, ofmp_portdescv5_reply_2) {
       "properties:      \n...\n");
 }
 
+TEST(decoder, ofmp_portdescv5_missing_ethernet_prop) {
+  testDecodeOnly(
+      "0513003811111111000D00000000000000001111002800002222222222220000506F7274"
+      "2031000000000000000000003333333344444444",
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  - port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n    name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    properties:      \n...\n");
+}
+
+
 TEST(decoder, ofmp_tablefeaturesv4_reply_unpadded_len) {
   // Accept a slightly malformed packet.
   testDecodeOnly(
