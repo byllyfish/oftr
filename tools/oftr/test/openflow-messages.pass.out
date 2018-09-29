@@ -111,13 +111,12 @@ msg:
   name:            OnbVAsbGyANGhMDl
   config:          [ NO_RECV_STP ]
   state:           [ STP_FORWARD ]
-  ethernet:        
-    curr:            [ 10MB_FD, 100MB_FD, COPPER, FIBER, AUTONEG ]
-    advertised:      [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_FD, COPPER, FIBER ]
-    supported:       [ 10MB_FD, 100MB_FD, 1GB_FD, 10GB_FD, COPPER, PAUSE ]
-    peer:            [ 10MB_HD, 1GB_HD, 1GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [ 10MB_FD, 100MB_FD, COPPER, FIBER, AUTONEG ]
+  advertised:      [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_FD, COPPER, FIBER ]
+  supported:       [ 10MB_FD, 100MB_FD, 1GB_FD, 10GB_FD, COPPER, PAUSE ]
+  peer:            [ 10MB_HD, 1GB_HD, 1GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -131,13 +130,12 @@ msg:
   name:            OnbVAsbGyANGhMDl
   config:          [ NO_RECV_STP ]
   state:           [ STP_FORWARD ]
-  ethernet:        
-    curr:            [ 10MB_FD, 100MB_FD, COPPER, FIBER, AUTONEG ]
-    advertised:      [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_FD, COPPER, FIBER ]
-    supported:       [ 10MB_FD, 100MB_FD, 1GB_FD, 10GB_FD, COPPER, PAUSE ]
-    peer:            [ 10MB_HD, 1GB_HD, 1GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [ 10MB_FD, 100MB_FD, COPPER, FIBER, AUTONEG ]
+  advertised:      [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_FD, COPPER, FIBER ]
+  supported:       [ 10MB_FD, 100MB_FD, 1GB_FD, 10GB_FD, COPPER, PAUSE ]
+  peer:            [ 10MB_HD, 1GB_HD, 1GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -650,13 +648,12 @@ msg:
       name:            DDDDDDDDDDDDDDDD
       config:          [  ]
       state:           [ STP_LISTEN ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -676,13 +673,12 @@ msg:
       name:            DDDDDDDDDDDDDDDD
       config:          [  ]
       state:           [ STP_LISTEN ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -702,13 +698,12 @@ msg:
       name:            DDDDDDDDDDDDDDDD
       config:          [  ]
       state:           [ STP_LISTEN ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -767,13 +762,12 @@ msg:
       name:            DDDDDDDDDDDDDDDD
       config:          [  ]
       state:           [ STP_LISTEN ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -793,13 +787,12 @@ msg:
       name:            DDDDDDDDDDDDDDDD
       config:          [ PORT_DOWN, NO_STP, NO_RECV, NO_RECV_STP, NO_FLOOD, NO_FWD, NO_PACKET_IN ]
       state:           [ STP_LISTEN ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -819,13 +812,12 @@ msg:
       name:            DDDDDDDDDDDDDDDD
       config:          [  ]
       state:           [ STP_LISTEN ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -845,13 +837,12 @@ msg:
       name:            DDDDDDDDDDDDDDDD
       config:          [  ]
       state:           [ LINK_DOWN, BLOCKED, LIVE, STP_LISTEN, '0x00000018' ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -871,13 +862,12 @@ msg:
       name:            DDDDDDDDDDDDDDDD
       config:          [  ]
       state:           [ STP_LISTEN ]
-      ethernet:        
-        curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -1102,13 +1092,12 @@ msg:
   name:            OnbVAsbGyANGhMDl
   config:          [ NO_RECV_STP ]
   state:           [ STP_FORWARD ]
-  ethernet:        
-    curr:            [ 10MB_FD, 100MB_FD, COPPER, FIBER, AUTONEG ]
-    advertised:      [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_FD, COPPER, FIBER ]
-    supported:       [ 10MB_FD, 100MB_FD, 1GB_FD, 10GB_FD, COPPER, PAUSE ]
-    peer:            [ 10MB_HD, 1GB_HD, 1GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [ 10MB_FD, 100MB_FD, COPPER, FIBER, AUTONEG ]
+  advertised:      [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_FD, COPPER, FIBER ]
+  supported:       [ 10MB_FD, 100MB_FD, 1GB_FD, 10GB_FD, COPPER, PAUSE ]
+  peer:            [ 10MB_HD, 1GB_HD, 1GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -1703,65 +1692,60 @@ msg:
       name:            oixsuxawwCcJhvEQ
       config:          [ NO_FWD ]
       state:           [ LINK_DOWN, STP_LISTEN ]
-      ethernet:        
-        curr:            [ 10MB_FD, 1GB_HD, AUTONEG, PAUSE, PAUSE_ASYM ]
-        advertised:      [ 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 10GB_FD, COPPER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        supported:       [ 100MB_HD, FIBER, PAUSE_ASYM ]
-        peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, FIBER, PAUSE_ASYM ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [ 10MB_FD, 1GB_HD, AUTONEG, PAUSE, PAUSE_ASYM ]
+      advertised:      [ 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 10GB_FD, COPPER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      supported:       [ 100MB_HD, FIBER, PAUSE_ASYM ]
+      peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, FIBER, PAUSE_ASYM ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
     - port_no:         0x00002F1D
       hw_addr:         '03:f8:d5:f8:61:ec'
       name:            yvnyWDlbXHbJqmct
       config:          [ NO_PACKET_IN ]
       state:           [ STP_BLOCK ]
-      ethernet:        
-        curr:            [ 100MB_HD, 100MB_FD, 1GB_HD, 10GB_FD, AUTONEG, PAUSE_ASYM ]
-        advertised:      [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, FIBER, AUTONEG, PAUSE_ASYM ]
-        supported:       [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        peer:            [ 10MB_HD, 10MB_FD, 1GB_HD, COPPER ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [ 100MB_HD, 100MB_FD, 1GB_HD, 10GB_FD, AUTONEG, PAUSE_ASYM ]
+      advertised:      [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, FIBER, AUTONEG, PAUSE_ASYM ]
+      supported:       [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      peer:            [ 10MB_HD, 10MB_FD, 1GB_HD, COPPER ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
     - port_no:         0x0000178E
       hw_addr:         'd3:1e:0b:45:3e:3e'
       name:            knThsRNWBstRDUeB
       config:          [ NO_STP ]
       state:           [ LINK_DOWN, STP_LISTEN ]
-      ethernet:        
-        curr:            [ 10MB_HD, 10MB_FD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, PAUSE_ASYM ]
-        advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 10GB_FD, COPPER, AUTONEG, PAUSE ]
-        supported:       [ 10MB_FD, 100MB_HD, 1GB_HD, 10GB_FD, COPPER, AUTONEG, PAUSE ]
-        peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 10GB_FD, COPPER, AUTONEG ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [ 10MB_HD, 10MB_FD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, PAUSE_ASYM ]
+      advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 10GB_FD, COPPER, AUTONEG, PAUSE ]
+      supported:       [ 10MB_FD, 100MB_HD, 1GB_HD, 10GB_FD, COPPER, AUTONEG, PAUSE ]
+      peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 10GB_FD, COPPER, AUTONEG ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
     - port_no:         0x00008346
       hw_addr:         '1d:b4:e5:65:dd:de'
       name:            mAMijfsRLatpdPih
       config:          [ PORT_DOWN ]
       state:           [ STP_LISTEN ]
-      ethernet:        
-        curr:            [ 10MB_HD, 1GB_FD, 10GB_FD, COPPER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        advertised:      [ 10MB_FD, 100MB_FD, 1GB_HD, 10GB_FD, PAUSE, PAUSE_ASYM ]
-        supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, PAUSE ]
-        peer:            [ 10MB_HD, 10MB_FD, 1GB_FD, FIBER, PAUSE, PAUSE_ASYM ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [ 10MB_HD, 1GB_FD, 10GB_FD, COPPER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      advertised:      [ 10MB_FD, 100MB_FD, 1GB_HD, 10GB_FD, PAUSE, PAUSE_ASYM ]
+      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, PAUSE ]
+      peer:            [ 10MB_HD, 10MB_FD, 1GB_FD, FIBER, PAUSE, PAUSE_ASYM ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
     - port_no:         0x00004A31
       hw_addr:         '76:30:1f:b6:62:97'
       name:            EMeVdpUpkoPCCVud
       config:          [ NO_RECV_STP ]
       state:           [ STP_FORWARD ]
-      ethernet:        
-        curr:            [ 100MB_HD, FIBER, AUTONEG, PAUSE_ASYM ]
-        advertised:      [ 10MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, PAUSE_ASYM ]
-        supported:       [ 10MB_FD, 100MB_HD, 1GB_HD, 10GB_FD, COPPER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        peer:            [ 10MB_HD, 10MB_FD, 10GB_FD, FIBER, AUTONEG ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [ 100MB_HD, FIBER, AUTONEG, PAUSE_ASYM ]
+      advertised:      [ 10MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, PAUSE_ASYM ]
+      supported:       [ 10MB_FD, 100MB_HD, 1GB_HD, 10GB_FD, COPPER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      peer:            [ 10MB_HD, 10MB_FD, 10GB_FD, FIBER, AUTONEG ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 Filename: external/openflow-messages/v1_0/rep/rep_6_00003.pass
@@ -1884,13 +1868,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -1904,13 +1887,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -1924,13 +1906,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [  ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -1944,13 +1925,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_PACKET_IN ]
   state:           [  ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -1964,13 +1944,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [ LINK_DOWN, BLOCKED, LIVE ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -1984,13 +1963,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [  ]
-  ethernet:        
-    curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -2783,13 +2761,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [  ]
       state:           [  ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -2808,13 +2785,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [  ]
       state:           [  ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -2833,13 +2809,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [ NO_PACKET_IN ]
       state:           [  ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -2858,13 +2833,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [  ]
       state:           [ LINK_DOWN, BLOCKED, LIVE ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -2883,13 +2857,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [  ]
       state:           [  ]
-      ethernet:        
-        curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -3052,13 +3025,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -33946,13 +33918,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [ PORT_DOWN ]
       state:           [ LIVE ]
-      ethernet:        
-        curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 1GB_FD, 40GB_FD, 100GB_FD ]
-        advertised:      [ 10MB_HD, 10MB_FD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD ]
-        supported:       [ 10MB_HD, 100GB_FD, COPPER ]
-        peer:            [ 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 100GB_FD, OTHER, COPPER ]
-        curr_speed:      0x00000E0C
-        max_speed:       0x0000009C
+      curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 1GB_FD, 40GB_FD, 100GB_FD ]
+      advertised:      [ 10MB_HD, 10MB_FD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD ]
+      supported:       [ 10MB_HD, 100GB_FD, COPPER ]
+      peer:            [ 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 100GB_FD, OTHER, COPPER ]
+      curr_speed:      0x00000E0C
+      max_speed:       0x0000009C
       properties:      
 ...
 ---
@@ -33971,39 +33942,36 @@ msg:
       name:            yJHEWEXZNKHGnDcl
       config:          [ NO_RECV ]
       state:           [ LINK_DOWN ]
-      ethernet:        
-        curr:            [ 10MB_FD, 1GB_HD, 1GB_FD, 100GB_FD, OTHER, COPPER ]
-        advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 40GB_FD, 100GB_FD, COPPER ]
-        supported:       [ 10MB_HD, 100MB_FD, 1GB_HD, OTHER ]
-        peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER ]
-        curr_speed:      0x000001D4
-        max_speed:       0x000004FC
+      curr:            [ 10MB_FD, 1GB_HD, 1GB_FD, 100GB_FD, OTHER, COPPER ]
+      advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 40GB_FD, 100GB_FD, COPPER ]
+      supported:       [ 10MB_HD, 100MB_FD, 1GB_HD, OTHER ]
+      peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER ]
+      curr_speed:      0x000001D4
+      max_speed:       0x000004FC
       properties:      
     - port_no:         0x8A3E05A1
       hw_addr:         '18:99:aa:cc:94:2a'
       name:            jOwSdLAPeJVLKGLl
       config:          [ NO_RECV ]
       state:           [ BLOCKED ]
-      ethernet:        
-        curr:            [ 10MB_HD, 10MB_FD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, OTHER ]
-        advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 1TB_FD, COPPER ]
-        supported:       [ 100MB_HD, 100MB_FD, 10GB_FD, 100GB_FD, OTHER ]
-        peer:            [ 10MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-        curr_speed:      0x0000083E
-        max_speed:       0x00000AA0
+      curr:            [ 10MB_HD, 10MB_FD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, OTHER ]
+      advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 1TB_FD, COPPER ]
+      supported:       [ 100MB_HD, 100MB_FD, 10GB_FD, 100GB_FD, OTHER ]
+      peer:            [ 10MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+      curr_speed:      0x0000083E
+      max_speed:       0x00000AA0
       properties:      
     - port_no:         0xADC5326D
       hw_addr:         'd1:08:21:8d:1e:84'
       name:            cHsZBXNbMmgsKkmc
       config:          [ PORT_DOWN ]
       state:           [ LIVE ]
-      ethernet:        
-        curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_FD, 40GB_FD, 1TB_FD ]
-        advertised:      [ 10MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-        supported:       [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 1TB_FD ]
-        peer:            [ 10MB_HD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-        curr_speed:      0x00000CB7
-        max_speed:       0x000005F3
+      curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_FD, 40GB_FD, 1TB_FD ]
+      advertised:      [ 10MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+      supported:       [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 1TB_FD ]
+      peer:            [ 10MB_HD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+      curr_speed:      0x00000CB7
+      max_speed:       0x000005F3
       properties:      
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_6_00004.pass
@@ -34106,13 +34074,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -34126,13 +34093,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -34146,13 +34112,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [  ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -34166,13 +34131,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_PACKET_IN ]
   state:           [  ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -34186,13 +34150,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [ LINK_DOWN, BLOCKED, LIVE ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -34206,13 +34169,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [  ]
-  ethernet:        
-    curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -34864,13 +34826,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [  ]
       state:           [  ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -34889,13 +34850,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [  ]
       state:           [  ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -34914,13 +34874,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [ NO_PACKET_IN ]
       state:           [  ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -34939,13 +34898,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [  ]
       state:           [ LINK_DOWN, BLOCKED, LIVE ]
-      ethernet:        
-        curr:            [  ]
-        advertised:      [  ]
-        supported:       [  ]
-        peer:            [  ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [  ]
+      advertised:      [  ]
+      supported:       [  ]
+      peer:            [  ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -34964,13 +34922,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [  ]
       state:           [  ]
-      ethernet:        
-        curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -36064,13 +36021,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -46840,13 +46796,12 @@ msg:
       name:            wvBduJxGJgimHooG
       config:          [ PORT_DOWN ]
       state:           [ LIVE ]
-      ethernet:        
-        curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 1GB_FD, 40GB_FD, 100GB_FD ]
-        advertised:      [ 10MB_HD, 10MB_FD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD ]
-        supported:       [ 10MB_HD, 100GB_FD, COPPER ]
-        peer:            [ 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 100GB_FD, OTHER, COPPER ]
-        curr_speed:      0x00000E0C
-        max_speed:       0x0000009C
+      curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 1GB_FD, 40GB_FD, 100GB_FD ]
+      advertised:      [ 10MB_HD, 10MB_FD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD ]
+      supported:       [ 10MB_HD, 100GB_FD, COPPER ]
+      peer:            [ 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 100GB_FD, OTHER, COPPER ]
+      curr_speed:      0x00000E0C
+      max_speed:       0x0000009C
       properties:      
 ...
 ---
@@ -46865,39 +46820,36 @@ msg:
       name:            yJHEWEXZNKHGnDcl
       config:          [ NO_RECV ]
       state:           [ LINK_DOWN ]
-      ethernet:        
-        curr:            [ 10MB_FD, 1GB_HD, 1GB_FD, 100GB_FD, OTHER, COPPER ]
-        advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 40GB_FD, 100GB_FD, COPPER ]
-        supported:       [ 10MB_HD, 100MB_FD, 1GB_HD, OTHER ]
-        peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER ]
-        curr_speed:      0x000001D4
-        max_speed:       0x000004FC
+      curr:            [ 10MB_FD, 1GB_HD, 1GB_FD, 100GB_FD, OTHER, COPPER ]
+      advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 40GB_FD, 100GB_FD, COPPER ]
+      supported:       [ 10MB_HD, 100MB_FD, 1GB_HD, OTHER ]
+      peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER ]
+      curr_speed:      0x000001D4
+      max_speed:       0x000004FC
       properties:      
     - port_no:         0x8A3E05A1
       hw_addr:         '18:99:aa:cc:94:2a'
       name:            jOwSdLAPeJVLKGLl
       config:          [ NO_RECV ]
       state:           [ BLOCKED ]
-      ethernet:        
-        curr:            [ 10MB_HD, 10MB_FD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, OTHER ]
-        advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 1TB_FD, COPPER ]
-        supported:       [ 100MB_HD, 100MB_FD, 10GB_FD, 100GB_FD, OTHER ]
-        peer:            [ 10MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-        curr_speed:      0x0000083E
-        max_speed:       0x00000AA0
+      curr:            [ 10MB_HD, 10MB_FD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, OTHER ]
+      advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 1TB_FD, COPPER ]
+      supported:       [ 100MB_HD, 100MB_FD, 10GB_FD, 100GB_FD, OTHER ]
+      peer:            [ 10MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+      curr_speed:      0x0000083E
+      max_speed:       0x00000AA0
       properties:      
     - port_no:         0xADC5326D
       hw_addr:         'd1:08:21:8d:1e:84'
       name:            cHsZBXNbMmgsKkmc
       config:          [ PORT_DOWN ]
       state:           [ LIVE ]
-      ethernet:        
-        curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_FD, 40GB_FD, 1TB_FD ]
-        advertised:      [ 10MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-        supported:       [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 1TB_FD ]
-        peer:            [ 10MB_HD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-        curr_speed:      0x00000CB7
-        max_speed:       0x000005F3
+      curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_FD, 40GB_FD, 1TB_FD ]
+      advertised:      [ 10MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+      supported:       [ 10MB_HD, 100MB_HD, 100MB_FD, 1GB_HD, 1TB_FD ]
+      peer:            [ 10MB_HD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+      curr_speed:      0x00000CB7
+      max_speed:       0x000005F3
       properties:      
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_6_00004.pass
@@ -47028,13 +46980,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -47048,13 +46999,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -47068,13 +47018,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [  ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -47088,13 +47037,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_PACKET_IN ]
   state:           [  ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -47108,13 +47056,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [ LINK_DOWN, BLOCKED, LIVE ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -47128,13 +47075,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [  ]
-  ethernet:        
-    curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -47964,13 +47910,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -59737,13 +59682,12 @@ msg:
     name:            Port 1
     config:          [ NO_RECV ]
     state:           [ BLOCKED, '0x00000008' ]
-    ethernet:        
-      curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
-      advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
-      supported:       [ 10MB_FD ]
-      peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
-      curr_speed:      0x00005BEF
-      max_speed:       0x00000930
+    curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
+    advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
+    supported:       [ 10MB_FD ]
+    peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
+    curr_speed:      0x00005BEF
+    max_speed:       0x00000930
     properties:      
 ...
 ---
@@ -59757,39 +59701,36 @@ msg:
     name:            Port 1
     config:          [ NO_RECV ]
     state:           [ BLOCKED, '0x00000008' ]
-    ethernet:        
-      curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
-      advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
-      supported:       [ 10MB_FD ]
-      peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
-      curr_speed:      0x00005BEF
-      max_speed:       0x00000930
+    curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
+    advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
+    supported:       [ 10MB_FD ]
+    peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
+    curr_speed:      0x00005BEF
+    max_speed:       0x00000930
     properties:      
   - port_no:         0x000030A5
     hw_addr:         '0c:22:2b:2d:0c:2b'
     name:            Port 1
     config:          [ NO_RECV ]
     state:           [ BLOCKED, '0x00000008' ]
-    ethernet:        
-      curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
-      advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
-      supported:       [ 10MB_FD ]
-      peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
-      curr_speed:      0x00005BEF
-      max_speed:       0x00000930
+    curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
+    advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
+    supported:       [ 10MB_FD ]
+    peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
+    curr_speed:      0x00005BEF
+    max_speed:       0x00000930
     properties:      
   - port_no:         0x000030A6
     hw_addr:         '0c:22:2b:2d:0c:2b'
     name:            Port 1
     config:          [ NO_RECV ]
     state:           [ BLOCKED, '0x00000008' ]
-    ethernet:        
-      curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
-      advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
-      supported:       [ 10MB_FD ]
-      peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
-      curr_speed:      0x00005BEF
-      max_speed:       0x00000930
+    curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
+    advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
+    supported:       [ 10MB_FD ]
+    peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
+    curr_speed:      0x00005BEF
+    max_speed:       0x00000930
     properties:      
 ...
 ---
@@ -60365,13 +60306,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -60385,13 +60325,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -60405,13 +60344,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [  ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -60425,13 +60363,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_PACKET_IN ]
   state:           [  ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -60445,13 +60382,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [ LINK_DOWN, BLOCKED, LIVE ]
-  ethernet:        
-    curr:            [  ]
-    advertised:      [  ]
-    supported:       [  ]
-    peer:            [  ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [  ]
+  advertised:      [  ]
+  supported:       [  ]
+  peer:            [  ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -60465,13 +60401,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [  ]
   state:           [  ]
-  ethernet:        
-    curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
-    curr_speed:      0x00000000
-    max_speed:       0x00000000
+  curr:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  peer:            [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  curr_speed:      0x00000000
+  max_speed:       0x00000000
   properties:      
 ...
 ---
@@ -61290,13 +61225,12 @@ msg:
   name:            tHPGszdBHTVmfHPO
   config:          [ NO_RECV ]
   state:           [ LINK_DOWN ]
-  ethernet:        
-    curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
-    advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
-    supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
-    peer:            [ 100MB_FD, 100GB_FD, OTHER ]
-    curr_speed:      0x00000A71
-    max_speed:       0x00000BEC
+  curr:            [ 10MB_FD, 1GB_HD, 40GB_FD, OTHER ]
+  advertised:      [ 10MB_FD, 10GB_FD, 1TB_FD, OTHER, COPPER ]
+  supported:       [ 10MB_HD, 10MB_FD, 1GB_HD, 10GB_FD, 100GB_FD, 1TB_FD, COPPER ]
+  peer:            [ 100MB_FD, 100GB_FD, OTHER ]
+  curr_speed:      0x00000A71
+  max_speed:       0x00000BEC
   properties:      
 ...
 ---
@@ -73063,13 +72997,12 @@ msg:
     name:            Port 1
     config:          [ NO_RECV ]
     state:           [ BLOCKED, '0x00000008' ]
-    ethernet:        
-      curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
-      advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
-      supported:       [ 10MB_FD ]
-      peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
-      curr_speed:      0x00005BEF
-      max_speed:       0x00000930
+    curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
+    advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
+    supported:       [ 10MB_FD ]
+    peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
+    curr_speed:      0x00005BEF
+    max_speed:       0x00000930
     properties:      
 ...
 ---
@@ -73083,39 +73016,36 @@ msg:
     name:            Port 1
     config:          [ NO_RECV ]
     state:           [ BLOCKED, '0x00000008' ]
-    ethernet:        
-      curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
-      advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
-      supported:       [ 10MB_FD ]
-      peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
-      curr_speed:      0x00005BEF
-      max_speed:       0x00000930
+    curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
+    advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
+    supported:       [ 10MB_FD ]
+    peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
+    curr_speed:      0x00005BEF
+    max_speed:       0x00000930
     properties:      
   - port_no:         0x000030A5
     hw_addr:         '0c:22:2b:2d:0c:2b'
     name:            Port 1
     config:          [ NO_RECV ]
     state:           [ BLOCKED, '0x00000008' ]
-    ethernet:        
-      curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
-      advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
-      supported:       [ 10MB_FD ]
-      peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
-      curr_speed:      0x00005BEF
-      max_speed:       0x00000930
+    curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
+    advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
+    supported:       [ 10MB_FD ]
+    peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
+    curr_speed:      0x00005BEF
+    max_speed:       0x00000930
     properties:      
   - port_no:         0x000030A6
     hw_addr:         '0c:22:2b:2d:0c:2b'
     name:            Port 1
     config:          [ NO_RECV ]
     state:           [ BLOCKED, '0x00000008' ]
-    ethernet:        
-      curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
-      advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
-      supported:       [ 10MB_FD ]
-      peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
-      curr_speed:      0x00005BEF
-      max_speed:       0x00000930
+    curr:            [ 10MB_FD, 100MB_HD, 100MB_FD, 40GB_FD, 1TB_FD ]
+    advertised:      [ 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD ]
+    supported:       [ 10MB_FD ]
+    peer:            [ 10MB_HD, 100MB_HD, 100MB_FD, 40GB_FD ]
+    curr_speed:      0x00005BEF
+    max_speed:       0x00000930
     properties:      
 ...
 ---

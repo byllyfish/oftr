@@ -56,26 +56,24 @@
       "ports": [
         {
           "hw_addr": "ff:ff:ff:ff:ff:ff", 
+          "curr_speed": 4294967295, 
+          "curr": [
+            "COPPER"
+          ], 
+          "name": "................", 
+          "supported": [
+            "COPPER"
+          ], 
           "state": [
             "LINK_DOWN"
           ], 
-          "name": "................", 
-          "ethernet": {
-            "curr_speed": 4294967295, 
-            "max_speed": 4294967295, 
-            "curr": [
-              "COPPER"
-            ], 
-            "advertised": [
-              "COPPER"
-            ], 
-            "peer": [
-              "COPPER"
-            ], 
-            "supported": [
-              "COPPER"
-            ]
-          }, 
+          "max_speed": 4294967295, 
+          "advertised": [
+            "COPPER"
+          ], 
+          "peer": [
+            "COPPER"
+          ], 
           "config": [
             "PORT_DOWN"
           ], 
@@ -163,27 +161,25 @@
   {
     "msg": {
       "hw_addr": "ff:ff:ff:ff:ff:ff", 
+      "curr_speed": 4294967295, 
+      "curr": [
+        "COPPER"
+      ], 
       "name": "................", 
+      "supported": [
+        "COPPER"
+      ], 
       "reason": "ADD", 
       "state": [
         "LINK_DOWN"
       ], 
-      "ethernet": {
-        "curr_speed": 4294967295, 
-        "max_speed": 4294967295, 
-        "curr": [
-          "COPPER"
-        ], 
-        "advertised": [
-          "COPPER"
-        ], 
-        "peer": [
-          "COPPER"
-        ], 
-        "supported": [
-          "COPPER"
-        ]
-      }, 
+      "max_speed": 4294967295, 
+      "advertised": [
+        "COPPER"
+      ], 
+      "peer": [
+        "COPPER"
+      ], 
       "config": [
         "PORT_DOWN"
       ], 
@@ -895,26 +891,24 @@
     "msg": [
       {
         "hw_addr": "ff:ff:ff:ff:ff:ff", 
+        "curr_speed": 4294967295, 
+        "curr": [
+          "COPPER"
+        ], 
+        "name": "................", 
+        "supported": [
+          "COPPER"
+        ], 
         "state": [
           "LINK_DOWN"
         ], 
-        "name": "................", 
-        "ethernet": {
-          "curr_speed": 4294967295, 
-          "max_speed": 4294967295, 
-          "curr": [
-            "COPPER"
-          ], 
-          "advertised": [
-            "COPPER"
-          ], 
-          "peer": [
-            "COPPER"
-          ], 
-          "supported": [
-            "COPPER"
-          ]
-        }, 
+        "max_speed": 4294967295, 
+        "advertised": [
+          "COPPER"
+        ], 
+        "peer": [
+          "COPPER"
+        ], 
         "config": [
           "PORT_DOWN"
         ], 

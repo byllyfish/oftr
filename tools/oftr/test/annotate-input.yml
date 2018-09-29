@@ -47,13 +47,12 @@ msg:
       name: '................'
       config: [ 'PORT_DOWN' ]
       state: [ 'LINK_DOWN' ]
-      ethernet:
-        curr: [ 'COPPER' ]
-        advertised: [ 'COPPER' ]
-        supported: [ 'COPPER' ]
-        peer: [ 'COPPER' ]
-        curr_speed: 0xffffffff
-        max_speed: 0xffffffff
+      curr: [ 'COPPER' ]
+      advertised: [ 'COPPER' ]
+      supported: [ 'COPPER' ]
+      peer: [ 'COPPER' ]
+      curr_speed: 0xffffffff
+      max_speed: 0xffffffff
       properties:
 ---
 version: 0x04
@@ -115,13 +114,12 @@ msg:
   name: '................'
   config: [ 'PORT_DOWN' ]
   state: [ 'LINK_DOWN' ]
-  ethernet:
-    curr: [ 'COPPER' ]
-    advertised: [ 'COPPER' ]
-    supported: [ 'COPPER' ]
-    peer: [ 'COPPER' ]
-    curr_speed: 0xffffffff
-    max_speed: 0xffffffff
+  curr: [ 'COPPER' ]
+  advertised: [ 'COPPER' ]
+  supported: [ 'COPPER' ]
+  peer: [ 'COPPER' ]
+  curr_speed: 0xffffffff
+  max_speed: 0xffffffff
   properties:
 ---
 version: 0x04
@@ -566,13 +564,12 @@ msg:
     name: '................'
     config: [ 'PORT_DOWN' ]
     state: [ 'LINK_DOWN' ]
-    ethernet:
-      curr: [ 'COPPER' ]
-      advertised: [ 'COPPER' ]
-      supported: [ 'COPPER' ]
-      peer: [ 'COPPER' ]
-      curr_speed: 0xffffffff
-      max_speed: 0xffffffff
+    curr: [ 'COPPER' ]
+    advertised: [ 'COPPER' ]
+    supported: [ 'COPPER' ]
+    peer: [ 'COPPER' ]
+    curr_speed: 0xffffffff
+    max_speed: 0xffffffff
     properties:
 ---
 version: 0x04
