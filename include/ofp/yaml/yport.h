@@ -70,6 +70,10 @@ struct MappingTraits<ofp::Port> {
     if (eprop != props.end()) {
       const PortPropertyEthernet &eth = eprop->property<PortPropertyEthernet>();
       MappingTraits<PortPropertyEthernet>::mapping(io, RemoveConst_cast(eth));
+    } else {
+      // If property is missing, write out empty values.
+      PortPropertyEthernet empty;
+      MappingTraits<PortPropertyEthernet>::mapping(io, empty);
     }
 
     auto oprop = props.findProperty(PortPropertyOptical::type());
