@@ -600,6 +600,14 @@ TEST(decoder, ofmp_portstats_v5) {
       "     0x1234\n        data:            0123456789ABCDEF\n...\n");
 }
 
+TEST(decoder, ofmp_portstats_v5_missing_ethernet) {
+  testDecodeOnly(
+      "051300601111111100042222000000000050000033333330111111102222222044444444"
+      "444444405555555555555550666666666666666077777777777777708888888888888880"
+      "9999999999999990AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0",
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  - port_no:         0x33333330\n    duration:        286331152.572662304\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    properties:      \n...\n");
+}
+
 TEST(decoder, ofmp_queuestats_v4) {
   testDecodeEncode(
       "041300381111111100052222000000003333333044444440555555555555555066666666"
