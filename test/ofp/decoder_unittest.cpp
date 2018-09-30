@@ -1073,6 +1073,10 @@ TEST(decoder, portmodv5) {
       "0000000100000002\n...\n");
 }
 
+TEST(decoder, portmodv5_missing_ethernet) {
+  testDecodeOnly("0510002011111111222222220000000033333333333300004444444455555555", "---\ntype:            PORT_MOD\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  port_no:         0x22222222\n  hw_addr:         '33:33:33:33:33:33'\n  config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  properties:      \n...\n");
+}
+
 TEST(decoder, tablemodv4) {
   testDecodeEncode("04110010111111112200000033333330",
                    "---\ntype:            TABLE_MOD\nxid:             "
