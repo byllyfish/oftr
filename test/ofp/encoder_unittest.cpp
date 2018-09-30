@@ -881,11 +881,10 @@ TEST(encoder, ofmp_portstats_v4) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          ethernet:
-            rx_frame_err: 0xCCCCCCCCCCCCCCC0
-            rx_over_err:  0xDDDDDDDDDDDDDDD0
-            rx_crc_err:   0xEEEEEEEEEEEEEEE0
-            collisions:   0xFFFFFFFFFFFFFFF0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
           properties:
     )""";
 
@@ -919,11 +918,10 @@ TEST(encoder, ofmp_portstats_v3) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          ethernet:
-            rx_frame_err: 0xCCCCCCCCCCCCCCC0
-            rx_over_err:  0xDDDDDDDDDDDDDDD0
-            rx_crc_err:   0xEEEEEEEEEEEEEEE0
-            collisions:   0xFFFFFFFFFFFFFFF0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
           properties:
     )""";
 
@@ -957,11 +955,10 @@ TEST(encoder, ofmp_portstats_v2) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          ethernet:
-            rx_frame_err: 0xCCCCCCCCCCCCCCC0
-            rx_over_err:  0xDDDDDDDDDDDDDDD0
-            rx_crc_err:   0xEEEEEEEEEEEEEEE0
-            collisions:   0xFFFFFFFFFFFFFFF0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
           properties:
     )""";
 
@@ -995,11 +992,10 @@ TEST(encoder, ofmp_portstats_v1) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          ethernet:
-            rx_frame_err: 0xCCCCCCCCCCCCCCC0
-            rx_over_err:  0xDDDDDDDDDDDDDDD0
-            rx_crc_err:   0xEEEEEEEEEEEEEEE0
-            collisions:   0xFFFFFFFFFFFFFFF0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
           properties:
     )""";
 
@@ -1031,11 +1027,10 @@ TEST(encoder, ofmp_portstats_v5) {
         tx_dropped: 0x9999999999999990
         rx_errors:  0xAAAAAAAAAAAAAAA0
         tx_errors:  0xBBBBBBBBBBBBBBB0
-        ethernet:
-          rx_frame_err: 0xCCCCCCCCCCCCCCC0
-          rx_over_err:  0xDDDDDDDDDDDDDDD0
-          rx_crc_err:   0xEEEEEEEEEEEEEEE0
-          collisions:   0xFFFFFFFFFFFFFFF0
+        rx_frame_err: 0xCCCCCCCCCCCCCCC0
+        rx_over_err:  0xDDDDDDDDDDDDDDD0
+        rx_crc_err:   0xEEEEEEEEEEEEEEE0
+        collisions:   0xFFFFFFFFFFFFFFF0
         optical:
           flags: 0x11111110
           tx_freq_lmda: 0x22222220
@@ -3723,11 +3718,10 @@ TEST(encoder, ofmp_portstats_v4_flags) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          ethernet:
-            rx_frame_err: 0xCCCCCCCCCCCCCCC0
-            rx_over_err:  0xDDDDDDDDDDDDDDD0
-            rx_crc_err:   0xEEEEEEEEEEEEEEE0
-            collisions:   0xFFFFFFFFFFFFFFF0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
           properties:
     )""";
 

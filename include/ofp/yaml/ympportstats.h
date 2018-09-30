@@ -30,7 +30,7 @@ struct MappingTraits<ofp::MPPortStats> {
     if (eprop != props.end()) {
       const ofp::PortStatsPropertyEthernet &eth =
           eprop->property<ofp::PortStatsPropertyEthernet>();
-      io.mapRequired("ethernet", RemoveConst_cast(eth));
+      MappingTraits<ofp::PortStatsPropertyEthernet>::mapping(io, RemoveConst_cast(eth));
     }
 
     auto oprop = props.findProperty(ofp::PortStatsPropertyOptical::type());
@@ -62,7 +62,7 @@ struct MappingTraits<ofp::MPPortStatsBuilder> {
     io.mapRequired("tx_errors", msg.msg_.txErrors_);
 
     PortStatsPropertyEthernet eth;
-    io.mapRequired("ethernet", eth);  // FIXME(bfish) - make optional...
+    MappingTraits<PortStatsPropertyEthernet>::mapping(io, eth);
 
     Optional<PortStatsPropertyOptical> opt;
     io.mapOptional("optical", opt);

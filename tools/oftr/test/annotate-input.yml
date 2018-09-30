@@ -314,11 +314,10 @@ msg:
     tx_dropped: 0xffffffffffffffff
     rx_errors: 0xffffffffffffffff
     tx_errors: 0xffffffffffffffff
-    ethernet:
-      rx_frame_err: 0xffffffffffffffff
-      rx_over_err: 0xffffffffffffffff
-      rx_crc_err: 0xffffffffffffffff
-      collisions: 0xffffffffffffffff
+    rx_frame_err: 0xffffffffffffffff
+    rx_over_err: 0xffffffffffffffff
+    rx_crc_err: 0xffffffffffffffff
+    collisions: 0xffffffffffffffff
     properties:
 ---
 version: 0x04

@@ -1538,11 +1538,10 @@ msg:
     tx_dropped:      0x00000000000003E9
     rx_errors:       0x000000000000001E
     tx_errors:       0x000000000000001F
-    ethernet:        
-      rx_frame_err:    0x000000000000000F
-      rx_over_err:     0x0000000000000010
-      rx_crc_err:      0x000000000000000F
-      collisions:      0x0000000000000064
+    rx_frame_err:    0x000000000000000F
+    rx_over_err:     0x0000000000000010
+    rx_crc_err:      0x000000000000000F
+    collisions:      0x0000000000000064
     properties:      
 ...
 ---
@@ -2463,11 +2462,10 @@ msg:
     tx_dropped:      0x9A9015B5989FFDEC
     rx_errors:       0xBB90697251A729E2
     tx_errors:       0x9990AE250AEF8823
-    ethernet:        
-      rx_frame_err:    0x7D985D3D0432B81F
-      rx_over_err:     0x513A71B478BE84AA
-      rx_crc_err:      0x218E669FC1A41E18
-      collisions:      0x65D4365E5C5F1461
+    rx_frame_err:    0x7D985D3D0432B81F
+    rx_over_err:     0x513A71B478BE84AA
+    rx_crc_err:      0x218E669FC1A41E18
+    collisions:      0x65D4365E5C5F1461
     properties:      
   - port_no:         0x1E333CEB
     duration:        0
@@ -2479,11 +2477,10 @@ msg:
     tx_dropped:      0xA4B36C4919C6569B
     rx_errors:       0x2DF6D39600788F63
     tx_errors:       0x32495DBCF900D68F
-    ethernet:        
-      rx_frame_err:    0x8CB5AD8FBEDAF60F
-      rx_over_err:     0xFF334840DF640332
-      rx_crc_err:      0x7226EDFA6A5A21B0
-      collisions:      0x793DD641336DA6B9
+    rx_frame_err:    0x8CB5AD8FBEDAF60F
+    rx_over_err:     0xFF334840DF640332
+    rx_crc_err:      0x7226EDFA6A5A21B0
+    collisions:      0x793DD641336DA6B9
     properties:      
 ...
 Filename: external/openflow-messages/v1_1/abs/abs_19_00006.pass
@@ -33590,11 +33587,10 @@ msg:
     tx_dropped:      0x9A9015B5989FFDEC
     rx_errors:       0xBB90697251A729E2
     tx_errors:       0x9990AE250AEF8823
-    ethernet:        
-      rx_frame_err:    0x7D985D3D0432B81F
-      rx_over_err:     0x513A71B478BE84AA
-      rx_crc_err:      0x218E669FC1A41E18
-      collisions:      0x65D4365E5C5F1461
+    rx_frame_err:    0x7D985D3D0432B81F
+    rx_over_err:     0x513A71B478BE84AA
+    rx_crc_err:      0x218E669FC1A41E18
+    collisions:      0x65D4365E5C5F1461
     properties:      
   - port_no:         0x1E333CEB
     duration:        0
@@ -33606,11 +33602,10 @@ msg:
     tx_dropped:      0xA4B36C4919C6569B
     rx_errors:       0x2DF6D39600788F63
     tx_errors:       0x32495DBCF900D68F
-    ethernet:        
-      rx_frame_err:    0x8CB5AD8FBEDAF60F
-      rx_over_err:     0xFF334840DF640332
-      rx_crc_err:      0x7226EDFA6A5A21B0
-      collisions:      0x793DD641336DA6B9
+    rx_frame_err:    0x8CB5AD8FBEDAF60F
+    rx_over_err:     0xFF334840DF640332
+    rx_crc_err:      0x7226EDFA6A5A21B0
+    collisions:      0x793DD641336DA6B9
     properties:      
 ...
 ---
@@ -46297,11 +46292,10 @@ msg:
     tx_dropped:      0x000000000000101C
     rx_errors:       0x000000000000007C
     tx_errors:       0x0000000000001019
-    ethernet:        
-      rx_frame_err:    0x0000000000000040
-      rx_over_err:     0x000000000000066A
-      rx_crc_err:      0x0000000000000234
-      collisions:      0x000000000000FA7C
+    rx_frame_err:    0x0000000000000040
+    rx_over_err:     0x000000000000066A
+    rx_crc_err:      0x0000000000000234
+    collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
     duration:        0
@@ -46313,11 +46307,10 @@ msg:
     tx_dropped:      0x000000000000101C
     rx_errors:       0x000000000000007C
     tx_errors:       0x0000000000001019
-    ethernet:        
-      rx_frame_err:    0x0000000000000040
-      rx_over_err:     0x000000000000066A
-      rx_crc_err:      0x0000000000000234
-      collisions:      0x000000000000FA7C
+    rx_frame_err:    0x0000000000000040
+    rx_over_err:     0x000000000000066A
+    rx_crc_err:      0x0000000000000234
+    collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
     duration:        0
@@ -46329,11 +46322,10 @@ msg:
     tx_dropped:      0x000000000000101C
     rx_errors:       0x000000000000007C
     tx_errors:       0x0000000000001019
-    ethernet:        
-      rx_frame_err:    0x0000000000000040
-      rx_over_err:     0x000000000000066A
-      rx_crc_err:      0x0000000000000234
-      collisions:      0x000000000000FA7C
+    rx_frame_err:    0x0000000000000040
+    rx_over_err:     0x000000000000066A
+    rx_crc_err:      0x0000000000000234
+    collisions:      0x000000000000FA7C
     properties:      
 ...
 ---
@@ -59235,11 +59227,10 @@ msg:
     tx_dropped:      0x000000000000101C
     rx_errors:       0x000000000000007C
     tx_errors:       0x0000000000001019
-    ethernet:        
-      rx_frame_err:    0x0000000000000040
-      rx_over_err:     0x000000000000066A
-      rx_crc_err:      0x0000000000000234
-      collisions:      0x000000000000FA7C
+    rx_frame_err:    0x0000000000000040
+    rx_over_err:     0x000000000000066A
+    rx_crc_err:      0x0000000000000234
+    collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
     duration:        2382.000002385
@@ -59251,11 +59242,10 @@ msg:
     tx_dropped:      0x000000000000101C
     rx_errors:       0x000000000000007C
     tx_errors:       0x0000000000001019
-    ethernet:        
-      rx_frame_err:    0x0000000000000040
-      rx_over_err:     0x000000000000066A
-      rx_crc_err:      0x0000000000000234
-      collisions:      0x000000000000FA7C
+    rx_frame_err:    0x0000000000000040
+    rx_over_err:     0x000000000000066A
+    rx_crc_err:      0x0000000000000234
+    collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
     duration:        2382.000002385
@@ -59267,11 +59257,10 @@ msg:
     tx_dropped:      0x000000000000101C
     rx_errors:       0x000000000000007C
     tx_errors:       0x0000000000001019
-    ethernet:        
-      rx_frame_err:    0x0000000000000040
-      rx_over_err:     0x000000000000066A
-      rx_crc_err:      0x0000000000000234
-      collisions:      0x000000000000FA7C
+    rx_frame_err:    0x0000000000000040
+    rx_over_err:     0x000000000000066A
+    rx_crc_err:      0x0000000000000234
+    collisions:      0x000000000000FA7C
     properties:      
 ...
 ---
@@ -72550,11 +72539,10 @@ msg:
     tx_dropped:      0x000000000000101C
     rx_errors:       0x000000000000007C
     tx_errors:       0x0000000000001019
-    ethernet:        
-      rx_frame_err:    0x0000000000000040
-      rx_over_err:     0x000000000000066A
-      rx_crc_err:      0x0000000000000234
-      collisions:      0x000000000000FA7C
+    rx_frame_err:    0x0000000000000040
+    rx_over_err:     0x000000000000066A
+    rx_crc_err:      0x0000000000000234
+    collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
     duration:        2382.000002385
@@ -72566,11 +72554,10 @@ msg:
     tx_dropped:      0x000000000000101C
     rx_errors:       0x000000000000007C
     tx_errors:       0x0000000000001019
-    ethernet:        
-      rx_frame_err:    0x0000000000000040
-      rx_over_err:     0x000000000000066A
-      rx_crc_err:      0x0000000000000234
-      collisions:      0x000000000000FA7C
+    rx_frame_err:    0x0000000000000040
+    rx_over_err:     0x000000000000066A
+    rx_crc_err:      0x0000000000000234
+    collisions:      0x000000000000FA7C
     properties:      
   - port_no:         0x00000144
     duration:        2382.000002385
@@ -72582,11 +72569,10 @@ msg:
     tx_dropped:      0x000000000000101C
     rx_errors:       0x000000000000007C
     tx_errors:       0x0000000000001019
-    ethernet:        
-      rx_frame_err:    0x0000000000000040
-      rx_over_err:     0x000000000000066A
-      rx_crc_err:      0x0000000000000234
-      collisions:      0x000000000000FA7C
+    rx_frame_err:    0x0000000000000040
+    rx_over_err:     0x000000000000066A
+    rx_crc_err:      0x0000000000000234
+    collisions:      0x000000000000FA7C
     properties:      
 ...
 ---

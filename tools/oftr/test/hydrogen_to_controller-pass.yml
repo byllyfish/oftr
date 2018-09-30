@@ -606,11 +606,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
     duration:        0
@@ -622,11 +621,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
     duration:        0
@@ -638,11 +636,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
 ...
 ---
@@ -2713,11 +2710,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
     duration:        0
@@ -2729,11 +2725,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
     duration:        0
@@ -2745,11 +2740,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
 ...
 ---
@@ -3000,11 +2994,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
     duration:        0
@@ -3016,11 +3009,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
     duration:        0
@@ -3032,11 +3024,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
 ...
 ---
@@ -4847,11 +4838,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
     duration:        0
@@ -4863,11 +4853,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
     duration:        0
@@ -4879,11 +4868,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
 ...
 ---
@@ -4919,11 +4907,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
     duration:        0
@@ -4935,11 +4922,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
     duration:        0
@@ -4951,11 +4937,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
 ...
 ---
@@ -6766,11 +6751,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
     duration:        0
@@ -6782,11 +6766,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
     duration:        0
@@ -6798,11 +6781,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
 ...
 ---
@@ -6831,11 +6813,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
     duration:        0
@@ -6847,11 +6828,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
     duration:        0
@@ -6863,11 +6843,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
 ...
 ---
@@ -8678,11 +8657,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000002
     duration:        0
@@ -8694,11 +8672,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         LOCAL
     duration:        0
@@ -8710,10 +8687,9 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
 ...

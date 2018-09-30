@@ -253,17 +253,16 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REQUEST.PORT_STATS.v1	msg.port_no	CONTROLLER	True			
 1	REPLY.PORT_STATS.v1	msg	array	True			
 1	REPLY.PORT_STATS.v1	msg.0	object	False			
+1	REPLY.PORT_STATS.v1	msg.0.collisions	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
-1	REPLY.PORT_STATS.v1	msg.0.ethernet	object	True			
-1	REPLY.PORT_STATS.v1	msg.0.ethernet.collisions	uint64	True			True
-1	REPLY.PORT_STATS.v1	msg.0.ethernet.rx_crc_err	uint64	True			True
-1	REPLY.PORT_STATS.v1	msg.0.ethernet.rx_frame_err	uint64	True			True
-1	REPLY.PORT_STATS.v1	msg.0.ethernet.rx_over_err	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.port_no	CONTROLLER	True			
 1	REPLY.PORT_STATS.v1	msg.0.properties	null	True		msg.0.properties=array	
 1	REPLY.PORT_STATS.v1	msg.0.rx_bytes	uint64	True			True
+1	REPLY.PORT_STATS.v1	msg.0.rx_crc_err	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.rx_dropped	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.rx_errors	uint64	True			True
+1	REPLY.PORT_STATS.v1	msg.0.rx_frame_err	uint64	True			True
+1	REPLY.PORT_STATS.v1	msg.0.rx_over_err	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.rx_packets	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.tx_bytes	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.tx_dropped	uint64	True			True
@@ -892,17 +891,16 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REQUEST.PORT_STATS.v2	msg.port_no	CONTROLLER	True			
 2	REPLY.PORT_STATS.v2	msg	array	True			
 2	REPLY.PORT_STATS.v2	msg.0	object	False			
+2	REPLY.PORT_STATS.v2	msg.0.collisions	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
-2	REPLY.PORT_STATS.v2	msg.0.ethernet	object	True			
-2	REPLY.PORT_STATS.v2	msg.0.ethernet.collisions	uint64	True			True
-2	REPLY.PORT_STATS.v2	msg.0.ethernet.rx_crc_err	uint64	True			True
-2	REPLY.PORT_STATS.v2	msg.0.ethernet.rx_frame_err	uint64	True			True
-2	REPLY.PORT_STATS.v2	msg.0.ethernet.rx_over_err	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.port_no	CONTROLLER	True			
 2	REPLY.PORT_STATS.v2	msg.0.properties	null	True		msg.0.properties=array	
 2	REPLY.PORT_STATS.v2	msg.0.rx_bytes	uint64	True			True
+2	REPLY.PORT_STATS.v2	msg.0.rx_crc_err	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.rx_dropped	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.rx_errors	uint64	True			True
+2	REPLY.PORT_STATS.v2	msg.0.rx_frame_err	uint64	True			True
+2	REPLY.PORT_STATS.v2	msg.0.rx_over_err	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.rx_packets	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.tx_bytes	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.tx_dropped	uint64	True			True
@@ -1531,17 +1529,16 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REQUEST.PORT_STATS.v3	msg.port_no	CONTROLLER	True			
 3	REPLY.PORT_STATS.v3	msg	array	True			
 3	REPLY.PORT_STATS.v3	msg.0	object	False			
+3	REPLY.PORT_STATS.v3	msg.0.collisions	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
-3	REPLY.PORT_STATS.v3	msg.0.ethernet	object	True			
-3	REPLY.PORT_STATS.v3	msg.0.ethernet.collisions	uint64	True			True
-3	REPLY.PORT_STATS.v3	msg.0.ethernet.rx_crc_err	uint64	True			True
-3	REPLY.PORT_STATS.v3	msg.0.ethernet.rx_frame_err	uint64	True			True
-3	REPLY.PORT_STATS.v3	msg.0.ethernet.rx_over_err	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.port_no	CONTROLLER	True			
 3	REPLY.PORT_STATS.v3	msg.0.properties	null	True		msg.0.properties=array	
 3	REPLY.PORT_STATS.v3	msg.0.rx_bytes	uint64	True			True
+3	REPLY.PORT_STATS.v3	msg.0.rx_crc_err	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.rx_dropped	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.rx_errors	uint64	True			True
+3	REPLY.PORT_STATS.v3	msg.0.rx_frame_err	uint64	True			True
+3	REPLY.PORT_STATS.v3	msg.0.rx_over_err	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.rx_packets	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.tx_bytes	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.tx_dropped	uint64	True			True
@@ -2170,17 +2167,16 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REQUEST.PORT_STATS.v4	msg.port_no	CONTROLLER	True			
 4	REPLY.PORT_STATS.v4	msg	array	True			
 4	REPLY.PORT_STATS.v4	msg.0	object	False			
+4	REPLY.PORT_STATS.v4	msg.0.collisions	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.duration	4294967295.xffffffff	True			
-4	REPLY.PORT_STATS.v4	msg.0.ethernet	object	True			
-4	REPLY.PORT_STATS.v4	msg.0.ethernet.collisions	uint64	True			True
-4	REPLY.PORT_STATS.v4	msg.0.ethernet.rx_crc_err	uint64	True			True
-4	REPLY.PORT_STATS.v4	msg.0.ethernet.rx_frame_err	uint64	True			True
-4	REPLY.PORT_STATS.v4	msg.0.ethernet.rx_over_err	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.port_no	CONTROLLER	True			
 4	REPLY.PORT_STATS.v4	msg.0.properties	null	True		msg.0.properties=array	
 4	REPLY.PORT_STATS.v4	msg.0.rx_bytes	uint64	True			True
+4	REPLY.PORT_STATS.v4	msg.0.rx_crc_err	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.rx_dropped	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.rx_errors	uint64	True			True
+4	REPLY.PORT_STATS.v4	msg.0.rx_frame_err	uint64	True			True
+4	REPLY.PORT_STATS.v4	msg.0.rx_over_err	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.rx_packets	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.tx_bytes	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.tx_dropped	uint64	True			True
@@ -2809,17 +2805,16 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REQUEST.PORT_STATS.v5	msg.port_no	CONTROLLER	True			
 5	REPLY.PORT_STATS.v5	msg	array	True			
 5	REPLY.PORT_STATS.v5	msg.0	object	False			
+5	REPLY.PORT_STATS.v5	msg.0.collisions	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.duration	4294967295.xffffffff	True			
-5	REPLY.PORT_STATS.v5	msg.0.ethernet	object	True			
-5	REPLY.PORT_STATS.v5	msg.0.ethernet.collisions	uint64	True			True
-5	REPLY.PORT_STATS.v5	msg.0.ethernet.rx_crc_err	uint64	True			True
-5	REPLY.PORT_STATS.v5	msg.0.ethernet.rx_frame_err	uint64	True			True
-5	REPLY.PORT_STATS.v5	msg.0.ethernet.rx_over_err	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.port_no	CONTROLLER	True			
 5	REPLY.PORT_STATS.v5	msg.0.properties	null	True		msg.0.properties=array	
 5	REPLY.PORT_STATS.v5	msg.0.rx_bytes	uint64	True			True
+5	REPLY.PORT_STATS.v5	msg.0.rx_crc_err	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.rx_dropped	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.rx_errors	uint64	True			True
+5	REPLY.PORT_STATS.v5	msg.0.rx_frame_err	uint64	True			True
+5	REPLY.PORT_STATS.v5	msg.0.rx_over_err	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.rx_packets	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.tx_bytes	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.tx_dropped	uint64	True			True

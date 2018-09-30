@@ -494,18 +494,7 @@ TEST(decoder, ofmp_portstats_v4) {
       "555555506666666666666660777777777777777088888888888888809999999999999990"
       "AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEE"
       "EEEEEEE0FFFFFFFFFFFFFFF01111111022222220",
-      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
-      "]\nxid:             0x11111111\nversion:         0x04\nmsg:             "
-      "\n  - port_no:         0x33333330\n    duration:        "
-      "286331152.572662304\n    rx_packets:      0x4444444444444440\n  "
-      "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
-      "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
-      "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
-      "0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    "
-      "tx_errors:       0xBBBBBBBBBBBBBBB0\n    ethernet:        \n      "
-      "rx_frame_err:    0xCCCCCCCCCCCCCCC0\n      rx_over_err:     "
-      "0xDDDDDDDDDDDDDDD0\n      rx_crc_err:      0xEEEEEEEEEEEEEEE0\n      "
-      "collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  - port_no:         0x33333330\n    duration:        286331152.572662304\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v3) {
@@ -514,18 +503,7 @@ TEST(decoder, ofmp_portstats_v3) {
       "555555506666666666666660777777777777777088888888888888809999999999999990"
       "AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEE"
       "EEEEEEE0FFFFFFFFFFFFFFF0",
-      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
-      "]\nxid:             0x11111111\nversion:         0x03\nmsg:             "
-      "\n  - port_no:         0x33333330\n    duration:        0\n    "
-      "rx_packets:      0x4444444444444440\n  "
-      "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
-      "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
-      "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
-      "0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    "
-      "tx_errors:       0xBBBBBBBBBBBBBBB0\n    ethernet:        \n      "
-      "rx_frame_err:    0xCCCCCCCCCCCCCCC0\n      rx_over_err:     "
-      "0xDDDDDDDDDDDDDDD0\n      rx_crc_err:      0xEEEEEEEEEEEEEEE0\n      "
-      "collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x03\nmsg:             \n  - port_no:         0x33333330\n    duration:        0\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v2) {
@@ -534,18 +512,7 @@ TEST(decoder, ofmp_portstats_v2) {
       "555555506666666666666660777777777777777088888888888888809999999999999990"
       "AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEE"
       "EEEEEEE0FFFFFFFFFFFFFFF0",
-      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
-      "]\nxid:             0x11111111\nversion:         0x02\nmsg:             "
-      "\n  - port_no:         0x33333330\n    duration:        0\n    "
-      "rx_packets:      0x4444444444444440\n  "
-      "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
-      "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
-      "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
-      "0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    "
-      "tx_errors:       0xBBBBBBBBBBBBBBB0\n    ethernet:        \n      "
-      "rx_frame_err:    0xCCCCCCCCCCCCCCC0\n      rx_over_err:     "
-      "0xDDDDDDDDDDDDDDD0\n      rx_crc_err:      0xEEEEEEEEEEEEEEE0\n      "
-      "collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x02\nmsg:             \n  - port_no:         0x33333330\n    duration:        0\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v1) {
@@ -554,18 +521,7 @@ TEST(decoder, ofmp_portstats_v1) {
       "6666666666666660777777777777777088888888888888809999999999999990AAAAAAAA"
       "AAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEEEEEEEEE0"
       "FFFFFFFFFFFFFFF0",
-      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
-      "]\nxid:             0x11111111\nversion:         0x01\nmsg:             "
-      "\n  - port_no:         0x00003330\n    duration:        0\n    "
-      "rx_packets:      0x4444444444444440\n  "
-      "  tx_packets:      0x5555555555555550\n    rx_bytes:        "
-      "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
-      "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
-      "0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    "
-      "tx_errors:       0xBBBBBBBBBBBBBBB0\n    ethernet:        \n      "
-      "rx_frame_err:    0xCCCCCCCCCCCCCCC0\n      rx_over_err:     "
-      "0xDDDDDDDDDDDDDDD0\n      rx_crc_err:      0xEEEEEEEEEEEEEEE0\n      "
-      "collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x01\nmsg:             \n  - port_no:         0x00003330\n    duration:        0\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v5) {
@@ -577,27 +533,7 @@ TEST(decoder, ofmp_portstats_v5) {
       "1111111022222220333333304444444055555550666666607777777088809990AAA0BBB0"
       "00000000FFFF00107777770188888801999999011234000C0123456789ABCDEF0000000"
       "0",
-      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
-      "]\nxid:             0x11111111\nversion:         0x05\nmsg:             "
-      "\n  - port_no:         0x33333330\n    duration:        "
-      "286331152.572662304\n    rx_packets:      0x4444444444444440\n    "
-      "tx_packets:      0x5555555555555550\n    rx_bytes:        "
-      "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
-      "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
-      "0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    "
-      "tx_errors:       0xBBBBBBBBBBBBBBB0\n    ethernet:        \n      "
-      "rx_frame_err:    0xCCCCCCCCCCCCCCC0\n      rx_over_err:     "
-      "0xDDDDDDDDDDDDDDD0\n      rx_crc_err:      0xEEEEEEEEEEEEEEE0\n      "
-      "collisions:      0xFFFFFFFFFFFFFFF0\n    optical:         \n      "
-      "flags:           0x11111110\n      tx_freq_lmda:    0x22222220\n      "
-      "tx_offset:       0x33333330\n      tx_grid_span:    0x44444440\n      "
-      "rx_freq_lmda:    0x55555550\n      rx_offset:       0x66666660\n      "
-      "rx_grid_span:    0x77777770\n      tx_pwr:          0x8880\n      "
-      "rx_pwr:          0x9990\n      bias_current:    0xAAA0\n      "
-      "temperature:     0xBBB0\n    properties:      \n      - property:       "
-      " EXPERIMENTER\n        experimenter:    0x77777701\n        exp_type:   "
-      "     0x88888801\n        data:            99999901\n      - property:   "
-      "     0x1234\n        data:            0123456789ABCDEF\n...\n");
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  - port_no:         0x33333330\n    duration:        286331152.572662304\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    optical:         \n      flags:           0x11111110\n      tx_freq_lmda:    0x22222220\n      tx_offset:       0x33333330\n      tx_grid_span:    0x44444440\n      rx_freq_lmda:    0x55555550\n      rx_offset:       0x66666660\n      rx_grid_span:    0x77777770\n      tx_pwr:          0x8880\n      rx_pwr:          0x9990\n      bias_current:    0xAAA0\n      temperature:     0xBBB0\n    properties:      \n      - property:        EXPERIMENTER\n        experimenter:    0x77777701\n        exp_type:        0x88888801\n        data:            99999901\n      - property:        0x1234\n        data:            0123456789ABCDEF\n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v5_missing_ethernet) {
