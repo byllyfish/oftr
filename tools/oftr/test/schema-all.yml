@@ -447,8 +447,7 @@ Message/PortMod:
     hw_addr: MacAddress
     config: [PortConfigFlags]
     mask: [PortConfigFlags]
-    ethernet: !opt
-      advertise: [PortFeaturesFlags]           # default=[]
+    advertise: [PortFeaturesFlags]             # default=[]
     optical: !optout                           # default=null
       configure: [OpticalPortFeaturesFlags]
       freq_lmda: UInt32

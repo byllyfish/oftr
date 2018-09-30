@@ -48,7 +48,6 @@ dp_desc
 dst
 duration
 endpoint
-ethernet
 ethertype
 eviction
 exp_type

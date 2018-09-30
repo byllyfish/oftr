@@ -352,8 +352,7 @@ msg:
   hw_addr:         'b2:9c:61:9f:16:81'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -365,8 +364,7 @@ msg:
   hw_addr:         'b2:9c:61:9f:16:81'
   config:          [ PORT_DOWN, NO_STP, NO_RECV, NO_RECV_STP, NO_FLOOD, NO_FWD, NO_PACKET_IN ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -378,8 +376,7 @@ msg:
   hw_addr:         'b2:9c:61:9f:16:81'
   config:          [  ]
   mask:            [ PORT_DOWN, NO_STP, NO_RECV, NO_RECV_STP, NO_FLOOD, NO_FWD, NO_PACKET_IN ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -391,8 +388,7 @@ msg:
   hw_addr:         'b2:9c:61:9f:16:81'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  advertise:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
   properties:      
 ...
 ---
@@ -1311,8 +1307,7 @@ msg:
   hw_addr:         'b2:9c:61:9f:16:81'
   config:          [ PORT_DOWN ]
   mask:            [ NO_STP ]
-  ethernet:        
-    advertise:       [ 10MB_FD ]
+  advertise:       [ 10MB_FD ]
   properties:      
 ...
 ---
@@ -2209,8 +2204,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -2222,8 +2216,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [ PORT_DOWN, NO_STP, NO_RECV, NO_RECV_STP, NO_FLOOD, NO_FWD, NO_PACKET_IN ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -2235,8 +2228,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [ PORT_DOWN, NO_STP, NO_RECV, NO_RECV_STP, NO_FLOOD, NO_FWD, NO_PACKET_IN ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -2248,8 +2240,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  advertise:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
   properties:      
 ...
 ---
@@ -33225,8 +33216,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [ PORT_DOWN ]
   mask:            [ NO_STP ]
-  ethernet:        
-    advertise:       [ 10MB_HD, 10MB_FD ]
+  advertise:       [ 10MB_HD, 10MB_FD ]
   properties:      
 ...
 ---
@@ -34366,8 +34356,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -34379,8 +34368,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [ PORT_DOWN, NO_STP, NO_RECV, NO_RECV_STP, NO_FLOOD, NO_FWD, NO_PACKET_IN ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -34392,8 +34380,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [ PORT_DOWN, NO_STP, NO_RECV, NO_RECV_STP, NO_FLOOD, NO_FWD, NO_PACKET_IN ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -34405,8 +34392,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  advertise:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
   properties:      
 ...
 ---
@@ -45942,8 +45928,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [ PORT_DOWN ]
   mask:            [ NO_STP ]
-  ethernet:        
-    advertise:       [ 10MB_HD, 10MB_FD ]
+  advertise:       [ 10MB_HD, 10MB_FD ]
   properties:      
 ...
 ---
@@ -47292,8 +47277,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -47305,8 +47289,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [ PORT_DOWN, NO_STP, NO_RECV, NO_RECV_STP, NO_FLOOD, NO_FWD, NO_PACKET_IN ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -47318,8 +47301,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [ PORT_DOWN, NO_STP, NO_RECV, NO_RECV_STP, NO_FLOOD, NO_FWD, NO_PACKET_IN ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -47331,8 +47313,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  advertise:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
   properties:      
 ...
 ---
@@ -57981,8 +57962,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [ PORT_DOWN ]
   mask:            [ NO_STP ]
-  ethernet:        
-    advertise:       [ 10MB_HD, 10MB_FD ]
+  advertise:       [ 10MB_HD, 10MB_FD ]
   properties:      
 ...
 ---
@@ -60615,8 +60595,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -60628,8 +60607,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [ PORT_DOWN, NO_STP, NO_RECV, NO_RECV_STP, NO_FLOOD, NO_FWD, NO_PACKET_IN ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -60641,8 +60619,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [ PORT_DOWN, NO_STP, NO_RECV, NO_RECV_STP, NO_FLOOD, NO_FWD, NO_PACKET_IN ]
-  ethernet:        
-    advertise:       [  ]
+  advertise:       [  ]
   properties:      
 ...
 ---
@@ -60654,8 +60631,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
+  advertise:       [ 10MB_HD, 10MB_FD, 100MB_HD, 100MB_FD, 1GB_HD, 1GB_FD, 10GB_FD, 40GB_FD, 100GB_FD, 1TB_FD, OTHER, COPPER, FIBER, AUTONEG, PAUSE, PAUSE_ASYM ]
   properties:      
 ...
 ---
@@ -71293,8 +71269,7 @@ msg:
   hw_addr:         '01:02:03:04:05:06'
   config:          [ PORT_DOWN ]
   mask:            [ NO_STP ]
-  ethernet:        
-    advertise:       [ 10MB_HD, 10MB_FD ]
+  advertise:       [ 10MB_HD, 10MB_FD ]
   properties:      
 ...
 ---

@@ -269,12 +269,10 @@
   {
     "msg": {
       "hw_addr": "ff:ff:ff:ff:ff:ff", 
-      "ethernet": {
-        "advertise": [
-          "0xffffffff"
-        ]
-      }, 
       "config": [
+        "0xffffffff"
+      ], 
+      "advertise": [
         "0xffffffff"
       ], 
       "mask": [

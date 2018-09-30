@@ -17,8 +17,7 @@ msg:
   hw_addr: MacAddress
   config: [PortConfigFlags]
   mask: [PortConfigFlags]
-  ethernet: !opt
-    advertise: [PortFeaturesFlags]           # default=[]
+  advertise: [PortFeaturesFlags]             # default=[]
   optical: !optout                           # default=null
     configure: [OpticalPortFeaturesFlags]
     freq_lmda: UInt32
@@ -45,7 +44,7 @@ struct MappingTraits<ofp::PortMod> {
     if (eprop != props.end()) {
       const ofp::PortModPropertyEthernet &eth =
           eprop->property<ofp::PortModPropertyEthernet>();
-      io.mapRequired("ethernet", RemoveConst_cast(eth));
+      MappingTraits<ofp::PortModPropertyEthernet>::mapping(io, RemoveConst_cast(eth));
     }
 
     auto oprop = props.findProperty(ofp::PortModPropertyOptical::type());
@@ -74,7 +73,7 @@ struct MappingTraits<ofp::PortModBuilder> {
     msg.setMask(mask);
 
     ofp::PortModPropertyEthernet eth;
-    io.mapOptional("ethernet", eth);
+    MappingTraits<ofp::PortModPropertyEthernet>::mapping(io, eth);
 
     Optional<ofp::PortModPropertyOptical> opt;
     io.mapOptional("optical", opt);

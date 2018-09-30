@@ -2087,8 +2087,7 @@ TEST(encoder, portmodv5) {
         hw_addr: '333333333333'
         config: [ 0x44444444 ]
         mask: [ 0x55555555 ]
-        ethernet:
-          advertise: [ 0x66666666 ]
+        advertise: [ 0x66666666 ]
         properties:
       )""";
 
@@ -2112,8 +2111,7 @@ TEST(encoder, portmodv4) {
         hw_addr: '333333333333'
         config: [ 0x44444444 ]
         mask: [ 0x55555555 ]
-        ethernet:
-          advertise: [ 0x66666666 ]
+        advertise: [ 0x66666666 ]
         properties:
       )""";
 
@@ -2137,8 +2135,7 @@ TEST(encoder, portmodv5_experimenter) {
         hw_addr: '333333333333'
         config: [ 0x44444444 ]
         mask: [ 0x55555555 ]
-        ethernet:
-          advertise: [ 0x66666666 ]
+        advertise: [ 0x66666666 ]
         properties:
           - property: EXPERIMENTER
             experimenter: 0x77777700
@@ -2166,8 +2163,7 @@ TEST(encoder, portmodv1) {
         hw_addr: '333333333333'
         config: [ 0x44444444 ]
         mask: [ 0x55555555 ]
-        ethernet:
-          advertise: [ 0x66666666 ]
+        advertise: [ 0x66666666 ]
         properties:
       )""";
 

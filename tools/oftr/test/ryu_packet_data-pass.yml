@@ -390,8 +390,7 @@ msg:
   hw_addr:         '00:11:00:00:11:11'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [ FIBER ]
+  advertise:       [ FIBER ]
   properties:      
 ...
 ---
@@ -1274,8 +1273,7 @@ msg:
   hw_addr:         '00:11:00:00:11:11'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [ FIBER ]
+  advertise:       [ FIBER ]
   properties:      
 ...
 ---
