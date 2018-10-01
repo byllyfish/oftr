@@ -247,7 +247,32 @@ TEST(decoder, featuresreplyv1ports) {
       "22222222506F727420310000000000000000000033333333444444445555055566660666"
       "7777077788880888BBBBCCCCCCCCCCCC506F727420320000000000000000000033333333"
       "4444444455550555666606667777077788880888",
-      "---\ntype:            FEATURES_REPLY\nxid:             0x000000BF\nversion:         0x01\nmsg:             \n  datapath_id:     '00:00:01:02:03:04:05:06'\n  n_buffers:       0x00000100\n  n_tables:        0xFF\n  auxiliary_id:    0x00\n  capabilities:    [  ]\n  actions:         [  ]\n  ports:           \n    - port_no:         0x00001111\n      hw_addr:         '22:22:22:22:22:22'\n      name:            Port 1\n      config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n      state:           [ LIVE, STP_LISTEN, '0x44444440' ]\n      curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, FIBER, PAUSE, '0x55550000' ]\n      advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            [ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      0x00000000\n      max_speed:       0x00000000\n      properties:      \n    - port_no:         0x0000BBBB\n      hw_addr:         'cc:cc:cc:cc:cc:cc'\n      name:            Port 2\n      config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n      state:           [ LIVE, STP_LISTEN, '0x44444440' ]\n      curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, FIBER, PAUSE, '0x55550000' ]\n      advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            [ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      0x00000000\n      max_speed:       0x00000000\n      properties:      \n...\n");
+      "---\ntype:            FEATURES_REPLY\nxid:             "
+      "0x000000BF\nversion:         0x01\nmsg:             \n  datapath_id:    "
+      " '00:00:01:02:03:04:05:06'\n  n_buffers:       0x00000100\n  n_tables:  "
+      "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    [  ]\n  "
+      "actions:         [  ]\n  ports:           \n    - port_no:         "
+      "0x00001111\n      hw_addr:         '22:22:22:22:22:22'\n      name:     "
+      "       Port 1\n      config:          [ PORT_DOWN, NO_STP, NO_FLOOD, "
+      "NO_FWD, '0x33333300' ]\n      state:           [ LIVE, STP_LISTEN, "
+      "'0x44444440' ]\n      curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, "
+      "10GB_FD, FIBER, PAUSE, '0x55550000' ]\n      advertised:      [ "
+      "10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n    "
+      "  supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, "
+      "10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            "
+      "[ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      "
+      "0x00000000\n      max_speed:       0x00000000\n      properties:      "
+      "\n    - port_no:         0x0000BBBB\n      hw_addr:         "
+      "'cc:cc:cc:cc:cc:cc'\n      name:            Port 2\n      config:       "
+      "   [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n      state:  "
+      "         [ LIVE, STP_LISTEN, '0x44444440' ]\n      curr:            [ "
+      "10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, FIBER, PAUSE, '0x55550000' ]\n      "
+      "advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, "
+      "'0x66660000' ]\n      supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, "
+      "1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      "
+      "peer:            [ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      "
+      "curr_speed:      0x00000000\n      max_speed:       0x00000000\n      "
+      "properties:      \n...\n");
 }
 
 TEST(decoder, featuresreplyv4) {
@@ -494,7 +519,18 @@ TEST(decoder, ofmp_portstats_v4) {
       "555555506666666666666660777777777777777088888888888888809999999999999990"
       "AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEE"
       "EEEEEEE0FFFFFFFFFFFFFFF01111111022222220",
-      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  - port_no:         0x33333330\n    duration:        286331152.572662304\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
+      "]\nxid:             0x11111111\nversion:         0x04\nmsg:             "
+      "\n  - port_no:         0x33333330\n    duration:        "
+      "286331152.572662304\n    rx_packets:      0x4444444444444440\n    "
+      "tx_packets:      0x5555555555555550\n    rx_bytes:        "
+      "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
+      "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
+      "0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    "
+      "tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    "
+      "0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    "
+      "rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      "
+      "0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v3) {
@@ -503,7 +539,18 @@ TEST(decoder, ofmp_portstats_v3) {
       "555555506666666666666660777777777777777088888888888888809999999999999990"
       "AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEE"
       "EEEEEEE0FFFFFFFFFFFFFFF0",
-      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x03\nmsg:             \n  - port_no:         0x33333330\n    duration:        0\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
+      "]\nxid:             0x11111111\nversion:         0x03\nmsg:             "
+      "\n  - port_no:         0x33333330\n    duration:        0\n    "
+      "rx_packets:      0x4444444444444440\n    tx_packets:      "
+      "0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    "
+      "tx_bytes:        0x7777777777777770\n    rx_dropped:      "
+      "0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    "
+      "rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       "
+      "0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    "
+      "rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      "
+      "0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    "
+      "properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v2) {
@@ -512,7 +559,18 @@ TEST(decoder, ofmp_portstats_v2) {
       "555555506666666666666660777777777777777088888888888888809999999999999990"
       "AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEE"
       "EEEEEEE0FFFFFFFFFFFFFFF0",
-      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x02\nmsg:             \n  - port_no:         0x33333330\n    duration:        0\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
+      "]\nxid:             0x11111111\nversion:         0x02\nmsg:             "
+      "\n  - port_no:         0x33333330\n    duration:        0\n    "
+      "rx_packets:      0x4444444444444440\n    tx_packets:      "
+      "0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    "
+      "tx_bytes:        0x7777777777777770\n    rx_dropped:      "
+      "0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    "
+      "rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       "
+      "0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    "
+      "rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      "
+      "0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    "
+      "properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v1) {
@@ -521,7 +579,18 @@ TEST(decoder, ofmp_portstats_v1) {
       "6666666666666660777777777777777088888888888888809999999999999990AAAAAAAA"
       "AAAAAAA0BBBBBBBBBBBBBBB0CCCCCCCCCCCCCCC0DDDDDDDDDDDDDDD0EEEEEEEEEEEEEEE0"
       "FFFFFFFFFFFFFFF0",
-      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x01\nmsg:             \n  - port_no:         0x00003330\n    duration:        0\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
+      "]\nxid:             0x11111111\nversion:         0x01\nmsg:             "
+      "\n  - port_no:         0x00003330\n    duration:        0\n    "
+      "rx_packets:      0x4444444444444440\n    tx_packets:      "
+      "0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    "
+      "tx_bytes:        0x7777777777777770\n    rx_dropped:      "
+      "0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    "
+      "rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       "
+      "0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    "
+      "rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      "
+      "0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    "
+      "properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v5) {
@@ -533,7 +602,27 @@ TEST(decoder, ofmp_portstats_v5) {
       "1111111022222220333333304444444055555550666666607777777088809990AAA0BBB0"
       "00000000FFFF00107777770188888801999999011234000C0123456789ABCDEF0000000"
       "0",
-      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  - port_no:         0x33333330\n    duration:        286331152.572662304\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    optical:         \n      flags:           0x11111110\n      tx_freq_lmda:    0x22222220\n      tx_offset:       0x33333330\n      tx_grid_span:    0x44444440\n      rx_freq_lmda:    0x55555550\n      rx_offset:       0x66666660\n      rx_grid_span:    0x77777770\n      tx_pwr:          0x8880\n      rx_pwr:          0x9990\n      bias_current:    0xAAA0\n      temperature:     0xBBB0\n    properties:      \n      - property:        EXPERIMENTER\n        experimenter:    0x77777701\n        exp_type:        0x88888801\n        data:            99999901\n      - property:        0x1234\n        data:            0123456789ABCDEF\n...\n");
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
+      "]\nxid:             0x11111111\nversion:         0x05\nmsg:             "
+      "\n  - port_no:         0x33333330\n    duration:        "
+      "286331152.572662304\n    rx_packets:      0x4444444444444440\n    "
+      "tx_packets:      0x5555555555555550\n    rx_bytes:        "
+      "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
+      "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
+      "0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    "
+      "tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    "
+      "0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    "
+      "rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      "
+      "0xFFFFFFFFFFFFFFF0\n    optical:         \n      flags:           "
+      "0x11111110\n      tx_freq_lmda:    0x22222220\n      tx_offset:       "
+      "0x33333330\n      tx_grid_span:    0x44444440\n      rx_freq_lmda:    "
+      "0x55555550\n      rx_offset:       0x66666660\n      rx_grid_span:    "
+      "0x77777770\n      tx_pwr:          0x8880\n      rx_pwr:          "
+      "0x9990\n      bias_current:    0xAAA0\n      temperature:     0xBBB0\n  "
+      "  properties:      \n      - property:        EXPERIMENTER\n        "
+      "experimenter:    0x77777701\n        exp_type:        0x88888801\n      "
+      "  data:            99999901\n      - property:        0x1234\n        "
+      "data:            0123456789ABCDEF\n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v5_missing_ethernet) {
@@ -541,7 +630,18 @@ TEST(decoder, ofmp_portstats_v5_missing_ethernet) {
       "051300601111111100042222000000000050000033333330111111102222222044444444"
       "444444405555555555555550666666666666666077777777777777708888888888888880"
       "9999999999999990AAAAAAAAAAAAAAA0BBBBBBBBBBBBBBB0",
-      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' ]\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  - port_no:         0x33333330\n    duration:        286331152.572662304\n    rx_packets:      0x4444444444444440\n    tx_packets:      0x5555555555555550\n    rx_bytes:        0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    rx_dropped:      0x8888888888888880\n    tx_dropped:      0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0x0000000000000000\n    rx_over_err:     0x0000000000000000\n    rx_crc_err:      0x0000000000000000\n    collisions:      0x0000000000000000\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_STATS\nflags:           [ '0x00002222' "
+      "]\nxid:             0x11111111\nversion:         0x05\nmsg:             "
+      "\n  - port_no:         0x33333330\n    duration:        "
+      "286331152.572662304\n    rx_packets:      0x4444444444444440\n    "
+      "tx_packets:      0x5555555555555550\n    rx_bytes:        "
+      "0x6666666666666660\n    tx_bytes:        0x7777777777777770\n    "
+      "rx_dropped:      0x8888888888888880\n    tx_dropped:      "
+      "0x9999999999999990\n    rx_errors:       0xAAAAAAAAAAAAAAA0\n    "
+      "tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    "
+      "0x0000000000000000\n    rx_over_err:     0x0000000000000000\n    "
+      "rx_crc_err:      0x0000000000000000\n    collisions:      "
+      "0x0000000000000000\n    properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_queuestats_v4) {
@@ -992,14 +1092,38 @@ TEST(decoder, portstatusv4) {
       "040C00501111111122000000000000003333333300000000AABBCCDDEEFF0000506F7274"
       "203100000000000000000000444444445555555566666666777777778888888899999999"
       "AAAAAAAABBBBBBBB",
-      "---\ntype:            PORT_STATUS\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  reason:          0x22\n  port_no:         0x33333333\n  hw_addr:         'aa:bb:cc:dd:ee:ff'\n  name:            Port 1\n  config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  state:           [ LINK_DOWN, LIVE, '0x55555550' ]\n  curr:            [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n  advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n  supported:       [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n  peer:            [ 10MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n  curr_speed:      0xAAAAAAAA\n  max_speed:       0xBBBBBBBB\n  properties:      \n...\n");
+      "---\ntype:            PORT_STATUS\nxid:             "
+      "0x11111111\nversion:         0x04\nmsg:             \n  reason:         "
+      " 0x22\n  port_no:         0x33333333\n  hw_addr:         "
+      "'aa:bb:cc:dd:ee:ff'\n  name:            Port 1\n  config:          [ "
+      "NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  state:           [ LINK_DOWN, "
+      "LIVE, '0x55555550' ]\n  curr:            [ 10MB_FD, 100MB_HD, 1GB_FD, "
+      "10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n  advertised:   "
+      "   [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, "
+      "1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n  supported:      "
+      " [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n  peer:       "
+      "     [ 10MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, "
+      "PAUSE_ASYM, '0x99990000' ]\n  curr_speed:      0xAAAAAAAA\n  max_speed: "
+      "      0xBBBBBBBB\n  properties:      \n...\n");
 }
 
 TEST(decoder, portstatusv1) {
   testDecodeEncode(
       "010C00401111111122000000000000003333AABBCCDDEEFF506F72742031000000000000"
       "00000000444444445555555566660666777707778888088899990999",
-      "---\ntype:            PORT_STATUS\nxid:             0x11111111\nversion:         0x01\nmsg:             \n  reason:          0x22\n  port_no:         0x00003333\n  hw_addr:         'aa:bb:cc:dd:ee:ff'\n  name:            Port 1\n  config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  state:           [ LINK_DOWN, LIVE, STP_LEARN, '0x55555450' ]\n  curr:            [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n  advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n  supported:       [ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n  peer:            [ 10MB_HD, 100MB_FD, 1GB_HD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n  curr_speed:      0x00000000\n  max_speed:       0x00000000\n  properties:      \n...\n");
+      "---\ntype:            PORT_STATUS\nxid:             "
+      "0x11111111\nversion:         0x01\nmsg:             \n  reason:         "
+      " 0x22\n  port_no:         0x00003333\n  hw_addr:         "
+      "'aa:bb:cc:dd:ee:ff'\n  name:            Port 1\n  config:          [ "
+      "NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  state:           [ LINK_DOWN, "
+      "LIVE, STP_LEARN, '0x55555450' ]\n  curr:            [ 10MB_FD, "
+      "100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n  "
+      "advertised:      [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, "
+      "FIBER, AUTONEG, PAUSE, '0x77770000' ]\n  supported:       [ 100MB_FD, "
+      "COPPER, PAUSE_ASYM, '0x88880000' ]\n  peer:            [ 10MB_HD, "
+      "100MB_FD, 1GB_HD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n  "
+      "curr_speed:      0x00000000\n  max_speed:       0x00000000\n  "
+      "properties:      \n...\n");
 }
 
 TEST(decoder, groupmodv4) {
@@ -1030,13 +1154,25 @@ TEST(decoder, portmodv4) {
   testDecodeEncode(
       "04100028111111112222222200000000333333333333000044444444555"
       "555556666666600000000",
-      "---\ntype:            PORT_MOD\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  port_no:         0x22222222\n  hw_addr:         '33:33:33:33:33:33'\n  config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n  properties:      \n...\n");
+      "---\ntype:            PORT_MOD\nxid:             0x11111111\nversion:   "
+      "      0x04\nmsg:             \n  port_no:         0x22222222\n  "
+      "hw_addr:         '33:33:33:33:33:33'\n  config:          [ NO_RECV, "
+      "NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, "
+      "NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       [ 10MB_FD, "
+      "100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' "
+      "]\n  properties:      \n...\n");
 }
 
 TEST(decoder, portmodv1) {
   testDecodeEncode(
       "010F002011111111222233333333333344444444555555556666066600000000",
-      "---\ntype:            PORT_MOD\nxid:             0x11111111\nversion:         0x01\nmsg:             \n  port_no:         0x00002222\n  hw_addr:         '33:33:33:33:33:33'\n  config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n  properties:      \n...\n");
+      "---\ntype:            PORT_MOD\nxid:             0x11111111\nversion:   "
+      "      0x01\nmsg:             \n  port_no:         0x00002222\n  "
+      "hw_addr:         '33:33:33:33:33:33'\n  config:          [ NO_RECV, "
+      "NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, "
+      "NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       [ 10MB_FD, "
+      "100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n  "
+      "properties:      \n...\n");
 }
 
 TEST(decoder, portmodv5) {
@@ -1045,11 +1181,30 @@ TEST(decoder, portmodv5) {
       "000010000001001800000003000005DC000007D000000BB80000012CFFFF000C00000065"
       "0000000000000000FFFF0010000000650000000100000001FFFF00140000006500000002"
       "000000010000000200000000",
-      "---\ntype:            PORT_MOD\nxid:             0x00000000\nversion:         0x05\nmsg:             \n  port_no:         0x00000001\n  hw_addr:         '00:11:00:00:11:11'\n  config:          [  ]\n  mask:            [  ]\n  advertise:       [ FIBER ]\n  optical:         \n    configure:       [ RX_TUNE, TX_TUNE ]\n    freq_lmda:       0x000005DC\n    fl_offset:       2000\n    grid_span:       0x00000BB8\n    tx_pwr:          0x0000012C\n  properties:      \n    - property:        EXPERIMENTER\n      experimenter:    0x00000065\n      exp_type:        0x00000000\n      data:            ''\n    - property:        EXPERIMENTER\n      experimenter:    0x00000065\n      exp_type:        0x00000001\n      data:            00000001\n    - property:        EXPERIMENTER\n      experimenter:    0x00000065\n      exp_type:        0x00000002\n      data:            0000000100000002\n...\n");
+      "---\ntype:            PORT_MOD\nxid:             0x00000000\nversion:   "
+      "      0x05\nmsg:             \n  port_no:         0x00000001\n  "
+      "hw_addr:         '00:11:00:00:11:11'\n  config:          [  ]\n  mask:  "
+      "          [  ]\n  advertise:       [ FIBER ]\n  optical:         \n    "
+      "configure:       [ RX_TUNE, TX_TUNE ]\n    freq_lmda:       "
+      "0x000005DC\n    fl_offset:       2000\n    grid_span:       "
+      "0x00000BB8\n    tx_pwr:          0x0000012C\n  properties:      \n    - "
+      "property:        EXPERIMENTER\n      experimenter:    0x00000065\n      "
+      "exp_type:        0x00000000\n      data:            ''\n    - property: "
+      "       EXPERIMENTER\n      experimenter:    0x00000065\n      exp_type: "
+      "       0x00000001\n      data:            00000001\n    - property:     "
+      "   EXPERIMENTER\n      experimenter:    0x00000065\n      exp_type:     "
+      "   0x00000002\n      data:            0000000100000002\n...\n");
 }
 
 TEST(decoder, portmodv5_missing_ethernet) {
-  testDecodeOnly("0510002011111111222222220000000033333333333300004444444455555555", "---\ntype:            PORT_MOD\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  port_no:         0x22222222\n  hw_addr:         '33:33:33:33:33:33'\n  config:          [ NO_RECV, NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       [  ]\n  properties:      \n...\n");
+  testDecodeOnly(
+      "0510002011111111222222220000000033333333333300004444444455555555",
+      "---\ntype:            PORT_MOD\nxid:             0x11111111\nversion:   "
+      "      0x05\nmsg:             \n  port_no:         0x22222222\n  "
+      "hw_addr:         '33:33:33:33:33:33'\n  config:          [ NO_RECV, "
+      "NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, "
+      "NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       [  ]\n  "
+      "properties:      \n...\n");
 }
 
 TEST(decoder, tablemodv4) {
@@ -1630,7 +1785,21 @@ TEST(decoder, ofmp_portdescv4_reply) {
       "00001388000013880000000600000000F20BA47DF8EA0000506F72743600000000000000"
       "00000000000000000000000400002808000028000000280800002808000013880000138"
       "8",
-      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:             0x00000000\nversion:         0x04\nmsg:             \n  - port_no:         0x00000007\n    hw_addr:         'f2:0b:a4:d0:3f:70'\n    name:            Port7\n    config:          [  ]\n    state:           [ LIVE ]\n    curr:            [ 100MB_FD, COPPER, AUTONEG ]\n    advertised:      [ COPPER, AUTONEG ]\n    supported:       [ 100MB_FD, COPPER, AUTONEG ]\n    peer:            [ 100MB_FD, COPPER, AUTONEG ]\n    curr_speed:      0x00001388\n    max_speed:       0x00001388\n    properties:      \n  - port_no:         0x00000006\n    hw_addr:         'f2:0b:a4:7d:f8:ea'\n    name:            Port6\n    config:          [  ]\n    state:           [ LIVE ]\n    curr:            [ 100MB_FD, COPPER, AUTONEG ]\n    advertised:      [ COPPER, AUTONEG ]\n    supported:       [ 100MB_FD, COPPER, AUTONEG ]\n    peer:            [ 100MB_FD, COPPER, AUTONEG ]\n    curr_speed:      0x00001388\n    max_speed:       0x00001388\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x00000000\nversion:         0x04\nmsg:             \n  - "
+      "port_no:         0x00000007\n    hw_addr:         'f2:0b:a4:d0:3f:70'\n "
+      "   name:            Port7\n    config:          [  ]\n    state:        "
+      "   [ LIVE ]\n    curr:            [ 100MB_FD, COPPER, AUTONEG ]\n    "
+      "advertised:      [ COPPER, AUTONEG ]\n    supported:       [ 100MB_FD, "
+      "COPPER, AUTONEG ]\n    peer:            [ 100MB_FD, COPPER, AUTONEG ]\n "
+      "   curr_speed:      0x00001388\n    max_speed:       0x00001388\n    "
+      "properties:      \n  - port_no:         0x00000006\n    hw_addr:        "
+      " 'f2:0b:a4:7d:f8:ea'\n    name:            Port6\n    config:          "
+      "[  ]\n    state:           [ LIVE ]\n    curr:            [ 100MB_FD, "
+      "COPPER, AUTONEG ]\n    advertised:      [ COPPER, AUTONEG ]\n    "
+      "supported:       [ 100MB_FD, COPPER, AUTONEG ]\n    peer:            [ "
+      "100MB_FD, COPPER, AUTONEG ]\n    curr_speed:      0x00001388\n    "
+      "max_speed:       0x00001388\n    properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_portdescv1_reply) {
@@ -1641,7 +1810,30 @@ TEST(decoder, ofmp_portdescv1_reply) {
       "00027EE6C789081673312D657468320000000000000000000000000000000000000000C0"
       "000000000000000000000000FFFEBA265A8B1E4573310000000000000000000000000000"
       "000000000000000000000000000000000000000000000000",
-      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:             0x00000000\nversion:         0x01\nmsg:             \n  - port_no:         0x00000003\n    hw_addr:         '62:d3:7d:76:2c:70'\n    name:            s1-eth3\n    config:          [  ]\n    state:           [ STP_LISTEN ]\n    curr:            [ 10GB_FD, COPPER ]\n    advertised:      [  ]\n    supported:       [  ]\n    peer:            [  ]\n    curr_speed:      0x00000000\n    max_speed:       0x00000000\n    properties:      \n  - port_no:         0x00000001\n    hw_addr:         '72:de:f2:d6:1e:0c'\n    name:            s1-eth1\n    config:          [  ]\n    state:           [ STP_LISTEN ]\n    curr:            [ 10GB_FD, COPPER ]\n    advertised:      [  ]\n    supported:       [  ]\n    peer:            [  ]\n    curr_speed:      0x00000000\n    max_speed:       0x00000000\n    properties:      \n  - port_no:         0x00000002\n    hw_addr:         '7e:e6:c7:89:08:16'\n    name:            s1-eth2\n    config:          [  ]\n    state:           [ STP_LISTEN ]\n    curr:            [ 10GB_FD, COPPER ]\n    advertised:      [  ]\n    supported:       [  ]\n    peer:            [  ]\n    curr_speed:      0x00000000\n    max_speed:       0x00000000\n    properties:      \n  - port_no:         LOCAL\n    hw_addr:         'ba:26:5a:8b:1e:45'\n    name:            s1\n    config:          [  ]\n    state:           [ STP_LISTEN ]\n    curr:            [  ]\n    advertised:      [  ]\n    supported:       [  ]\n    peer:            [  ]\n    curr_speed:      0x00000000\n    max_speed:       0x00000000\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x00000000\nversion:         0x01\nmsg:             \n  - "
+      "port_no:         0x00000003\n    hw_addr:         '62:d3:7d:76:2c:70'\n "
+      "   name:            s1-eth3\n    config:          [  ]\n    state:      "
+      "     [ STP_LISTEN ]\n    curr:            [ 10GB_FD, COPPER ]\n    "
+      "advertised:      [  ]\n    supported:       [  ]\n    peer:            "
+      "[  ]\n    curr_speed:      0x00000000\n    max_speed:       "
+      "0x00000000\n    properties:      \n  - port_no:         0x00000001\n    "
+      "hw_addr:         '72:de:f2:d6:1e:0c'\n    name:            s1-eth1\n    "
+      "config:          [  ]\n    state:           [ STP_LISTEN ]\n    curr:   "
+      "         [ 10GB_FD, COPPER ]\n    advertised:      [  ]\n    supported: "
+      "      [  ]\n    peer:            [  ]\n    curr_speed:      "
+      "0x00000000\n    max_speed:       0x00000000\n    properties:      \n  - "
+      "port_no:         0x00000002\n    hw_addr:         '7e:e6:c7:89:08:16'\n "
+      "   name:            s1-eth2\n    config:          [  ]\n    state:      "
+      "     [ STP_LISTEN ]\n    curr:            [ 10GB_FD, COPPER ]\n    "
+      "advertised:      [  ]\n    supported:       [  ]\n    peer:            "
+      "[  ]\n    curr_speed:      0x00000000\n    max_speed:       "
+      "0x00000000\n    properties:      \n  - port_no:         LOCAL\n    "
+      "hw_addr:         'ba:26:5a:8b:1e:45'\n    name:            s1\n    "
+      "config:          [  ]\n    state:           [ STP_LISTEN ]\n    curr:   "
+      "         [  ]\n    advertised:      [  ]\n    supported:       [  ]\n   "
+      " peer:            [  ]\n    curr_speed:      0x00000000\n    max_speed: "
+      "      0x00000000\n    properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_portdescv2_reply) {
@@ -1651,7 +1843,31 @@ TEST(decoder, ofmp_portdescv2_reply) {
       "99999999AAAAAAAA0000BBBB00000000CCCCCCCCCCCC0000506F72742032000000000000"
       "0000000033333333444444445555555566666666777777778888888899999999AAAAAAA"
       "A",
-      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:             0x11111111\nversion:         0x02\nmsg:             \n  - port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n    name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x02\nmsg:             \n  - "
+      "port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n "
+      "   name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, "
+      "10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised: "
+      "     [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, "
+      "PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, "
+      "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
+      "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
+      "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - "
+      "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
+      "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, "
+      "10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised: "
+      "     [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, "
+      "PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, "
+      "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
+      "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
+      "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      "
+      "\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv3_reply) {
@@ -1661,7 +1877,31 @@ TEST(decoder, ofmp_portdescv3_reply) {
       "99999999AAAAAAAA0000BBBB00000000CCCCCCCCCCCC0000506F72742032000000000000"
       "0000000033333333444444445555555566666666777777778888888899999999AAAAAAA"
       "A",
-      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:             0x11111111\nversion:         0x03\nmsg:             \n  - port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n    name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x03\nmsg:             \n  - "
+      "port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n "
+      "   name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, "
+      "10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised: "
+      "     [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, "
+      "PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, "
+      "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
+      "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
+      "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - "
+      "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
+      "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, "
+      "10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised: "
+      "     [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, "
+      "PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, "
+      "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
+      "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
+      "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      "
+      "\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv4_reply2) {
@@ -1671,7 +1911,31 @@ TEST(decoder, ofmp_portdescv4_reply2) {
       "99999999AAAAAAAA0000BBBB00000000CCCCCCCCCCCC0000506F72742032000000000000"
       "0000000033333333444444445555555566666666777777778888888899999999AAAAAAA"
       "A",
-      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:             0x11111111\nversion:         0x04\nmsg:             \n  - port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n    name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x04\nmsg:             \n  - "
+      "port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n "
+      "   name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, "
+      "10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised: "
+      "     [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, "
+      "PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, "
+      "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
+      "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
+      "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - "
+      "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
+      "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, "
+      "10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised: "
+      "     [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, "
+      "PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, "
+      "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
+      "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
+      "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      "
+      "\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv5_reply) {
@@ -1681,7 +1945,31 @@ TEST(decoder, ofmp_portdescv5_reply) {
       "777777778888888899999999AAAAAAAA0000BBBB00480000CCCCCCCCCCCC0000506F7274"
       "203200000000000000000000333333334444444400000020000000005555555566666666"
       "777777778888888899999999AAAAAAAA",
-      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  - port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n    name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x05\nmsg:             \n  - "
+      "port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n "
+      "   name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, "
+      "10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised: "
+      "     [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, "
+      "PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, "
+      "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
+      "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
+      "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - "
+      "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
+      "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, "
+      "10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised: "
+      "     [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, "
+      "PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, "
+      "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
+      "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
+      "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      "
+      "\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv5_reply_2) {
@@ -1693,16 +1981,54 @@ TEST(decoder, ofmp_portdescv5_reply_2) {
       "0000BBBB00480000CCCCCCCCCCCC0000506F727420320000000000000000000033333333"
       "4444444400000020000000005555555566666666777777778888888899999999AAAAAAA"
       "A",
-      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  - port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n    name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    optical:         \n      supported:       [ '0x11111110' ]\n      tx_min_freq_lmda: 0x22222220\n      tx_max_freq_lmda: 0x33333330\n      tx_grid_freq_lmda: 0x44444440\n      rx_min_freq_lmda: 0x55555550\n      rx_max_freq_lmda: 0x66666660\n      rx_grid_freq_lmda: 0x77777770\n      tx_pwr_min:      0x8880\n      tx_pwr_max:      0x9990\n    properties:      \n      - property:        EXPERIMENTER\n        experimenter:    0xBBBBBBB0\n        exp_type:        0xCCCCCCC0\n        data:            ABCDEF\n  - port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x05\nmsg:             \n  - "
+      "port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n "
+      "   name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    curr:            [ 10MB_HD, 100MB_HD, 1GB_HD, "
+      "10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, '0x55550000' ]\n    advertised: "
+      "     [ 10MB_FD, 100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, "
+      "PAUSE, '0x66660000' ]\n    supported:       [ 10MB_HD, 10MB_FD, "
+      "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
+      "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
+      "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    optical:         \n    "
+      "  supported:       [ '0x11111110' ]\n      tx_min_freq_lmda: "
+      "0x22222220\n      tx_max_freq_lmda: 0x33333330\n      "
+      "tx_grid_freq_lmda: 0x44444440\n      rx_min_freq_lmda: 0x55555550\n     "
+      " rx_max_freq_lmda: 0x66666660\n      rx_grid_freq_lmda: 0x77777770\n    "
+      "  tx_pwr_min:      0x8880\n      tx_pwr_max:      0x9990\n    "
+      "properties:      \n      - property:        EXPERIMENTER\n        "
+      "experimenter:    0xBBBBBBB0\n        exp_type:        0xCCCCCCC0\n      "
+      "  data:            ABCDEF\n  - port_no:         0x0000BBBB\n    "
+      "hw_addr:         'cc:cc:cc:cc:cc:cc'\n    name:            Port 2\n    "
+      "config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' "
+      "]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [ "
+      "10MB_HD, 100MB_HD, 1GB_HD, 10GB_FD, 100GB_FD, OTHER, FIBER, PAUSE, "
+      "'0x55550000' ]\n    advertised:      [ 10MB_FD, 100MB_HD, 1GB_FD, "
+      "10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' ]\n    supported:  "
+      "     [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, "
+      "1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:         "
+      "   [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    "
+      "curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    "
+      "properties:      \n...\n");
 }
 
 TEST(decoder, ofmp_portdescv5_missing_ethernet_prop) {
   testDecodeOnly(
       "0513003811111111000D00000000000000001111002800002222222222220000506F7274"
       "2031000000000000000000003333333344444444",
-      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:             0x11111111\nversion:         0x05\nmsg:             \n  - port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n    name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, '0x44444440' ]\n    curr:            [  ]\n    advertised:      [  ]\n    supported:       [  ]\n    peer:            [  ]\n    curr_speed:      0x00000000\n    max_speed:       0x00000000\n    properties:      \n...\n");
+      "---\ntype:            REPLY.PORT_DESC\nflags:           [  ]\nxid:      "
+      "       0x11111111\nversion:         0x05\nmsg:             \n  - "
+      "port_no:         0x00001111\n    hw_addr:         '22:22:22:22:22:22'\n "
+      "   name:            Port 1\n    config:          [ PORT_DOWN, NO_STP, "
+      "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
+      "'0x44444440' ]\n    curr:            [  ]\n    advertised:      [  ]\n  "
+      "  supported:       [  ]\n    peer:            [  ]\n    curr_speed:     "
+      " 0x00000000\n    max_speed:       0x00000000\n    properties:      "
+      "\n...\n");
 }
-
 
 TEST(decoder, ofmp_tablefeaturesv4_reply_unpadded_len) {
   // Accept a slightly malformed packet.

@@ -44,7 +44,8 @@ struct MappingTraits<ofp::PortMod> {
     if (eprop != props.end()) {
       const ofp::PortModPropertyEthernet &eth =
           eprop->property<ofp::PortModPropertyEthernet>();
-      MappingTraits<ofp::PortModPropertyEthernet>::mapping(io, RemoveConst_cast(eth));
+      MappingTraits<ofp::PortModPropertyEthernet>::mapping(
+          io, RemoveConst_cast(eth));
     } else {
       ofp::PortModPropertyEthernet empty;
       MappingTraits<ofp::PortModPropertyEthernet>::mapping(io, empty);

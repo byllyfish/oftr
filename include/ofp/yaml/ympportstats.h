@@ -30,11 +30,12 @@ struct MappingTraits<ofp::MPPortStats> {
     if (eprop != props.end()) {
       const ofp::PortStatsPropertyEthernet &eth =
           eprop->property<ofp::PortStatsPropertyEthernet>();
-      MappingTraits<ofp::PortStatsPropertyEthernet>::mapping(io, RemoveConst_cast(eth));
+      MappingTraits<ofp::PortStatsPropertyEthernet>::mapping(
+          io, RemoveConst_cast(eth));
     } else {
       // If property is missing, write out empty values.
       ofp::PortStatsPropertyEthernet empty;
-      MappingTraits<ofp::PortStatsPropertyEthernet>::mapping(io, empty);      
+      MappingTraits<ofp::PortStatsPropertyEthernet>::mapping(io, empty);
     }
 
     auto oprop = props.findProperty(ofp::PortStatsPropertyOptical::type());
