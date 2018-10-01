@@ -30,13 +30,12 @@ hw_addr: MacAddress
 name: Str16
 config: [PortConfigFlags]
 state: [PortStateFlags]
-ethernet:
-  curr: [PortFeaturesFlags]
-  advertised: [PortFeaturesFlags]
-  supported: [PortFeaturesFlags]
-  peer: [PortFeaturesFlags]
-  curr_speed: UInt32
-  max_speed: UInt32
+curr: [PortFeaturesFlags]
+advertised: [PortFeaturesFlags]
+supported: [PortFeaturesFlags]
+peer: [PortFeaturesFlags]
+curr_speed: UInt32
+max_speed: UInt32
 optical: !optout
   supported: [OpticalPortFeaturesFlags]
   tx_min_freq_lmda: UInt32
@@ -70,7 +69,11 @@ struct MappingTraits<ofp::Port> {
     auto eprop = props.findProperty(PortPropertyEthernet::type());
     if (eprop != props.end()) {
       const PortPropertyEthernet &eth = eprop->property<PortPropertyEthernet>();
-      io.mapRequired("ethernet", RemoveConst_cast(eth));
+      MappingTraits<PortPropertyEthernet>::mapping(io, RemoveConst_cast(eth));
+    } else {
+      // If property is missing, write out empty values.
+      PortPropertyEthernet empty;
+      MappingTraits<PortPropertyEthernet>::mapping(io, empty);
     }
 
     auto oprop = props.findProperty(PortPropertyOptical::type());
@@ -96,7 +99,7 @@ struct MappingTraits<ofp::PortBuilder> {
     io.mapRequired("state", msg.msg_.state_);
 
     PortPropertyEthernet eth;
-    io.mapRequired("ethernet", eth);
+    MappingTraits<PortPropertyEthernet>::mapping(io, eth);
 
     Optional<PortPropertyOptical> opt;
     io.mapOptional("optical", opt);

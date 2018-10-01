@@ -117,11 +117,10 @@ msg:
     tx_dropped: UInt64
     rx_errors: UInt64
     tx_errors: UInt64
-    ethernet:
-      rx_frame_err: UInt64
-      rx_over_err: UInt64
-      rx_crc_err: UInt64
-      collisions: UInt64
+    rx_frame_err: UInt64
+    rx_over_err: UInt64
+    rx_crc_err: UInt64
+    collisions: UInt64
     optical: !optout
       flags: UInt32
       tx_freq_lmda: UInt32

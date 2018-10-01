@@ -56,26 +56,24 @@
       "ports": [
         {
           "hw_addr": "ff:ff:ff:ff:ff:ff", 
+          "curr_speed": 4294967295, 
+          "curr": [
+            "COPPER"
+          ], 
+          "name": "................", 
+          "supported": [
+            "COPPER"
+          ], 
           "state": [
             "LINK_DOWN"
           ], 
-          "name": "................", 
-          "ethernet": {
-            "curr_speed": 4294967295, 
-            "max_speed": 4294967295, 
-            "curr": [
-              "COPPER"
-            ], 
-            "advertised": [
-              "COPPER"
-            ], 
-            "peer": [
-              "COPPER"
-            ], 
-            "supported": [
-              "COPPER"
-            ]
-          }, 
+          "max_speed": 4294967295, 
+          "advertised": [
+            "COPPER"
+          ], 
+          "peer": [
+            "COPPER"
+          ], 
           "config": [
             "PORT_DOWN"
           ], 
@@ -163,27 +161,25 @@
   {
     "msg": {
       "hw_addr": "ff:ff:ff:ff:ff:ff", 
+      "curr_speed": 4294967295, 
+      "curr": [
+        "COPPER"
+      ], 
       "name": "................", 
+      "supported": [
+        "COPPER"
+      ], 
       "reason": "ADD", 
       "state": [
         "LINK_DOWN"
       ], 
-      "ethernet": {
-        "curr_speed": 4294967295, 
-        "max_speed": 4294967295, 
-        "curr": [
-          "COPPER"
-        ], 
-        "advertised": [
-          "COPPER"
-        ], 
-        "peer": [
-          "COPPER"
-        ], 
-        "supported": [
-          "COPPER"
-        ]
-      }, 
+      "max_speed": 4294967295, 
+      "advertised": [
+        "COPPER"
+      ], 
+      "peer": [
+        "COPPER"
+      ], 
       "config": [
         "PORT_DOWN"
       ], 
@@ -273,12 +269,10 @@
   {
     "msg": {
       "hw_addr": "ff:ff:ff:ff:ff:ff", 
-      "ethernet": {
-        "advertise": [
-          "0xffffffff"
-        ]
-      }, 
       "config": [
+        "0xffffffff"
+      ], 
+      "advertise": [
         "0xffffffff"
       ], 
       "mask": [
@@ -476,19 +470,17 @@
   {
     "msg": [
       {
+        "rx_over_err": 18446744073709551615, 
         "tx_dropped": 18446744073709551615, 
         "rx_packets": 18446744073709551615, 
+        "rx_frame_err": 18446744073709551615, 
         "rx_bytes": 18446744073709551615, 
         "tx_errors": 18446744073709551615, 
+        "rx_crc_err": 18446744073709551615, 
         "duration": "4294967295.xffffffff", 
         "rx_errors": 18446744073709551615, 
         "tx_bytes": 18446744073709551615, 
-        "ethernet": {
-          "rx_over_err": 18446744073709551615, 
-          "collisions": 18446744073709551615, 
-          "rx_crc_err": 18446744073709551615, 
-          "rx_frame_err": 18446744073709551615
-        }, 
+        "collisions": 18446744073709551615, 
         "rx_dropped": 18446744073709551615, 
         "tx_packets": 18446744073709551615, 
         "properties": null, 
@@ -895,26 +887,24 @@
     "msg": [
       {
         "hw_addr": "ff:ff:ff:ff:ff:ff", 
+        "curr_speed": 4294967295, 
+        "curr": [
+          "COPPER"
+        ], 
+        "name": "................", 
+        "supported": [
+          "COPPER"
+        ], 
         "state": [
           "LINK_DOWN"
         ], 
-        "name": "................", 
-        "ethernet": {
-          "curr_speed": 4294967295, 
-          "max_speed": 4294967295, 
-          "curr": [
-            "COPPER"
-          ], 
-          "advertised": [
-            "COPPER"
-          ], 
-          "peer": [
-            "COPPER"
-          ], 
-          "supported": [
-            "COPPER"
-          ]
-        }, 
+        "max_speed": 4294967295, 
+        "advertised": [
+          "COPPER"
+        ], 
+        "peer": [
+          "COPPER"
+        ], 
         "config": [
           "PORT_DOWN"
         ], 

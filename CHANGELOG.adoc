@@ -1,5 +1,11 @@
 = Changelog
 
+== Version 0.53 (1 October 2018)
+
+- Change schema for Port information to simplify/flatten "ethernet" section. This change affects FeaturesReply, Reply.PortDesc, and PortStatus messages.
+- Change schema for Reply.PortStats and PortMod to flatten "ethernet" section.
+- Update boringssl and googletest modules.
+
 == Version 0.52 (13 September 2018)
 
 - Change schema for CHANNEL_ALERT to make it closer to CHANNEL_UP/DOWN. (Issue #16)
