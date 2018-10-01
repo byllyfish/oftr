@@ -45,6 +45,9 @@ struct MappingTraits<ofp::PortMod> {
       const ofp::PortModPropertyEthernet &eth =
           eprop->property<ofp::PortModPropertyEthernet>();
       MappingTraits<ofp::PortModPropertyEthernet>::mapping(io, RemoveConst_cast(eth));
+    } else {
+      ofp::PortModPropertyEthernet empty;
+      MappingTraits<ofp::PortModPropertyEthernet>::mapping(io, empty);
     }
 
     auto oprop = props.findProperty(ofp::PortModPropertyOptical::type());
