@@ -114,26 +114,24 @@ msg:
       name:            Port7
       config:          [  ]
       state:           [ STP_LISTEN, '0x00000010' ]
-      ethernet:        
-        curr:            [ 100MB_FD, COPPER, AUTONEG ]
-        advertised:      [ COPPER, AUTONEG ]
-        supported:       [ 100MB_FD, COPPER, AUTONEG ]
-        peer:            [ 100MB_FD, COPPER, AUTONEG ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
       config:          [  ]
       state:           [ BLOCKED, STP_LISTEN ]
-      ethernet:        
-        curr:            [ 100MB_FD, COPPER, AUTONEG ]
-        advertised:      [ COPPER, AUTONEG ]
-        supported:       [ 100MB_FD, COPPER, AUTONEG ]
-        peer:            [ 100MB_FD, COPPER, AUTONEG ]
-        curr_speed:      0x00000000
-        max_speed:       0x00000000
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
+      curr_speed:      0x00000000
+      max_speed:       0x00000000
       properties:      
 ...
 ---
@@ -392,8 +390,7 @@ msg:
   hw_addr:         '00:11:00:00:11:11'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [ FIBER ]
+  advertise:       [ FIBER ]
   properties:      
 ...
 ---
@@ -491,11 +488,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000006
     duration:        0
@@ -507,11 +503,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
 ...
 ---
@@ -632,13 +627,12 @@ msg:
   name:            "私のポート"
   config:          [  ]
   state:           [ LIVE ]
-  ethernet:        
-    curr:            [ 100MB_FD, COPPER, AUTONEG ]
-    advertised:      [ COPPER, AUTONEG ]
-    supported:       [ 100MB_FD, COPPER, AUTONEG ]
-    peer:            [ 100MB_FD, COPPER, AUTONEG ]
-    curr_speed:      0x00001388
-    max_speed:       0x00001388
+  curr:            [ 100MB_FD, COPPER, AUTONEG ]
+  advertised:      [ COPPER, AUTONEG ]
+  supported:       [ 100MB_FD, COPPER, AUTONEG ]
+  peer:            [ 100MB_FD, COPPER, AUTONEG ]
+  curr_speed:      0x00001388
+  max_speed:       0x00001388
   properties:      
 ...
 ---
@@ -827,26 +821,24 @@ msg:
       name:            Port7
       config:          [  ]
       state:           [ LIVE ]
-      ethernet:        
-        curr:            [ 100MB_FD, COPPER, AUTONEG ]
-        advertised:      [ COPPER, AUTONEG ]
-        supported:       [ 100MB_FD, COPPER, AUTONEG ]
-        peer:            [ 100MB_FD, COPPER, AUTONEG ]
-        curr_speed:      0x00001388
-        max_speed:       0x00001388
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
+      curr_speed:      0x00001388
+      max_speed:       0x00001388
       properties:      
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
       config:          [  ]
       state:           [ LIVE ]
-      ethernet:        
-        curr:            [ 100MB_FD, COPPER, AUTONEG ]
-        advertised:      [ COPPER, AUTONEG ]
-        supported:       [ 100MB_FD, COPPER, AUTONEG ]
-        peer:            [ 100MB_FD, COPPER, AUTONEG ]
-        curr_speed:      0x00001388
-        max_speed:       0x00001388
+      curr:            [ 100MB_FD, COPPER, AUTONEG ]
+      advertised:      [ COPPER, AUTONEG ]
+      supported:       [ 100MB_FD, COPPER, AUTONEG ]
+      peer:            [ 100MB_FD, COPPER, AUTONEG ]
+      curr_speed:      0x00001388
+      max_speed:       0x00001388
       properties:      
 ...
 ---
@@ -1281,8 +1273,7 @@ msg:
   hw_addr:         '00:11:00:00:11:11'
   config:          [  ]
   mask:            [  ]
-  ethernet:        
-    advertise:       [ FIBER ]
+  advertise:       [ FIBER ]
   properties:      
 ...
 ---
@@ -1401,11 +1392,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
   - port_no:         0x00000006
     duration:        0
@@ -1417,11 +1407,10 @@ msg:
     tx_dropped:      0x0000000000000000
     rx_errors:       0x0000000000000000
     tx_errors:       0x0000000000000000
-    ethernet:        
-      rx_frame_err:    0x0000000000000000
-      rx_over_err:     0x0000000000000000
-      rx_crc_err:      0x0000000000000000
-      collisions:      0x0000000000000000
+    rx_frame_err:    0x0000000000000000
+    rx_over_err:     0x0000000000000000
+    rx_crc_err:      0x0000000000000000
+    collisions:      0x0000000000000000
     properties:      
 ...
 ---
@@ -1542,13 +1531,12 @@ msg:
   name:            "私のポート"
   config:          [  ]
   state:           [ LIVE ]
-  ethernet:        
-    curr:            [ 100MB_FD, COPPER, AUTONEG ]
-    advertised:      [ COPPER, AUTONEG ]
-    supported:       [ 100MB_FD, COPPER, AUTONEG ]
-    peer:            [ 100MB_FD, COPPER, AUTONEG ]
-    curr_speed:      0x00001388
-    max_speed:       0x00001388
+  curr:            [ 100MB_FD, COPPER, AUTONEG ]
+  advertised:      [ COPPER, AUTONEG ]
+  supported:       [ 100MB_FD, COPPER, AUTONEG ]
+  peer:            [ 100MB_FD, COPPER, AUTONEG ]
+  curr_speed:      0x00001388
+  max_speed:       0x00001388
   properties:      
 ...
 ---
@@ -1796,26 +1784,24 @@ msg:
     name:            Port7
     config:          [  ]
     state:           [ LIVE ]
-    ethernet:        
-      curr:            [ 100MB_FD, COPPER, AUTONEG ]
-      advertised:      [ COPPER, AUTONEG ]
-      supported:       [ 100MB_FD, COPPER, AUTONEG ]
-      peer:            [ 100MB_FD, COPPER, AUTONEG ]
-      curr_speed:      0x00001388
-      max_speed:       0x00001388
+    curr:            [ 100MB_FD, COPPER, AUTONEG ]
+    advertised:      [ COPPER, AUTONEG ]
+    supported:       [ 100MB_FD, COPPER, AUTONEG ]
+    peer:            [ 100MB_FD, COPPER, AUTONEG ]
+    curr_speed:      0x00001388
+    max_speed:       0x00001388
     properties:      
   - port_no:         0x00000006
     hw_addr:         'f2:0b:a4:7d:f8:ea'
     name:            Port6
     config:          [  ]
     state:           [ LIVE ]
-    ethernet:        
-      curr:            [ 100MB_FD, COPPER, AUTONEG ]
-      advertised:      [ COPPER, AUTONEG ]
-      supported:       [ 100MB_FD, COPPER, AUTONEG ]
-      peer:            [ 100MB_FD, COPPER, AUTONEG ]
-      curr_speed:      0x00001388
-      max_speed:       0x00001388
+    curr:            [ 100MB_FD, COPPER, AUTONEG ]
+    advertised:      [ COPPER, AUTONEG ]
+    supported:       [ 100MB_FD, COPPER, AUTONEG ]
+    peer:            [ 100MB_FD, COPPER, AUTONEG ]
+    curr_speed:      0x00001388
+    max_speed:       0x00001388
     properties:      
 ...
 ---

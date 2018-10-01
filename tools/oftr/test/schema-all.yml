@@ -345,13 +345,12 @@ Message/PortStatus:
     name: Str16
     config: [PortConfigFlags]
     state: [PortStateFlags]
-    ethernet:
-      curr: [PortFeaturesFlags]
-      advertised: [PortFeaturesFlags]
-      supported: [PortFeaturesFlags]
-      peer: [PortFeaturesFlags]
-      curr_speed: UInt32
-      max_speed: UInt32
+    curr: [PortFeaturesFlags]
+    advertised: [PortFeaturesFlags]
+    supported: [PortFeaturesFlags]
+    peer: [PortFeaturesFlags]
+    curr_speed: UInt32
+    max_speed: UInt32
     optical: !optout
       supported: [OpticalPortFeaturesFlags]
       tx_min_freq_lmda: UInt32
@@ -448,8 +447,7 @@ Message/PortMod:
     hw_addr: MacAddress
     config: [PortConfigFlags]
     mask: [PortConfigFlags]
-    ethernet: !opt
-      advertise: [PortFeaturesFlags]           # default=[]
+    advertise: [PortFeaturesFlags]             # default=[]
     optical: !optout                           # default=null
       configure: [OpticalPortFeaturesFlags]
       freq_lmda: UInt32
@@ -956,11 +954,10 @@ Message/Reply.PortStats:
       tx_dropped: UInt64
       rx_errors: UInt64
       tx_errors: UInt64
-      ethernet:
-        rx_frame_err: UInt64
-        rx_over_err: UInt64
-        rx_crc_err: UInt64
-        collisions: UInt64
+      rx_frame_err: UInt64
+      rx_over_err: UInt64
+      rx_crc_err: UInt64
+      collisions: UInt64
       optical: !optout
         flags: UInt32
         tx_freq_lmda: UInt32
@@ -1590,13 +1587,12 @@ Struct/Port:
   name: Str16
   config: [PortConfigFlags]
   state: [PortStateFlags]
-  ethernet:
-    curr: [PortFeaturesFlags]
-    advertised: [PortFeaturesFlags]
-    supported: [PortFeaturesFlags]
-    peer: [PortFeaturesFlags]
-    curr_speed: UInt32
-    max_speed: UInt32
+  curr: [PortFeaturesFlags]
+  advertised: [PortFeaturesFlags]
+  supported: [PortFeaturesFlags]
+  peer: [PortFeaturesFlags]
+  curr_speed: UInt32
+  max_speed: UInt32
   optical: !optout
     supported: [OpticalPortFeaturesFlags]
     tx_min_freq_lmda: UInt32

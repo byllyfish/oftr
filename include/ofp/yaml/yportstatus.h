@@ -19,13 +19,12 @@ msg:
   name: Str16
   config: [PortConfigFlags]
   state: [PortStateFlags]
-  ethernet:
-    curr: [PortFeaturesFlags]
-    advertised: [PortFeaturesFlags]
-    supported: [PortFeaturesFlags]
-    peer: [PortFeaturesFlags]
-    curr_speed: UInt32
-    max_speed: UInt32
+  curr: [PortFeaturesFlags]
+  advertised: [PortFeaturesFlags]
+  supported: [PortFeaturesFlags]
+  peer: [PortFeaturesFlags]
+  curr_speed: UInt32
+  max_speed: UInt32
   optical: !optout
     supported: [OpticalPortFeaturesFlags]
     tx_min_freq_lmda: UInt32

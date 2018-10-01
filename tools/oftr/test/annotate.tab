@@ -16,35 +16,34 @@ version	type	keypath	syntax	required	default	missing	modify
 1	EXPERIMENTER.v1	msg.experimenter	uint32	True			True
 1	FEATURES_REQUEST.v1	msg	object	False			
 1	FEATURES_REPLY.v1	msg	object	True			
-1	FEATURES_REPLY.v1	msg.actions	array	False	msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.properties=array		
-1	FEATURES_REPLY.v1	msg.actions.0	SET_VLAN_VID	False	msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.properties=array		
-1	FEATURES_REPLY.v1	msg.auxiliary_id	uint8	False	msg.auxiliary_id=0,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.properties=array	msg.auxiliary_id=0	
+1	FEATURES_REPLY.v1	msg.actions	array	False	msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.properties=array,msg.ports.0.state.1=STP_LISTEN		
+1	FEATURES_REPLY.v1	msg.actions.0	SET_VLAN_VID	False	msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.properties=array,msg.ports.0.state.1=STP_LISTEN		
+1	FEATURES_REPLY.v1	msg.auxiliary_id	uint8	False	msg.auxiliary_id=0,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.properties=array,msg.ports.0.state.1=STP_LISTEN	msg.auxiliary_id=0	
 1	FEATURES_REPLY.v1	msg.capabilities	array	True			
-1	FEATURES_REPLY.v1	msg.capabilities.0	FLOW_STATS	False	msg.auxiliary_id=0,msg.capabilities.0=FLOW_STATS,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.properties=array		
+1	FEATURES_REPLY.v1	msg.capabilities.0	FLOW_STATS	False	msg.auxiliary_id=0,msg.capabilities.0=FLOW_STATS,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.properties=array,msg.ports.0.state.1=STP_LISTEN		
 1	FEATURES_REPLY.v1	msg.datapath_id	datapath	True			True
 1	FEATURES_REPLY.v1	msg.n_buffers	uint32	True			True
 1	FEATURES_REPLY.v1	msg.n_tables	uint8	True			True
 1	FEATURES_REPLY.v1	msg.ports	array	False	msg.auxiliary_id=0		
 1	FEATURES_REPLY.v1	msg.ports.0	object	False	msg.auxiliary_id=0		
+1	FEATURES_REPLY.v1	msg.ports.0.advertised	array	True			
+1	FEATURES_REPLY.v1	msg.ports.0.advertised.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.advertised.0=COPPER,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.properties=array,msg.ports.0.state.1=STP_LISTEN		
 1	FEATURES_REPLY.v1	msg.ports.0.config	array	True			
-1	FEATURES_REPLY.v1	msg.ports.0.config.0	PORT_DOWN	False	msg.auxiliary_id=0,msg.ports.0.config.0=PORT_DOWN,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.properties=array		
-1	FEATURES_REPLY.v1	msg.ports.0.ethernet	object	True			
-1	FEATURES_REPLY.v1	msg.ports.0.ethernet.advertised	array	True			
-1	FEATURES_REPLY.v1	msg.ports.0.ethernet.advertised.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.ethernet.advertised.0=COPPER,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.properties=array		
-1	FEATURES_REPLY.v1	msg.ports.0.ethernet.curr	array	True			
-1	FEATURES_REPLY.v1	msg.ports.0.ethernet.curr.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.ethernet.curr.0=COPPER,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.properties=array		
-1	FEATURES_REPLY.v1	msg.ports.0.ethernet.curr_speed	uint32	True		msg.ports.0.ethernet.curr_speed=0	
-1	FEATURES_REPLY.v1	msg.ports.0.ethernet.max_speed	uint32	True		msg.ports.0.ethernet.max_speed=0	
-1	FEATURES_REPLY.v1	msg.ports.0.ethernet.peer	array	True			
-1	FEATURES_REPLY.v1	msg.ports.0.ethernet.peer.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.ethernet.peer.0=COPPER,msg.ports.0.properties=array		
-1	FEATURES_REPLY.v1	msg.ports.0.ethernet.supported	array	True			
-1	FEATURES_REPLY.v1	msg.ports.0.ethernet.supported.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.ethernet.supported.0=COPPER,msg.ports.0.properties=array		
+1	FEATURES_REPLY.v1	msg.ports.0.config.0	PORT_DOWN	False	msg.auxiliary_id=0,msg.ports.0.config.0=PORT_DOWN,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.properties=array,msg.ports.0.state.1=STP_LISTEN		
+1	FEATURES_REPLY.v1	msg.ports.0.curr	array	True			
+1	FEATURES_REPLY.v1	msg.ports.0.curr.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.curr.0=COPPER,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.properties=array,msg.ports.0.state.1=STP_LISTEN		
+1	FEATURES_REPLY.v1	msg.ports.0.curr_speed	uint32	True		msg.ports.0.curr_speed=0	
 1	FEATURES_REPLY.v1	msg.ports.0.hw_addr	macaddress	True			True
+1	FEATURES_REPLY.v1	msg.ports.0.max_speed	uint32	True		msg.ports.0.max_speed=0	
 1	FEATURES_REPLY.v1	msg.ports.0.name	str16	True			
+1	FEATURES_REPLY.v1	msg.ports.0.peer	array	True			
+1	FEATURES_REPLY.v1	msg.ports.0.peer.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.peer.0=COPPER,msg.ports.0.properties=array,msg.ports.0.state.1=STP_LISTEN		
 1	FEATURES_REPLY.v1	msg.ports.0.port_no	CONTROLLER	True			
-1	FEATURES_REPLY.v1	msg.ports.0.properties	null	False	msg.auxiliary_id=0,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.properties=array	msg.ports.0.properties=array	
+1	FEATURES_REPLY.v1	msg.ports.0.properties	null	False	msg.auxiliary_id=0,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.properties=array,msg.ports.0.state.1=STP_LISTEN	msg.ports.0.properties=array	
 1	FEATURES_REPLY.v1	msg.ports.0.state	array	True			
-1	FEATURES_REPLY.v1	msg.ports.0.state.0	LINK_DOWN	False	msg.auxiliary_id=0,msg.ports.0.ethernet.curr_speed=0,msg.ports.0.ethernet.max_speed=0,msg.ports.0.properties=array,msg.ports.0.state.0=STP_LISTEN		
+1	FEATURES_REPLY.v1	msg.ports.0.state.0	LINK_DOWN	False	msg.auxiliary_id=0,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.properties=array,msg.ports.0.state.0=STP_LISTEN		
+1	FEATURES_REPLY.v1	msg.ports.0.supported	array	True			
+1	FEATURES_REPLY.v1	msg.ports.0.supported.0	COPPER	False	msg.auxiliary_id=0,msg.ports.0.curr_speed=0,msg.ports.0.max_speed=0,msg.ports.0.properties=array,msg.ports.0.state.1=STP_LISTEN		
 1	GET_CONFIG_REQUEST.v1	msg	object	False			
 1	GET_CONFIG_REPLY.v1	msg	object	True			
 1	GET_CONFIG_REPLY.v1	msg.flags	array	True			
@@ -85,26 +84,25 @@ version	type	keypath	syntax	required	default	missing	modify
 1	FLOW_REMOVED.v1	msg.reason	IDLE_TIMEOUT	True			
 1	FLOW_REMOVED.v1	msg.table_id	ALL	True		msg.table_id=0	
 1	PORT_STATUS.v1	msg	object	True			
+1	PORT_STATUS.v1	msg.advertised	array	True			
+1	PORT_STATUS.v1	msg.advertised.0	COPPER	False	msg.advertised.0=COPPER,msg.curr_speed=0,msg.max_speed=0,msg.properties=array,msg.state.1=STP_LISTEN		
 1	PORT_STATUS.v1	msg.config	array	True			
-1	PORT_STATUS.v1	msg.config.0	PORT_DOWN	False	msg.config.0=PORT_DOWN,msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.properties=array		
-1	PORT_STATUS.v1	msg.ethernet	object	True			
-1	PORT_STATUS.v1	msg.ethernet.advertised	array	True			
-1	PORT_STATUS.v1	msg.ethernet.advertised.0	COPPER	False	msg.ethernet.advertised.0=COPPER,msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.properties=array		
-1	PORT_STATUS.v1	msg.ethernet.curr	array	True			
-1	PORT_STATUS.v1	msg.ethernet.curr.0	COPPER	False	msg.ethernet.curr.0=COPPER,msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.properties=array		
-1	PORT_STATUS.v1	msg.ethernet.curr_speed	uint32	True		msg.ethernet.curr_speed=0	
-1	PORT_STATUS.v1	msg.ethernet.max_speed	uint32	True		msg.ethernet.max_speed=0	
-1	PORT_STATUS.v1	msg.ethernet.peer	array	True			
-1	PORT_STATUS.v1	msg.ethernet.peer.0	COPPER	False	msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.ethernet.peer.0=COPPER,msg.properties=array		
-1	PORT_STATUS.v1	msg.ethernet.supported	array	True			
-1	PORT_STATUS.v1	msg.ethernet.supported.0	COPPER	False	msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.ethernet.supported.0=COPPER,msg.properties=array		
+1	PORT_STATUS.v1	msg.config.0	PORT_DOWN	False	msg.config.0=PORT_DOWN,msg.curr_speed=0,msg.max_speed=0,msg.properties=array,msg.state.1=STP_LISTEN		
+1	PORT_STATUS.v1	msg.curr	array	True			
+1	PORT_STATUS.v1	msg.curr.0	COPPER	False	msg.curr.0=COPPER,msg.curr_speed=0,msg.max_speed=0,msg.properties=array,msg.state.1=STP_LISTEN		
+1	PORT_STATUS.v1	msg.curr_speed	uint32	True		msg.curr_speed=0	
 1	PORT_STATUS.v1	msg.hw_addr	macaddress	True			True
+1	PORT_STATUS.v1	msg.max_speed	uint32	True		msg.max_speed=0	
 1	PORT_STATUS.v1	msg.name	str16	True			
+1	PORT_STATUS.v1	msg.peer	array	True			
+1	PORT_STATUS.v1	msg.peer.0	COPPER	False	msg.curr_speed=0,msg.max_speed=0,msg.peer.0=COPPER,msg.properties=array,msg.state.1=STP_LISTEN		
 1	PORT_STATUS.v1	msg.port_no	CONTROLLER	True			
-1	PORT_STATUS.v1	msg.properties	null	False	msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.properties=array	msg.properties=array	
+1	PORT_STATUS.v1	msg.properties	null	False	msg.curr_speed=0,msg.max_speed=0,msg.properties=array,msg.state.1=STP_LISTEN	msg.properties=array	
 1	PORT_STATUS.v1	msg.reason	ADD	True			
 1	PORT_STATUS.v1	msg.state	array	True			
-1	PORT_STATUS.v1	msg.state.0	LINK_DOWN	False	msg.ethernet.curr_speed=0,msg.ethernet.max_speed=0,msg.properties=array,msg.state.0=STP_LISTEN		
+1	PORT_STATUS.v1	msg.state.0	LINK_DOWN	False	msg.curr_speed=0,msg.max_speed=0,msg.properties=array,msg.state.0=STP_LISTEN		
+1	PORT_STATUS.v1	msg.supported	array	True			
+1	PORT_STATUS.v1	msg.supported.0	COPPER	False	msg.curr_speed=0,msg.max_speed=0,msg.properties=array,msg.state.1=STP_LISTEN		
 1	PACKET_OUT.v1	msg	object	True			
 1	PACKET_OUT.v1	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 1	PACKET_OUT.v1	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
@@ -155,17 +153,16 @@ version	type	keypath	syntax	required	default	missing	modify
 1	GROUP_MOD.v1	msg.group_id	ANY	True			ERROR
 1	GROUP_MOD.v1	msg.type	ALL	True			ERROR
 1	PORT_MOD.v1	msg	object	True			
+1	PORT_MOD.v1	msg.advertise	array	True			
+1	PORT_MOD.v1	msg.advertise.0	0xffffffff	False	msg.advertise.0=0xffffffff,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.advertise.0=10MB_HD	
 1	PORT_MOD.v1	msg.config	array	True			
-1	PORT_MOD.v1	msg.config.0	0xffffffff	False	msg.config.0=0xffffffff,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=PAUSE,msg.ethernet.advertise.11=PAUSE_ASYM,msg.ethernet.advertise.12=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=COPPER,msg.ethernet.advertise.8=FIBER,msg.ethernet.advertise.9=AUTONEG,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.config.0=PORT_DOWN	
-1	PORT_MOD.v1	msg.ethernet	object	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
-1	PORT_MOD.v1	msg.ethernet.advertise	array	True			
-1	PORT_MOD.v1	msg.ethernet.advertise.0	0xffffffff	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.ethernet.advertise.0=10MB_HD	
+1	PORT_MOD.v1	msg.config.0	0xffffffff	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=PAUSE,msg.advertise.11=PAUSE_ASYM,msg.advertise.12=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=COPPER,msg.advertise.8=FIBER,msg.advertise.9=AUTONEG,msg.config.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.config.0=PORT_DOWN	
 1	PORT_MOD.v1	msg.hw_addr	macaddress	True			True
 1	PORT_MOD.v1	msg.mask	array	True			
-1	PORT_MOD.v1	msg.mask.0	0xffffffff	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=PAUSE,msg.ethernet.advertise.11=PAUSE_ASYM,msg.ethernet.advertise.12=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=COPPER,msg.ethernet.advertise.8=FIBER,msg.ethernet.advertise.9=AUTONEG,msg.mask.0=0xffffffff	msg.mask.0=PORT_DOWN	
+1	PORT_MOD.v1	msg.mask.0	0xffffffff	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=PAUSE,msg.advertise.11=PAUSE_ASYM,msg.advertise.12=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=COPPER,msg.advertise.8=FIBER,msg.advertise.9=AUTONEG,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=0xffffffff	msg.mask.0=PORT_DOWN	
 1	PORT_MOD.v1	msg.port_no	CONTROLLER	True			
-1	PORT_MOD.v1	msg.properties	array	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=PAUSE,msg.ethernet.advertise.11=PAUSE_ASYM,msg.ethernet.advertise.12=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=COPPER,msg.ethernet.advertise.8=FIBER,msg.ethernet.advertise.9=AUTONEG,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
-1	PORT_MOD.v1	msg.properties.0	object	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=PAUSE,msg.ethernet.advertise.11=PAUSE_ASYM,msg.ethernet.advertise.12=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=COPPER,msg.ethernet.advertise.8=FIBER,msg.ethernet.advertise.9=AUTONEG,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
+1	PORT_MOD.v1	msg.properties	array	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=PAUSE,msg.advertise.11=PAUSE_ASYM,msg.advertise.12=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=COPPER,msg.advertise.8=FIBER,msg.advertise.9=AUTONEG,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
+1	PORT_MOD.v1	msg.properties.0	object	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=PAUSE,msg.advertise.11=PAUSE_ASYM,msg.advertise.12=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=COPPER,msg.advertise.8=FIBER,msg.advertise.9=AUTONEG,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
 1	PORT_MOD.v1	msg.properties.0.data	binary	True			
 1	PORT_MOD.v1	msg.properties.0.exp_type	uint32	True			
 1	PORT_MOD.v1	msg.properties.0.experimenter	uint32	True			
@@ -255,17 +252,16 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REQUEST.PORT_STATS.v1	msg.port_no	CONTROLLER	True			
 1	REPLY.PORT_STATS.v1	msg	array	True			
 1	REPLY.PORT_STATS.v1	msg.0	object	False			
+1	REPLY.PORT_STATS.v1	msg.0.collisions	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
-1	REPLY.PORT_STATS.v1	msg.0.ethernet	object	True			
-1	REPLY.PORT_STATS.v1	msg.0.ethernet.collisions	uint64	True			True
-1	REPLY.PORT_STATS.v1	msg.0.ethernet.rx_crc_err	uint64	True			True
-1	REPLY.PORT_STATS.v1	msg.0.ethernet.rx_frame_err	uint64	True			True
-1	REPLY.PORT_STATS.v1	msg.0.ethernet.rx_over_err	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.port_no	CONTROLLER	True			
 1	REPLY.PORT_STATS.v1	msg.0.properties	null	True		msg.0.properties=array	
 1	REPLY.PORT_STATS.v1	msg.0.rx_bytes	uint64	True			True
+1	REPLY.PORT_STATS.v1	msg.0.rx_crc_err	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.rx_dropped	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.rx_errors	uint64	True			True
+1	REPLY.PORT_STATS.v1	msg.0.rx_frame_err	uint64	True			True
+1	REPLY.PORT_STATS.v1	msg.0.rx_over_err	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.rx_packets	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.tx_bytes	uint64	True			True
 1	REPLY.PORT_STATS.v1	msg.0.tx_dropped	uint64	True			True
@@ -456,25 +452,24 @@ version	type	keypath	syntax	required	default	missing	modify
 1	REQUEST.PORT_DESC.v1	msg	object	False			
 1	REPLY.PORT_DESC.v1	msg	array	True			
 1	REPLY.PORT_DESC.v1	msg.0	object	False			
+1	REPLY.PORT_DESC.v1	msg.0.advertised	array	True			
+1	REPLY.PORT_DESC.v1	msg.0.advertised.0	COPPER	False	msg.0.advertised.0=COPPER,msg.0.curr_speed=0,msg.0.max_speed=0,msg.0.properties=array,msg.0.state.1=STP_LISTEN		
 1	REPLY.PORT_DESC.v1	msg.0.config	array	True			
-1	REPLY.PORT_DESC.v1	msg.0.config.0	PORT_DOWN	False	msg.0.config.0=PORT_DOWN,msg.0.ethernet.curr_speed=0,msg.0.ethernet.max_speed=0,msg.0.properties=array		
-1	REPLY.PORT_DESC.v1	msg.0.ethernet	object	True			
-1	REPLY.PORT_DESC.v1	msg.0.ethernet.advertised	array	True			
-1	REPLY.PORT_DESC.v1	msg.0.ethernet.advertised.0	COPPER	False	msg.0.ethernet.advertised.0=COPPER,msg.0.ethernet.curr_speed=0,msg.0.ethernet.max_speed=0,msg.0.properties=array		
-1	REPLY.PORT_DESC.v1	msg.0.ethernet.curr	array	True			
-1	REPLY.PORT_DESC.v1	msg.0.ethernet.curr.0	COPPER	False	msg.0.ethernet.curr.0=COPPER,msg.0.ethernet.curr_speed=0,msg.0.ethernet.max_speed=0,msg.0.properties=array		
-1	REPLY.PORT_DESC.v1	msg.0.ethernet.curr_speed	uint32	True		msg.0.ethernet.curr_speed=0	
-1	REPLY.PORT_DESC.v1	msg.0.ethernet.max_speed	uint32	True		msg.0.ethernet.max_speed=0	
-1	REPLY.PORT_DESC.v1	msg.0.ethernet.peer	array	True			
-1	REPLY.PORT_DESC.v1	msg.0.ethernet.peer.0	COPPER	False	msg.0.ethernet.curr_speed=0,msg.0.ethernet.max_speed=0,msg.0.ethernet.peer.0=COPPER,msg.0.properties=array		
-1	REPLY.PORT_DESC.v1	msg.0.ethernet.supported	array	True			
-1	REPLY.PORT_DESC.v1	msg.0.ethernet.supported.0	COPPER	False	msg.0.ethernet.curr_speed=0,msg.0.ethernet.max_speed=0,msg.0.ethernet.supported.0=COPPER,msg.0.properties=array		
+1	REPLY.PORT_DESC.v1	msg.0.config.0	PORT_DOWN	False	msg.0.config.0=PORT_DOWN,msg.0.curr_speed=0,msg.0.max_speed=0,msg.0.properties=array,msg.0.state.1=STP_LISTEN		
+1	REPLY.PORT_DESC.v1	msg.0.curr	array	True			
+1	REPLY.PORT_DESC.v1	msg.0.curr.0	COPPER	False	msg.0.curr.0=COPPER,msg.0.curr_speed=0,msg.0.max_speed=0,msg.0.properties=array,msg.0.state.1=STP_LISTEN		
+1	REPLY.PORT_DESC.v1	msg.0.curr_speed	uint32	True		msg.0.curr_speed=0	
 1	REPLY.PORT_DESC.v1	msg.0.hw_addr	macaddress	True			True
+1	REPLY.PORT_DESC.v1	msg.0.max_speed	uint32	True		msg.0.max_speed=0	
 1	REPLY.PORT_DESC.v1	msg.0.name	str16	True			
+1	REPLY.PORT_DESC.v1	msg.0.peer	array	True			
+1	REPLY.PORT_DESC.v1	msg.0.peer.0	COPPER	False	msg.0.curr_speed=0,msg.0.max_speed=0,msg.0.peer.0=COPPER,msg.0.properties=array,msg.0.state.1=STP_LISTEN		
 1	REPLY.PORT_DESC.v1	msg.0.port_no	CONTROLLER	True			
-1	REPLY.PORT_DESC.v1	msg.0.properties	null	False	msg.0.ethernet.curr_speed=0,msg.0.ethernet.max_speed=0,msg.0.properties=array	msg.0.properties=array	
+1	REPLY.PORT_DESC.v1	msg.0.properties	null	False	msg.0.curr_speed=0,msg.0.max_speed=0,msg.0.properties=array,msg.0.state.1=STP_LISTEN	msg.0.properties=array	
 1	REPLY.PORT_DESC.v1	msg.0.state	array	True			
-1	REPLY.PORT_DESC.v1	msg.0.state.0	LINK_DOWN	False	msg.0.ethernet.curr_speed=0,msg.0.ethernet.max_speed=0,msg.0.properties=array,msg.0.state.0=STP_LISTEN		
+1	REPLY.PORT_DESC.v1	msg.0.state.0	LINK_DOWN	False	msg.0.curr_speed=0,msg.0.max_speed=0,msg.0.properties=array,msg.0.state.0=STP_LISTEN		
+1	REPLY.PORT_DESC.v1	msg.0.supported	array	True			
+1	REPLY.PORT_DESC.v1	msg.0.supported.0	COPPER	False	msg.0.curr_speed=0,msg.0.max_speed=0,msg.0.properties=array,msg.0.state.1=STP_LISTEN		
 1	REQUEST.TABLE_DESC.v1	msg	object	True			ERROR
 1	REPLY.TABLE_DESC.v1	msg	array	True			ERROR
 1	REPLY.TABLE_DESC.v1	msg.0	object	True			ERROR
@@ -668,25 +663,24 @@ version	type	keypath	syntax	required	default	missing	modify
 2	FEATURES_REPLY.v2	msg.n_tables	uint8	True			True
 2	FEATURES_REPLY.v2	msg.ports	array	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0		
 2	FEATURES_REPLY.v2	msg.ports.0	object	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0		
+2	FEATURES_REPLY.v2	msg.ports.0.advertised	array	True			
+2	FEATURES_REPLY.v2	msg.ports.0.advertised.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.advertised.0=COPPER,msg.ports.0.properties=array		
 2	FEATURES_REPLY.v2	msg.ports.0.config	array	True			
 2	FEATURES_REPLY.v2	msg.ports.0.config.0	PORT_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.config.0=PORT_DOWN,msg.ports.0.properties=array		
-2	FEATURES_REPLY.v2	msg.ports.0.ethernet	object	True			
-2	FEATURES_REPLY.v2	msg.ports.0.ethernet.advertised	array	True			
-2	FEATURES_REPLY.v2	msg.ports.0.ethernet.advertised.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.ethernet.advertised.0=COPPER,msg.ports.0.properties=array		
-2	FEATURES_REPLY.v2	msg.ports.0.ethernet.curr	array	True			
-2	FEATURES_REPLY.v2	msg.ports.0.ethernet.curr.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.ethernet.curr.0=COPPER,msg.ports.0.properties=array		
-2	FEATURES_REPLY.v2	msg.ports.0.ethernet.curr_speed	uint32	True			True
-2	FEATURES_REPLY.v2	msg.ports.0.ethernet.max_speed	uint32	True			True
-2	FEATURES_REPLY.v2	msg.ports.0.ethernet.peer	array	True			
-2	FEATURES_REPLY.v2	msg.ports.0.ethernet.peer.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.ethernet.peer.0=COPPER,msg.ports.0.properties=array		
-2	FEATURES_REPLY.v2	msg.ports.0.ethernet.supported	array	True			
-2	FEATURES_REPLY.v2	msg.ports.0.ethernet.supported.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.ethernet.supported.0=COPPER,msg.ports.0.properties=array		
+2	FEATURES_REPLY.v2	msg.ports.0.curr	array	True			
+2	FEATURES_REPLY.v2	msg.ports.0.curr.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.curr.0=COPPER,msg.ports.0.properties=array		
+2	FEATURES_REPLY.v2	msg.ports.0.curr_speed	uint32	True			True
 2	FEATURES_REPLY.v2	msg.ports.0.hw_addr	macaddress	True			True
+2	FEATURES_REPLY.v2	msg.ports.0.max_speed	uint32	True			True
 2	FEATURES_REPLY.v2	msg.ports.0.name	str16	True			
+2	FEATURES_REPLY.v2	msg.ports.0.peer	array	True			
+2	FEATURES_REPLY.v2	msg.ports.0.peer.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.peer.0=COPPER,msg.ports.0.properties=array		
 2	FEATURES_REPLY.v2	msg.ports.0.port_no	CONTROLLER	True			
 2	FEATURES_REPLY.v2	msg.ports.0.properties	null	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.properties=array	msg.ports.0.properties=array	
 2	FEATURES_REPLY.v2	msg.ports.0.state	array	True			
-2	FEATURES_REPLY.v2	msg.ports.0.state.0	LINK_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.properties=array		
+2	FEATURES_REPLY.v2	msg.ports.0.state.0	LINK_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.properties=array,msg.ports.0.state.0=LINK_DOWN		
+2	FEATURES_REPLY.v2	msg.ports.0.supported	array	True			
+2	FEATURES_REPLY.v2	msg.ports.0.supported.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.properties=array		
 2	GET_CONFIG_REQUEST.v2	msg	object	False			
 2	GET_CONFIG_REPLY.v2	msg	object	True			
 2	GET_CONFIG_REPLY.v2	msg.flags	array	True			
@@ -727,26 +721,25 @@ version	type	keypath	syntax	required	default	missing	modify
 2	FLOW_REMOVED.v2	msg.reason	IDLE_TIMEOUT	True			
 2	FLOW_REMOVED.v2	msg.table_id	ALL	True			
 2	PORT_STATUS.v2	msg	object	True			
+2	PORT_STATUS.v2	msg.advertised	array	True			
+2	PORT_STATUS.v2	msg.advertised.0	COPPER	False	msg.advertised.0=COPPER,msg.properties=array		
 2	PORT_STATUS.v2	msg.config	array	True			
 2	PORT_STATUS.v2	msg.config.0	PORT_DOWN	False	msg.config.0=PORT_DOWN,msg.properties=array		
-2	PORT_STATUS.v2	msg.ethernet	object	True			
-2	PORT_STATUS.v2	msg.ethernet.advertised	array	True			
-2	PORT_STATUS.v2	msg.ethernet.advertised.0	COPPER	False	msg.ethernet.advertised.0=COPPER,msg.properties=array		
-2	PORT_STATUS.v2	msg.ethernet.curr	array	True			
-2	PORT_STATUS.v2	msg.ethernet.curr.0	COPPER	False	msg.ethernet.curr.0=COPPER,msg.properties=array		
-2	PORT_STATUS.v2	msg.ethernet.curr_speed	uint32	True			True
-2	PORT_STATUS.v2	msg.ethernet.max_speed	uint32	True			True
-2	PORT_STATUS.v2	msg.ethernet.peer	array	True			
-2	PORT_STATUS.v2	msg.ethernet.peer.0	COPPER	False	msg.ethernet.peer.0=COPPER,msg.properties=array		
-2	PORT_STATUS.v2	msg.ethernet.supported	array	True			
-2	PORT_STATUS.v2	msg.ethernet.supported.0	COPPER	False	msg.ethernet.supported.0=COPPER,msg.properties=array		
+2	PORT_STATUS.v2	msg.curr	array	True			
+2	PORT_STATUS.v2	msg.curr.0	COPPER	False	msg.curr.0=COPPER,msg.properties=array		
+2	PORT_STATUS.v2	msg.curr_speed	uint32	True			True
 2	PORT_STATUS.v2	msg.hw_addr	macaddress	True			True
+2	PORT_STATUS.v2	msg.max_speed	uint32	True			True
 2	PORT_STATUS.v2	msg.name	str16	True			
+2	PORT_STATUS.v2	msg.peer	array	True			
+2	PORT_STATUS.v2	msg.peer.0	COPPER	False	msg.peer.0=COPPER,msg.properties=array		
 2	PORT_STATUS.v2	msg.port_no	CONTROLLER	True			
 2	PORT_STATUS.v2	msg.properties	null	False	msg.properties=array	msg.properties=array	
 2	PORT_STATUS.v2	msg.reason	ADD	True			
 2	PORT_STATUS.v2	msg.state	array	True			
-2	PORT_STATUS.v2	msg.state.0	LINK_DOWN	False	msg.properties=array		
+2	PORT_STATUS.v2	msg.state.0	LINK_DOWN	False	msg.properties=array,msg.state.0=LINK_DOWN		
+2	PORT_STATUS.v2	msg.supported	array	True			
+2	PORT_STATUS.v2	msg.supported.0	COPPER	False	msg.properties=array		
 2	PACKET_OUT.v2	msg	object	True			
 2	PACKET_OUT.v2	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 2	PACKET_OUT.v2	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
@@ -797,17 +790,16 @@ version	type	keypath	syntax	required	default	missing	modify
 2	GROUP_MOD.v2	msg.group_id	ANY	True			
 2	GROUP_MOD.v2	msg.type	ALL	True			
 2	PORT_MOD.v2	msg	object	True			
+2	PORT_MOD.v2	msg.advertise	array	True			
+2	PORT_MOD.v2	msg.advertise.0	0xffffffff	False	msg.advertise.0=0xffffffff,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.advertise.0=10MB_HD	
 2	PORT_MOD.v2	msg.config	array	True			
-2	PORT_MOD.v2	msg.config.0	0xffffffff	False	msg.config.0=0xffffffff,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.config.0=PORT_DOWN	
-2	PORT_MOD.v2	msg.ethernet	object	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
-2	PORT_MOD.v2	msg.ethernet.advertise	array	True			
-2	PORT_MOD.v2	msg.ethernet.advertise.0	0xffffffff	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.ethernet.advertise.0=10MB_HD	
+2	PORT_MOD.v2	msg.config.0	0xffffffff	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.config.0=PORT_DOWN	
 2	PORT_MOD.v2	msg.hw_addr	macaddress	True			True
 2	PORT_MOD.v2	msg.mask	array	True			
-2	PORT_MOD.v2	msg.mask.0	0xffffffff	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=0xffffffff	msg.mask.0=PORT_DOWN	
+2	PORT_MOD.v2	msg.mask.0	0xffffffff	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=0xffffffff	msg.mask.0=PORT_DOWN	
 2	PORT_MOD.v2	msg.port_no	CONTROLLER	True			
-2	PORT_MOD.v2	msg.properties	array	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
-2	PORT_MOD.v2	msg.properties.0	object	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
+2	PORT_MOD.v2	msg.properties	array	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
+2	PORT_MOD.v2	msg.properties.0	object	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
 2	PORT_MOD.v2	msg.properties.0.data	binary	True			
 2	PORT_MOD.v2	msg.properties.0.exp_type	uint32	True			
 2	PORT_MOD.v2	msg.properties.0.experimenter	uint32	True			
@@ -897,17 +889,16 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REQUEST.PORT_STATS.v2	msg.port_no	CONTROLLER	True			
 2	REPLY.PORT_STATS.v2	msg	array	True			
 2	REPLY.PORT_STATS.v2	msg.0	object	False			
+2	REPLY.PORT_STATS.v2	msg.0.collisions	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
-2	REPLY.PORT_STATS.v2	msg.0.ethernet	object	True			
-2	REPLY.PORT_STATS.v2	msg.0.ethernet.collisions	uint64	True			True
-2	REPLY.PORT_STATS.v2	msg.0.ethernet.rx_crc_err	uint64	True			True
-2	REPLY.PORT_STATS.v2	msg.0.ethernet.rx_frame_err	uint64	True			True
-2	REPLY.PORT_STATS.v2	msg.0.ethernet.rx_over_err	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.port_no	CONTROLLER	True			
 2	REPLY.PORT_STATS.v2	msg.0.properties	null	True		msg.0.properties=array	
 2	REPLY.PORT_STATS.v2	msg.0.rx_bytes	uint64	True			True
+2	REPLY.PORT_STATS.v2	msg.0.rx_crc_err	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.rx_dropped	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.rx_errors	uint64	True			True
+2	REPLY.PORT_STATS.v2	msg.0.rx_frame_err	uint64	True			True
+2	REPLY.PORT_STATS.v2	msg.0.rx_over_err	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.rx_packets	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.tx_bytes	uint64	True			True
 2	REPLY.PORT_STATS.v2	msg.0.tx_dropped	uint64	True			True
@@ -1098,25 +1089,24 @@ version	type	keypath	syntax	required	default	missing	modify
 2	REQUEST.PORT_DESC.v2	msg	object	False			
 2	REPLY.PORT_DESC.v2	msg	array	True			
 2	REPLY.PORT_DESC.v2	msg.0	object	False			
+2	REPLY.PORT_DESC.v2	msg.0.advertised	array	True			
+2	REPLY.PORT_DESC.v2	msg.0.advertised.0	COPPER	False	msg.0.advertised.0=COPPER,msg.0.properties=array		
 2	REPLY.PORT_DESC.v2	msg.0.config	array	True			
 2	REPLY.PORT_DESC.v2	msg.0.config.0	PORT_DOWN	False	msg.0.config.0=PORT_DOWN,msg.0.properties=array		
-2	REPLY.PORT_DESC.v2	msg.0.ethernet	object	True			
-2	REPLY.PORT_DESC.v2	msg.0.ethernet.advertised	array	True			
-2	REPLY.PORT_DESC.v2	msg.0.ethernet.advertised.0	COPPER	False	msg.0.ethernet.advertised.0=COPPER,msg.0.properties=array		
-2	REPLY.PORT_DESC.v2	msg.0.ethernet.curr	array	True			
-2	REPLY.PORT_DESC.v2	msg.0.ethernet.curr.0	COPPER	False	msg.0.ethernet.curr.0=COPPER,msg.0.properties=array		
-2	REPLY.PORT_DESC.v2	msg.0.ethernet.curr_speed	uint32	True			True
-2	REPLY.PORT_DESC.v2	msg.0.ethernet.max_speed	uint32	True			True
-2	REPLY.PORT_DESC.v2	msg.0.ethernet.peer	array	True			
-2	REPLY.PORT_DESC.v2	msg.0.ethernet.peer.0	COPPER	False	msg.0.ethernet.peer.0=COPPER,msg.0.properties=array		
-2	REPLY.PORT_DESC.v2	msg.0.ethernet.supported	array	True			
-2	REPLY.PORT_DESC.v2	msg.0.ethernet.supported.0	COPPER	False	msg.0.ethernet.supported.0=COPPER,msg.0.properties=array		
+2	REPLY.PORT_DESC.v2	msg.0.curr	array	True			
+2	REPLY.PORT_DESC.v2	msg.0.curr.0	COPPER	False	msg.0.curr.0=COPPER,msg.0.properties=array		
+2	REPLY.PORT_DESC.v2	msg.0.curr_speed	uint32	True			True
 2	REPLY.PORT_DESC.v2	msg.0.hw_addr	macaddress	True			True
+2	REPLY.PORT_DESC.v2	msg.0.max_speed	uint32	True			True
 2	REPLY.PORT_DESC.v2	msg.0.name	str16	True			
+2	REPLY.PORT_DESC.v2	msg.0.peer	array	True			
+2	REPLY.PORT_DESC.v2	msg.0.peer.0	COPPER	False	msg.0.peer.0=COPPER,msg.0.properties=array		
 2	REPLY.PORT_DESC.v2	msg.0.port_no	CONTROLLER	True			
 2	REPLY.PORT_DESC.v2	msg.0.properties	null	False	msg.0.properties=array	msg.0.properties=array	
 2	REPLY.PORT_DESC.v2	msg.0.state	array	True			
-2	REPLY.PORT_DESC.v2	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array		
+2	REPLY.PORT_DESC.v2	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array,msg.0.state.0=LINK_DOWN		
+2	REPLY.PORT_DESC.v2	msg.0.supported	array	True			
+2	REPLY.PORT_DESC.v2	msg.0.supported.0	COPPER	False	msg.0.properties=array		
 2	REQUEST.TABLE_DESC.v2	msg	object	True			ERROR
 2	REPLY.TABLE_DESC.v2	msg	array	True			ERROR
 2	REPLY.TABLE_DESC.v2	msg.0	object	True			ERROR
@@ -1310,25 +1300,24 @@ version	type	keypath	syntax	required	default	missing	modify
 3	FEATURES_REPLY.v3	msg.n_tables	uint8	True			True
 3	FEATURES_REPLY.v3	msg.ports	array	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0		
 3	FEATURES_REPLY.v3	msg.ports.0	object	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0		
+3	FEATURES_REPLY.v3	msg.ports.0.advertised	array	True			
+3	FEATURES_REPLY.v3	msg.ports.0.advertised.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.advertised.0=COPPER,msg.ports.0.properties=array		
 3	FEATURES_REPLY.v3	msg.ports.0.config	array	True			
 3	FEATURES_REPLY.v3	msg.ports.0.config.0	PORT_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.config.0=PORT_DOWN,msg.ports.0.properties=array		
-3	FEATURES_REPLY.v3	msg.ports.0.ethernet	object	True			
-3	FEATURES_REPLY.v3	msg.ports.0.ethernet.advertised	array	True			
-3	FEATURES_REPLY.v3	msg.ports.0.ethernet.advertised.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.ethernet.advertised.0=COPPER,msg.ports.0.properties=array		
-3	FEATURES_REPLY.v3	msg.ports.0.ethernet.curr	array	True			
-3	FEATURES_REPLY.v3	msg.ports.0.ethernet.curr.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.ethernet.curr.0=COPPER,msg.ports.0.properties=array		
-3	FEATURES_REPLY.v3	msg.ports.0.ethernet.curr_speed	uint32	True			True
-3	FEATURES_REPLY.v3	msg.ports.0.ethernet.max_speed	uint32	True			True
-3	FEATURES_REPLY.v3	msg.ports.0.ethernet.peer	array	True			
-3	FEATURES_REPLY.v3	msg.ports.0.ethernet.peer.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.ethernet.peer.0=COPPER,msg.ports.0.properties=array		
-3	FEATURES_REPLY.v3	msg.ports.0.ethernet.supported	array	True			
-3	FEATURES_REPLY.v3	msg.ports.0.ethernet.supported.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.ethernet.supported.0=COPPER,msg.ports.0.properties=array		
+3	FEATURES_REPLY.v3	msg.ports.0.curr	array	True			
+3	FEATURES_REPLY.v3	msg.ports.0.curr.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.curr.0=COPPER,msg.ports.0.properties=array		
+3	FEATURES_REPLY.v3	msg.ports.0.curr_speed	uint32	True			True
 3	FEATURES_REPLY.v3	msg.ports.0.hw_addr	macaddress	True			True
+3	FEATURES_REPLY.v3	msg.ports.0.max_speed	uint32	True			True
 3	FEATURES_REPLY.v3	msg.ports.0.name	str16	True			
+3	FEATURES_REPLY.v3	msg.ports.0.peer	array	True			
+3	FEATURES_REPLY.v3	msg.ports.0.peer.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.peer.0=COPPER,msg.ports.0.properties=array		
 3	FEATURES_REPLY.v3	msg.ports.0.port_no	CONTROLLER	True			
 3	FEATURES_REPLY.v3	msg.ports.0.properties	null	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.properties=array	msg.ports.0.properties=array	
 3	FEATURES_REPLY.v3	msg.ports.0.state	array	True			
-3	FEATURES_REPLY.v3	msg.ports.0.state.0	LINK_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.properties=array		
+3	FEATURES_REPLY.v3	msg.ports.0.state.0	LINK_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.properties=array,msg.ports.0.state.0=LINK_DOWN		
+3	FEATURES_REPLY.v3	msg.ports.0.supported	array	True			
+3	FEATURES_REPLY.v3	msg.ports.0.supported.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID,msg.auxiliary_id=0,msg.ports.0.properties=array		
 3	GET_CONFIG_REQUEST.v3	msg	object	False			
 3	GET_CONFIG_REPLY.v3	msg	object	True			
 3	GET_CONFIG_REPLY.v3	msg.flags	array	True			
@@ -1369,26 +1358,25 @@ version	type	keypath	syntax	required	default	missing	modify
 3	FLOW_REMOVED.v3	msg.reason	IDLE_TIMEOUT	True			
 3	FLOW_REMOVED.v3	msg.table_id	ALL	True			
 3	PORT_STATUS.v3	msg	object	True			
+3	PORT_STATUS.v3	msg.advertised	array	True			
+3	PORT_STATUS.v3	msg.advertised.0	COPPER	False	msg.advertised.0=COPPER,msg.properties=array		
 3	PORT_STATUS.v3	msg.config	array	True			
 3	PORT_STATUS.v3	msg.config.0	PORT_DOWN	False	msg.config.0=PORT_DOWN,msg.properties=array		
-3	PORT_STATUS.v3	msg.ethernet	object	True			
-3	PORT_STATUS.v3	msg.ethernet.advertised	array	True			
-3	PORT_STATUS.v3	msg.ethernet.advertised.0	COPPER	False	msg.ethernet.advertised.0=COPPER,msg.properties=array		
-3	PORT_STATUS.v3	msg.ethernet.curr	array	True			
-3	PORT_STATUS.v3	msg.ethernet.curr.0	COPPER	False	msg.ethernet.curr.0=COPPER,msg.properties=array		
-3	PORT_STATUS.v3	msg.ethernet.curr_speed	uint32	True			True
-3	PORT_STATUS.v3	msg.ethernet.max_speed	uint32	True			True
-3	PORT_STATUS.v3	msg.ethernet.peer	array	True			
-3	PORT_STATUS.v3	msg.ethernet.peer.0	COPPER	False	msg.ethernet.peer.0=COPPER,msg.properties=array		
-3	PORT_STATUS.v3	msg.ethernet.supported	array	True			
-3	PORT_STATUS.v3	msg.ethernet.supported.0	COPPER	False	msg.ethernet.supported.0=COPPER,msg.properties=array		
+3	PORT_STATUS.v3	msg.curr	array	True			
+3	PORT_STATUS.v3	msg.curr.0	COPPER	False	msg.curr.0=COPPER,msg.properties=array		
+3	PORT_STATUS.v3	msg.curr_speed	uint32	True			True
 3	PORT_STATUS.v3	msg.hw_addr	macaddress	True			True
+3	PORT_STATUS.v3	msg.max_speed	uint32	True			True
 3	PORT_STATUS.v3	msg.name	str16	True			
+3	PORT_STATUS.v3	msg.peer	array	True			
+3	PORT_STATUS.v3	msg.peer.0	COPPER	False	msg.peer.0=COPPER,msg.properties=array		
 3	PORT_STATUS.v3	msg.port_no	CONTROLLER	True			
 3	PORT_STATUS.v3	msg.properties	null	False	msg.properties=array	msg.properties=array	
 3	PORT_STATUS.v3	msg.reason	ADD	True			
 3	PORT_STATUS.v3	msg.state	array	True			
-3	PORT_STATUS.v3	msg.state.0	LINK_DOWN	False	msg.properties=array		
+3	PORT_STATUS.v3	msg.state.0	LINK_DOWN	False	msg.properties=array,msg.state.0=LINK_DOWN		
+3	PORT_STATUS.v3	msg.supported	array	True			
+3	PORT_STATUS.v3	msg.supported.0	COPPER	False	msg.properties=array		
 3	PACKET_OUT.v3	msg	object	True			
 3	PACKET_OUT.v3	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 3	PACKET_OUT.v3	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
@@ -1439,17 +1427,16 @@ version	type	keypath	syntax	required	default	missing	modify
 3	GROUP_MOD.v3	msg.group_id	ANY	True			
 3	GROUP_MOD.v3	msg.type	ALL	True			
 3	PORT_MOD.v3	msg	object	True			
+3	PORT_MOD.v3	msg.advertise	array	True			
+3	PORT_MOD.v3	msg.advertise.0	0xffffffff	False	msg.advertise.0=0xffffffff,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.advertise.0=10MB_HD	
 3	PORT_MOD.v3	msg.config	array	True			
-3	PORT_MOD.v3	msg.config.0	0xffffffff	False	msg.config.0=0xffffffff,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.config.0=PORT_DOWN	
-3	PORT_MOD.v3	msg.ethernet	object	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
-3	PORT_MOD.v3	msg.ethernet.advertise	array	True			
-3	PORT_MOD.v3	msg.ethernet.advertise.0	0xffffffff	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.ethernet.advertise.0=10MB_HD	
+3	PORT_MOD.v3	msg.config.0	0xffffffff	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.config.0=PORT_DOWN	
 3	PORT_MOD.v3	msg.hw_addr	macaddress	True			True
 3	PORT_MOD.v3	msg.mask	array	True			
-3	PORT_MOD.v3	msg.mask.0	0xffffffff	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=0xffffffff	msg.mask.0=PORT_DOWN	
+3	PORT_MOD.v3	msg.mask.0	0xffffffff	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=0xffffffff	msg.mask.0=PORT_DOWN	
 3	PORT_MOD.v3	msg.port_no	CONTROLLER	True			
-3	PORT_MOD.v3	msg.properties	array	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
-3	PORT_MOD.v3	msg.properties.0	object	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
+3	PORT_MOD.v3	msg.properties	array	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
+3	PORT_MOD.v3	msg.properties.0	object	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
 3	PORT_MOD.v3	msg.properties.0.data	binary	True			
 3	PORT_MOD.v3	msg.properties.0.exp_type	uint32	True			
 3	PORT_MOD.v3	msg.properties.0.experimenter	uint32	True			
@@ -1539,17 +1526,16 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REQUEST.PORT_STATS.v3	msg.port_no	CONTROLLER	True			
 3	REPLY.PORT_STATS.v3	msg	array	True			
 3	REPLY.PORT_STATS.v3	msg.0	object	False			
+3	REPLY.PORT_STATS.v3	msg.0.collisions	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.duration	4294967295.xffffffff	True		msg.0.duration=0	
-3	REPLY.PORT_STATS.v3	msg.0.ethernet	object	True			
-3	REPLY.PORT_STATS.v3	msg.0.ethernet.collisions	uint64	True			True
-3	REPLY.PORT_STATS.v3	msg.0.ethernet.rx_crc_err	uint64	True			True
-3	REPLY.PORT_STATS.v3	msg.0.ethernet.rx_frame_err	uint64	True			True
-3	REPLY.PORT_STATS.v3	msg.0.ethernet.rx_over_err	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.port_no	CONTROLLER	True			
 3	REPLY.PORT_STATS.v3	msg.0.properties	null	True		msg.0.properties=array	
 3	REPLY.PORT_STATS.v3	msg.0.rx_bytes	uint64	True			True
+3	REPLY.PORT_STATS.v3	msg.0.rx_crc_err	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.rx_dropped	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.rx_errors	uint64	True			True
+3	REPLY.PORT_STATS.v3	msg.0.rx_frame_err	uint64	True			True
+3	REPLY.PORT_STATS.v3	msg.0.rx_over_err	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.rx_packets	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.tx_bytes	uint64	True			True
 3	REPLY.PORT_STATS.v3	msg.0.tx_dropped	uint64	True			True
@@ -1740,25 +1726,24 @@ version	type	keypath	syntax	required	default	missing	modify
 3	REQUEST.PORT_DESC.v3	msg	object	False			
 3	REPLY.PORT_DESC.v3	msg	array	True			
 3	REPLY.PORT_DESC.v3	msg.0	object	False			
+3	REPLY.PORT_DESC.v3	msg.0.advertised	array	True			
+3	REPLY.PORT_DESC.v3	msg.0.advertised.0	COPPER	False	msg.0.advertised.0=COPPER,msg.0.properties=array		
 3	REPLY.PORT_DESC.v3	msg.0.config	array	True			
 3	REPLY.PORT_DESC.v3	msg.0.config.0	PORT_DOWN	False	msg.0.config.0=PORT_DOWN,msg.0.properties=array		
-3	REPLY.PORT_DESC.v3	msg.0.ethernet	object	True			
-3	REPLY.PORT_DESC.v3	msg.0.ethernet.advertised	array	True			
-3	REPLY.PORT_DESC.v3	msg.0.ethernet.advertised.0	COPPER	False	msg.0.ethernet.advertised.0=COPPER,msg.0.properties=array		
-3	REPLY.PORT_DESC.v3	msg.0.ethernet.curr	array	True			
-3	REPLY.PORT_DESC.v3	msg.0.ethernet.curr.0	COPPER	False	msg.0.ethernet.curr.0=COPPER,msg.0.properties=array		
-3	REPLY.PORT_DESC.v3	msg.0.ethernet.curr_speed	uint32	True			True
-3	REPLY.PORT_DESC.v3	msg.0.ethernet.max_speed	uint32	True			True
-3	REPLY.PORT_DESC.v3	msg.0.ethernet.peer	array	True			
-3	REPLY.PORT_DESC.v3	msg.0.ethernet.peer.0	COPPER	False	msg.0.ethernet.peer.0=COPPER,msg.0.properties=array		
-3	REPLY.PORT_DESC.v3	msg.0.ethernet.supported	array	True			
-3	REPLY.PORT_DESC.v3	msg.0.ethernet.supported.0	COPPER	False	msg.0.ethernet.supported.0=COPPER,msg.0.properties=array		
+3	REPLY.PORT_DESC.v3	msg.0.curr	array	True			
+3	REPLY.PORT_DESC.v3	msg.0.curr.0	COPPER	False	msg.0.curr.0=COPPER,msg.0.properties=array		
+3	REPLY.PORT_DESC.v3	msg.0.curr_speed	uint32	True			True
 3	REPLY.PORT_DESC.v3	msg.0.hw_addr	macaddress	True			True
+3	REPLY.PORT_DESC.v3	msg.0.max_speed	uint32	True			True
 3	REPLY.PORT_DESC.v3	msg.0.name	str16	True			
+3	REPLY.PORT_DESC.v3	msg.0.peer	array	True			
+3	REPLY.PORT_DESC.v3	msg.0.peer.0	COPPER	False	msg.0.peer.0=COPPER,msg.0.properties=array		
 3	REPLY.PORT_DESC.v3	msg.0.port_no	CONTROLLER	True			
 3	REPLY.PORT_DESC.v3	msg.0.properties	null	False	msg.0.properties=array	msg.0.properties=array	
 3	REPLY.PORT_DESC.v3	msg.0.state	array	True			
-3	REPLY.PORT_DESC.v3	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array		
+3	REPLY.PORT_DESC.v3	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array,msg.0.state.0=LINK_DOWN		
+3	REPLY.PORT_DESC.v3	msg.0.supported	array	True			
+3	REPLY.PORT_DESC.v3	msg.0.supported.0	COPPER	False	msg.0.properties=array		
 3	REQUEST.TABLE_DESC.v3	msg	object	True			ERROR
 3	REPLY.TABLE_DESC.v3	msg	array	True			ERROR
 3	REPLY.TABLE_DESC.v3	msg.0	object	True			ERROR
@@ -1952,25 +1937,24 @@ version	type	keypath	syntax	required	default	missing	modify
 4	FEATURES_REPLY.v4	msg.n_tables	uint8	True			True
 4	FEATURES_REPLY.v4	msg.ports	array	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
 4	FEATURES_REPLY.v4	msg.ports.0	object	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
+4	FEATURES_REPLY.v4	msg.ports.0.advertised	array	True			
+4	FEATURES_REPLY.v4	msg.ports.0.advertised.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
 4	FEATURES_REPLY.v4	msg.ports.0.config	array	True			
 4	FEATURES_REPLY.v4	msg.ports.0.config.0	PORT_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
-4	FEATURES_REPLY.v4	msg.ports.0.ethernet	object	True			
-4	FEATURES_REPLY.v4	msg.ports.0.ethernet.advertised	array	True			
-4	FEATURES_REPLY.v4	msg.ports.0.ethernet.advertised.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
-4	FEATURES_REPLY.v4	msg.ports.0.ethernet.curr	array	True			
-4	FEATURES_REPLY.v4	msg.ports.0.ethernet.curr.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
-4	FEATURES_REPLY.v4	msg.ports.0.ethernet.curr_speed	uint32	True			
-4	FEATURES_REPLY.v4	msg.ports.0.ethernet.max_speed	uint32	True			
-4	FEATURES_REPLY.v4	msg.ports.0.ethernet.peer	array	True			
-4	FEATURES_REPLY.v4	msg.ports.0.ethernet.peer.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
-4	FEATURES_REPLY.v4	msg.ports.0.ethernet.supported	array	True			
-4	FEATURES_REPLY.v4	msg.ports.0.ethernet.supported.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
+4	FEATURES_REPLY.v4	msg.ports.0.curr	array	True			
+4	FEATURES_REPLY.v4	msg.ports.0.curr.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
+4	FEATURES_REPLY.v4	msg.ports.0.curr_speed	uint32	True			
 4	FEATURES_REPLY.v4	msg.ports.0.hw_addr	macaddress	True			
+4	FEATURES_REPLY.v4	msg.ports.0.max_speed	uint32	True			
 4	FEATURES_REPLY.v4	msg.ports.0.name	str16	True			
+4	FEATURES_REPLY.v4	msg.ports.0.peer	array	True			
+4	FEATURES_REPLY.v4	msg.ports.0.peer.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
 4	FEATURES_REPLY.v4	msg.ports.0.port_no	CONTROLLER	True			
 4	FEATURES_REPLY.v4	msg.ports.0.properties	null	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
 4	FEATURES_REPLY.v4	msg.ports.0.state	array	True			
 4	FEATURES_REPLY.v4	msg.ports.0.state.0	LINK_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
+4	FEATURES_REPLY.v4	msg.ports.0.supported	array	True			
+4	FEATURES_REPLY.v4	msg.ports.0.supported.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
 4	GET_CONFIG_REQUEST.v4	msg	object	False			
 4	GET_CONFIG_REPLY.v4	msg	object	True			
 4	GET_CONFIG_REPLY.v4	msg.flags	array	True			
@@ -2011,26 +1995,25 @@ version	type	keypath	syntax	required	default	missing	modify
 4	FLOW_REMOVED.v4	msg.reason	IDLE_TIMEOUT	True			
 4	FLOW_REMOVED.v4	msg.table_id	ALL	True			
 4	PORT_STATUS.v4	msg	object	True			
+4	PORT_STATUS.v4	msg.advertised	array	True			
+4	PORT_STATUS.v4	msg.advertised.0	COPPER	False	msg.advertised.0=COPPER,msg.properties=array		
 4	PORT_STATUS.v4	msg.config	array	True			
 4	PORT_STATUS.v4	msg.config.0	PORT_DOWN	False	msg.config.0=PORT_DOWN,msg.properties=array		
-4	PORT_STATUS.v4	msg.ethernet	object	True			
-4	PORT_STATUS.v4	msg.ethernet.advertised	array	True			
-4	PORT_STATUS.v4	msg.ethernet.advertised.0	COPPER	False	msg.ethernet.advertised.0=COPPER,msg.properties=array		
-4	PORT_STATUS.v4	msg.ethernet.curr	array	True			
-4	PORT_STATUS.v4	msg.ethernet.curr.0	COPPER	False	msg.ethernet.curr.0=COPPER,msg.properties=array		
-4	PORT_STATUS.v4	msg.ethernet.curr_speed	uint32	True			True
-4	PORT_STATUS.v4	msg.ethernet.max_speed	uint32	True			True
-4	PORT_STATUS.v4	msg.ethernet.peer	array	True			
-4	PORT_STATUS.v4	msg.ethernet.peer.0	COPPER	False	msg.ethernet.peer.0=COPPER,msg.properties=array		
-4	PORT_STATUS.v4	msg.ethernet.supported	array	True			
-4	PORT_STATUS.v4	msg.ethernet.supported.0	COPPER	False	msg.ethernet.supported.0=COPPER,msg.properties=array		
+4	PORT_STATUS.v4	msg.curr	array	True			
+4	PORT_STATUS.v4	msg.curr.0	COPPER	False	msg.curr.0=COPPER,msg.properties=array		
+4	PORT_STATUS.v4	msg.curr_speed	uint32	True			True
 4	PORT_STATUS.v4	msg.hw_addr	macaddress	True			True
+4	PORT_STATUS.v4	msg.max_speed	uint32	True			True
 4	PORT_STATUS.v4	msg.name	str16	True			
+4	PORT_STATUS.v4	msg.peer	array	True			
+4	PORT_STATUS.v4	msg.peer.0	COPPER	False	msg.peer.0=COPPER,msg.properties=array		
 4	PORT_STATUS.v4	msg.port_no	CONTROLLER	True			
 4	PORT_STATUS.v4	msg.properties	null	False	msg.properties=array	msg.properties=array	
 4	PORT_STATUS.v4	msg.reason	ADD	True			
 4	PORT_STATUS.v4	msg.state	array	True			
-4	PORT_STATUS.v4	msg.state.0	LINK_DOWN	False	msg.properties=array		
+4	PORT_STATUS.v4	msg.state.0	LINK_DOWN	False	msg.properties=array,msg.state.0=LINK_DOWN		
+4	PORT_STATUS.v4	msg.supported	array	True			
+4	PORT_STATUS.v4	msg.supported.0	COPPER	False	msg.properties=array		
 4	PACKET_OUT.v4	msg	object	True			
 4	PACKET_OUT.v4	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 4	PACKET_OUT.v4	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
@@ -2081,17 +2064,16 @@ version	type	keypath	syntax	required	default	missing	modify
 4	GROUP_MOD.v4	msg.group_id	ANY	True			
 4	GROUP_MOD.v4	msg.type	ALL	True			
 4	PORT_MOD.v4	msg	object	True			
+4	PORT_MOD.v4	msg.advertise	array	True			
+4	PORT_MOD.v4	msg.advertise.0	0xffffffff	False	msg.advertise.0=0xffffffff,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.advertise.0=10MB_HD	
 4	PORT_MOD.v4	msg.config	array	True			
-4	PORT_MOD.v4	msg.config.0	0xffffffff	False	msg.config.0=0xffffffff,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.config.0=PORT_DOWN	
-4	PORT_MOD.v4	msg.ethernet	object	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
-4	PORT_MOD.v4	msg.ethernet.advertise	array	True			
-4	PORT_MOD.v4	msg.ethernet.advertise.0	0xffffffff	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.ethernet.advertise.0=10MB_HD	
+4	PORT_MOD.v4	msg.config.0	0xffffffff	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.config.0=PORT_DOWN	
 4	PORT_MOD.v4	msg.hw_addr	macaddress	True			True
 4	PORT_MOD.v4	msg.mask	array	True			
-4	PORT_MOD.v4	msg.mask.0	0xffffffff	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=0xffffffff	msg.mask.0=PORT_DOWN	
+4	PORT_MOD.v4	msg.mask.0	0xffffffff	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=0xffffffff	msg.mask.0=PORT_DOWN	
 4	PORT_MOD.v4	msg.port_no	CONTROLLER	True			
-4	PORT_MOD.v4	msg.properties	array	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
-4	PORT_MOD.v4	msg.properties.0	object	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
+4	PORT_MOD.v4	msg.properties	array	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
+4	PORT_MOD.v4	msg.properties.0	object	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
 4	PORT_MOD.v4	msg.properties.0.data	binary	True			
 4	PORT_MOD.v4	msg.properties.0.exp_type	uint32	True			
 4	PORT_MOD.v4	msg.properties.0.experimenter	uint32	True			
@@ -2181,17 +2163,16 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REQUEST.PORT_STATS.v4	msg.port_no	CONTROLLER	True			
 4	REPLY.PORT_STATS.v4	msg	array	True			
 4	REPLY.PORT_STATS.v4	msg.0	object	False			
+4	REPLY.PORT_STATS.v4	msg.0.collisions	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.duration	4294967295.xffffffff	True			
-4	REPLY.PORT_STATS.v4	msg.0.ethernet	object	True			
-4	REPLY.PORT_STATS.v4	msg.0.ethernet.collisions	uint64	True			True
-4	REPLY.PORT_STATS.v4	msg.0.ethernet.rx_crc_err	uint64	True			True
-4	REPLY.PORT_STATS.v4	msg.0.ethernet.rx_frame_err	uint64	True			True
-4	REPLY.PORT_STATS.v4	msg.0.ethernet.rx_over_err	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.port_no	CONTROLLER	True			
 4	REPLY.PORT_STATS.v4	msg.0.properties	null	True		msg.0.properties=array	
 4	REPLY.PORT_STATS.v4	msg.0.rx_bytes	uint64	True			True
+4	REPLY.PORT_STATS.v4	msg.0.rx_crc_err	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.rx_dropped	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.rx_errors	uint64	True			True
+4	REPLY.PORT_STATS.v4	msg.0.rx_frame_err	uint64	True			True
+4	REPLY.PORT_STATS.v4	msg.0.rx_over_err	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.rx_packets	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.tx_bytes	uint64	True			True
 4	REPLY.PORT_STATS.v4	msg.0.tx_dropped	uint64	True			True
@@ -2382,25 +2363,24 @@ version	type	keypath	syntax	required	default	missing	modify
 4	REQUEST.PORT_DESC.v4	msg	object	False			
 4	REPLY.PORT_DESC.v4	msg	array	True			
 4	REPLY.PORT_DESC.v4	msg.0	object	False			
+4	REPLY.PORT_DESC.v4	msg.0.advertised	array	True			
+4	REPLY.PORT_DESC.v4	msg.0.advertised.0	COPPER	False	msg.0.advertised.0=COPPER,msg.0.properties=array		
 4	REPLY.PORT_DESC.v4	msg.0.config	array	True			
 4	REPLY.PORT_DESC.v4	msg.0.config.0	PORT_DOWN	False	msg.0.config.0=PORT_DOWN,msg.0.properties=array		
-4	REPLY.PORT_DESC.v4	msg.0.ethernet	object	True			
-4	REPLY.PORT_DESC.v4	msg.0.ethernet.advertised	array	True			
-4	REPLY.PORT_DESC.v4	msg.0.ethernet.advertised.0	COPPER	False	msg.0.ethernet.advertised.0=COPPER,msg.0.properties=array		
-4	REPLY.PORT_DESC.v4	msg.0.ethernet.curr	array	True			
-4	REPLY.PORT_DESC.v4	msg.0.ethernet.curr.0	COPPER	False	msg.0.ethernet.curr.0=COPPER,msg.0.properties=array		
-4	REPLY.PORT_DESC.v4	msg.0.ethernet.curr_speed	uint32	True			True
-4	REPLY.PORT_DESC.v4	msg.0.ethernet.max_speed	uint32	True			True
-4	REPLY.PORT_DESC.v4	msg.0.ethernet.peer	array	True			
-4	REPLY.PORT_DESC.v4	msg.0.ethernet.peer.0	COPPER	False	msg.0.ethernet.peer.0=COPPER,msg.0.properties=array		
-4	REPLY.PORT_DESC.v4	msg.0.ethernet.supported	array	True			
-4	REPLY.PORT_DESC.v4	msg.0.ethernet.supported.0	COPPER	False	msg.0.ethernet.supported.0=COPPER,msg.0.properties=array		
+4	REPLY.PORT_DESC.v4	msg.0.curr	array	True			
+4	REPLY.PORT_DESC.v4	msg.0.curr.0	COPPER	False	msg.0.curr.0=COPPER,msg.0.properties=array		
+4	REPLY.PORT_DESC.v4	msg.0.curr_speed	uint32	True			True
 4	REPLY.PORT_DESC.v4	msg.0.hw_addr	macaddress	True			True
+4	REPLY.PORT_DESC.v4	msg.0.max_speed	uint32	True			True
 4	REPLY.PORT_DESC.v4	msg.0.name	str16	True			
+4	REPLY.PORT_DESC.v4	msg.0.peer	array	True			
+4	REPLY.PORT_DESC.v4	msg.0.peer.0	COPPER	False	msg.0.peer.0=COPPER,msg.0.properties=array		
 4	REPLY.PORT_DESC.v4	msg.0.port_no	CONTROLLER	True			
 4	REPLY.PORT_DESC.v4	msg.0.properties	null	False	msg.0.properties=array	msg.0.properties=array	
 4	REPLY.PORT_DESC.v4	msg.0.state	array	True			
-4	REPLY.PORT_DESC.v4	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array		
+4	REPLY.PORT_DESC.v4	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array,msg.0.state.0=LINK_DOWN		
+4	REPLY.PORT_DESC.v4	msg.0.supported	array	True			
+4	REPLY.PORT_DESC.v4	msg.0.supported.0	COPPER	False	msg.0.properties=array		
 4	REQUEST.TABLE_DESC.v4	msg	object	True			ERROR
 4	REPLY.TABLE_DESC.v4	msg	array	True			ERROR
 4	REPLY.TABLE_DESC.v4	msg.0	object	True			ERROR
@@ -2594,25 +2574,24 @@ version	type	keypath	syntax	required	default	missing	modify
 5	FEATURES_REPLY.v5	msg.n_tables	uint8	True			True
 5	FEATURES_REPLY.v5	msg.ports	array	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
 5	FEATURES_REPLY.v5	msg.ports.0	object	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
+5	FEATURES_REPLY.v5	msg.ports.0.advertised	array	True			
+5	FEATURES_REPLY.v5	msg.ports.0.advertised.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
 5	FEATURES_REPLY.v5	msg.ports.0.config	array	True			
 5	FEATURES_REPLY.v5	msg.ports.0.config.0	PORT_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
-5	FEATURES_REPLY.v5	msg.ports.0.ethernet	object	True			
-5	FEATURES_REPLY.v5	msg.ports.0.ethernet.advertised	array	True			
-5	FEATURES_REPLY.v5	msg.ports.0.ethernet.advertised.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
-5	FEATURES_REPLY.v5	msg.ports.0.ethernet.curr	array	True			
-5	FEATURES_REPLY.v5	msg.ports.0.ethernet.curr.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
-5	FEATURES_REPLY.v5	msg.ports.0.ethernet.curr_speed	uint32	True			
-5	FEATURES_REPLY.v5	msg.ports.0.ethernet.max_speed	uint32	True			
-5	FEATURES_REPLY.v5	msg.ports.0.ethernet.peer	array	True			
-5	FEATURES_REPLY.v5	msg.ports.0.ethernet.peer.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
-5	FEATURES_REPLY.v5	msg.ports.0.ethernet.supported	array	True			
-5	FEATURES_REPLY.v5	msg.ports.0.ethernet.supported.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
+5	FEATURES_REPLY.v5	msg.ports.0.curr	array	True			
+5	FEATURES_REPLY.v5	msg.ports.0.curr.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
+5	FEATURES_REPLY.v5	msg.ports.0.curr_speed	uint32	True			
 5	FEATURES_REPLY.v5	msg.ports.0.hw_addr	macaddress	True			
+5	FEATURES_REPLY.v5	msg.ports.0.max_speed	uint32	True			
 5	FEATURES_REPLY.v5	msg.ports.0.name	str16	True			
+5	FEATURES_REPLY.v5	msg.ports.0.peer	array	True			
+5	FEATURES_REPLY.v5	msg.ports.0.peer.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
 5	FEATURES_REPLY.v5	msg.ports.0.port_no	CONTROLLER	True			
 5	FEATURES_REPLY.v5	msg.ports.0.properties	null	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
 5	FEATURES_REPLY.v5	msg.ports.0.state	array	True			
 5	FEATURES_REPLY.v5	msg.ports.0.state.0	LINK_DOWN	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
+5	FEATURES_REPLY.v5	msg.ports.0.supported	array	True			
+5	FEATURES_REPLY.v5	msg.ports.0.supported.0	COPPER	False	msg.actions=array,msg.actions.0=SET_VLAN_VID		
 5	GET_CONFIG_REQUEST.v5	msg	object	False			
 5	GET_CONFIG_REPLY.v5	msg	object	True			
 5	GET_CONFIG_REPLY.v5	msg.flags	array	True			
@@ -2653,26 +2632,25 @@ version	type	keypath	syntax	required	default	missing	modify
 5	FLOW_REMOVED.v5	msg.reason	IDLE_TIMEOUT	True			
 5	FLOW_REMOVED.v5	msg.table_id	ALL	True			
 5	PORT_STATUS.v5	msg	object	True			
+5	PORT_STATUS.v5	msg.advertised	array	True			
+5	PORT_STATUS.v5	msg.advertised.0	COPPER	False	msg.advertised.0=COPPER,msg.properties=array		
 5	PORT_STATUS.v5	msg.config	array	True			
 5	PORT_STATUS.v5	msg.config.0	PORT_DOWN	False	msg.config.0=PORT_DOWN,msg.properties=array		
-5	PORT_STATUS.v5	msg.ethernet	object	True			
-5	PORT_STATUS.v5	msg.ethernet.advertised	array	True			
-5	PORT_STATUS.v5	msg.ethernet.advertised.0	COPPER	False	msg.ethernet.advertised.0=COPPER,msg.properties=array		
-5	PORT_STATUS.v5	msg.ethernet.curr	array	True			
-5	PORT_STATUS.v5	msg.ethernet.curr.0	COPPER	False	msg.ethernet.curr.0=COPPER,msg.properties=array		
-5	PORT_STATUS.v5	msg.ethernet.curr_speed	uint32	True			True
-5	PORT_STATUS.v5	msg.ethernet.max_speed	uint32	True			True
-5	PORT_STATUS.v5	msg.ethernet.peer	array	True			
-5	PORT_STATUS.v5	msg.ethernet.peer.0	COPPER	False	msg.ethernet.peer.0=COPPER,msg.properties=array		
-5	PORT_STATUS.v5	msg.ethernet.supported	array	True			
-5	PORT_STATUS.v5	msg.ethernet.supported.0	COPPER	False	msg.ethernet.supported.0=COPPER,msg.properties=array		
+5	PORT_STATUS.v5	msg.curr	array	True			
+5	PORT_STATUS.v5	msg.curr.0	COPPER	False	msg.curr.0=COPPER,msg.properties=array		
+5	PORT_STATUS.v5	msg.curr_speed	uint32	True			True
 5	PORT_STATUS.v5	msg.hw_addr	macaddress	True			True
+5	PORT_STATUS.v5	msg.max_speed	uint32	True			True
 5	PORT_STATUS.v5	msg.name	str16	True			
+5	PORT_STATUS.v5	msg.peer	array	True			
+5	PORT_STATUS.v5	msg.peer.0	COPPER	False	msg.peer.0=COPPER,msg.properties=array		
 5	PORT_STATUS.v5	msg.port_no	CONTROLLER	True			
 5	PORT_STATUS.v5	msg.properties	null	False	msg.properties=array	msg.properties=array	
 5	PORT_STATUS.v5	msg.reason	ADD	True			
 5	PORT_STATUS.v5	msg.state	array	True			
-5	PORT_STATUS.v5	msg.state.0	LINK_DOWN	False	msg.properties=array		
+5	PORT_STATUS.v5	msg.state.0	LINK_DOWN	False	msg.properties=array,msg.state.0=LINK_DOWN		
+5	PORT_STATUS.v5	msg.supported	array	True			
+5	PORT_STATUS.v5	msg.supported.0	COPPER	False	msg.properties=array		
 5	PACKET_OUT.v5	msg	object	True			
 5	PACKET_OUT.v5	msg.actions	array	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
 5	PACKET_OUT.v5	msg.actions.0	object	False	msg.actions.0=object,msg.actions.0.action=OUTPUT,msg.actions.0.max_len=NO_BUFFER,msg.actions.0.port_no=CONTROLLER		
@@ -2723,17 +2701,16 @@ version	type	keypath	syntax	required	default	missing	modify
 5	GROUP_MOD.v5	msg.group_id	ANY	True			
 5	GROUP_MOD.v5	msg.type	ALL	True			
 5	PORT_MOD.v5	msg	object	True			
+5	PORT_MOD.v5	msg.advertise	array	True			
+5	PORT_MOD.v5	msg.advertise.0	0xffffffff	False	msg.advertise.0=0xffffffff,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.advertise.0=10MB_HD	
 5	PORT_MOD.v5	msg.config	array	True			
-5	PORT_MOD.v5	msg.config.0	0xffffffff	False	msg.config.0=0xffffffff,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.config.0=PORT_DOWN	
-5	PORT_MOD.v5	msg.ethernet	object	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
-5	PORT_MOD.v5	msg.ethernet.advertise	array	True			
-5	PORT_MOD.v5	msg.ethernet.advertise.0	0xffffffff	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.ethernet.advertise.0=10MB_HD	
+5	PORT_MOD.v5	msg.config.0	0xffffffff	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=0xffffffff,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80	msg.config.0=PORT_DOWN	
 5	PORT_MOD.v5	msg.hw_addr	macaddress	True			True
 5	PORT_MOD.v5	msg.mask	array	True			
-5	PORT_MOD.v5	msg.mask.0	0xffffffff	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=0xffffffff	msg.mask.0=PORT_DOWN	
+5	PORT_MOD.v5	msg.mask.0	0xffffffff	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=0xffffffff	msg.mask.0=PORT_DOWN	
 5	PORT_MOD.v5	msg.port_no	CONTROLLER	True			
-5	PORT_MOD.v5	msg.properties	array	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
-5	PORT_MOD.v5	msg.properties.0	object	False	msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.ethernet.advertise.0=10MB_HD,msg.ethernet.advertise.1=10MB_FD,msg.ethernet.advertise.10=OTHER,msg.ethernet.advertise.11=COPPER,msg.ethernet.advertise.12=FIBER,msg.ethernet.advertise.13=AUTONEG,msg.ethernet.advertise.14=PAUSE,msg.ethernet.advertise.15=PAUSE_ASYM,msg.ethernet.advertise.16=0xFFFF0000,msg.ethernet.advertise.2=100MB_HD,msg.ethernet.advertise.3=100MB_FD,msg.ethernet.advertise.4=1GB_HD,msg.ethernet.advertise.5=1GB_FD,msg.ethernet.advertise.6=10GB_FD,msg.ethernet.advertise.7=40GB_FD,msg.ethernet.advertise.8=100GB_FD,msg.ethernet.advertise.9=1TB_FD,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
+5	PORT_MOD.v5	msg.properties	array	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
+5	PORT_MOD.v5	msg.properties.0	object	False	msg.advertise.0=10MB_HD,msg.advertise.1=10MB_FD,msg.advertise.10=OTHER,msg.advertise.11=COPPER,msg.advertise.12=FIBER,msg.advertise.13=AUTONEG,msg.advertise.14=PAUSE,msg.advertise.15=PAUSE_ASYM,msg.advertise.16=0xFFFF0000,msg.advertise.2=100MB_HD,msg.advertise.3=100MB_FD,msg.advertise.4=1GB_HD,msg.advertise.5=1GB_FD,msg.advertise.6=10GB_FD,msg.advertise.7=40GB_FD,msg.advertise.8=100GB_FD,msg.advertise.9=1TB_FD,msg.config.0=PORT_DOWN,msg.config.1=NO_STP,msg.config.2=NO_RECV,msg.config.3=NO_RECV_STP,msg.config.4=NO_FLOOD,msg.config.5=NO_FWD,msg.config.6=NO_PACKET_IN,msg.config.7=0xFFFFFF80,msg.mask.0=PORT_DOWN,msg.mask.1=NO_STP,msg.mask.2=NO_RECV,msg.mask.3=NO_RECV_STP,msg.mask.4=NO_FLOOD,msg.mask.5=NO_FWD,msg.mask.6=NO_PACKET_IN,msg.mask.7=0xFFFFFF80		
 5	PORT_MOD.v5	msg.properties.0.data	binary	True			True
 5	PORT_MOD.v5	msg.properties.0.exp_type	uint32	True			True
 5	PORT_MOD.v5	msg.properties.0.experimenter	uint32	True			True
@@ -2823,17 +2800,16 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REQUEST.PORT_STATS.v5	msg.port_no	CONTROLLER	True			
 5	REPLY.PORT_STATS.v5	msg	array	True			
 5	REPLY.PORT_STATS.v5	msg.0	object	False			
+5	REPLY.PORT_STATS.v5	msg.0.collisions	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.duration	4294967295.xffffffff	True			
-5	REPLY.PORT_STATS.v5	msg.0.ethernet	object	True			
-5	REPLY.PORT_STATS.v5	msg.0.ethernet.collisions	uint64	True			True
-5	REPLY.PORT_STATS.v5	msg.0.ethernet.rx_crc_err	uint64	True			True
-5	REPLY.PORT_STATS.v5	msg.0.ethernet.rx_frame_err	uint64	True			True
-5	REPLY.PORT_STATS.v5	msg.0.ethernet.rx_over_err	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.port_no	CONTROLLER	True			
 5	REPLY.PORT_STATS.v5	msg.0.properties	null	True		msg.0.properties=array	
 5	REPLY.PORT_STATS.v5	msg.0.rx_bytes	uint64	True			True
+5	REPLY.PORT_STATS.v5	msg.0.rx_crc_err	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.rx_dropped	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.rx_errors	uint64	True			True
+5	REPLY.PORT_STATS.v5	msg.0.rx_frame_err	uint64	True			True
+5	REPLY.PORT_STATS.v5	msg.0.rx_over_err	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.rx_packets	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.tx_bytes	uint64	True			True
 5	REPLY.PORT_STATS.v5	msg.0.tx_dropped	uint64	True			True
@@ -3024,25 +3000,24 @@ version	type	keypath	syntax	required	default	missing	modify
 5	REQUEST.PORT_DESC.v5	msg	object	False			
 5	REPLY.PORT_DESC.v5	msg	array	True			
 5	REPLY.PORT_DESC.v5	msg.0	object	False			
+5	REPLY.PORT_DESC.v5	msg.0.advertised	array	True			
+5	REPLY.PORT_DESC.v5	msg.0.advertised.0	COPPER	False	msg.0.advertised.0=COPPER,msg.0.properties=array		
 5	REPLY.PORT_DESC.v5	msg.0.config	array	True			
 5	REPLY.PORT_DESC.v5	msg.0.config.0	PORT_DOWN	False	msg.0.config.0=PORT_DOWN,msg.0.properties=array		
-5	REPLY.PORT_DESC.v5	msg.0.ethernet	object	True			
-5	REPLY.PORT_DESC.v5	msg.0.ethernet.advertised	array	True			
-5	REPLY.PORT_DESC.v5	msg.0.ethernet.advertised.0	COPPER	False	msg.0.ethernet.advertised.0=COPPER,msg.0.properties=array		
-5	REPLY.PORT_DESC.v5	msg.0.ethernet.curr	array	True			
-5	REPLY.PORT_DESC.v5	msg.0.ethernet.curr.0	COPPER	False	msg.0.ethernet.curr.0=COPPER,msg.0.properties=array		
-5	REPLY.PORT_DESC.v5	msg.0.ethernet.curr_speed	uint32	True			True
-5	REPLY.PORT_DESC.v5	msg.0.ethernet.max_speed	uint32	True			True
-5	REPLY.PORT_DESC.v5	msg.0.ethernet.peer	array	True			
-5	REPLY.PORT_DESC.v5	msg.0.ethernet.peer.0	COPPER	False	msg.0.ethernet.peer.0=COPPER,msg.0.properties=array		
-5	REPLY.PORT_DESC.v5	msg.0.ethernet.supported	array	True			
-5	REPLY.PORT_DESC.v5	msg.0.ethernet.supported.0	COPPER	False	msg.0.ethernet.supported.0=COPPER,msg.0.properties=array		
+5	REPLY.PORT_DESC.v5	msg.0.curr	array	True			
+5	REPLY.PORT_DESC.v5	msg.0.curr.0	COPPER	False	msg.0.curr.0=COPPER,msg.0.properties=array		
+5	REPLY.PORT_DESC.v5	msg.0.curr_speed	uint32	True			True
 5	REPLY.PORT_DESC.v5	msg.0.hw_addr	macaddress	True			True
+5	REPLY.PORT_DESC.v5	msg.0.max_speed	uint32	True			True
 5	REPLY.PORT_DESC.v5	msg.0.name	str16	True			
+5	REPLY.PORT_DESC.v5	msg.0.peer	array	True			
+5	REPLY.PORT_DESC.v5	msg.0.peer.0	COPPER	False	msg.0.peer.0=COPPER,msg.0.properties=array		
 5	REPLY.PORT_DESC.v5	msg.0.port_no	CONTROLLER	True			
 5	REPLY.PORT_DESC.v5	msg.0.properties	null	False	msg.0.properties=array	msg.0.properties=array	
 5	REPLY.PORT_DESC.v5	msg.0.state	array	True			
-5	REPLY.PORT_DESC.v5	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array		
+5	REPLY.PORT_DESC.v5	msg.0.state.0	LINK_DOWN	False	msg.0.properties=array,msg.0.state.0=LINK_DOWN		
+5	REPLY.PORT_DESC.v5	msg.0.supported	array	True			
+5	REPLY.PORT_DESC.v5	msg.0.supported.0	COPPER	False	msg.0.properties=array		
 5	REQUEST.TABLE_DESC.v5	msg	object	False			
 5	REPLY.TABLE_DESC.v5	msg	array	True			
 5	REPLY.TABLE_DESC.v5	msg.0	object	False			

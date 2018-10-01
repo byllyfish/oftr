@@ -337,26 +337,24 @@ TEST(encoder, featuresreplyv1ports) {
           name: Port 1
           config: [ '0x33333333' ]
           state:  [ '0x44444444' ]
-          ethernet:
-            curr:   [ '0x55555555' ]
-            advertised: [ '0x66666666' ]
-            supported:  [ '0x77777777' ]
-            peer:  [ '0x88888888' ]
-            curr_speed: 0x99999999
-            max_speed: 0xAAAAAAAA
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
           properties:
         - port_no: 0xBBBB
           hw_addr: CC:CC:CC:CC:CC:CC
           name: Port 2
           config: [ '0x33333333' ]
           state:  [ '0x44444444' ]
-          ethernet:
-            curr:   [ '0x55555555' ]
-            advertised: [ '0x66666666' ]
-            supported:  [ '0x77777777' ]
-            peer:  [ '0x88888888' ]
-            curr_speed: 0x99999999
-            max_speed: 0xAAAAAAAA
+          curr:   [ '0x55555555' ]
+          advertised: [ '0x66666666' ]
+          supported:  [ '0x77777777' ]
+          peer:  [ '0x88888888' ]
+          curr_speed: 0x99999999
+          max_speed: 0xAAAAAAAA
           properties:
     )""";
 
@@ -883,11 +881,10 @@ TEST(encoder, ofmp_portstats_v4) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          ethernet:
-            rx_frame_err: 0xCCCCCCCCCCCCCCC0
-            rx_over_err:  0xDDDDDDDDDDDDDDD0
-            rx_crc_err:   0xEEEEEEEEEEEEEEE0
-            collisions:   0xFFFFFFFFFFFFFFF0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
           properties:
     )""";
 
@@ -921,11 +918,10 @@ TEST(encoder, ofmp_portstats_v3) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          ethernet:
-            rx_frame_err: 0xCCCCCCCCCCCCCCC0
-            rx_over_err:  0xDDDDDDDDDDDDDDD0
-            rx_crc_err:   0xEEEEEEEEEEEEEEE0
-            collisions:   0xFFFFFFFFFFFFFFF0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
           properties:
     )""";
 
@@ -959,11 +955,10 @@ TEST(encoder, ofmp_portstats_v2) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          ethernet:
-            rx_frame_err: 0xCCCCCCCCCCCCCCC0
-            rx_over_err:  0xDDDDDDDDDDDDDDD0
-            rx_crc_err:   0xEEEEEEEEEEEEEEE0
-            collisions:   0xFFFFFFFFFFFFFFF0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
           properties:
     )""";
 
@@ -997,11 +992,10 @@ TEST(encoder, ofmp_portstats_v1) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          ethernet:
-            rx_frame_err: 0xCCCCCCCCCCCCCCC0
-            rx_over_err:  0xDDDDDDDDDDDDDDD0
-            rx_crc_err:   0xEEEEEEEEEEEEEEE0
-            collisions:   0xFFFFFFFFFFFFFFF0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
           properties:
     )""";
 
@@ -1033,11 +1027,10 @@ TEST(encoder, ofmp_portstats_v5) {
         tx_dropped: 0x9999999999999990
         rx_errors:  0xAAAAAAAAAAAAAAA0
         tx_errors:  0xBBBBBBBBBBBBBBB0
-        ethernet:
-          rx_frame_err: 0xCCCCCCCCCCCCCCC0
-          rx_over_err:  0xDDDDDDDDDDDDDDD0
-          rx_crc_err:   0xEEEEEEEEEEEEEEE0
-          collisions:   0xFFFFFFFFFFFFFFF0
+        rx_frame_err: 0xCCCCCCCCCCCCCCC0
+        rx_over_err:  0xDDDDDDDDDDDDDDD0
+        rx_crc_err:   0xEEEEEEEEEEEEEEE0
+        collisions:   0xFFFFFFFFFFFFFFF0
         optical:
           flags: 0x11111110
           tx_freq_lmda: 0x22222220
@@ -1949,13 +1942,12 @@ TEST(encoder, portstatusv4) {
         name: 'Port 1'
         config: [ 0x44444444 ]
         state: [ 0x55555555 ]
-        ethernet:
-          curr: [ '0x66666666' ]
-          advertised: [ '0x77777777' ]
-          supported: [ '0x88888888' ]
-          peer: [ '0x99999999' ]
-          curr_speed: 0xAAAAAAAA
-          max_speed: 0xBBBBBBBB
+        curr: [ '0x66666666' ]
+        advertised: [ '0x77777777' ]
+        supported: [ '0x88888888' ]
+        peer: [ '0x99999999' ]
+        curr_speed: 0xAAAAAAAA
+        max_speed: 0xBBBBBBBB
         properties:
       )""";
 
@@ -1982,13 +1974,12 @@ TEST(encoder, portstatusv1) {
         name: 'Port 1'
         config: [ 0x44444444 ]
         state: [ 0x55555555 ]
-        ethernet:
-          curr: [ '0x66666666' ]
-          advertised: [ '0x77777777' ]
-          supported: [ '0x88888888' ]
-          peer: [ '0x99999999' ]
-          curr_speed: 0xAAAAAAAA
-          max_speed: 0xBBBBBBBB
+        curr: [ '0x66666666' ]
+        advertised: [ '0x77777777' ]
+        supported: [ '0x88888888' ]
+        peer: [ '0x99999999' ]
+        curr_speed: 0xAAAAAAAA
+        max_speed: 0xBBBBBBBB
         properties:
       )""";
 
@@ -2096,8 +2087,7 @@ TEST(encoder, portmodv5) {
         hw_addr: '333333333333'
         config: [ 0x44444444 ]
         mask: [ 0x55555555 ]
-        ethernet:
-          advertise: [ 0x66666666 ]
+        advertise: [ 0x66666666 ]
         properties:
       )""";
 
@@ -2121,8 +2111,7 @@ TEST(encoder, portmodv4) {
         hw_addr: '333333333333'
         config: [ 0x44444444 ]
         mask: [ 0x55555555 ]
-        ethernet:
-          advertise: [ 0x66666666 ]
+        advertise: [ 0x66666666 ]
         properties:
       )""";
 
@@ -2146,8 +2135,7 @@ TEST(encoder, portmodv5_experimenter) {
         hw_addr: '333333333333'
         config: [ 0x44444444 ]
         mask: [ 0x55555555 ]
-        ethernet:
-          advertise: [ 0x66666666 ]
+        advertise: [ 0x66666666 ]
         properties:
           - property: EXPERIMENTER
             experimenter: 0x77777700
@@ -2175,8 +2163,7 @@ TEST(encoder, portmodv1) {
         hw_addr: '333333333333'
         config: [ 0x44444444 ]
         mask: [ 0x55555555 ]
-        ethernet:
-          advertise: [ 0x66666666 ]
+        advertise: [ 0x66666666 ]
         properties:
       )""";
 
@@ -3302,26 +3289,24 @@ TEST(encoder, ofmp_portdesc_replyv1) {
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
-        ethernet:
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+        curr:   [ '0x55555555' ]
+        advertised: [ '0x66666666' ]
+        supported:  [ '0x77777777' ]
+        peer:  [ '0x88888888' ]
+        curr_speed: 0x99999999
+        max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
         hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
-        ethernet:
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+        curr:   [ '0x55555555' ]
+        advertised: [ '0x66666666' ]
+        supported:  [ '0x77777777' ]
+        peer:  [ '0x88888888' ]
+        curr_speed: 0x99999999
+        max_speed: 0xAAAAAAAA
         properties:
       )""";
 
@@ -3347,26 +3332,24 @@ TEST(encoder, ofmp_portdesc_replyv2) {
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
-        ethernet:
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+        curr:   [ '0x55555555' ]
+        advertised: [ '0x66666666' ]
+        supported:  [ '0x77777777' ]
+        peer:  [ '0x88888888' ]
+        curr_speed: 0x99999999
+        max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
         hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
-        ethernet:
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+        curr:   [ '0x55555555' ]
+        advertised: [ '0x66666666' ]
+        supported:  [ '0x77777777' ]
+        peer:  [ '0x88888888' ]
+        curr_speed: 0x99999999
+        max_speed: 0xAAAAAAAA
         properties:
       )""";
 
@@ -3393,26 +3376,24 @@ TEST(encoder, ofmp_portdesc_replyv4) {
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
-        ethernet:
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+        curr:   [ '0x55555555' ]
+        advertised: [ '0x66666666' ]
+        supported:  [ '0x77777777' ]
+        peer:  [ '0x88888888' ]
+        curr_speed: 0x99999999
+        max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
         hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
-        ethernet:
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+        curr:   [ '0x55555555' ]
+        advertised: [ '0x66666666' ]
+        supported:  [ '0x77777777' ]
+        peer:  [ '0x88888888' ]
+        curr_speed: 0x99999999
+        max_speed: 0xAAAAAAAA
         properties:
       )""";
 
@@ -3439,26 +3420,24 @@ TEST(encoder, ofmp_portdesc_replyv5) {
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
-        ethernet:
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+        curr:   [ '0x55555555' ]
+        advertised: [ '0x66666666' ]
+        supported:  [ '0x77777777' ]
+        peer:  [ '0x88888888' ]
+        curr_speed: 0x99999999
+        max_speed: 0xAAAAAAAA
         properties:
       - port_no: 0xBBBB
         hw_addr: CC:CC:CC:CC:CC:CC
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
-        ethernet:
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+        curr:   [ '0x55555555' ]
+        advertised: [ '0x66666666' ]
+        supported:  [ '0x77777777' ]
+        peer:  [ '0x88888888' ]
+        curr_speed: 0x99999999
+        max_speed: 0xAAAAAAAA
         properties:
       )""";
 
@@ -3485,13 +3464,12 @@ TEST(encoder, ofmp_portdesc_replyv5_2) {
         name: Port 1
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
-        ethernet:
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+        curr:   [ '0x55555555' ]
+        advertised: [ '0x66666666' ]
+        supported:  [ '0x77777777' ]
+        peer:  [ '0x88888888' ]
+        curr_speed: 0x99999999
+        max_speed: 0xAAAAAAAA
         optical:
           supported: [ 0x11111110 ]
           tx_min_freq_lmda: 0x22222220
@@ -3512,13 +3490,12 @@ TEST(encoder, ofmp_portdesc_replyv5_2) {
         name: Port 2
         config: [ '0x33333333' ]
         state:  [ '0x44444444' ]
-        ethernet:
-          curr:   [ '0x55555555' ]
-          advertised: [ '0x66666666' ]
-          supported:  [ '0x77777777' ]
-          peer:  [ '0x88888888' ]
-          curr_speed: 0x99999999
-          max_speed: 0xAAAAAAAA
+        curr:   [ '0x55555555' ]
+        advertised: [ '0x66666666' ]
+        supported:  [ '0x77777777' ]
+        peer:  [ '0x88888888' ]
+        curr_speed: 0x99999999
+        max_speed: 0xAAAAAAAA
         properties:
       )""";
 
@@ -3737,11 +3714,10 @@ TEST(encoder, ofmp_portstats_v4_flags) {
           tx_dropped: 0x9999999999999990
           rx_errors:  0xAAAAAAAAAAAAAAA0
           tx_errors:  0xBBBBBBBBBBBBBBB0
-          ethernet:
-            rx_frame_err: 0xCCCCCCCCCCCCCCC0
-            rx_over_err:  0xDDDDDDDDDDDDDDD0
-            rx_crc_err:   0xEEEEEEEEEEEEEEE0
-            collisions:   0xFFFFFFFFFFFFFFF0
+          rx_frame_err: 0xCCCCCCCCCCCCCCC0
+          rx_over_err:  0xDDDDDDDDDDDDDDD0
+          rx_crc_err:   0xEEEEEEEEEEEEEEE0
+          collisions:   0xFFFFFFFFFFFFFFF0
           properties:
     )""";
 
