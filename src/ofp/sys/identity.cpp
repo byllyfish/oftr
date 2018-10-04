@@ -172,7 +172,7 @@ std::error_code Identity::prepareOptions(SSL_CTX *ctx,
       ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TICKET);
 
   if (options) {
-    log_debug("Identity::prepareContextOptions: options", log::hex(options));
+    log_debug("Identity::prepareContextOptions: options", options);
   }
 
   if (!ciphers.empty()) {
