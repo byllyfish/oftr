@@ -11,6 +11,10 @@ os:
   - linux
   - osx
 
+install:
+  # Boringssl tests require Go 1.11.
+  - eval "$(gimme 1.11)"
+
 env:
   global:
    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
