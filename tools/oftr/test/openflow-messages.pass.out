@@ -47747,10 +47747,6 @@ version:         0x04
 msg:             
   versions:        [  ]
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_0_00001.pass
-Error: Encode yielded different size data: 16 vs. 8
-[ByteRange size=16 data=04000010D18E900A0001000800000010]
-[ByteRange size=8 data=04000008D18E900A]
 ---
 type:            HELLO
 xid:             0x12345678
@@ -47759,8 +47755,8 @@ msg:
   versions:        [  ]
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_0_00002.pass
-Error: Encode yielded different data at byte offset 8:
-[ByteRange size=16 data=04000010123456780001000800000010]
+Error: Encode yielded different size data: 8 vs. 16
+[ByteRange size=8 data=0400000812345678]
 [ByteRange size=16 data=04000010123456783333333333333333]
 ---
 type:            PACKET_IN
@@ -61066,8 +61062,8 @@ msg:
   versions:        [  ]
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_0_00001.pass
-Error: Encode yielded different data at byte offset 15:
-[ByteRange size=16 data=04000010D18E900A0001000800000010]
+Error: Encode yielded different size data: 8 vs. 16
+[ByteRange size=8 data=04000008D18E900A]
 [ByteRange size=16 data=04000010D18E900A0001000800000001]
 ---
 type:            PACKET_IN

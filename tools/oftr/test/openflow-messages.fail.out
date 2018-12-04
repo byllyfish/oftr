@@ -16312,10 +16312,6 @@ _file:           external/openflow-messages/v1_2/rep/rep_0_00001.fail
 msg:             
   versions:        [  ]
 ...
-Filename: external/openflow-messages/v1_2/rep/rep_0_00001.fail
-Error: Encode yielded different size data: 16 vs. 8
-[ByteRange size=16 data=05000010D18E900A0001000800000020]
-[ByteRange size=8 data=05000008D18E900A]
 Filename: external/openflow-messages/v1_2/rep/rep_0_00002.fail
 Error: Decode failed: Message type is not supported
 [ByteList size=8 data=03250008D18E900A]
@@ -18625,10 +18621,6 @@ _file:           external/openflow-messages/v1_3/rep/rep_0_00001.fail
 msg:             
   versions:        [  ]
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_0_00001.fail
-Error: Encode yielded different size data: 16 vs. 8
-[ByteRange size=16 data=05000010D18E900A0001000800000020]
-[ByteRange size=8 data=05000008D18E900A]
 Filename: external/openflow-messages/v1_3/rep/rep_0_00002.fail
 Error: Decode failed: Message type is not supported
 [ByteList size=8 data=04250008D18E900A]
@@ -22054,10 +22046,6 @@ _file:           external/openflow-messages/v1_3_1/rep/rep_0_00001.fail
 msg:             
   versions:        [  ]
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_0_00001.fail
-Error: Encode yielded different size data: 16 vs. 8
-[ByteRange size=16 data=05000010D18E900A0001000800000020]
-[ByteRange size=8 data=05000008D18E900A]
 Filename: external/openflow-messages/v1_3_1/rep/rep_0_00002.fail
 Error: Decode failed: Message type is not supported
 [ByteList size=8 data=04250008D18E900A]

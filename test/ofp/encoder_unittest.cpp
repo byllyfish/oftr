@@ -73,7 +73,27 @@ version: 4
 msg: {}
 )""";
 
-  testEncoderSuccess(input, 16, "04000010000000000001000800000010");
+  testEncoderSuccess(input, 8, "0400000800000000");
+}
+
+TEST(encoder, helloExactVersionV4) {
+  const char *input = R"""(
+type: HELLO
+version: 4
+msg: { 'versions': [4] }
+)""";
+
+  testEncoderSuccess(input, 8, "0400000800000000");
+}
+
+TEST(encoder, helloOneOtherVersionV4) {
+  const char *input = R"""(
+type: HELLO
+version: 4
+msg: { 'versions': [1] }
+)""";
+
+  testEncoderSuccess(input, 16, "04000010000000000001000800000002");
 }
 
 TEST(encoder, error) {

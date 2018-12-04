@@ -22,8 +22,8 @@ class ProtocolVersions {
   /* implicit NOLINT */ ProtocolVersions(std::initializer_list<UInt8> versions);
 
   constexpr bool empty() const { return (bitmap_ == 0); }
-  bool isOnlyOneVersionSupported() const;
-  bool containsVersion(UInt8 version) const;
+  bool containsVersion(UInt8 version) const { return ((bitmap_ >> version) & 1); }
+  bool includeInHelloMsg(UInt8 version) const;
 
   UInt8 highestVersion() const;
   UInt8 negotiateVersion(UInt8 msgVersion, ProtocolVersions msgVersions) const;

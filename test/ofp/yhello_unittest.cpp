@@ -21,7 +21,7 @@ msg:
 
   Encoder encoder{yaml};
   EXPECT_EQ("", encoder.error());
-  EXPECT_HEX("0400001000000000000100080000001E", encoder.data(),
+  EXPECT_HEX("0400000800000000", encoder.data(),
              encoder.size());
 }
 
@@ -90,7 +90,7 @@ msg:
 
   Encoder encoder{yaml};
   EXPECT_EQ("", encoder.error());
-  EXPECT_HEX("0600001000000000000100080000007E", encoder.data(),
+  EXPECT_HEX("0600000800000000", encoder.data(),
              encoder.size());
 }
 
@@ -102,7 +102,7 @@ type: HELLO
 
   Encoder encoder{yaml};
   EXPECT_EQ("", encoder.error());
-  EXPECT_HEX("0600001000000000000100080000007E", encoder.data(),
+  EXPECT_HEX("0600000800000000", encoder.data(),
              encoder.size());
 }
 
@@ -142,6 +142,6 @@ msg:
 
   Encoder encoder{yaml};
   EXPECT_EQ("", encoder.error());
-  EXPECT_HEX("0600001000000000000100080000007E", encoder.data(),
+  EXPECT_HEX("0600000800000000", encoder.data(),
              encoder.size());
 }

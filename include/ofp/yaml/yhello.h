@@ -14,15 +14,18 @@ namespace yaml {
 const char *const kHelloSchema = R"""({Message/Hello}
 type: HELLO
 msg:
-  versions: !opt [UInt8]
+  versions: !optout [UInt8]
 )""";
 
 template <>
 struct MappingTraits<ofp::Hello> {
   static void mapping(IO &io, ofp::Hello &msg) {
+    // Output versions hello element only if present.
+    //if (msg.msgLength() > ofp::Hello::MinLength) {
     ofp::ProtocolVersions versions = msg.protocolVersions();
     std::vector<ofp::UInt8> vers = versions.versions();
     io.mapRequired("versions", vers);
+    //}
   }
 };
 

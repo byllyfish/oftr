@@ -12,8 +12,8 @@ TEST(hello, HelloBuilder1) {
   MemoryChannel channel{99};
   msg.send(&channel);
 
-  EXPECT_EQ(0x10, channel.size());
-  EXPECT_HEX("0400-0010-00000001 00010008-0000001E", channel.data(),
+  EXPECT_EQ(0x08, channel.size());
+  EXPECT_HEX("0400-0008-00000001", channel.data(),
              channel.size());
 }
 
