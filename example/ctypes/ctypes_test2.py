@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
     # Test encode() function.
     msg = encode('type: HELLO\nversion: 4')
-    if msg != binascii.unhexlify('04000010000000000001000800000010'):
+    if msg != binascii.unhexlify('0400000800000000'):
         print('Unexpected encode result: %s' % binascii.hexlify(msg))
         sys.exit(1)
 
