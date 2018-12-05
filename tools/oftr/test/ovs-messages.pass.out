@@ -5,7 +5,7 @@ version:         0x05
 msg:             
   versions:        [ 5 ]
 ...
-Filename: /Users/bfish/code/ofp/tools/oftr/test/ovs-messages.pass
+Filename: tools/oftr/test/ovs-messages.pass
 Error: Encode yielded different size data: 8 vs. 16
 [ByteRange size=8 data=050000080000009F]
 [ByteRange size=16 data=050000100000009F0001000800000020]
