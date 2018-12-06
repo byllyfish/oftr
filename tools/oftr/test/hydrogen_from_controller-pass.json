@@ -1,4 +1,4 @@
-{"type":"HELLO","xid":906561522,"version":1,"msg":{"versions":[]}}
+{"type":"HELLO","xid":906561522,"version":1,"msg":{}}
 {"type":"FEATURES_REQUEST","xid":906561523,"version":1,"msg":{}}
 {"type":"SET_CONFIG","xid":906561524,"version":1,"msg":{"flags":["FRAG_NORMAL"],"miss_send_len":"NO_BUFFER"}}
 {"type":"GET_CONFIG_REQUEST","xid":906561525,"version":1,"msg":{}}

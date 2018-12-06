@@ -2538,11 +2538,11 @@ version	type	keypath	syntax	required	default	missing	modify
 4	BUNDLE_ADD_MESSAGE.v4	msg	object	True			
 4	BUNDLE_ADD_MESSAGE.v4	msg.bundle_id	uint32	True			True
 4	BUNDLE_ADD_MESSAGE.v4	msg.flags	array	True			
-4	BUNDLE_ADD_MESSAGE.v4	msg.flags.0	ATOMIC	False	msg.flags.0=ATOMIC,msg.message.msg=object,msg.message.msg.versions=array,msg.message.version=4,msg.message.xid=0		
+4	BUNDLE_ADD_MESSAGE.v4	msg.flags.0	ATOMIC	False	msg.flags.0=ATOMIC,msg.message.msg=object,msg.message.version=4,msg.message.xid=0		
 4	BUNDLE_ADD_MESSAGE.v4	msg.message	object	True			
 4	BUNDLE_ADD_MESSAGE.v4	msg.message.type	HELLO	True			
-4	BUNDLE_ADD_MESSAGE.v4	msg.properties	array	False	msg.message.msg=object,msg.message.msg.versions=array,msg.message.version=4,msg.message.xid=0		
-4	BUNDLE_ADD_MESSAGE.v4	msg.properties.0	object	False	msg.message.msg=object,msg.message.msg.versions=array,msg.message.version=4,msg.message.xid=0		
+4	BUNDLE_ADD_MESSAGE.v4	msg.properties	array	False	msg.message.msg=object,msg.message.version=4,msg.message.xid=0		
+4	BUNDLE_ADD_MESSAGE.v4	msg.properties.0	object	False	msg.message.msg=object,msg.message.version=4,msg.message.xid=0		
 4	BUNDLE_ADD_MESSAGE.v4	msg.properties.0.data	binary	True			True
 4	BUNDLE_ADD_MESSAGE.v4	msg.properties.0.exp_type	uint32	True			True
 4	BUNDLE_ADD_MESSAGE.v4	msg.properties.0.experimenter	uint32	True			True
@@ -3175,11 +3175,11 @@ version	type	keypath	syntax	required	default	missing	modify
 5	BUNDLE_ADD_MESSAGE.v5	msg	object	True			
 5	BUNDLE_ADD_MESSAGE.v5	msg.bundle_id	uint32	True			True
 5	BUNDLE_ADD_MESSAGE.v5	msg.flags	array	True			
-5	BUNDLE_ADD_MESSAGE.v5	msg.flags.0	ATOMIC	False	msg.flags.0=ATOMIC,msg.message.msg=object,msg.message.msg.versions=array,msg.message.version=5,msg.message.xid=0		
+5	BUNDLE_ADD_MESSAGE.v5	msg.flags.0	ATOMIC	False	msg.flags.0=ATOMIC,msg.message.msg=object,msg.message.version=5,msg.message.xid=0		
 5	BUNDLE_ADD_MESSAGE.v5	msg.message	object	True			
 5	BUNDLE_ADD_MESSAGE.v5	msg.message.type	HELLO	True			
-5	BUNDLE_ADD_MESSAGE.v5	msg.properties	array	False	msg.message.msg=object,msg.message.msg.versions=array,msg.message.version=5,msg.message.xid=0		
-5	BUNDLE_ADD_MESSAGE.v5	msg.properties.0	object	False	msg.message.msg=object,msg.message.msg.versions=array,msg.message.version=5,msg.message.xid=0		
+5	BUNDLE_ADD_MESSAGE.v5	msg.properties	array	False	msg.message.msg=object,msg.message.version=5,msg.message.xid=0		
+5	BUNDLE_ADD_MESSAGE.v5	msg.properties.0	object	False	msg.message.msg=object,msg.message.version=5,msg.message.xid=0		
 5	BUNDLE_ADD_MESSAGE.v5	msg.properties.0.data	binary	True			True
 5	BUNDLE_ADD_MESSAGE.v5	msg.properties.0.exp_type	uint32	True			True
 5	BUNDLE_ADD_MESSAGE.v5	msg.properties.0.experimenter	uint32	True			True

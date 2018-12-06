@@ -16310,7 +16310,6 @@ xid:             0xD18E900A
 version:         0x05
 _file:           external/openflow-messages/v1_2/rep/rep_0_00001.fail
 msg:             
-  versions:        [  ]
 ...
 Filename: external/openflow-messages/v1_2/rep/rep_0_00002.fail
 Error: Decode failed: Message type is not supported
@@ -18619,7 +18618,6 @@ xid:             0xD18E900A
 version:         0x05
 _file:           external/openflow-messages/v1_3/rep/rep_0_00001.fail
 msg:             
-  versions:        [  ]
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_0_00002.fail
 Error: Decode failed: Message type is not supported
@@ -22044,7 +22042,6 @@ xid:             0xD18E900A
 version:         0x05
 _file:           external/openflow-messages/v1_3_1/rep/rep_0_00001.fail
 msg:             
-  versions:        [  ]
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_0_00002.fail
 Error: Decode failed: Message type is not supported

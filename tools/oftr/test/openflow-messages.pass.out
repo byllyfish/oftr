@@ -963,7 +963,6 @@ type:            HELLO
 xid:             0xD18E900A
 version:         0x01
 msg:             
-  versions:        [  ]
 ...
 ---
 type:            HELLO
@@ -2890,7 +2889,6 @@ type:            HELLO
 xid:             0xD18E900A
 version:         0x02
 msg:             
-  versions:        [  ]
 ...
 ---
 type:            HELLO
@@ -34948,7 +34946,6 @@ type:            HELLO
 xid:             0xD18E900A
 version:         0x03
 msg:             
-  versions:        [  ]
 ...
 ---
 type:            HELLO
@@ -47745,7 +47742,6 @@ type:            HELLO
 xid:             0xD18E900A
 version:         0x04
 msg:             
-  versions:        [  ]
 ...
 ---
 type:            HELLO

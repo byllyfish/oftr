@@ -92,8 +92,7 @@ TEST(decoder, hellov1) {
   testDecodeEncode(
       "0100000800000001",
       "---\ntype:            HELLO\nxid:             "
-      "0x00000001\nversion:         0x01\nmsg:             \n  versions:  "
-      "      [  ]\n...\n");
+      "0x00000001\nversion:         0x01\nmsg:             \n...\n");
 }
 
 TEST(decoder, hellov4) {

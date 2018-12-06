@@ -69,10 +69,10 @@ TEST(libofp, oftr_decode) {
 
   int len = oftr_call(OFTR_DECODE_OPENFLOW, msg.data(), msg.size(), buffer,
                       sizeof(buffer));
-  EXPECT_EQ(len, 123);
+  EXPECT_EQ(len, 99);
   EXPECT_ASCII(
       "---\ntype:            HELLO\nxid:             0x00000000\nversion:      "
-      "   0x01\nmsg:             \n  versions:        [  ]\n...\n",
+      "   0x01\nmsg:             \n...\n",
       buffer, static_cast<size_t>(len));
 
   // Test empty input buffer.
@@ -85,11 +85,11 @@ TEST(libofp, oftr_decode) {
 
   // Test passing empty output buffer.
   EXPECT_EQ(oftr_call(OFTR_DECODE_OPENFLOW, msg.data(), msg.size(), nullptr, 0),
-            -123);
+            -99);
 
   // Test passing short output buffer.
   char small[5];
   EXPECT_EQ(oftr_call(OFTR_DECODE_OPENFLOW, msg.data(), msg.size(), small,
                       sizeof(small)),
-            -123);
+            -99);
 }

@@ -3,7 +3,6 @@ type:            HELLO
 xid:             0x360907F2
 version:         0x01
 msg:             
-  versions:        [  ]
 ...
 ---
 type:            FEATURES_REQUEST

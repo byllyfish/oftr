@@ -51,7 +51,7 @@ TEST(outputjson, hello) {
 
   const char *expected =
       "{\"type\":\"HELLO\",\"xid\":1,\"version\":"
-      "6,\"msg\":{\"versions\":[]}}";
+      "6,\"msg\":{}}";
   EXPECT_EQ(expected, decode.result().str());
 }
 

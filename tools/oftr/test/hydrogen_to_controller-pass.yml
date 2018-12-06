@@ -3,7 +3,6 @@ type:            HELLO
 xid:             0x00000003
 version:         0x01
 msg:             
-  versions:        [  ]
 ...
 ---
 type:            FEATURES_REPLY
