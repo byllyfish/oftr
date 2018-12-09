@@ -392,14 +392,14 @@ msg:
   properties:      
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [  ]
 xid:             0xF7417280
 version:         0x01
 msg:             
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [  ]
 xid:             0xF7417280
 version:         0x01
@@ -408,7 +408,7 @@ msg:
   queue_id:        0x12345678
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0xF7417280
 version:         0x01
@@ -418,7 +418,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0x007C6FF2
 version:         0x01
@@ -430,7 +430,7 @@ msg:
   dp_desc:         testing dp_desc
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [  ]
 xid:             0x8A67EFB9
 version:         0x01
@@ -443,7 +443,7 @@ msg:
     duration:        0
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x8A67EFB9
 version:         0x01
@@ -453,7 +453,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x01
@@ -1310,14 +1310,14 @@ msg:
   properties:      
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [  ]
 xid:             0xF7417280
 version:         0x01
 msg:             
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [  ]
 xid:             0x4024EFCC
 version:         0x01
@@ -1356,7 +1356,7 @@ Error: Encode yielded different data at byte offset 24:
 [ByteRange size=56 data=011000384024EFCC0001000000000008B19727AF80FCA17900000000000028977E0000806D31000009F6F72556CD9CE9ED7506400200000D]
 [ByteRange size=56 data=011000384024EFCC0001000000000008B19727AF80FCA179B6F08DE50D1128977E0000806D31000009F6F72556CD9CE9ED7506400200000D]
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [  ]
 xid:             0x0867ACFE
 version:         0x01
@@ -1395,14 +1395,14 @@ Error: Encode yielded different data at byte offset 24:
 [ByteRange size=56 data=011000380867ACFE0002000000000008D47CE503B10E6B6B0000000000004B841E000080F12800005A9876EB1EBB357888A645E50300000D]
 [ByteRange size=56 data=011000380867ACFE0002000000000008D47CE503B10E6B6BD3F1E63571044B841E000080F12800005A9876EB1EBB357888A645E50300000D]
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [  ]
 xid:             0x99A58EBA
 version:         0x01
 msg:             
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [  ]
 xid:             0x6BB1AD10
 version:         0x01
@@ -1410,7 +1410,7 @@ msg:
   port_no:         0x0000000D
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [  ]
 xid:             0x7872A0EA
 version:         0x01
@@ -1419,7 +1419,7 @@ msg:
   queue_id:        0xB6313C17
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0x6BB1AD10
 version:         0x01
@@ -1432,7 +1432,7 @@ Filename: external/openflow-messages/v1_0/rep/rep_16_00008.pass
 Error: Decode failed: Length remaining is invalid
 [ByteList size=16 data=011000106BB1AD10FFFF000076767676]
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0x007C6FF2
 version:         0x01
@@ -1444,7 +1444,7 @@ msg:
   dp_desc:         testing dp_desc
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x95C85A7A
 version:         0x01
@@ -1493,7 +1493,7 @@ Error: Encode yielded different data at byte offset 28:
 [ByteRange size=108 data=0111006C95C85A7A00010000006002000000000887374F90EFDAB52300000000000082FA4A000080AC40000073E225243EB2E1B4243357F20000001E0000005A0001003C005A0000000000008689E3BED54C93C400000000000000640000000000000064000000084201A385]
 [ByteRange size=108 data=0111006C95C85A7A00010000006002000000000887374F90EFDAB523F132767A46C692FA4A000080AC40000073E225243EB2E1B4243357F20000001E0000005A0001003C005A0000000000008689E3BED54C93C400000000000000640000000000000064000000084201A385]
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [  ]
 xid:             0x95C85A7A
 version:         0x01
@@ -1503,7 +1503,7 @@ msg:
   flow_count:      0x000000F0
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0xE33DF8ED
 version:         0x01
@@ -1517,7 +1517,7 @@ msg:
     matched_count:   0x0000000000000020
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x1171F2A0
 version:         0x01
@@ -1539,7 +1539,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [  ]
 xid:             0x8A67EFB9
 version:         0x01
@@ -2261,14 +2261,14 @@ msg:
   properties:      
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [  ]
 xid:             0xEA0BCC12
 version:         0x02
 msg:             
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [  ]
 xid:             0x5545EA66
 version:         0x02
@@ -2297,7 +2297,7 @@ Error: Encode yielded different size data: 112 vs. 136
 [ByteRange size=112 data=021200705545EA660001000000000000010000000000000C0000000D000000005A188EC5884E9E2030C1F46BAA0517D50001003C8000090C9081007E8862BD930C7FEC6F8000070CD296044CD13AF39F067CD1FA80001708135233081B77BF0C800019080282102193C3722100000000]
 [ByteRange size=136 data=021200885545EA660001000000000000010000000000000C0000000D000000005A188EC5884E9E2030C1F46BAA0517D50000005899983B9C000003FFD0A5327E9A72BD930C7FEC6FDEF6DD4FF53EF39F067CD1FAC2E454000080136FD75A73991B77BF0C42869CFB93C37221899809E54B994C51230000005F3D5896E2207E6E0000000000000000]
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [  ]
 xid:             0x01691AC3
 version:         0x02
@@ -2326,14 +2326,14 @@ Error: Encode yielded different size data: 112 vs. 136
 [ByteRange size=112 data=0212007001691AC30002000000000000020000000000000D0000000100000000A212B4FBCEAB717453638FCD68BB03AA0001003C8000090C220229600012A34279E32A1F8000070C0040004011309F68826133B9800017085000012EFA10092E800019085044041050E4567D00000000]
 [ByteRange size=136 data=0212008801691AC30002000000000000020000000000000D0000000100000000A212B4FBCEAB717453638FCD68BB03AA00000058BC97AAE5000003FF660A2D78C552A34279E32A1F60C724561D769F68826133B97240740000801B76544723AEFA10092EDD4E0D1050E4567D76D81A8F3A723B45850000001DAF785975EAFDE60000000000000000]
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [  ]
 xid:             0x4DB7318E
 version:         0x02
 msg:             
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [  ]
 xid:             0xD14F40BC
 version:         0x02
@@ -2341,7 +2341,7 @@ msg:
   port_no:         0x0000000C
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [  ]
 xid:             0x51ACD5E5
 version:         0x02
@@ -2350,7 +2350,7 @@ msg:
   queue_id:        0x16C197FC
 ...
 ---
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 flags:           [  ]
 xid:             0x7627E157
 version:         0x02
@@ -2358,14 +2358,14 @@ msg:
   group_id:        0x5B2F44B0
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [  ]
 xid:             0x0A28F34C
 version:         0x02
 msg:             
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0xD8CA374C
 version:         0x02
@@ -2375,7 +2375,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [ MORE ]
 xid:             0xF6E22D14
 version:         0x02
@@ -2387,7 +2387,7 @@ msg:
   dp_desc:         ''
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x9D3ED7F7
 version:         0x02
@@ -2424,7 +2424,7 @@ Error: Encode yielded different size data: 144 vs. 168
 [ByteRange size=144 data=021300909D3ED7F70001000000000000008001000000003C0000005A00010001000A000000000000585D7FD406F5FF05000000000000006400000000000000650001003C8000090C841000C62160C4100BEE216D8000070C900EA0C01050DA2EF5C15DFD8000170800A40C0570EC0D9F800019082EA28805AEA3D98F0000000000040010000000000012000800000000]
 [ByteRange size=168 data=021300A89D3ED7F70001000000000000009801000000003C0000005A00010001000A000000000000585D7FD406F5FF050000000000000064000000000000006500000058CE309900000003FF9578F0D66562C4100BEE216DB08FA0F89250DA2EF5C15DFD518069000080317209B73E6570EC0D9F7EA68C65AEA3D98F8D621279B3B77F4D59000000129DBE487F162020000000000000000000040010000000000012000800000000]
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [  ]
 xid:             0x62FE1DA0
 version:         0x02
@@ -2437,7 +2437,7 @@ Filename: external/openflow-messages/v1_1/abs/abs_19_00004.pass
 Error: Decode failed: Multipart type is not supported for this protocol version
 [ByteList size=192 data=021300C06D602C42000300000000000015000000000000006D537651425969637443766F4561436C63697A46696846666D5A4D7564654F63386811B6B5CDAC67A44579B17DE33EE150959733720F0F995D7441BF0A2E99D27F3D7AD898B73A908E9A4408B0B938E95E000000000000006457547870654E71454A6765487161664D4476564D6355496C47745578576E41F795375D91E122FDED89172F82A4786448A2E86B7F37D75C9A40331001B6AA99BF9EB14AD8947B0EB62C9F6658A8AC43]
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0xD937B021
 version:         0x02
@@ -2480,7 +2480,7 @@ Filename: external/openflow-messages/v1_1/abs/abs_19_00007.pass
 Error: Decode failed: Range size is not multiple of element size
 [ByteList size=112 data=021300706BBCDD5000060000000000000030000061DA1372B462001F00000000295DDA012C9D27CF87F743EDF585FF6130B1142DF1FA76FA94AB3D6F630DB942003000005C7D082923DD3D3E0000000090469966A782CD9C46624FDB08271771F7D9B3380D1FA5B1D9B13FC33F05700C]
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0xC439BE40
 version:         0x02
@@ -2496,7 +2496,7 @@ msg:
             data:            B86BA5EE
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x2E6686B5
 version:         0x02
@@ -33227,14 +33227,14 @@ msg:
   properties:      
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [  ]
 xid:             0xEA0BCC12
 version:         0x02
 msg:             
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [  ]
 xid:             0x5545EA66
 version:         0x02
@@ -33263,7 +33263,7 @@ Error: Encode yielded different size data: 112 vs. 136
 [ByteRange size=112 data=021200705545EA660001000000000000010000000000000C0000000D000000005A188EC5884E9E2030C1F46BAA0517D50001003C8000090C9081007E8862BD930C7FEC6F8000070CD296044CD13AF39F067CD1FA80001708135233081B77BF0C800019080282102193C3722100000000]
 [ByteRange size=136 data=021200885545EA660001000000000000010000000000000C0000000D000000005A188EC5884E9E2030C1F46BAA0517D50000005899983B9C000003FFD0A5327E9A72BD930C7FEC6FDEF6DD4FF53EF39F067CD1FAC2E454000080136FD75A73991B77BF0C42869CFB93C37221899809E54B994C51230000005F3D5896E2207E6E0000000000000000]
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [  ]
 xid:             0x01691AC3
 version:         0x02
@@ -33292,14 +33292,14 @@ Error: Encode yielded different size data: 112 vs. 136
 [ByteRange size=112 data=0212007001691AC30002000000000000020000000000000D0000000100000000A212B4FBCEAB717453638FCD68BB03AA0001003C8000090C220229600012A34279E32A1F8000070C0040004011309F68826133B9800017085000012EFA10092E800019085044041050E4567D00000000]
 [ByteRange size=136 data=0212008801691AC30002000000000000020000000000000D0000000100000000A212B4FBCEAB717453638FCD68BB03AA00000058BC97AAE5000003FF660A2D78C552A34279E32A1F60C724561D769F68826133B97240740000801B76544723AEFA10092EDD4E0D1050E4567D76D81A8F3A723B45850000001DAF785975EAFDE60000000000000000]
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [  ]
 xid:             0x4DB7318E
 version:         0x02
 msg:             
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [  ]
 xid:             0xD14F40BC
 version:         0x02
@@ -33307,7 +33307,7 @@ msg:
   port_no:         0x0000000C
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [  ]
 xid:             0x51ACD5E5
 version:         0x02
@@ -33316,7 +33316,7 @@ msg:
   queue_id:        0x16C197FC
 ...
 ---
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 flags:           [  ]
 xid:             0x7627E157
 version:         0x02
@@ -33324,14 +33324,14 @@ msg:
   group_id:        0x5B2F44B0
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [  ]
 xid:             0x0A28F34C
 version:         0x02
 msg:             
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0xD8CA374C
 version:         0x02
@@ -33341,7 +33341,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0xD8CA374C
 version:         0x02
@@ -33351,7 +33351,7 @@ msg:
   data:            646174616461746169616D64617461
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0xF6E22D14
 version:         0x02
@@ -33363,14 +33363,14 @@ msg:
   dp_desc:         ''
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x9D3ED7F7
 version:         0x02
 msg:             
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x9D3ED7F7
 version:         0x02
@@ -33404,7 +33404,7 @@ Error: Encode yielded different size data: 128 vs. 152
 [ByteRange size=128 data=021300809D3ED7F70001000000000000007001000000003C0000005A00010001000A000000000000585D7FD406F5FF05000000000000006400000000000000650001003C8000090C841000C62160C4100BEE216D8000070C900EA0C01050DA2EF5C15DFD8000170800A40C0570EC0D9F800019082EA28805AEA3D98F00000000]
 [ByteRange size=152 data=021300989D3ED7F70001000000000000008801000000003C0000005A00010001000A000000000000585D7FD406F5FF050000000000000064000000000000006500000058CE309900000003FF9578F0D66562C4100BEE216DB08FA0F89250DA2EF5C15DFD518069000080317209B73E6570EC0D9F7EA68C65AEA3D98F8D621279B3B77F4D59000000129DBE487F1620200000000000000000]
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x9D3ED7F7
 version:         0x02
@@ -33441,7 +33441,7 @@ Error: Encode yielded different size data: 144 vs. 168
 [ByteRange size=144 data=021300909D3ED7F70001000000000000008001000000003C0000005A00010001000A000000000000585D7FD406F5FF05000000000000006400000000000000650001003C8000090C841000C62160C4100BEE216D8000070C900EA0C01050DA2EF5C15DFD8000170800A40C0570EC0D9F800019082EA28805AEA3D98F0000000000040010000000000012000800000000]
 [ByteRange size=168 data=021300A89D3ED7F70001000000000000009801000000003C0000005A00010001000A000000000000585D7FD406F5FF050000000000000064000000000000006500000058CE309900000003FF9578F0D66562C4100BEE216DB08FA0F89250DA2EF5C15DFD518069000080317209B73E6570EC0D9F7EA68C65AEA3D98F8D621279B3B77F4D59000000129DBE487F162020000000000000000000040010000000000012000800000000]
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x9D3ED7F7
 version:         0x02
@@ -33480,7 +33480,7 @@ Error: Encode yielded different size data: 152 vs. 176
 [ByteRange size=152 data=021300989D3ED7F70001000000000000008801000000003C0000005A00010001000A000000000000585D7FD406F5FF05000000000000006400000000000000650001003C8000090C841000C62160C4100BEE216D8000070C900EA0C01050DA2EF5C15DFD8000170800A40C0570EC0D9F800019082EA28805AEA3D98F00000000000400180000000000120008000000000014000800000000]
 [ByteRange size=176 data=021300B09D3ED7F7000100000000000000A001000000003C0000005A00010001000A000000000000585D7FD406F5FF050000000000000064000000000000006500000058CE309900000003FF9578F0D66562C4100BEE216DB08FA0F89250DA2EF5C15DFD518069000080317209B73E6570EC0D9F7EA68C65AEA3D98F8D621279B3B77F4D59000000129DBE487F1620200000000000000000000400180000000000120008000000000014000800000000]
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x9D3ED7F7
 version:         0x02
@@ -33547,7 +33547,7 @@ Error: Encode yielded different size data: 288 vs. 336
 [ByteRange size=288 data=021301209D3ED7F70001000000000000008801000000003C0000005A00010001000A000000000000585D7FD406F5FF05000000000000006400000000000000650001003C8000090C841000C62160C4100BEE216D8000070C900EA0C01050DA2EF5C15DFD8000170800A40C0570EC0D9F800019082EA28805AEA3D98F00000000000400180000000000120008000000000014000800000000008801000000003C0000005A00010001000A000000000000585D7FD406F5FF05000000000000006400000000000000650001003C8000090C841000C62160C4100BEE216D8000070C900EA0C01050DA2EF5C15DFD8000170800A40C0570EC0D9F800019082EA28805AEA3D98F00000000000400180000000000120008000000000014000800000000]
 [ByteRange size=336 data=021301509D3ED7F7000100000000000000A001000000003C0000005A00010001000A000000000000585D7FD406F5FF050000000000000064000000000000006500000058CE309900000003FF9578F0D66562C4100BEE216DB08FA0F89250DA2EF5C15DFD518069000080317209B73E6570EC0D9F7EA68C65AEA3D98F8D621279B3B77F4D59000000129DBE487F162020000000000000000000040018000000000012000800000000001400080000000000A001000000003C0000005A00010001000A000000000000585D7FD406F5FF050000000000000064000000000000006500000058CE309900000003FF9578F0D66562C4100BEE216DB08FA0F89250DA2EF5C15DFD518069000080317209B73E6570EC0D9F7EA68C65AEA3D98F8D621279B3B77F4D59000000129DBE487F1620200000000000000000000400180000000000120008000000000014000800000000]
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [  ]
 xid:             0x62FE1DA0
 version:         0x02
@@ -33560,7 +33560,7 @@ Filename: external/openflow-messages/v1_1/rep/rep_19_00008.pass
 Error: Decode failed: Multipart type is not supported for this protocol version
 [ByteList size=192 data=021300C06D602C42000300000000000015000000000000006D537651425969637443766F4561436C63697A46696846666D5A4D7564654F63386811B6B5CDAC67A44579B17DE33EE150959733720F0F995D7441BF0A2E99D27F3D7AD898B73A908E9A4408B0B938E95E000000000000006457547870654E71454A6765487161664D4476564D6355496C47745578576E41F795375D91E122FDED89172F82A4786448A2E86B7F37D75C9A40331001B6AA99BF9EB14AD8947B0EB62C9F6658A8AC43]
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0xD937B021
 version:         0x02
@@ -33597,14 +33597,14 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0xD937B021
 version:         0x02
 msg:             
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [  ]
 xid:             0x0DCDF48D
 version:         0x02
@@ -33614,7 +33614,7 @@ Filename: external/openflow-messages/v1_1/rep/rep_19_00012.pass
 Error: Decode failed: Range size is not multiple of element size
 [ByteList size=80 data=021300500DCDF48D0005000000000000F23F2F12105AE0337A23C47C4836155DBF8D6FBB32F47BF9A0BDA951E84B7B9F21A7C7A712F3D6BEBAC97A1BC8091F5DE96DD07C4C8D74DEF8B083B0616EFEEB]
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [  ]
 xid:             0x6BBCDD50
 version:         0x02
@@ -33624,14 +33624,14 @@ Filename: external/openflow-messages/v1_1/rep/rep_19_00014.pass
 Error: Decode failed: Range size is not multiple of element size
 [ByteList size=112 data=021300706BBCDD5000060000000000000030000061DA1372B462001F00000000295DDA012C9D27CF87F743EDF585FF6130B1142DF1FA76FA94AB3D6F630DB942003000005C7D082923DD3D3E0000000090469966A782CD9C46624FDB08271771F7D9B3380D1FA5B1D9B13FC33F05700C]
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0xC439BE40
 version:         0x02
 msg:             
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0xC439BE40
 version:         0x02
@@ -33641,7 +33641,7 @@ msg:
     buckets:         
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0xC439BE40
 version:         0x02
@@ -33657,7 +33657,7 @@ msg:
             data:            B86BA5EE
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0xC439BE40
 version:         0x02
@@ -33679,7 +33679,7 @@ msg:
             data:            AC000000
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0xC439BE40
 version:         0x02
@@ -33711,7 +33711,7 @@ msg:
         actions:         
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x2E6686B5
 version:         0x02
@@ -33721,7 +33721,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x2E6686B5
 version:         0x02
@@ -34412,21 +34412,21 @@ msg:
   properties:      
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [  ]
 xid:             0xEA0BCC12
 version:         0x03
 msg:             
 ...
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [  ]
 xid:             0x4DB7318E
 version:         0x03
 msg:             
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [  ]
 xid:             0xD14F40BC
 version:         0x03
@@ -34434,7 +34434,7 @@ msg:
   port_no:         0x0000000C
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [  ]
 xid:             0x51ACD5E5
 version:         0x03
@@ -34443,7 +34443,7 @@ msg:
   queue_id:        0x16C197FC
 ...
 ---
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 flags:           [  ]
 xid:             0x7627E157
 version:         0x03
@@ -34451,14 +34451,14 @@ msg:
   group_id:        0x5B2F44B0
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [  ]
 xid:             0x0A28F34C
 version:         0x03
 msg:             
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0xD8CA374C
 version:         0x03
@@ -34468,7 +34468,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [ MORE ]
 xid:             0xF6E22D14
 version:         0x03
@@ -34480,7 +34480,7 @@ msg:
   dp_desc:         ''
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x9D3ED7F7
 version:         0x03
@@ -45938,14 +45938,14 @@ msg:
   properties:      
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
 msg:             
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -45958,7 +45958,7 @@ msg:
   match:           
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00005B88
 version:         0x03
@@ -45973,7 +45973,7 @@ msg:
       value:           0x00000020
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -45986,7 +45986,7 @@ msg:
   match:           
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -46001,14 +46001,14 @@ msg:
       value:           0x00000020
 ...
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x0012D54E
 version:         0x03
 msg:             
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x03
@@ -46016,7 +46016,7 @@ msg:
   port_no:         0x0003941A
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x03
@@ -46025,7 +46025,7 @@ msg:
   queue_id:        0x000000EA
 ...
 ---
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x03
@@ -46033,21 +46033,21 @@ msg:
   group_id:        0x00000CAB
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x03
 msg:             
 ...
 ---
-type:            REQUEST.GROUP_FEATURES
+type:            GROUP_FEATURES_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x03
 msg:             
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x03
@@ -46057,7 +46057,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x03
@@ -46067,7 +46067,7 @@ msg:
   data:            6566776572676577673334743435793435676877346535687934366835797934
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -46079,14 +46079,14 @@ msg:
   dp_desc:         DP Description
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
 msg:             
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -46104,7 +46104,7 @@ msg:
     instructions:    
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -46137,7 +46137,7 @@ Error: Encode yielded different data at byte offset 73:
 [ByteRange size=128 data=0313008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230030000000000000]
 [ByteRange size=128 data=0313008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230030000000000000]
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -46236,7 +46236,7 @@ Error: Encode yielded different data at byte offset 73:
 [ByteRange size=464 data=031301D000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
 [ByteRange size=464 data=031301D000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -46252,14 +46252,14 @@ Filename: external/openflow-messages/v1_2/rep/rep_19_00008.pass
 Error: Decode failed: Multipart type is not supported for this protocol version
 [ByteList size=400 data=0313019000005BA000030001000000005000000000000000546865205461626C65206E616D65206973205461626C65312E2E2E3A290000000000000000000014000000000003A88E000000FC0000002900000000000000F1000000000000002900000000000005D200000000000030C90000FFFF0000000C00005B7F00007F1E000000000E05681A0000000013564F1F5000000000000000546865205461626C65206E616D65206973205461626C65312E2E2E3A290000000000000000000014000000000003A88E000000FC0000002900000000000000F1000000000000002900000000000005D200000000000030C90000FFFF0000000C00005B7F00007F1E000000000E05681A0000000013564F1F5000000000000000546865205461626C65206E616D65206973205461626C65312E2E2E3A290000000000000000000014000000000003A88E000000FC0000002900000000000000F1000000000000002900000000000005D200000000000030C90000FFFF0000000C00005B7F00007F1E000000000E05681A0000000013564F1F]
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00005BA0
 version:         0x03
 msg:             
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00008707
 version:         0x03
@@ -46311,14 +46311,14 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x03
 msg:             
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x03
@@ -46343,14 +46343,14 @@ msg:
     duration:        0
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x03
 msg:             
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x03
@@ -46363,7 +46363,7 @@ msg:
     bucket_stats:    
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x03
@@ -46382,7 +46382,7 @@ msg:
         byte_count:      0x0000000000130C6C
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00005BA0
 version:         0x03
@@ -46419,24 +46419,14 @@ msg:
         byte_count:      0x0000000000130C6C
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x03
 msg:             
 ...
 ---
-type:            REPLY.GROUP_DESC
-flags:           [ MORE ]
-xid:             0x0000000C
-version:         0x03
-msg:             
-  - type:            SELECT
-    group_id:        0x0000015D
-    buckets:         
-...
----
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x03
@@ -46444,6 +46434,16 @@ msg:
   - type:            SELECT
     group_id:        0x0000015D
     buckets:         
+...
+---
+type:            GROUP_DESC_REPLY
+flags:           [ MORE ]
+xid:             0x0000000C
+version:         0x03
+msg:             
+  - type:            SELECT
+    group_id:        0x0000015D
+    buckets:         
       - weight:          0x0EF5
         watch_port:      0x0004F673
         watch_group:     0x00050F3C
@@ -46458,7 +46458,7 @@ msg:
         actions:         
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x0000007B
 version:         0x03
@@ -46519,7 +46519,7 @@ msg:
     buckets:         
 ...
 ---
-type:            REPLY.GROUP_FEATURES
+type:            GROUP_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x03
@@ -46536,7 +46536,7 @@ msg:
   actions_ff:      [ OUTPUT, SET_VLAN_PCP, SET_DL_SRC, SET_NW_SRC, SET_NW_TOS, SET_TP_DST, COPY_TTL_OUT ]
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x0000303B
 version:         0x03
@@ -46546,7 +46546,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [ MORE ]
 xid:             0x0001E23E
 version:         0x03
@@ -47314,7 +47314,7 @@ msg:
   properties:      
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -47326,14 +47326,14 @@ msg:
   dp_desc:         DP Description
 ...
 ---
-type:            REPLY.PORT_DESC
+type:            PORT_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00000017
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -47343,7 +47343,7 @@ msg:
   data:            6566776572676577673334743435793435676877346535687934366835797934
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -57967,14 +57967,14 @@ msg:
   properties:      
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -57987,7 +57987,7 @@ msg:
   match:           
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00005B88
 version:         0x04
@@ -58002,7 +58002,7 @@ msg:
       value:           0x00000020
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -58015,7 +58015,7 @@ msg:
   match:           
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -58030,14 +58030,14 @@ msg:
       value:           0x00000020
 ...
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x0012D54E
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -58045,7 +58045,7 @@ msg:
   port_no:         0x0003941A
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -58054,7 +58054,7 @@ msg:
   queue_id:        0x000000EA
 ...
 ---
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -58062,21 +58062,21 @@ msg:
   group_id:        0x00000CAB
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.GROUP_FEATURES
+type:            GROUP_FEATURES_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.METER_STATS
+type:            METER_STATS_REQUEST
 flags:           [  ]
 xid:             0x0000202A
 version:         0x04
@@ -58084,7 +58084,7 @@ msg:
   meter_id:        0x00000020
 ...
 ---
-type:            REQUEST.METER_CONFIG
+type:            METER_CONFIG_REQUEST
 flags:           [ MORE ]
 xid:             0x00000C8C
 version:         0x04
@@ -58092,21 +58092,21 @@ msg:
   meter_id:        0x00000020
 ...
 ---
-type:            REQUEST.METER_FEATURES
+type:            METER_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000CA0
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [ MORE ]
 xid:             0x000004D0
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58128,7 +58128,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58150,7 +58150,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58176,7 +58176,7 @@ Error: Encode yielded different data at byte offset 90:
 [ByteRange size=152 data=0412009800007D8D000C00000000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF000800000000000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=152 data=0412009800007D8D000C00000000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF0008000004D2000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58202,7 +58202,7 @@ Error: Encode yielded different data at byte offset 94:
 [ByteRange size=152 data=0412009800007D8D000C00000000000000885B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=152 data=0412009800007D8D000C00000000000000885B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58224,7 +58224,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58251,7 +58251,7 @@ Error: Encode yielded different data at byte offset 102:
 [ByteRange size=160 data=041200A000007D8D000C00000000000000905D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=160 data=041200A000007D8D000C00000000000000905D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58273,7 +58273,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58295,7 +58295,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58317,7 +58317,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58339,7 +58339,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58362,7 +58362,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58384,7 +58384,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58406,7 +58406,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58428,7 +58428,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58450,7 +58450,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58472,7 +58472,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58495,7 +58495,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58517,7 +58517,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58539,7 +58539,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58561,7 +58561,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58584,7 +58584,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58606,7 +58606,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58628,7 +58628,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58650,7 +58650,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58672,7 +58672,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58694,7 +58694,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58716,7 +58716,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58738,7 +58738,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58760,7 +58760,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58782,7 +58782,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58805,7 +58805,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58827,7 +58827,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58849,7 +58849,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58871,7 +58871,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -58894,7 +58894,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [ MORE ]
 xid:             0x00000CA9
 version:         0x04
@@ -58936,14 +58936,14 @@ Error: Encode yielded different data at byte offset 90:
 [ByteRange size=296 data=0412012800000CA9000C00010000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF000800000000000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E00040000000000905D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=296 data=0412012800000CA9000C00010000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF0008000004D2000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E00040000000000905D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REQUEST.PORT_DESC
+type:            PORT_DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00007D7B
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -58953,7 +58953,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -58963,7 +58963,7 @@ msg:
   data:            6566776572676577673334743435793435676877346535687934366835797934
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -58975,14 +58975,14 @@ msg:
   dp_desc:         DP Description
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -59000,7 +59000,7 @@ msg:
     instructions:    
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -59033,7 +59033,7 @@ Error: Encode yielded different data at byte offset 73:
 [ByteRange size=128 data=0413008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230030000000000000]
 [ByteRange size=128 data=0413008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230030000000000000]
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -59132,7 +59132,7 @@ Error: Encode yielded different data at byte offset 73:
 [ByteRange size=464 data=041301D000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
 [ByteRange size=464 data=041301D000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -59142,14 +59142,14 @@ msg:
   flow_count:      0x0E08903A
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00005BA0
 version:         0x04
@@ -59177,14 +59177,14 @@ msg:
     matched_count:   0x0000000013564F1F
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00005BA0
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00008707
 version:         0x04
@@ -59236,14 +59236,14 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x04
@@ -59268,14 +59268,14 @@ msg:
     duration:        235.000001235
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x04
@@ -59288,7 +59288,7 @@ msg:
     bucket_stats:    
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x04
@@ -59307,7 +59307,7 @@ msg:
         byte_count:      0x0000000000130C6C
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00005BA0
 version:         0x04
@@ -59344,24 +59344,14 @@ msg:
         byte_count:      0x0000000000130C6C
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.GROUP_DESC
-flags:           [ MORE ]
-xid:             0x0000000C
-version:         0x04
-msg:             
-  - type:            SELECT
-    group_id:        0x0000015D
-    buckets:         
-...
----
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x04
@@ -59369,6 +59359,16 @@ msg:
   - type:            SELECT
     group_id:        0x0000015D
     buckets:         
+...
+---
+type:            GROUP_DESC_REPLY
+flags:           [ MORE ]
+xid:             0x0000000C
+version:         0x04
+msg:             
+  - type:            SELECT
+    group_id:        0x0000015D
+    buckets:         
       - weight:          0x0EF5
         watch_port:      0x0004F673
         watch_group:     0x00050F3C
@@ -59383,7 +59383,7 @@ msg:
         actions:         
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x0000007B
 version:         0x04
@@ -59444,7 +59444,7 @@ msg:
     buckets:         
 ...
 ---
-type:            REPLY.GROUP_FEATURES
+type:            GROUP_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x04
@@ -59461,7 +59461,7 @@ msg:
   actions_ff:      [ OUTPUT, SET_VLAN_PCP, SET_DL_SRC, SET_NW_SRC, SET_NW_TOS, SET_TP_DST, COPY_TTL_OUT ]
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x0000303B
 version:         0x04
@@ -59471,7 +59471,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [ MORE ]
 xid:             0x0001E23E
 version:         0x04
@@ -59481,14 +59481,14 @@ msg:
   data:            456E746572656420746865206461746120706F7274696F6E
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x000004DB
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x000004D2
 version:         0x04
@@ -59501,7 +59501,7 @@ msg:
     bands:           
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x000004D2
 version:         0x04
@@ -59520,7 +59520,7 @@ msg:
         byte_count:      0x000000000000007C
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x000004D2
 version:         0x04
@@ -59557,14 +59557,14 @@ msg:
         byte_count:      0x000000000000007C
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
@@ -59581,7 +59581,7 @@ msg:
         prec_level:      0x00
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
@@ -59591,7 +59591,7 @@ msg:
     bands:           
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
@@ -59614,7 +59614,7 @@ msg:
     bands:           
 ...
 ---
-type:            REPLY.METER_FEATURES
+type:            METER_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x0000007C
 version:         0x04
@@ -59626,14 +59626,14 @@ msg:
   max_color:       0xE6
 ...
 ---
-type:            REPLY.PORT_DESC
+type:            PORT_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00000017
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.PORT_DESC
+type:            PORT_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00000017
 version:         0x04
@@ -59652,7 +59652,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.PORT_DESC
+type:            PORT_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00000017
 version:         0x04
@@ -59695,14 +59695,14 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x000004D0
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -59724,7 +59724,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -59746,7 +59746,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -59772,7 +59772,7 @@ Error: Encode yielded different data at byte offset 90:
 [ByteRange size=152 data=0413009800007D8D000C00000000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF000800000000000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=152 data=0413009800007D8D000C00000000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF0008000004D2000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -59798,7 +59798,7 @@ Error: Encode yielded different data at byte offset 94:
 [ByteRange size=152 data=0413009800007D8D000C00000000000000885B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=152 data=0413009800007D8D000C00000000000000885B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00000CA9
 version:         0x04
@@ -60627,7 +60627,7 @@ msg:
   properties:      
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -60639,14 +60639,14 @@ msg:
   dp_desc:         DP Description
 ...
 ---
-type:            REPLY.PORT_DESC
+type:            PORT_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00000017
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -60656,7 +60656,7 @@ msg:
   data:            6566776572676577673334743435793435676877346535687934366835797934
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -71274,14 +71274,14 @@ msg:
   properties:      
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -71294,7 +71294,7 @@ msg:
   match:           
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00005B88
 version:         0x04
@@ -71309,7 +71309,7 @@ msg:
       value:           0x00000020
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -71322,7 +71322,7 @@ msg:
   match:           
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -71337,14 +71337,14 @@ msg:
       value:           0x00000020
 ...
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x0012D54E
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -71352,7 +71352,7 @@ msg:
   port_no:         0x0003941A
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -71361,7 +71361,7 @@ msg:
   queue_id:        0x000000EA
 ...
 ---
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -71369,21 +71369,21 @@ msg:
   group_id:        0x00000CAB
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.GROUP_FEATURES
+type:            GROUP_FEATURES_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.METER_STATS
+type:            METER_STATS_REQUEST
 flags:           [  ]
 xid:             0x0000202A
 version:         0x04
@@ -71391,7 +71391,7 @@ msg:
   meter_id:        0x00000020
 ...
 ---
-type:            REQUEST.METER_CONFIG
+type:            METER_CONFIG_REQUEST
 flags:           [ MORE ]
 xid:             0x00000C8C
 version:         0x04
@@ -71399,21 +71399,21 @@ msg:
   meter_id:        0x00000020
 ...
 ---
-type:            REQUEST.METER_FEATURES
+type:            METER_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000CA0
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [ MORE ]
 xid:             0x000004D0
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71435,7 +71435,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71457,7 +71457,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71483,7 +71483,7 @@ Error: Encode yielded different data at byte offset 90:
 [ByteRange size=152 data=0412009800007D8D000C00000000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF000800000000000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=152 data=0412009800007D8D000C00000000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF0008000004D2000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71509,7 +71509,7 @@ Error: Encode yielded different data at byte offset 94:
 [ByteRange size=152 data=0412009800007D8D000C00000000000000885B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=152 data=0412009800007D8D000C00000000000000885B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71531,7 +71531,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71558,7 +71558,7 @@ Error: Encode yielded different data at byte offset 102:
 [ByteRange size=160 data=041200A000007D8D000C00000000000000905D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=160 data=041200A000007D8D000C00000000000000905D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71580,7 +71580,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71602,7 +71602,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71624,7 +71624,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71646,7 +71646,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71669,7 +71669,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71691,7 +71691,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71713,7 +71713,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71735,7 +71735,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71757,7 +71757,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71779,7 +71779,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71802,7 +71802,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71824,7 +71824,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71846,7 +71846,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71868,7 +71868,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71891,7 +71891,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71913,7 +71913,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71935,7 +71935,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71957,7 +71957,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -71979,7 +71979,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -72001,7 +72001,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -72023,7 +72023,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -72045,7 +72045,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -72067,7 +72067,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -72089,7 +72089,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -72112,7 +72112,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -72134,7 +72134,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -72156,7 +72156,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -72178,7 +72178,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -72201,7 +72201,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [ MORE ]
 xid:             0x00000CA9
 version:         0x04
@@ -72243,14 +72243,14 @@ Error: Encode yielded different data at byte offset 90:
 [ByteRange size=296 data=0412012800000CA9000C00010000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF000800000000000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E00040000000000905D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=296 data=0412012800000CA9000C00010000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF0008000004D2000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E00040000000000905D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000001001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REQUEST.PORT_DESC
+type:            PORT_DESC_REQUEST
 flags:           [ MORE ]
 xid:             0x00007D7B
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -72260,7 +72260,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [ MORE ]
 xid:             0x00003037
 version:         0x04
@@ -72270,7 +72270,7 @@ msg:
   data:            6566776572676577673334743435793435676877346535687934366835797934
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -72282,14 +72282,14 @@ msg:
   dp_desc:         DP Description
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -72307,7 +72307,7 @@ msg:
     instructions:    
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -72340,7 +72340,7 @@ Error: Encode yielded different data at byte offset 73:
 [ByteRange size=128 data=0413008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230030000000000000]
 [ByteRange size=128 data=0413008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230030000000000000]
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -72439,7 +72439,7 @@ Error: Encode yielded different data at byte offset 73:
 [ByteRange size=464 data=041301D000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F10001001080001908000500010E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
 [ByteRange size=464 data=041301D000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B000000000025291200040018000000000000001000009823000000000000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200180000000000000000002FAC0B0000000000252912000400180000000000000010000098230000000000000000]
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -72449,14 +72449,14 @@ msg:
   flow_count:      0x0E08903A
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00005BA0
 version:         0x04
@@ -72484,14 +72484,14 @@ msg:
     matched_count:   0x0000000013564F1F
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00005BA0
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00008707
 version:         0x04
@@ -72543,14 +72543,14 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x04
@@ -72575,14 +72575,14 @@ msg:
     duration:        235.000001235
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x04
@@ -72595,7 +72595,7 @@ msg:
     bucket_stats:    
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x0000B26E
 version:         0x04
@@ -72614,7 +72614,7 @@ msg:
         byte_count:      0x0000000000130C6C
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x00005BA0
 version:         0x04
@@ -72651,24 +72651,14 @@ msg:
         byte_count:      0x0000000000130C6C
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.GROUP_DESC
-flags:           [ MORE ]
-xid:             0x0000000C
-version:         0x04
-msg:             
-  - type:            SELECT
-    group_id:        0x0000015D
-    buckets:         
-...
----
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x04
@@ -72676,6 +72666,16 @@ msg:
   - type:            SELECT
     group_id:        0x0000015D
     buckets:         
+...
+---
+type:            GROUP_DESC_REPLY
+flags:           [ MORE ]
+xid:             0x0000000C
+version:         0x04
+msg:             
+  - type:            SELECT
+    group_id:        0x0000015D
+    buckets:         
       - weight:          0x0EF5
         watch_port:      0x0004F673
         watch_group:     0x00050F3C
@@ -72690,7 +72690,7 @@ msg:
         actions:         
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x0000007B
 version:         0x04
@@ -72751,7 +72751,7 @@ msg:
     buckets:         
 ...
 ---
-type:            REPLY.GROUP_FEATURES
+type:            GROUP_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x0000000C
 version:         0x04
@@ -72768,7 +72768,7 @@ msg:
   actions_ff:      [ OUTPUT, SET_VLAN_PCP, SET_DL_SRC, SET_NW_SRC, SET_NW_TOS, SET_TP_DST, COPY_TTL_OUT ]
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x0000303B
 version:         0x04
@@ -72778,7 +72778,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [ MORE ]
 xid:             0x0001E23E
 version:         0x04
@@ -72788,14 +72788,14 @@ msg:
   data:            456E746572656420746865206461746120706F7274696F6E
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x000004DB
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x000004D2
 version:         0x04
@@ -72808,7 +72808,7 @@ msg:
     bands:           
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x000004D2
 version:         0x04
@@ -72827,7 +72827,7 @@ msg:
         byte_count:      0x000000000000007C
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [ MORE ]
 xid:             0x000004D2
 version:         0x04
@@ -72864,14 +72864,14 @@ msg:
         byte_count:      0x000000000000007C
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
@@ -72888,7 +72888,7 @@ msg:
         prec_level:      0x00
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
@@ -72898,7 +72898,7 @@ msg:
     bands:           
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [ MORE ]
 xid:             0x00000529
 version:         0x04
@@ -72921,7 +72921,7 @@ msg:
     bands:           
 ...
 ---
-type:            REPLY.METER_FEATURES
+type:            METER_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x0000007C
 version:         0x04
@@ -72933,14 +72933,14 @@ msg:
   max_color:       0xE6
 ...
 ---
-type:            REPLY.PORT_DESC
+type:            PORT_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00000017
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.PORT_DESC
+type:            PORT_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00000017
 version:         0x04
@@ -72959,7 +72959,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.PORT_DESC
+type:            PORT_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00000017
 version:         0x04
@@ -73002,14 +73002,14 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x000004D0
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -73031,7 +73031,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -73053,7 +73053,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -73079,7 +73079,7 @@ Error: Encode yielded different data at byte offset 90:
 [ByteRange size=152 data=0413009800007D8D000C00000000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF000800000000000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=152 data=0413009800007D8D000C00000000000000885A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000000CFFFF0008000004D2000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -73105,7 +73105,7 @@ Error: Encode yielded different data at byte offset 94:
 [ByteRange size=152 data=0413009800007D8D000C00000000000000885B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000001000040004FFFF0008000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 [ByteRange size=152 data=0413009800007D8D000C00000000000000885B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250000001000040004FFFF0008000004DC0002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00000CA9
 version:         0x04

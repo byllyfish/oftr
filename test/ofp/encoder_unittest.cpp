@@ -800,7 +800,7 @@ TEST(encoder, ofmp_aggregatereply_v1) {
 
 TEST(encoder, ofmp_aggregatereply_v6) {
   const char *input = R"""(
-    type: REPLY.AGGREGATE_STATS
+    type: AGGREGATE_STATS_REPLY
     version: 6
     xid: 0x11111111
     msg:
@@ -1032,7 +1032,7 @@ TEST(encoder, ofmp_portstats_v1) {
 
 TEST(encoder, ofmp_portstats_v5) {
   const char *input = R"""(
-    type: REPLY.PORT_STATS
+    type: PORT_STATS_REPLY
     version: 5
     xid: 0x11111111
     flags: [ 0x2222 ]
@@ -3301,7 +3301,7 @@ TEST(encoder, bundleaddmessagev5) {
 TEST(encoder, ofmp_portdesc_replyv1) {
   const char *input = R"""(
     version: 1
-    type: REPLY.PORT_DESC
+    type: PORT_DESC_REPLY
     xid: 0x11111111
     msg:
       - port_no: 0x1111
@@ -3344,7 +3344,7 @@ TEST(encoder, ofmp_portdesc_replyv1) {
 TEST(encoder, ofmp_portdesc_replyv2) {
   const char *input = R"""(
     version: 2
-    type: REPLY.PORT_DESC
+    type: PORT_DESC_REPLY
     xid: 0x11111111
     msg:
       - port_no: 0x1111
@@ -3388,7 +3388,7 @@ TEST(encoder, ofmp_portdesc_replyv2) {
 TEST(encoder, ofmp_portdesc_replyv4) {
   const char *input = R"""(
     version: 4
-    type: REPLY.PORT_DESC
+    type: PORT_DESC_REPLY
     xid: 0x11111111
     msg:
       - port_no: 0x1111
@@ -3432,7 +3432,7 @@ TEST(encoder, ofmp_portdesc_replyv4) {
 TEST(encoder, ofmp_portdesc_replyv5) {
   const char *input = R"""(
     version: 5
-    type: REPLY.PORT_DESC
+    type: PORT_DESC_REPLY
     xid: 0x11111111
     msg:
       - port_no: 0x1111
@@ -3476,7 +3476,7 @@ TEST(encoder, ofmp_portdesc_replyv5) {
 TEST(encoder, ofmp_portdesc_replyv5_2) {
   const char *input = R"""(
     version: 5
-    type: REPLY.PORT_DESC
+    type: PORT_DESC_REPLY
     xid: 0x11111111
     msg:
       - port_no: 0x1111
@@ -3614,7 +3614,7 @@ TEST(encoder, tablestatusv5) {
 
 TEST(encoder, mptabledescv5) {
   const char *input = R"""(
-    type:            REPLY.TABLE_DESC
+    type:            TABLE_DESC_REPLY
     xid:             0x00000000
     version:         0x05
     msg:            
@@ -3660,7 +3660,7 @@ TEST(encoder, mptabledescv5) {
 
 TEST(encoder, mptabledescv5_request) {
   const char *input = R"""(
-    type:            REQUEST.TABLE_DESC
+    type:            TABLE_DESC_REQUEST
     xid:             0x00000000
     version:         0x05
     msg:
@@ -3675,7 +3675,7 @@ TEST(encoder, mptabledescv5_request) {
 
 TEST(encoder, mpqueuedescrequest_v5) {
   const char *input = R"""(
-    type:            REQUEST.QUEUE_DESC
+    type:            QUEUE_DESC_REQUEST
     xid:             0x01020304
     version:         0x05
     msg:
@@ -3692,7 +3692,7 @@ TEST(encoder, mpqueuedescrequest_v5) {
 
 TEST(encoder, mpqueuedescreply_v5) {
   const char *input = R"""(
-    type:            REPLY.QUEUE_DESC
+    type:            QUEUE_DESC_REPLY
     xid:             0x01020304
     version:         0x05
     msg:
@@ -3719,7 +3719,7 @@ TEST(encoder, mpqueuedescreply_v5) {
 
 TEST(encoder, ofmp_portstats_v4_flags) {
   const char *input = R"""(
-    type: REPLY.PORT_STATS
+    type: PORT_STATS_REPLY
     version: 4
     xid: 0x11111111
     flags: [ 0x2222 ]
@@ -3820,7 +3820,7 @@ TEST(encoder, raw_message) {
 
 TEST(encoder, ofmp_groupstats_v3) {
   const char *input = R"""(
-      type:            REPLY.GROUP_STATS
+      type:            GROUP_STATS_REPLY
       xid:             0x00000000
       version:         0x03
       msg:             
@@ -3845,7 +3845,7 @@ TEST(encoder, ofmp_groupstats_v3) {
 
 TEST(encoder, ofmp_groupstats_v3_2) {
   const char *input = R"""(
-      type:            REPLY.GROUP_STATS
+      type:            GROUP_STATS_REPLY
       xid:             0x00000000
       version:         0x03
       msg:             
@@ -3880,7 +3880,7 @@ TEST(encoder, ofmp_groupstats_v3_2) {
 
 TEST(encoder, ofmp_table_features) {
   const char *input = R"""(
-      type:            REPLY.TABLE_FEATURES
+      type:            TABLE_FEATURES_REPLY
       xid:             0x00000000
       version:         0x04
       msg:             
@@ -4068,7 +4068,7 @@ TEST(encoder, flowmod_icmpv4) {
 
 TEST(encoder, tablefeatures_empty) {
   const char *input = R"""(
-      type:            REQUEST.TABLE_FEATURES
+      type:            TABLE_FEATURES_REQUEST
       version:         4
       )""";
 
@@ -4081,7 +4081,7 @@ TEST(encoder, tablefeatures_empty) {
 
 TEST(encoder, tablefeatures_request) {
   const char *input = R"""(
-      type:            REQUEST.TABLE_FEATURES
+      type:            TABLE_FEATURES_REQUEST
       xid:             0x00000001
       version:         0x04
       msg:             

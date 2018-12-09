@@ -154,12 +154,12 @@ struct ScalarTraits<ofp::MessageType> {
   static void output(const ofp::MessageType &value, void *ctxt,
                      llvm::raw_ostream &out) {
     if (value.type_ == ofp::OFPT_MULTIPART_REQUEST) {
-      out << "REQUEST.";
       ScalarTraits<ofp::OFPMultipartType>::output(value.subtype_, ctxt, out);
+      out << "_REQUEST";
 
     } else if (value.type_ == ofp::OFPT_MULTIPART_REPLY) {
-      out << "REPLY.";
       ScalarTraits<ofp::OFPMultipartType>::output(value.subtype_, ctxt, out);
+      out << "_REPLY";
 
     } else {
       ScalarTraits<ofp::OFPType>::output(value.type_, ctxt, out);

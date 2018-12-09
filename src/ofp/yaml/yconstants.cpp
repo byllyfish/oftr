@@ -376,21 +376,21 @@ static MessageTypeTable InitMessageTypes() {
   for (UInt16 mpType = 0; mpType < ArrayLength(sMultipartTypes); ++mpType) {
     MessageType request{OFPT_MULTIPART_REQUEST,
                         static_cast<OFPMultipartType>(mpType)};
-    std::string name = "REQUEST.";
-    name += sMultipartTypes[mpType];
+    std::string name = sMultipartTypes[mpType];
+    name += "_REQUEST";
     result.insert({name, request});
 
     MessageType reply{OFPT_MULTIPART_REPLY,
                       static_cast<OFPMultipartType>(mpType)};
-    name = "REPLY.";
-    name += sMultipartTypes[mpType];
+    name = sMultipartTypes[mpType];
+    name += "_REPLY";
     result.insert({name, reply});
   }
 
   // Add multipart request/reply for EXPERIMENTER.
-  result.insert({"REQUEST.EXPERIMENTER",
+  result.insert({"EXPERIMENTER_REQUEST",
                  MessageType{OFPT_MULTIPART_REQUEST, OFPMP_EXPERIMENTER}});
-  result.insert({"REPLY.EXPERIMENTER",
+  result.insert({"EXPERIMENTER_REPLY",
                  MessageType{OFPT_MULTIPART_REPLY, OFPMP_EXPERIMENTER}});
 
   // Add raw_message type.
@@ -413,18 +413,18 @@ llvm::StringRef ofp::yaml::ParseMessageType(llvm::StringRef scalar, void *ctxt,
     return "";
   }
 
-  if (scalar.startswith_lower("request.0x")) {
+  if (scalar.endswith_lower("_request") && scalar.startswith("0x")) {
     OFPMultipartType subtype;
-    if (ofp::yaml::ParseUnsignedInteger(scalar.substr(8), &subtype)) {
+    if (ofp::yaml::ParseUnsignedInteger(scalar.drop_back(8), &subtype)) {
       value = MessageType{ofp::OFPT_MULTIPART_REQUEST, subtype};
       return "";
     }
     return "Invalid integer multipart type";
   }
 
-  if (scalar.startswith_lower("reply.0x")) {
+  if (scalar.endswith_lower("_reply") && scalar.startswith("0x")) {
     OFPMultipartType subtype;
-    if (ofp::yaml::ParseUnsignedInteger(scalar.substr(6), &subtype)) {
+    if (ofp::yaml::ParseUnsignedInteger(scalar.drop_back(6), &subtype)) {
       value = MessageType{ofp::OFPT_MULTIPART_REPLY, subtype};
       return "";
     }

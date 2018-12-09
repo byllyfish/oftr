@@ -319,7 +319,7 @@
   }, 
   {
     "msg": {}, 
-    "type": "REQUEST.DESC", 
+    "type": "DESC_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -333,7 +333,7 @@
       "mfr_desc": "................................................................................................................................................................................................................................................................", 
       "serial_num": "................................"
     }, 
-    "type": "REPLY.DESC", 
+    "type": "DESC_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -354,7 +354,7 @@
       ], 
       "cookie_mask": 18446744073709551615
     }, 
-    "type": "REQUEST.FLOW_DESC", 
+    "type": "FLOW_DESC_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -395,7 +395,7 @@
         ]
       }
     ], 
-    "type": "REPLY.FLOW_DESC", 
+    "type": "FLOW_DESC_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -416,7 +416,7 @@
       ], 
       "cookie_mask": 18446744073709551615
     }, 
-    "type": "REQUEST.AGGREGATE_STATS", 
+    "type": "AGGREGATE_STATS_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -428,7 +428,7 @@
       "byte_count": 18446744073709551615, 
       "flow_count": 4294967295
     }, 
-    "type": "REPLY.AGGREGATE_STATS", 
+    "type": "AGGREGATE_STATS_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -436,7 +436,7 @@
   }, 
   {
     "msg": {}, 
-    "type": "REQUEST.TABLE_STATS", 
+    "type": "TABLE_STATS_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -451,7 +451,7 @@
         "active_count": 4294967295
       }
     ], 
-    "type": "REPLY.TABLE_STATS", 
+    "type": "TABLE_STATS_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -461,7 +461,7 @@
     "msg": {
       "port_no": "CONTROLLER"
     }, 
-    "type": "REQUEST.PORT_STATS", 
+    "type": "PORT_STATS_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -487,7 +487,7 @@
         "port_no": "CONTROLLER"
       }
     ], 
-    "type": "REPLY.PORT_STATS", 
+    "type": "PORT_STATS_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -498,7 +498,7 @@
       "port_no": "CONTROLLER", 
       "queue_id": "ALL"
     }, 
-    "type": "REQUEST.QUEUE_STATS", 
+    "type": "QUEUE_STATS_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -515,7 +515,7 @@
         "port_no": "CONTROLLER"
       }
     ], 
-    "type": "REPLY.QUEUE_STATS", 
+    "type": "QUEUE_STATS_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -526,7 +526,7 @@
       "port_no": "CONTROLLER", 
       "queue_id": "ALL"
     }, 
-    "type": "REQUEST.QUEUE_DESC", 
+    "type": "QUEUE_DESC_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -549,7 +549,7 @@
         "queue_id": "ALL"
       }
     ], 
-    "type": "REPLY.QUEUE_DESC", 
+    "type": "QUEUE_DESC_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -559,7 +559,7 @@
     "msg": {
       "group_id": "ANY"
     }, 
-    "type": "REQUEST.GROUP_STATS", 
+    "type": "GROUP_STATS_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -581,7 +581,7 @@
         "ref_count": 4294967295
       }
     ], 
-    "type": "REPLY.GROUP_STATS", 
+    "type": "GROUP_STATS_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -589,7 +589,7 @@
   }, 
   {
     "msg": {}, 
-    "type": "REQUEST.GROUP_DESC", 
+    "type": "GROUP_DESC_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -616,7 +616,7 @@
         "type": "SELECT"
       }
     ], 
-    "type": "REPLY.GROUP_DESC", 
+    "type": "GROUP_DESC_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -624,7 +624,7 @@
   }, 
   {
     "msg": {}, 
-    "type": "REQUEST.GROUP_FEATURES", 
+    "type": "GROUP_FEATURES_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -655,7 +655,7 @@
         "INDIRECT"
       ]
     }, 
-    "type": "REPLY.GROUP_FEATURES", 
+    "type": "GROUP_FEATURES_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -665,7 +665,7 @@
     "msg": {
       "meter_id": "ALL"
     }, 
-    "type": "REQUEST.METER_STATS", 
+    "type": "METER_STATS_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -687,7 +687,7 @@
         "byte_in_count": 18446744073709551615
       }
     ], 
-    "type": "REPLY.METER_STATS", 
+    "type": "METER_STATS_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -697,7 +697,7 @@
     "msg": {
       "meter_id": "ALL"
     }, 
-    "type": "REQUEST.METER_CONFIG", 
+    "type": "METER_CONFIG_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -719,7 +719,7 @@
         "meter_id": "ALL"
       }
     ], 
-    "type": "REPLY.METER_CONFIG", 
+    "type": "METER_CONFIG_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -727,7 +727,7 @@
   }, 
   {
     "msg": {}, 
-    "type": "REQUEST.METER_FEATURES", 
+    "type": "METER_FEATURES_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -745,7 +745,7 @@
       "max_bands": 255, 
       "max_color": 255
     }, 
-    "type": "REPLY.METER_FEATURES", 
+    "type": "METER_FEATURES_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -807,7 +807,7 @@
         ]
       }
     ], 
-    "type": "REQUEST.TABLE_FEATURES", 
+    "type": "TABLE_FEATURES_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -869,7 +869,7 @@
         ]
       }
     ], 
-    "type": "REPLY.TABLE_FEATURES", 
+    "type": "TABLE_FEATURES_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -877,7 +877,7 @@
   }, 
   {
     "msg": {}, 
-    "type": "REQUEST.PORT_DESC", 
+    "type": "PORT_DESC_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -912,7 +912,7 @@
         "port_no": "CONTROLLER"
       }
     ], 
-    "type": "REPLY.PORT_DESC", 
+    "type": "PORT_DESC_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -920,7 +920,7 @@
   }, 
   {
     "msg": {}, 
-    "type": "REQUEST.TABLE_DESC", 
+    "type": "TABLE_DESC_REQUEST", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -951,7 +951,7 @@
         ]
       }
     ], 
-    "type": "REPLY.TABLE_DESC", 
+    "type": "TABLE_DESC_REPLY", 
     "version": 4, 
     "flags": [
       "MORE"
@@ -975,7 +975,7 @@
       ], 
       "out_port": "ALL"
     }, 
-    "type": "REQUEST.FLOW_MONITOR", 
+    "type": "FLOW_MONITOR_REQUEST", 
     "version": 5, 
     "flags": [
       "MORE"
@@ -1016,7 +1016,7 @@
         "event": "ABBREV"
       }
     ], 
-    "type": "REPLY.FLOW_MONITOR", 
+    "type": "FLOW_MONITOR_REPLY", 
     "version": 5, 
     "flags": [
       "MORE"

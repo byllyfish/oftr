@@ -51,7 +51,7 @@ TEST(yconstants, test_multipart_unknown_request) {
   llvm::raw_string_ostream out{buf};
   llvm::yaml::ScalarTraits<MessageType>::output(value, nullptr, out);
 
-  EXPECT_EQ(out.str(), "REQUEST.0x0ABC");
+  EXPECT_EQ(out.str(), "0x0ABC_REQUEST");
 }
 
 TEST(yconstants, test_multipart_unknown_reply) {
@@ -61,5 +61,5 @@ TEST(yconstants, test_multipart_unknown_reply) {
   llvm::raw_string_ostream out{buf};
   llvm::yaml::ScalarTraits<MessageType>::output(value, nullptr, out);
 
-  EXPECT_EQ(out.str(), "REPLY.0x0DEF");
+  EXPECT_EQ(out.str(), "0x0DEF_REPLY");
 }

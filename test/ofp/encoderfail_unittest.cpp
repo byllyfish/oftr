@@ -57,7 +57,7 @@ TEST(encoderfail, unknownKey) {
 
 TEST(encoderfail, unknownMultipartRequest) {
   const char *input = R"""(
-    type: REQUEST.DES
+    type: DES_REQUEST
     version: 1
     msg:
       data: '1234'
@@ -65,9 +65,9 @@ TEST(encoderfail, unknownMultipartRequest) {
 
   Encoder encoder{input};
   EXPECT_EQ(
-      "YAML:2:11: error: unknown value \"REQUEST.DES\" Did you mean "
-      "\"REQUEST.DESC\"?\n    "
-      "type: REQUEST.DES\n          ^~~~~~~~~~~\n",
+      "YAML:2:11: error: unknown value \"DES_REQUEST\" Did you mean "
+      "\"DESC_REQUEST\"?\n    "
+      "type: DES_REQUEST\n          ^~~~~~~~~~~\n",
       encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
@@ -84,7 +84,7 @@ TEST(encoderfail, unknownMultipartRequest2) {
   Encoder encoder{input};
   EXPECT_EQ(
       "YAML:2:11: error: unknown value \"REQUEST_DESC\" Did you mean "
-      "\"REQUEST.DESC\"?\n    type: REQUEST_DESC\n          ^~~~~~~~~~~~\n",
+      "\"REQUESTFORWARD\"?\n    type: REQUEST_DESC\n          ^~~~~~~~~~~~\n",
       encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
@@ -92,7 +92,7 @@ TEST(encoderfail, unknownMultipartRequest2) {
 
 TEST(encoderfail, unknownMultipartReply) {
   const char *input = R"""(
-    type: REPLY.DES
+    type: DES_REPLY
     version: 1
     msg:
       data: '1234'
@@ -100,9 +100,9 @@ TEST(encoderfail, unknownMultipartReply) {
 
   Encoder encoder{input};
   EXPECT_EQ(
-      "YAML:2:11: error: unknown value \"REPLY.DES\" Did you mean "
-      "\"REPLY.DESC\"?\n    "
-      "type: REPLY.DES\n          ^~~~~~~~~\n",
+      "YAML:2:11: error: unknown value \"DES_REPLY\" Did you mean "
+      "\"DESC_REPLY\"?\n    "
+      "type: DES_REPLY\n          ^~~~~~~~~\n",
       encoder.error());
   EXPECT_EQ(0, encoder.size());
   EXPECT_HEX("", encoder.data(), encoder.size());
@@ -146,7 +146,7 @@ TEST(encoderfail, unknownTypeRequestForward) {
 
 TEST(encoderfail, unknownFlags) {
   const char *input = R"""(
-    type: REQUEST.DESC
+    type: DESC_REQUEST
     version: 4
     flags: [ MOR ]
     )""";

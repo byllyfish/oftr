@@ -1,5 +1,5 @@
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00002719
 version:         0x04
@@ -3691,7 +3691,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00002719
 version:         0x04
