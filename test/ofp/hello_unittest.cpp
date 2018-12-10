@@ -13,8 +13,7 @@ TEST(hello, HelloBuilder1) {
   msg.send(&channel);
 
   EXPECT_EQ(0x08, channel.size());
-  EXPECT_HEX("0400-0008-00000001", channel.data(),
-             channel.size());
+  EXPECT_HEX("0400-0008-00000001", channel.data(), channel.size());
 }
 
 TEST(hello, HelloBuilder2) {

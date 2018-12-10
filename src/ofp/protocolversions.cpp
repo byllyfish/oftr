@@ -53,7 +53,7 @@ UInt8 ProtocolVersions::negotiateVersion(UInt8 msgVersion,
   return 0;
 }
 
-/// Return true if we should include the versions bitmap in a Hello 
+/// Return true if we should include the versions bitmap in a Hello
 /// message.
 bool ProtocolVersions::includeInHelloMsg(UInt8 version) const {
   // Hello element was only added in version 1.3.
@@ -66,7 +66,8 @@ bool ProtocolVersions::includeInHelloMsg(UInt8 version) const {
     return false;
   }
 
-  // If bitmap contains *all* versions <= `version`, don't include hello versions.
+  // If bitmap contains *all* versions <= `version`, don't include hello
+  // versions.
   UInt32 allVersions = (1 << (version + 1)) - 2;
   if (bitmap_ == allVersions) {
     return false;

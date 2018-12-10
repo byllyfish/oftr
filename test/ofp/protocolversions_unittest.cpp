@@ -135,14 +135,14 @@ TEST(protocolversions, toString) {
 }
 
 TEST(protocolversions, includeInHelloMsg) {
-  ProtocolVersions v1 = { 4 };
+  ProtocolVersions v1 = {4};
   EXPECT_FALSE(v1.includeInHelloMsg(4));
 
-  ProtocolVersions v2 = { 1, 2, 3, 4 };
+  ProtocolVersions v2 = {1, 2, 3, 4};
   EXPECT_FALSE(v2.includeInHelloMsg(4));
   EXPECT_TRUE(v2.includeInHelloMsg(5));
 
-  ProtocolVersions v3 = { 1, 3, 4 };
+  ProtocolVersions v3 = {1, 3, 4};
   EXPECT_TRUE(v3.includeInHelloMsg(4));
   EXPECT_FALSE(v3.includeInHelloMsg(3));
 }
