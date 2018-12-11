@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.54 (10 December 2018)
+
+- Change schema for multipart message types to append _REQUEST/_REPLY to multipart type. This replaces the REQUEST./REPLY. prefixes.
+- Decode of Hello OpenFlow message only includes 'versions' element if it is present.
+- Encode of Hello OpenFlow message only includes 'versions' element when necessary.
+- DatapathID can be a decimal integer.
+
 == Version 0.53 (1 October 2018)
 
 - Change schema for Port information to simplify/flatten "ethernet" section. This change affects FeaturesReply, Reply.PortDesc, and PortStatus messages.
