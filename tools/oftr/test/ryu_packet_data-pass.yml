@@ -135,7 +135,7 @@ msg:
       properties:      
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -185,10 +185,9 @@ type:            HELLO
 xid:             0x00000000
 version:         0x03
 msg:             
-  versions:        [  ]
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -201,7 +200,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -403,14 +402,14 @@ msg:
   properties:      
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
 msg:             
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -423,7 +422,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -433,14 +432,14 @@ msg:
   flow_count:      0x00000006
 ...
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
 msg:             
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -473,7 +472,7 @@ msg:
       table_id:        0x01
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -510,14 +509,14 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.GROUP_FEATURES
+type:            GROUP_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
 msg:             
 ...
 ---
-type:            REPLY.GROUP_FEATURES
+type:            GROUP_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -534,14 +533,14 @@ msg:
   actions_ff:      [ OUTPUT, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, SET_QUEUE, GROUP, SET_NW_TTL, DEC_NW_TTL, SET_FIELD ]
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
 msg:             
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -583,7 +582,7 @@ msg:
       properties:      
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -592,7 +591,7 @@ msg:
   queue_id:        ALL
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -953,7 +952,7 @@ msg:
   miss_send_len:   0x0080
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1006,7 +1005,7 @@ msg:
   versions:        [ 1, 2, 3, 9, 10, 30 ]
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1019,7 +1018,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1286,14 +1285,14 @@ msg:
   properties:      
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1306,7 +1305,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1316,14 +1315,14 @@ msg:
   flow_count:      0x00000006
 ...
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1344,7 +1343,7 @@ msg:
     matched_count:   0x0000000000000004
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1377,7 +1376,7 @@ msg:
       table_id:        0x01
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1414,14 +1413,14 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.GROUP_FEATURES
+type:            GROUP_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.GROUP_FEATURES
+type:            GROUP_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1438,14 +1437,14 @@ msg:
   actions_ff:      [ OUTPUT, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, SET_QUEUE, GROUP, SET_NW_TTL, DEC_NW_TTL, SET_FIELD ]
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1487,7 +1486,7 @@ msg:
       properties:      
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1496,7 +1495,7 @@ msg:
   queue_id:        ALL
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1698,7 +1697,7 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            REQUEST.METER_CONFIG
+type:            METER_CONFIG_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1706,7 +1705,7 @@ msg:
   meter_id:        ALL
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1719,7 +1718,7 @@ msg:
         burst_size:      0x0000000A
 ...
 ---
-type:            REQUEST.METER_STATS
+type:            METER_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1733,7 +1732,7 @@ version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1748,14 +1747,14 @@ msg:
         byte_count:      0x0000000000000000
 ...
 ---
-type:            REQUEST.METER_FEATURES
+type:            METER_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.METER_FEATURES
+type:            METER_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1767,14 +1766,14 @@ msg:
   max_color:       0x00
 ...
 ---
-type:            REQUEST.PORT_DESC
+type:            PORT_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
 msg:             
 ...
 ---
-type:            REPLY.PORT_DESC
+type:            PORT_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1805,7 +1804,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [ MORE ]
 xid:             0x00000000
 version:         0x04
@@ -2632,7 +2631,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00000000
 version:         0x04
@@ -3459,7 +3458,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3467,7 +3466,7 @@ msg:
   group_id:        ALL
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3690,7 +3689,7 @@ msg:
   instructions:    
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3700,7 +3699,7 @@ msg:
   data:            686F6765686F6765
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3710,7 +3709,7 @@ msg:
   data:            74657374646174613939393939393939
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3742,7 +3741,7 @@ msg:
   miss_send_len:   0x0080
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -3795,7 +3794,7 @@ msg:
   versions:        [ 1, 2, 3, 9, 10, 30 ]
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -3808,7 +3807,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4056,14 +4055,14 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4076,7 +4075,7 @@ msg:
   match:           
 ...
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4086,14 +4085,14 @@ msg:
   flow_count:      0x00000006
 ...
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4126,14 +4125,14 @@ msg:
       table_id:        0x01
 ...
 ---
-type:            REQUEST.GROUP_FEATURES
+type:            GROUP_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.GROUP_FEATURES
+type:            GROUP_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4150,14 +4149,14 @@ msg:
   actions_ff:      [ OUTPUT, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, SET_QUEUE, GROUP, SET_NW_TTL, DEC_NW_TTL, SET_FIELD ]
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4174,7 +4173,7 @@ msg:
             max_len:         NO_BUFFER
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4183,7 +4182,7 @@ msg:
   queue_id:        ALL
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4352,7 +4351,7 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            REQUEST.METER_CONFIG
+type:            METER_CONFIG_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4360,7 +4359,7 @@ msg:
   meter_id:        ALL
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4373,7 +4372,7 @@ msg:
         burst_size:      0x0000000A
 ...
 ---
-type:            REQUEST.METER_STATS
+type:            METER_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4381,7 +4380,7 @@ msg:
   meter_id:        ALL
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4396,7 +4395,7 @@ msg:
         byte_count:      0x0000000000000000
 ...
 ---
-type:            REQUEST.METER_FEATURES
+type:            METER_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4409,7 +4408,7 @@ version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.METER_FEATURES
+type:            METER_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4421,14 +4420,14 @@ msg:
   max_color:       0x00
 ...
 ---
-type:            REQUEST.PORT_DESC
+type:            PORT_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
 msg:             
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [ MORE ]
 xid:             0x00000000
 version:         0x05
@@ -5255,7 +5254,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00000000
 version:         0x05
@@ -6082,7 +6081,7 @@ msg:
     properties:      
 ...
 ---
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -6090,7 +6089,7 @@ msg:
   group_id:        ALL
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -6301,7 +6300,7 @@ msg:
   instructions:    
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -6323,7 +6322,7 @@ msg:
   ports:           
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05

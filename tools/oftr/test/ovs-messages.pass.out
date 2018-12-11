@@ -5,6 +5,10 @@ version:         0x05
 msg:             
   versions:        [ 5 ]
 ...
+Filename: tools/oftr/test/ovs-messages.pass
+Error: Encode yielded different size data: 8 vs. 16
+[ByteRange size=8 data=050000080000009F]
+[ByteRange size=16 data=050000100000009F0001000800000020]
 ---
 type:            FEATURES_REPLY
 xid:             0x00000001
@@ -18,7 +22,7 @@ msg:
   ports:           
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0x00001F9F
 version:         0x05
@@ -30,7 +34,7 @@ msg:
   dp_desc:         None
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0x00001FA0
 version:         0x05
@@ -1815,7 +1819,7 @@ msg:
     matched_count:   0x0000000000000000
 ...
 ---
-type:            REPLY.PORT_DESC
+type:            PORT_DESC_REPLY
 flags:           [  ]
 xid:             0x00001FA1
 version:         0x05
@@ -1858,14 +1862,14 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0x00001FA2
 version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.GROUP_FEATURES
+type:            GROUP_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00001FA3
 version:         0x05
@@ -1882,7 +1886,7 @@ msg:
   actions_ff:      [ OUTPUT, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, SET_QUEUE, GROUP, SET_NW_TTL, DEC_NW_TTL, SET_FIELD ]
 ...
 ---
-type:            REPLY.METER_FEATURES
+type:            METER_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00001FA4
 version:         0x05
@@ -1894,14 +1898,14 @@ msg:
   max_color:       0x00
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x00001FA5
 version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [  ]
 xid:             0x00001FA6
 version:         0x05
@@ -1911,7 +1915,7 @@ msg:
   flow_count:      0x00000000
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x00001FA7
 version:         0x05
@@ -1963,35 +1967,35 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [  ]
 xid:             0x00001FA8
 version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [  ]
 xid:             0x00001FA9
 version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [  ]
 xid:             0x00001FAA
 version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [  ]
 xid:             0x00001FAB
 version:         0x05
 msg:             
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00001FAC
 version:         0x05
@@ -4575,7 +4579,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00001FAC
 version:         0x05
@@ -7174,7 +7178,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00001FAC
 version:         0x05
@@ -9782,7 +9786,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00001FAC
 version:         0x05
@@ -12386,7 +12390,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00001FAC
 version:         0x05
@@ -14965,7 +14969,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00001FAC
 version:         0x05
@@ -17508,7 +17512,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00001FAC
 version:         0x05
@@ -20006,7 +20010,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00001FAC
 version:         0x05

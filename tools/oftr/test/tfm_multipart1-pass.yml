@@ -1,5 +1,5 @@
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x0000271B
 version:         0x04

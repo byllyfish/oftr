@@ -146,7 +146,7 @@ Message/Hello:
   _file: !optout String
   type: HELLO
   msg:
-    versions: !opt [UInt8]
+    versions: !optout [UInt8]
   
 Message/Error: 
   version: !opt UInt8

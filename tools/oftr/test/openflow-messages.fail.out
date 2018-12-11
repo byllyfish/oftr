@@ -1402,7 +1402,7 @@ Error: Decode failed: Message type is not supported
 Filename: external/openflow-messages/v1_0/rep/rep_17_00008.fail:
 Error: Only 59 bytes read of message body. Expected to read 68 bytes.
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x1171F2A0
 version:         0x01
@@ -1410,7 +1410,7 @@ _file:           external/openflow-messages/v1_0/rep/rep_17_00009.fail
 ...
 Filename: external/openflow-messages/v1_0/rep/rep_17_00009.fail
 Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 ^
 
 Filename: external/openflow-messages/v1_0/rep/rep_17_00009.fail
@@ -15425,7 +15425,7 @@ Error: Only 5 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_1/rep/rep_18_00008.fail:
 Error: Only 3 bytes read of message body. Expected to read 8 bytes.
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [  ]
 xid:             0xD14F40BC
 version:         0x02
@@ -15433,7 +15433,7 @@ _file:           external/openflow-messages/v1_1/rep/rep_18_00009.fail
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_18_00009.fail
 Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 ^
 
 Filename: external/openflow-messages/v1_1/rep/rep_18_00009.fail:
@@ -15451,7 +15451,7 @@ Error: Only 7 bytes read of message header. Expected to read 8 bytes.
 Filename: external/openflow-messages/v1_1/rep/rep_18_00012.fail:
 Error: Only 3 bytes read of message body. Expected to read 16 bytes.
 ---
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 flags:           [  ]
 xid:             0x7627E157
 version:         0x02
@@ -15459,7 +15459,7 @@ _file:           external/openflow-messages/v1_1/rep/rep_18_00013.fail
 ...
 Filename: external/openflow-messages/v1_1/rep/rep_18_00013.fail
 Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 ^
 
 Filename: external/openflow-messages/v1_1/rep/rep_18_00013.fail:
@@ -15481,7 +15481,7 @@ Error: Only 0 bytes read of message body. Expected to read 44813 bytes.
 Filename: external/openflow-messages/v1_1/rep/rep_18_00018.fail:
 Error: Only 2 bytes read of message body. Expected to read 16 bytes.
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0xD8CA374C
 version:         0x02
@@ -15523,7 +15523,7 @@ Filename: external/openflow-messages/v1_1/rep/rep_19_00007.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=168 data=021300A89D3ED7F70001000000000000009801000000003C0000005A00010001000A000000000000585D7FD406F5FF050000000000000064000000000000006500000058CE309900000003FF9578F0D66562C4100BEE216DB08FA0F89250DA2EF5C15DFD518069000080317209B73E6570EC0D9F7EA68C65AEA3D98F8D621279B3B77F4D59000000129DBE487F162020000000000000000000040010000000000012001000000000]
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x9D3ED7F7
 version:         0x02
@@ -16310,12 +16310,7 @@ xid:             0xD18E900A
 version:         0x05
 _file:           external/openflow-messages/v1_2/rep/rep_0_00001.fail
 msg:             
-  versions:        [  ]
 ...
-Filename: external/openflow-messages/v1_2/rep/rep_0_00001.fail
-Error: Encode yielded different size data: 16 vs. 8
-[ByteRange size=16 data=05000010D18E900A0001000800000020]
-[ByteRange size=8 data=05000008D18E900A]
 Filename: external/openflow-messages/v1_2/rep/rep_0_00002.fail
 Error: Decode failed: Message type is not supported
 [ByteList size=8 data=03250008D18E900A]
@@ -17630,7 +17625,7 @@ Error: Only 64 bytes read of message body. Expected to read 65 bytes.
 Filename: external/openflow-messages/v1_2/rep/rep_19_00006.fail:
 Error: Only 63 bytes read of message body. Expected to read 64 bytes.
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -17673,7 +17668,7 @@ Filename: external/openflow-messages/v1_2/rep/rep_19_00015.fail
 Error: Decode failed: Range size has improper alignment
 [ByteList size=128 data=0313008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200160000000000000000002FAC0B0000000000252912000400160000000000000010000098230000000000000000]
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x03
@@ -18623,12 +18618,7 @@ xid:             0xD18E900A
 version:         0x05
 _file:           external/openflow-messages/v1_3/rep/rep_0_00001.fail
 msg:             
-  versions:        [  ]
 ...
-Filename: external/openflow-messages/v1_3/rep/rep_0_00001.fail
-Error: Encode yielded different size data: 16 vs. 8
-[ByteRange size=16 data=05000010D18E900A0001000800000020]
-[ByteRange size=8 data=05000008D18E900A]
 Filename: external/openflow-messages/v1_3/rep/rep_0_00002.fail
 Error: Decode failed: Message type is not supported
 [ByteList size=8 data=04250008D18E900A]
@@ -19829,7 +19819,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_000123.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -19857,7 +19847,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_000126.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000506E00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000880002A02]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -19875,7 +19865,7 @@ Error: Decode failed: Range element size overruns end
 Filename: external/openflow-messages/v1_3/rep/rep_18_00013.fail:
 Error: Only 16 bytes read of message body. Expected to read 18 bytes.
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -19929,7 +19919,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_000140.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000597200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000A001480002A02FFFF00000000092680002B0400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -19964,7 +19954,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_000145.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000497300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000C000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20018,7 +20008,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_000156.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000597600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000D001480002A02FFFF00000000092680002B0400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20056,7 +20046,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_000161.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000497700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000E000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20110,7 +20100,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_000172.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000597A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000F001480002A02FFFF00000000092680002B0400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20188,7 +20178,7 @@ Error: Only 15 bytes read of message body. Expected to read 16 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_18_00031.fail:
 Error: Only 16 bytes read of message body. Expected to read 17 bytes.
 ---
-type:            REQUEST.METER_CONFIG
+type:            METER_CONFIG_REQUEST
 flags:           [ MORE ]
 xid:             0x00000C8C
 version:         0x04
@@ -20196,7 +20186,7 @@ _file:           external/openflow-messages/v1_3/rep/rep_18_00032.fail
 ...
 Filename: external/openflow-messages/v1_3/rep/rep_18_00032.fail
 Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REQUEST.METER_CONFIG
+type:            METER_CONFIG_REQUEST
 ^
 
 Filename: external/openflow-messages/v1_3/rep/rep_18_00032.fail:
@@ -20265,7 +20255,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00053.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=96 data=0412006000007D8D000C00000000000000515B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20305,7 +20295,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00058.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000495C00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250001000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20333,7 +20323,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00061.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=96 data=0412006000007D8D000C00000000000000585D00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250001001000040004FFFF0008000004DC]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20373,7 +20363,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00066.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000505E00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250002000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20389,7 +20379,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00069.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000505F00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000200050E000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20417,7 +20407,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00077.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250003000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20445,7 +20435,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00080.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000506200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000300072220BE00]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20481,7 +20471,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00085.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250004000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20509,7 +20499,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00088.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496400000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040008000C0004]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20545,7 +20535,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00094.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000596600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040014000C0004FFFF0008000000000019000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20580,7 +20570,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00099.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250005000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20624,7 +20614,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00107.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496900000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250006000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20652,7 +20642,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00110.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000596A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500060014000C0004FFFF0008000000000019000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20687,7 +20677,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00115.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250007000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20715,7 +20705,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00118.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000596C00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500070014000C0004FFFF0008000000000019000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20742,7 +20732,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_18_00182.fail
 Error: Decode failed: Multipart type is not supported for this protocol version
 [ByteList size=56 data=0412003800003037000E00010000000000000000000000006566776572676577673334743435793435676877346535687934366835797934]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20771,7 +20761,7 @@ Error: Encode yielded different size data: 152 vs. 144
 [ByteRange size=152 data=0412009800007D8D000C00000000000000886D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E0004000000000009000400000000]
 [ByteRange size=144 data=0412009000007D8D000C00000000000000806D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -20812,7 +20802,7 @@ Error: Only 64 bytes read of message body. Expected to read 72 bytes.
 Filename: external/openflow-messages/v1_3/rep/rep_19_00006.fail:
 Error: Only 63 bytes read of message body. Expected to read 64 bytes.
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -20855,7 +20845,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_19_00015.fail
 Error: Decode failed: Range size has improper alignment
 [ByteList size=128 data=0413008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200160000000000000000002FAC0B0000000000252912000400160000000000000010000098230000000000000000]
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -21119,7 +21109,7 @@ Filename: external/openflow-messages/v1_3/rep/rep_19_00115.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=96 data=0413006000007D8D000C00000000000000515B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC]
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -22052,12 +22042,7 @@ xid:             0xD18E900A
 version:         0x05
 _file:           external/openflow-messages/v1_3_1/rep/rep_0_00001.fail
 msg:             
-  versions:        [  ]
 ...
-Filename: external/openflow-messages/v1_3_1/rep/rep_0_00001.fail
-Error: Encode yielded different size data: 16 vs. 8
-[ByteRange size=16 data=05000010D18E900A0001000800000020]
-[ByteRange size=8 data=05000008D18E900A]
 Filename: external/openflow-messages/v1_3_1/rep/rep_0_00002.fail
 Error: Decode failed: Message type is not supported
 [ByteList size=8 data=04250008D18E900A]
@@ -23258,7 +23243,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_000123.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23286,7 +23271,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_000126.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000506E00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250008000880002A02]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23304,7 +23289,7 @@ Error: Decode failed: Range element size overruns end
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00013.fail:
 Error: Only 16 bytes read of message body. Expected to read 18 bytes.
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23358,7 +23343,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_000140.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000597200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000A001480002A02FFFF00000000092680002B0400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23393,7 +23378,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_000145.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000497300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000C000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23447,7 +23432,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_000156.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000597600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000D001480002A02FFFF00000000092680002B0400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23485,7 +23470,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_000161.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000497700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000E000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23539,7 +23524,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_000172.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000597A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000F001480002A02FFFF00000000092680002B0400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23617,7 +23602,7 @@ Error: Only 15 bytes read of message body. Expected to read 16 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00031.fail:
 Error: Only 16 bytes read of message body. Expected to read 17 bytes.
 ---
-type:            REQUEST.METER_CONFIG
+type:            METER_CONFIG_REQUEST
 flags:           [ MORE ]
 xid:             0x00000C8C
 version:         0x04
@@ -23625,7 +23610,7 @@ _file:           external/openflow-messages/v1_3_1/rep/rep_18_00032.fail
 ...
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00032.fail
 Error: Decode succeeded but encode failed: YAML:2:1: error: missing required key 'msg'
-type:            REQUEST.METER_CONFIG
+type:            METER_CONFIG_REQUEST
 ^
 
 Filename: external/openflow-messages/v1_3_1/rep/rep_18_00032.fail:
@@ -23694,7 +23679,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00053.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=96 data=0412006000007D8D000C00000000000000515B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23734,7 +23719,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00058.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000495C00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250001000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23762,7 +23747,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00061.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=96 data=0412006000007D8D000C00000000000000585D00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250001001000040004FFFF0008000004DC]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23802,7 +23787,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00066.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000505E00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250002000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23818,7 +23803,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00069.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000505F00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000200050E000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23846,7 +23831,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00077.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496100000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250003000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23874,7 +23859,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00080.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000506200000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC0000001400003025000300072220BE00]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23910,7 +23895,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00085.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496300000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250004000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23938,7 +23923,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00088.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496400000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040008000C0004]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -23974,7 +23959,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00094.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000596600000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500040014000C0004FFFF0008000000000019000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -24009,7 +23994,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00099.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496700000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250005000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -24053,7 +24038,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00107.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496900000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250006000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -24081,7 +24066,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00110.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000596A00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500060014000C0004FFFF0008000000000019000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -24116,7 +24101,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00115.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=88 data=0412005800007D8D000C00000000000000496B00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC00000014000030250007000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -24144,7 +24129,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00118.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=104 data=0412006800007D8D000C00000000000000596C00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500070014000C0004FFFF0008000000000019000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -24171,7 +24156,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_18_00182.fail
 Error: Decode failed: Multipart type is not supported for this protocol version
 [ByteList size=56 data=0412003800003037000E00010000000000000000000000006566776572676577673334743435793435676877346535687934366835797934]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -24200,7 +24185,7 @@ Error: Encode yielded different size data: 152 vs. 144
 [ByteRange size=152 data=0412009800007D8D000C00000000000000886D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E0004000000000009000400000000]
 [ByteRange size=144 data=0412009000007D8D000C00000000000000806D00000000005461626C65203100000000000000000000000000000000000000000000000000000000000012D9E1000000000023E4CC000000140000302500000004000000000002000400000000000400040000000000060004000000000008000400000000000A000400000000000C000400000000000E000400000000]
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04
@@ -24241,7 +24226,7 @@ Error: Only 64 bytes read of message body. Expected to read 72 bytes.
 Filename: external/openflow-messages/v1_3_1/rep/rep_19_00006.fail:
 Error: Only 63 bytes read of message body. Expected to read 64 bytes.
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -24284,7 +24269,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_19_00015.fail
 Error: Decode failed: Range size has improper alignment
 [ByteList size=128 data=0413008000003039000100010000000000707B0000001CB3000037D900080384232800000000000000000000000E664C000000000000965A000000000003A8F1000100108000190800BDC0090E071305000200160000000000000000002FAC0B0000000000252912000400160000000000000010000098230000000000000000]
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [ MORE ]
 xid:             0x00003039
 version:         0x04
@@ -24548,7 +24533,7 @@ Filename: external/openflow-messages/v1_3_1/rep/rep_19_00115.fail
 Error: Decode failed: Range element size overruns end
 [ByteList size=96 data=0413006000007D8D000C00000000000000515B00000000005461626C652031000000000000000000000000000000000000000000000000000000000000BC82BB000000000023E4CC00000014000030250000001000040004FFFF0008000004DC]
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00007D8D
 version:         0x04

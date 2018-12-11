@@ -113,7 +113,7 @@ bool Prerequisites::checkAll(const OXMRange &oxm, FailureReason *reason) {
     // treated as an illegal combination.
 
     if (type.isIllegal()) {
-      log_info("Illegal oxm type ", log::hex(type));
+      log_info("Illegal oxm type ", type);
       if (type == kValuePrereqSignal || type == kMaskedPrereqSignal) {
         *reason = kUnresolvedAmbiguity;
       } else if (type == kPoisonPrereqSignal) {
@@ -131,7 +131,7 @@ bool Prerequisites::checkAll(const OXMRange &oxm, FailureReason *reason) {
     auto typeInfo = type.lookupInfo();
     if (typeInfo == nullptr) {
       // Unrecognized oxm type. No way to check prerequisites. Skip it.
-      log_info("Unknown oxm type ", log::hex(type));
+      log_info("Unknown oxm type ", type);
       continue;
     }
 
@@ -141,7 +141,7 @@ bool Prerequisites::checkAll(const OXMRange &oxm, FailureReason *reason) {
     if (typeInfo->prerequisites != nullptr) {
       Prerequisites preqs{typeInfo->prerequisites};
       if (!preqs.check(oxm.begin(), item.position())) {
-        log_info("Prerequisite check failed for type ", log::hex(type));
+        log_info("Prerequisite check failed for type ", type);
         *reason = kMissingPrerequisite;
         goto FAILURE;
       }

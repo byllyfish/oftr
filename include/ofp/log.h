@@ -21,11 +21,6 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os,
   return os << "{msg: " << e.message() << ", err: " << e.value() << '}';
 }
 
-// Print out UInt8 as an integer, not the char value.
-// inline llvm::raw_ostream &operator<<(llvm::raw_ostream &os, UInt8 n) {
-//  return os << static_cast<int>(n);
-//}
-
 template <class Type>
 void write_(llvm::raw_ostream &os, const Type &value1) {
   os << value1;
@@ -119,11 +114,6 @@ inline Ptr fatal_if_null(Ptr value, const Args &... args) {
 template <class... Args>
 inline bool fatal_if_false(bool value, const Args &... args) {
   return !value ? fatal("fatal_if_false", args...), value : value;
-}
-
-template <class Type>
-std::string hex(Type n) {
-  return RawDataToHex(&n, sizeof(n));
 }
 
 }  // namespace log

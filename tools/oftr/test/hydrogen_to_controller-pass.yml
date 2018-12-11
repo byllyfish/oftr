@@ -3,7 +3,6 @@ type:            HELLO
 xid:             0x00000003
 version:         0x01
 msg:             
-  versions:        [  ]
 ...
 ---
 type:            FEATURES_REPLY
@@ -569,7 +568,7 @@ version:         0x01
 msg:             
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x3609080B
 version:         0x01
@@ -579,7 +578,7 @@ msg:
   data:            00000000005800000000000011A49A00000100000000000E00010001000000000000000000000000000000000000000000000000000006020800000010040A000001000000050010000000000001000000000000000000080001FFFF0058000000000000111B45C0000100000000000E00010001000000000000000000000000000000000000000000000000000006020800000010040A000002000000050010000000000002000000000000000000080002FFFF
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0x3609080C
 version:         0x01
@@ -591,7 +590,7 @@ msg:
   dp_desc:         None
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x3609080D
 version:         0x01
@@ -643,7 +642,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0x3609080E
 version:         0x01
@@ -2695,7 +2694,7 @@ msg:
       value:           0x0042
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x36090819
 version:         0x01
@@ -2969,7 +2968,7 @@ msg:
       value:           0x0042
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x36090821
 version:         0x01
@@ -2979,7 +2978,7 @@ msg:
   data:            00000000005800000000000A119557C0000100000000000E0003000B000000000000000000000000000000080000000000000310000006020800000010040A000001000000050010000000000001000000000000000000080001FFFF005800000000000A110C0380000100000000000E0003000B000000000000000000000000000000080000000000000310000006020800000010040A000002000000050010000000000002000000000000000000080002FFFF
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x36090822
 version:         0x01
@@ -3031,7 +3030,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0x36090823
 version:         0x01
@@ -4823,7 +4822,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x36090824
 version:         0x01
@@ -4882,7 +4881,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x36090825
 version:         0x01
@@ -4892,7 +4891,7 @@ msg:
   data:            00000000005800000000001411A49A00000100000000000E000D0015000000000000000000000000000000080000000000000310000006020800000010040A000001000000050010000000000001000000000000000000080001FFFF0058000000000014111B45C0000100000000000E000D0015000000000000000000000000000000080000000000000310000006020800000010040A000002000000050010000000000002000000000000000000080002FFFF
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x36090826
 version:         0x01
@@ -4944,7 +4943,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0x36090827
 version:         0x01
@@ -6736,7 +6735,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x36090828
 version:         0x01
@@ -6788,7 +6787,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x3609082C
 version:         0x01
@@ -6798,7 +6797,7 @@ msg:
   data:            00000000005800000000001E11A49A00000100000000000E0017001F000000000000000000000000000000080000000000000310000006020800000010040A000001000000050010000000000001000000000000000000080001FFFF005800000000001E111B45C0000100000000000E0017001F000000000000000000000000000000080000000000000310000006020800000010040A000002000000050010000000000002000000000000000000080002FFFF
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x3609082D
 version:         0x01
@@ -6850,7 +6849,7 @@ msg:
     properties:      
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0x3609082E
 version:         0x01
@@ -8642,7 +8641,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x3609082F
 version:         0x01

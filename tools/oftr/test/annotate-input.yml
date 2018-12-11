@@ -205,12 +205,12 @@ msg:
       data: ffffffff
 ---
 version: 0x04
-type: REQUEST.DESC
+type: DESC_REQUEST
 flags: [ 'MORE' ]
 msg: {}
 ---
 version: 0x04
-type: REPLY.DESC
+type: DESC_REPLY
 flags: [ 'MORE' ]
 msg:
   mfr_desc: '................................................................................................................................................................................................................................................................'
@@ -220,7 +220,7 @@ msg:
   dp_desc: '................................................................................................................................................................................................................................................................'
 ---
 version: 0x04
-type: REQUEST.FLOW_DESC
+type: FLOW_DESC_REQUEST
 flags: [ 'MORE' ]
 msg:
   table_id: ALL
@@ -234,7 +234,7 @@ msg:
       mask: 'ff:ff:ff:ff:ff:ff'
 ---
 version: 0x04
-type: REPLY.FLOW_DESC
+type: FLOW_DESC_REPLY
 flags: [ 'MORE' ]
 msg:
   - table_id: ALL
@@ -258,7 +258,7 @@ msg:
             max_len: NO_BUFFER
 ---
 version: 0x04
-type: REQUEST.AGGREGATE_STATS
+type: AGGREGATE_STATS_REQUEST
 flags: [ 'MORE' ]
 msg:
   table_id: ALL
@@ -272,7 +272,7 @@ msg:
       mask: 'ff:ff:ff:ff:ff:ff'
 ---
 version: 0x04
-type: REPLY.AGGREGATE_STATS
+type: AGGREGATE_STATS_REPLY
 flags: [ 'MORE' ]
 msg:
   packet_count: 0xffffffffffffffff
@@ -280,12 +280,12 @@ msg:
   flow_count: 0xffffffff
 ---
 version: 0x04
-type: REQUEST.TABLE_STATS
+type: TABLE_STATS_REQUEST
 flags: [ 'MORE' ]
 msg: {}
 ---
 version: 0x04
-type: REPLY.TABLE_STATS
+type: TABLE_STATS_REPLY
 flags: [ 'MORE' ]
 msg:
   - table_id: ALL
@@ -294,13 +294,13 @@ msg:
     matched_count: 0xffffffffffffffff
 ---
 version: 0x04
-type: REQUEST.PORT_STATS
+type: PORT_STATS_REQUEST
 flags: [ 'MORE' ]
 msg:
   port_no: CONTROLLER
 ---
 version: 0x04
-type: REPLY.PORT_STATS
+type: PORT_STATS_REPLY
 flags: [ 'MORE' ]
 msg:
   - port_no: CONTROLLER
@@ -320,14 +320,14 @@ msg:
     properties:
 ---
 version: 0x04
-type: REQUEST.QUEUE_STATS
+type: QUEUE_STATS_REQUEST
 flags: [ 'MORE' ]
 msg:
   port_no: CONTROLLER
   queue_id: ALL
 ---
 version: 0x04
-type: REPLY.QUEUE_STATS
+type: QUEUE_STATS_REPLY
 flags: [ 'MORE' ]
 msg:
   - port_no: CONTROLLER
@@ -338,14 +338,14 @@ msg:
     duration: 4294967295.xffffffff
 ---
 version: 0x04
-type: REQUEST.QUEUE_DESC
+type: QUEUE_DESC_REQUEST
 flags: [ 'MORE' ]
 msg:
   port_no: CONTROLLER
   queue_id: ALL
 ---
 version: 0x04
-type: REPLY.QUEUE_DESC
+type: QUEUE_DESC_REPLY
 flags: [ 'MORE' ]
 msg:
   - port_no: CONTROLLER
@@ -359,13 +359,13 @@ msg:
         data: ffffffff
 ---
 version: 0x04
-type: REQUEST.GROUP_STATS
+type: GROUP_STATS_REQUEST
 flags: [ 'MORE' ]
 msg:
   group_id: ANY
 ---
 version: 0x04
-type: REPLY.GROUP_STATS
+type: GROUP_STATS_REPLY
 flags: [ 'MORE' ]
 msg:
   - group_id: ANY
@@ -378,12 +378,12 @@ msg:
         byte_count: 0xffffffffffffffff
 ---
 version: 0x04
-type: REQUEST.GROUP_DESC
+type: GROUP_DESC_REQUEST
 flags: [ 'MORE' ]
 msg: {}
 ---
 version: 0x04
-type: REPLY.GROUP_DESC
+type: GROUP_DESC_REPLY
 flags: [ 'MORE' ]
 msg:
   - type: SELECT
@@ -398,12 +398,12 @@ msg:
             max_len: NO_BUFFER
 ---
 version: 0x04
-type: REQUEST.GROUP_FEATURES
+type: GROUP_FEATURES_REQUEST
 flags: [ 'MORE' ]
 msg: {}
 ---
 version: 0x04
-type: REPLY.GROUP_FEATURES
+type: GROUP_FEATURES_REPLY
 flags: [ 'MORE' ]
 msg:
   types: [ INDIRECT ]
@@ -418,13 +418,13 @@ msg:
   actions_ff: [ 'SET_VLAN_VID' ]
 ---
 version: 0x04
-type: REQUEST.METER_STATS
+type: METER_STATS_REQUEST
 flags: [ 'MORE' ]
 msg:
   meter_id: ALL
 ---
 version: 0x04
-type: REPLY.METER_STATS
+type: METER_STATS_REPLY
 flags: [ 'MORE' ]
 msg:
   - meter_id: ALL
@@ -437,13 +437,13 @@ msg:
         byte_count: 0xffffffffffffffff
 ---
 version: 0x04
-type: REQUEST.METER_CONFIG
+type: METER_CONFIG_REQUEST
 flags: [ 'MORE' ]
 msg:
   meter_id: ALL
 ---
 version: 0x04
-type: REPLY.METER_CONFIG
+type: METER_CONFIG_REPLY
 flags: [ 'MORE' ]
 msg:
   - flags: [ PKTPS ]
@@ -454,12 +454,12 @@ msg:
         burst_size: 0xffffffff
 ---
 version: 0x04
-type: REQUEST.METER_FEATURES
+type: METER_FEATURES_REQUEST
 flags: [ 'MORE' ]
 msg: {}
 ---
 version: 0x04
-type: REPLY.METER_FEATURES
+type: METER_FEATURES_REPLY
 flags: [ 'MORE' ]
 msg:
   max_meter: 0xffffffff
@@ -469,7 +469,7 @@ msg:
   max_color: 0xff
 ---
 version: 0x04
-type: REQUEST.TABLE_FEATURES
+type: TABLE_FEATURES_REQUEST
 flags: [ 'MORE' ]
 msg:
   - table_id: ALL
@@ -509,7 +509,7 @@ msg:
     properties: []
 ---
 version: 0x04
-type: REPLY.TABLE_FEATURES
+type: TABLE_FEATURES_REPLY
 flags: [ 'MORE' ]
 msg:
   - table_id: ALL
@@ -549,12 +549,12 @@ msg:
     properties: []
 ---
 version: 0x04
-type: REQUEST.PORT_DESC
+type: PORT_DESC_REQUEST
 flags: [ 'MORE' ]
 msg: {}
 ---
 version: 0x04
-type: REPLY.PORT_DESC
+type: PORT_DESC_REPLY
 flags: [ 'MORE' ]
 msg:
   - port_no: CONTROLLER
@@ -571,12 +571,12 @@ msg:
     properties:
 ---
 version: 0x04
-type: REQUEST.TABLE_DESC
+type: TABLE_DESC_REQUEST
 flags: [ 'MORE' ]
 msg: {}
 ---
 version: 0x04
-type: REPLY.TABLE_DESC
+type: TABLE_DESC_REPLY
 flags: [ 'MORE' ]
 msg:
   - table_id: ALL
@@ -594,7 +594,7 @@ msg:
         data: ffffffff
 ---
 version: 5
-type: REQUEST.FLOW_MONITOR
+type: FLOW_MONITOR_REQUEST
 flags: [ 'MORE' ]
 msg:
   monitor_id: 0xffffffff
@@ -609,7 +609,7 @@ msg:
       mask: 'ff:ff:ff:ff:ff:ff'
 ---
 version: 5
-type: REPLY.FLOW_MONITOR
+type: FLOW_MONITOR_REPLY
 flags: [ 'MORE' ]
 msg:
   - event: ADDED

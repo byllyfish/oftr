@@ -11,6 +11,11 @@ os:
   - linux
   - osx
 
+install:
+  # Boringssl tests require Go 1.11.
+  # Gimme not installed on Travis/Linux for language cpp.
+  - eval "$(curl -sL https://raw.githubusercontent.com/travis-ci/gimme/master/gimme | GIMME_GO_VERSION=1.11 bash)"
+
 env:
   global:
    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created

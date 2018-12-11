@@ -106,9 +106,19 @@ TEST(datapathid, integer) {
 
   EXPECT_FALSE(a.parse("0x20f "));
   EXPECT_FALSE(a.parse(" 0x20f"));
+  EXPECT_FALSE(a.parse(" 1"));
+  EXPECT_FALSE(a.parse("1 "));
 
-  EXPECT_FALSE(a.parse("01"));
-  EXPECT_FALSE(a.parse("1"));
-  EXPECT_FALSE(a.parse("1234567812345678"));
+  EXPECT_TRUE(a.parse("01"));
+  EXPECT_EQ("00:00:00:00:00:00:00:01", a.toString());
+
+  EXPECT_TRUE(a.parse("1"));
+  EXPECT_EQ("00:00:00:00:00:00:00:01", a.toString());
+
+  EXPECT_TRUE(a.parse("1234567812345678"));
+  EXPECT_EQ("00:04:62:d5:37:e7:ef:4e", a.toString());
+
   EXPECT_FALSE(a.parse("0x1FFFFFFFFFFFFFFFF"));
+  EXPECT_TRUE(a.parse("0x1FFFFFFFFFFFFFFF"));
+  EXPECT_EQ("1f:ff:ff:ff:ff:ff:ff:ff", a.toString());
 }
