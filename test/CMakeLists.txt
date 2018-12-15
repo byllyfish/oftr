@@ -151,7 +151,7 @@ target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS} ${LIBOFP_LINKED_LIB
 
 # Add tests here.
 
-add_test(NAME unittests COMMAND ofp_unittest)
+add_test(NAME unittests COMMAND ofp_unittest --gtest_shuffle)
 set_tests_properties(unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=8655")
 
 if(LIBOFP_MEMCHECK)
