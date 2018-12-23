@@ -188,7 +188,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x01
     name:            Table 1
     metadata_match:  0x0000000000000000
@@ -373,7 +373,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x02
     name:            Table 2
     metadata_match:  0x0000000000000000
@@ -558,7 +558,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x03
     name:            Table 3
     metadata_match:  0x0000000000000000
@@ -743,7 +743,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x04
     name:            Table 4
     metadata_match:  0x0000000000000000
@@ -928,7 +928,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x05
     name:            Table 5
     metadata_match:  0x0000000000000000
@@ -1113,7 +1113,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x06
     name:            Table 6
     metadata_match:  0x0000000000000000
@@ -1297,7 +1297,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x07
     name:            Table 7
     metadata_match:  0x0000000000000000
@@ -1481,7 +1481,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x08
     name:            Table 8
     metadata_match:  0x0000000000000000
@@ -1665,7 +1665,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x09
     name:            Table 9
     metadata_match:  0x0000000000000000
@@ -1849,7 +1849,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x0A
     name:            Table 10
     metadata_match:  0x0000000000000000
@@ -2033,7 +2033,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x0B
     name:            Table 11
     metadata_match:  0x0000000000000000
@@ -2217,7 +2217,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x0C
     name:            Table 12
     metadata_match:  0x0000000000000000
@@ -2401,7 +2401,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x0D
     name:            Table 13
     metadata_match:  0x0000000000000000
@@ -2585,7 +2585,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x0E
     name:            Table 14
     metadata_match:  0x0000000000000000
@@ -2769,7 +2769,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x0F
     name:            Table 15
     metadata_match:  0x0000000000000000
@@ -2953,7 +2953,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x10
     name:            Table 16
     metadata_match:  0x0000000000000000
@@ -3137,7 +3137,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x11
     name:            Table 17
     metadata_match:  0x0000000000000000
@@ -3321,7 +3321,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x12
     name:            Table 18
     metadata_match:  0x0000000000000000
@@ -3505,7 +3505,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
   - table_id:        0x13
     name:            Table 19
     metadata_match:  0x0000000000000000
@@ -3688,7 +3688,7 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
 ...
 ---
 type:            TABLE_FEATURES_REPLY
@@ -3878,5 +3878,5 @@ msg:
                        0x00000058, 0x00000059, 0x0000005A, 0x0000005B, 
                        0x0000005C, 0x0000005D, 0x0000005E, 0x0000005F, 
                        0x00000060, 0x00000061, 0x00000062, 0x00000063 ]
-    properties:      
+    properties:      []
 ...

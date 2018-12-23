@@ -19,7 +19,7 @@ msg:
   n_tables:        0xFE
   auxiliary_id:    0x00
   capabilities:    [ FLOW_STATS, TABLE_STATS, PORT_STATS, GROUP_STATS, QUEUE_STATS ]
-  ports:           
+  ports:           []
 ...
 ---
 type:            DESC_REPLY
@@ -1835,7 +1835,7 @@ msg:
     peer:            [  ]
     curr_speed:      0x00000000
     max_speed:       0x00000000
-    properties:      
+    properties:      []
   - port_no:         0x00000001
     hw_addr:         'e6:7a:e7:63:7a:97'
     name:            s1-eth1
@@ -1847,7 +1847,7 @@ msg:
     peer:            [  ]
     curr_speed:      0x00989680
     max_speed:       0x00000000
-    properties:      
+    properties:      []
   - port_no:         0x00000002
     hw_addr:         'c6:ce:d4:c0:bb:37'
     name:            s1-eth2
@@ -1859,14 +1859,14 @@ msg:
     peer:            [  ]
     curr_speed:      0x00989680
     max_speed:       0x00000000
-    properties:      
+    properties:      []
 ...
 ---
 type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0x00001FA2
 version:         0x05
-msg:             
+msg:             []
 ...
 ---
 type:            GROUP_FEATURES_REPLY
@@ -1902,7 +1902,7 @@ type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x00001FA5
 version:         0x05
-msg:             
+msg:             []
 ...
 ---
 type:            AGGREGATE_STATS_REPLY
@@ -1934,7 +1934,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000001
     duration:        7859.609000000
     rx_packets:      0x000000000000000A
@@ -1949,7 +1949,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000002
     duration:        7859.610000000
     rx_packets:      0x0000000000000000
@@ -1964,35 +1964,35 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
 ...
 ---
 type:            QUEUE_STATS_REPLY
 flags:           [  ]
 xid:             0x00001FA8
 version:         0x05
-msg:             
+msg:             []
 ...
 ---
 type:            METER_CONFIG_REPLY
 flags:           [  ]
 xid:             0x00001FA9
 version:         0x05
-msg:             
+msg:             []
 ...
 ---
 type:            METER_STATS_REPLY
 flags:           [  ]
 xid:             0x00001FAA
 version:         0x05
-msg:             
+msg:             []
 ...
 ---
 type:            GROUP_STATS_REPLY
 flags:           [  ]
 xid:             0x00001FAB
 version:         0x05
-msg:             
+msg:             []
 ...
 ---
 type:            TABLE_FEATURES_REPLY
@@ -2089,7 +2089,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x01
     name:            table1
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2179,7 +2179,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x02
     name:            table2
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2269,7 +2269,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x03
     name:            table3
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2359,7 +2359,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x04
     name:            table4
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2449,7 +2449,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x05
     name:            table5
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2539,7 +2539,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x06
     name:            table6
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2628,7 +2628,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x07
     name:            table7
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2717,7 +2717,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x08
     name:            table8
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2806,7 +2806,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x09
     name:            table9
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2895,7 +2895,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x0A
     name:            table10
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2984,7 +2984,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x0B
     name:            table11
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3073,7 +3073,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x0C
     name:            table12
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3162,7 +3162,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x0D
     name:            table13
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3251,7 +3251,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x0E
     name:            table14
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3340,7 +3340,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x0F
     name:            table15
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3429,7 +3429,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x10
     name:            table16
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3518,7 +3518,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x11
     name:            table17
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3607,7 +3607,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x12
     name:            table18
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3696,7 +3696,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x13
     name:            table19
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3784,7 +3784,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x14
     name:            table20
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3872,7 +3872,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x15
     name:            table21
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3960,7 +3960,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x16
     name:            table22
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4048,7 +4048,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x17
     name:            table23
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4136,7 +4136,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x18
     name:            table24
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4224,7 +4224,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x19
     name:            table25
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4312,7 +4312,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x1A
     name:            table26
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4400,7 +4400,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x1B
     name:            table27
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4488,7 +4488,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x1C
     name:            table28
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4576,7 +4576,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
 ...
 ---
 type:            TABLE_FEATURES_REPLY
@@ -4671,7 +4671,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x1E
     name:            table30
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4759,7 +4759,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x1F
     name:            table31
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4846,7 +4846,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x20
     name:            table32
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4933,7 +4933,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x21
     name:            table33
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5020,7 +5020,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x22
     name:            table34
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5107,7 +5107,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x23
     name:            table35
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5194,7 +5194,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x24
     name:            table36
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5281,7 +5281,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x25
     name:            table37
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5368,7 +5368,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x26
     name:            table38
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5455,7 +5455,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x27
     name:            table39
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5542,7 +5542,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x28
     name:            table40
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5629,7 +5629,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x29
     name:            table41
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5716,7 +5716,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x2A
     name:            table42
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5803,7 +5803,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x2B
     name:            table43
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5889,7 +5889,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x2C
     name:            table44
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5975,7 +5975,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x2D
     name:            table45
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6061,7 +6061,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x2E
     name:            table46
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6147,7 +6147,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x2F
     name:            table47
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6233,7 +6233,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x30
     name:            table48
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6319,7 +6319,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x31
     name:            table49
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6405,7 +6405,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x32
     name:            table50
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6491,7 +6491,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x33
     name:            table51
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6577,7 +6577,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x34
     name:            table52
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6663,7 +6663,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x35
     name:            table53
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6749,7 +6749,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x36
     name:            table54
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6835,7 +6835,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x37
     name:            table55
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6920,7 +6920,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x38
     name:            table56
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -7005,7 +7005,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x39
     name:            table57
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -7090,7 +7090,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x3A
     name:            table58
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -7175,7 +7175,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
 ...
 ---
 type:            TABLE_FEATURES_REPLY
@@ -7267,7 +7267,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x3C
     name:            table60
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -7352,7 +7352,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x3D
     name:            table61
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -7437,7 +7437,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x3E
     name:            table62
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -7522,7 +7522,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x3F
     name:            table63
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -7607,7 +7607,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x40
     name:            table64
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -7692,7 +7692,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x41
     name:            table65
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -7777,7 +7777,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x42
     name:            table66
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -7862,7 +7862,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x43
     name:            table67
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -7946,7 +7946,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x44
     name:            table68
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8030,7 +8030,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x45
     name:            table69
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8114,7 +8114,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x46
     name:            table70
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8198,7 +8198,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x47
     name:            table71
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8282,7 +8282,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x48
     name:            table72
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8366,7 +8366,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x49
     name:            table73
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8450,7 +8450,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x4A
     name:            table74
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8534,7 +8534,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x4B
     name:            table75
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8618,7 +8618,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x4C
     name:            table76
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8702,7 +8702,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x4D
     name:            table77
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8786,7 +8786,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x4E
     name:            table78
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8870,7 +8870,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x4F
     name:            table79
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -8953,7 +8953,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x50
     name:            table80
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -9036,7 +9036,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x51
     name:            table81
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -9119,7 +9119,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x52
     name:            table82
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -9202,7 +9202,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x53
     name:            table83
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -9285,7 +9285,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x54
     name:            table84
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -9368,7 +9368,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x55
     name:            table85
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -9451,7 +9451,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x56
     name:            table86
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -9534,7 +9534,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x57
     name:            table87
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -9617,7 +9617,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x58
     name:            table88
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -9700,7 +9700,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x59
     name:            table89
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -9783,7 +9783,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
 ...
 ---
 type:            TABLE_FEATURES_REPLY
@@ -9873,7 +9873,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x5B
     name:            table91
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -9955,7 +9955,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x5C
     name:            table92
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10037,7 +10037,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x5D
     name:            table93
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10119,7 +10119,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x5E
     name:            table94
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10201,7 +10201,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x5F
     name:            table95
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10283,7 +10283,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x60
     name:            table96
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10365,7 +10365,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x61
     name:            table97
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10447,7 +10447,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x62
     name:            table98
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10529,7 +10529,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x63
     name:            table99
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10611,7 +10611,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x64
     name:            table100
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10693,7 +10693,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x65
     name:            table101
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10775,7 +10775,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x66
     name:            table102
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10857,7 +10857,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x67
     name:            table103
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -10938,7 +10938,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x68
     name:            table104
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11019,7 +11019,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x69
     name:            table105
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11100,7 +11100,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x6A
     name:            table106
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11181,7 +11181,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x6B
     name:            table107
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11262,7 +11262,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x6C
     name:            table108
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11343,7 +11343,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x6D
     name:            table109
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11424,7 +11424,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x6E
     name:            table110
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11505,7 +11505,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x6F
     name:            table111
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11586,7 +11586,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x70
     name:            table112
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11667,7 +11667,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x71
     name:            table113
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11747,7 +11747,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x72
     name:            table114
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11827,7 +11827,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x73
     name:            table115
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11907,7 +11907,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x74
     name:            table116
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -11987,7 +11987,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x75
     name:            table117
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -12067,7 +12067,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x76
     name:            table118
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -12147,7 +12147,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x77
     name:            table119
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -12227,7 +12227,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x78
     name:            table120
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -12307,7 +12307,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x79
     name:            table121
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -12387,7 +12387,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
 ...
 ---
 type:            TABLE_FEATURES_REPLY
@@ -12474,7 +12474,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x7B
     name:            table123
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -12553,7 +12553,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x7C
     name:            table124
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -12632,7 +12632,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x7D
     name:            table125
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -12711,7 +12711,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x7E
     name:            table126
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -12790,7 +12790,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x7F
     name:            table127
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -12869,7 +12869,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x80
     name:            table128
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -12948,7 +12948,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x81
     name:            table129
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13027,7 +13027,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x82
     name:            table130
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13106,7 +13106,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x83
     name:            table131
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13185,7 +13185,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x84
     name:            table132
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13264,7 +13264,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x85
     name:            table133
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13342,7 +13342,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x86
     name:            table134
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13420,7 +13420,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x87
     name:            table135
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13498,7 +13498,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x88
     name:            table136
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13576,7 +13576,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x89
     name:            table137
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13654,7 +13654,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x8A
     name:            table138
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13732,7 +13732,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x8B
     name:            table139
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13810,7 +13810,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x8C
     name:            table140
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13888,7 +13888,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x8D
     name:            table141
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -13966,7 +13966,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x8E
     name:            table142
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14044,7 +14044,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x8F
     name:            table143
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14121,7 +14121,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x90
     name:            table144
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14198,7 +14198,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x91
     name:            table145
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14275,7 +14275,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x92
     name:            table146
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14352,7 +14352,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x93
     name:            table147
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14429,7 +14429,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x94
     name:            table148
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14506,7 +14506,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x95
     name:            table149
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14583,7 +14583,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x96
     name:            table150
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14660,7 +14660,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x97
     name:            table151
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14737,7 +14737,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x98
     name:            table152
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14814,7 +14814,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x99
     name:            table153
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14890,7 +14890,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x9A
     name:            table154
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -14966,7 +14966,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
 ...
 ---
 type:            TABLE_FEATURES_REPLY
@@ -15049,7 +15049,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x9C
     name:            table156
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15125,7 +15125,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x9D
     name:            table157
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15201,7 +15201,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x9E
     name:            table158
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15277,7 +15277,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0x9F
     name:            table159
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15353,7 +15353,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xA0
     name:            table160
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15429,7 +15429,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xA1
     name:            table161
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15505,7 +15505,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xA2
     name:            table162
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15581,7 +15581,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xA3
     name:            table163
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15656,7 +15656,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xA4
     name:            table164
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15731,7 +15731,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xA5
     name:            table165
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15806,7 +15806,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xA6
     name:            table166
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15881,7 +15881,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xA7
     name:            table167
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -15956,7 +15956,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xA8
     name:            table168
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16031,7 +16031,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xA9
     name:            table169
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16106,7 +16106,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xAA
     name:            table170
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16181,7 +16181,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xAB
     name:            table171
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16256,7 +16256,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xAC
     name:            table172
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16331,7 +16331,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xAD
     name:            table173
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16405,7 +16405,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xAE
     name:            table174
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16479,7 +16479,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xAF
     name:            table175
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16553,7 +16553,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xB0
     name:            table176
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16627,7 +16627,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xB1
     name:            table177
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16701,7 +16701,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xB2
     name:            table178
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16775,7 +16775,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xB3
     name:            table179
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16849,7 +16849,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xB4
     name:            table180
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16923,7 +16923,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xB5
     name:            table181
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -16997,7 +16997,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xB6
     name:            table182
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17071,7 +17071,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xB7
     name:            table183
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17144,7 +17144,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xB8
     name:            table184
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17217,7 +17217,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xB9
     name:            table185
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17290,7 +17290,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xBA
     name:            table186
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17363,7 +17363,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xBB
     name:            table187
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17436,7 +17436,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xBC
     name:            table188
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17509,7 +17509,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
 ...
 ---
 type:            TABLE_FEATURES_REPLY
@@ -17589,7 +17589,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xBE
     name:            table190
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17662,7 +17662,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xBF
     name:            table191
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17735,7 +17735,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xC0
     name:            table192
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17808,7 +17808,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xC1
     name:            table193
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17880,7 +17880,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xC2
     name:            table194
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -17952,7 +17952,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xC3
     name:            table195
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18024,7 +18024,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xC4
     name:            table196
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18096,7 +18096,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xC5
     name:            table197
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18168,7 +18168,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xC6
     name:            table198
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18240,7 +18240,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xC7
     name:            table199
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18312,7 +18312,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xC8
     name:            table200
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18384,7 +18384,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xC9
     name:            table201
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18456,7 +18456,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xCA
     name:            table202
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18528,7 +18528,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xCB
     name:            table203
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18599,7 +18599,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xCC
     name:            table204
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18670,7 +18670,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xCD
     name:            table205
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18741,7 +18741,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xCE
     name:            table206
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18812,7 +18812,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xCF
     name:            table207
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18883,7 +18883,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xD0
     name:            table208
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -18954,7 +18954,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xD1
     name:            table209
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19025,7 +19025,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xD2
     name:            table210
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19096,7 +19096,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xD3
     name:            table211
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19167,7 +19167,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xD4
     name:            table212
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19238,7 +19238,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xD5
     name:            table213
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19308,7 +19308,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xD6
     name:            table214
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19378,7 +19378,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xD7
     name:            table215
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19448,7 +19448,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xD8
     name:            table216
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19518,7 +19518,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xD9
     name:            table217
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19588,7 +19588,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xDA
     name:            table218
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19658,7 +19658,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xDB
     name:            table219
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19728,7 +19728,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xDC
     name:            table220
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19798,7 +19798,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xDD
     name:            table221
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19868,7 +19868,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xDE
     name:            table222
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -19938,7 +19938,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xDF
     name:            table223
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20007,7 +20007,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
 ...
 ---
 type:            TABLE_FEATURES_REPLY
@@ -20083,7 +20083,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xE1
     name:            table225
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20152,7 +20152,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xE2
     name:            table226
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20221,7 +20221,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xE3
     name:            table227
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20290,7 +20290,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xE4
     name:            table228
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20359,7 +20359,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xE5
     name:            table229
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20428,7 +20428,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xE6
     name:            table230
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20497,7 +20497,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xE7
     name:            table231
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20566,7 +20566,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xE8
     name:            table232
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20635,7 +20635,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xE9
     name:            table233
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20703,7 +20703,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xEA
     name:            table234
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20771,7 +20771,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xEB
     name:            table235
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20839,7 +20839,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xEC
     name:            table236
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20907,7 +20907,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xED
     name:            table237
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -20975,7 +20975,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xEE
     name:            table238
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21043,7 +21043,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xEF
     name:            table239
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21111,7 +21111,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xF0
     name:            table240
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21179,7 +21179,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xF1
     name:            table241
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21247,7 +21247,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xF2
     name:            table242
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21315,7 +21315,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xF3
     name:            table243
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21382,7 +21382,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xF4
     name:            table244
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21449,7 +21449,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xF5
     name:            table245
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21516,7 +21516,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xF6
     name:            table246
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21583,7 +21583,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xF7
     name:            table247
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21650,7 +21650,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xF8
     name:            table248
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21717,7 +21717,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xF9
     name:            table249
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21784,7 +21784,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xFA
     name:            table250
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21851,7 +21851,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xFB
     name:            table251
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21918,7 +21918,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xFC
     name:            table252
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -21985,7 +21985,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
   - table_id:        0xFD
     name:            table253
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -22052,7 +22052,7 @@ msg:
                        ARP_SHA, ARP_THA, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST, 
                        SCTP_SRC, SCTP_DST, IPV6_ND_TARGET, IPV6_ND_SLL, 
                        IPV6_ND_TLL ]
-    properties:      
+    properties:      []
 ...
 ---
 type:            ECHO_REQUEST

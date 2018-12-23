@@ -92,7 +92,7 @@ TEST(decoder, hellov1) {
   testDecodeEncode(
       "0100000800000001",
       "---\ntype:            HELLO\nxid:             "
-      "0x00000001\nversion:         0x01\nmsg:             \n...\n");
+      "0x00000001\nversion:         0x01\nmsg:             {}\n...\n");
 }
 
 TEST(decoder, hellov4) {
@@ -167,7 +167,7 @@ TEST(decoder, featuresrequest) {
                    "---\ntype:            "
                    "FEATURES_REQUEST\nxid:          "
                    "   0x000000BF\nversion:         "
-                   "0x04\nmsg:             \n...\n");
+                   "0x04\nmsg:             {}\n...\n");
 }
 
 TEST(decoder, getconfigrequest) {
@@ -175,7 +175,7 @@ TEST(decoder, getconfigrequest) {
                    "---\ntype:            "
                    "GET_CONFIG_REQUEST\nxid:        "
                    "     0x000000BF\nversion:         "
-                   "0x04\nmsg:             \n...\n");
+                   "0x04\nmsg:             {}\n...\n");
 }
 
 TEST(decoder, barrierrequestv4) {
@@ -183,7 +183,7 @@ TEST(decoder, barrierrequestv4) {
                    "---\ntype:            "
                    "BARRIER_REQUEST\nxid:           "
                    "  0x000000BF\nversion:         "
-                   "0x04\nmsg:             \n...\n");
+                   "0x04\nmsg:             {}\n...\n");
 }
 
 TEST(decoder, barrierrequestv1) {
@@ -191,7 +191,7 @@ TEST(decoder, barrierrequestv1) {
                    "---\ntype:            "
                    "BARRIER_REQUEST\nxid:           "
                    "  0x000000BF\nversion:         "
-                   "0x01\nmsg:             \n...\n");
+                   "0x01\nmsg:             {}\n...\n");
 }
 
 TEST(decoder, barrierreplyv4) {
@@ -199,7 +199,7 @@ TEST(decoder, barrierreplyv4) {
                    "---\ntype:            "
                    "BARRIER_REPLY\nxid:             "
                    "0x000000BF\nversion:         0x04\nmsg: "
-                   "            \n...\n");
+                   "            {}\n...\n");
 }
 
 TEST(decoder, barrierreplyv1) {
@@ -207,7 +207,7 @@ TEST(decoder, barrierreplyv1) {
                    "---\ntype:            "
                    "BARRIER_REPLY\nxid:             "
                    "0x000000BF\nversion:         0x01\nmsg: "
-                   "            \n...\n");
+                   "            {}\n...\n");
 }
 
 TEST(decoder, getasyncrequestv4) {
@@ -215,7 +215,7 @@ TEST(decoder, getasyncrequestv4) {
                    "---\ntype:            "
                    "GET_ASYNC_REQUEST\nxid:         "
                    "    0x000000BF\nversion:         "
-                   "0x04\nmsg:             \n...\n");
+                   "0x04\nmsg:             {}\n...\n");
 }
 
 TEST(decoder, getasyncrequestv1) {
@@ -237,7 +237,7 @@ TEST(decoder, featuresreplyv1) {
       "0x000000BF\nversion:         0x01\nmsg:             \n  datapath_id:    "
       " '00:00:01:02:03:04:05:06'\n  n_buffers:       0x00000100\n  n_tables:  "
       "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    [  ]\n  "
-      "actions:         [  ]\n  ports:           \n...\n");
+      "actions:         [  ]\n  ports:           []\n...\n");
 }
 
 TEST(decoder, featuresreplyv1ports) {
@@ -260,7 +260,7 @@ TEST(decoder, featuresreplyv1ports) {
       "  supported:       [ 10MB_HD, 10MB_FD, 100MB_HD, 1GB_HD, 1GB_FD, "
       "10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      peer:            "
       "[ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      curr_speed:      "
-      "0x00000000\n      max_speed:       0x00000000\n      properties:      "
+      "0x00000000\n      max_speed:       0x00000000\n      properties:      []"
       "\n    - port_no:         0x0000BBBB\n      hw_addr:         "
       "'cc:cc:cc:cc:cc:cc'\n      name:            Port 2\n      config:       "
       "   [ PORT_DOWN, NO_STP, NO_FLOOD, NO_FWD, '0x33333300' ]\n      state:  "
@@ -271,7 +271,7 @@ TEST(decoder, featuresreplyv1ports) {
       "1GB_HD, 1GB_FD, 10GB_FD, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n      "
       "peer:            [ 100MB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n      "
       "curr_speed:      0x00000000\n      max_speed:       0x00000000\n      "
-      "properties:      \n...\n");
+      "properties:      []\n...\n");
 }
 
 TEST(decoder, featuresreplyv4) {
@@ -281,7 +281,7 @@ TEST(decoder, featuresreplyv4) {
       "0x000000BF\nversion:         0x04\nmsg:             \n  datapath_id:    "
       " '00:00:01:02:03:04:05:06'\n  n_buffers:       0x00000100\n  n_tables:  "
       "      0xFF\n  auxiliary_id:    0x00\n  capabilities:    [  ]\n  "
-      "ports:           \n...\n");
+      "ports:           []\n...\n");
 }
 
 TEST(decoder, ofmp_flowrequest_v4) {
@@ -376,7 +376,7 @@ TEST(decoder, ofmp_flowreply2_v4) {
       "0x0000000000000008\n    packet_count:    0x0000000000000009\n    "
       "byte_count:      0x000000000000000A\n    match:           \n      - "
       "field:           IN_PORT\n        value:           0x12345678\n    "
-      "instructions:    \n  - table_id:        0x11\n    duration:        "
+      "instructions:    []\n  - table_id:        0x11\n    duration:        "
       "34.000000051\n    priority:        "
       "0x0044\n    idle_timeout:    0x0055\n    hard_timeout:    0x0066\n    "
       "flags:           [ SEND_FLOW_REM, CHECK_OVERLAP, RESET_COUNTS, "
@@ -529,7 +529,7 @@ TEST(decoder, ofmp_portstats_v4) {
       "tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    "
       "0xCCCCCCCCCCCCCCC0\n    rx_over_err:     0xDDDDDDDDDDDDDDD0\n    "
       "rx_crc_err:      0xEEEEEEEEEEEEEEE0\n    collisions:      "
-      "0xFFFFFFFFFFFFFFF0\n    properties:      \n...\n");
+      "0xFFFFFFFFFFFFFFF0\n    properties:      []\n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v3) {
@@ -549,7 +549,7 @@ TEST(decoder, ofmp_portstats_v3) {
       "0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    "
       "rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      "
       "0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    "
-      "properties:      \n...\n");
+      "properties:      []\n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v2) {
@@ -569,7 +569,7 @@ TEST(decoder, ofmp_portstats_v2) {
       "0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    "
       "rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      "
       "0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    "
-      "properties:      \n...\n");
+      "properties:      []\n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v1) {
@@ -589,7 +589,7 @@ TEST(decoder, ofmp_portstats_v1) {
       "0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    0xCCCCCCCCCCCCCCC0\n    "
       "rx_over_err:     0xDDDDDDDDDDDDDDD0\n    rx_crc_err:      "
       "0xEEEEEEEEEEEEEEE0\n    collisions:      0xFFFFFFFFFFFFFFF0\n    "
-      "properties:      \n...\n");
+      "properties:      []\n...\n");
 }
 
 TEST(decoder, ofmp_portstats_v5) {
@@ -640,7 +640,7 @@ TEST(decoder, ofmp_portstats_v5_missing_ethernet) {
       "tx_errors:       0xBBBBBBBBBBBBBBB0\n    rx_frame_err:    "
       "0x0000000000000000\n    rx_over_err:     0x0000000000000000\n    "
       "rx_crc_err:      0x0000000000000000\n    collisions:      "
-      "0x0000000000000000\n    properties:      \n...\n");
+      "0x0000000000000000\n    properties:      []\n...\n");
 }
 
 TEST(decoder, ofmp_queuestats_v4) {
@@ -730,7 +730,7 @@ TEST(decoder, flowmodv4_ipv6) {
       "  \n    - field:           ETH_TYPE\n      value:           0x86DD\n    "
       "- field:           IPV6_SRC\n      value:           "
       "'::ffff:192.168.0.1'\n    - field:           IPV6_DST\n      value:     "
-      "      '2000::1'\n  instructions:    \n...\n");
+      "      '2000::1'\n  instructions:    []\n...\n");
 }
 
 TEST(decoder, flowmodv4_experimenter_1) {
@@ -750,7 +750,7 @@ TEST(decoder, flowmodv4_experimenter_1) {
       "X_LLDP_CHASSIS_ID\n      value:           'chassis 02030405'\n    - "
       "field:           X_LLDP_TTL\n      value:           0x1234\n    - "
       "field:           0xFFFF0205.0x00FFFFFE\n      value:           01\n  "
-      "instructions:    \n...\n");
+      "instructions:    []\n...\n");
 }
 
 TEST(decoder, flowmodv4_experimenter_mask_1) {
@@ -770,7 +770,7 @@ TEST(decoder, flowmodv4_experimenter_mask_1) {
       "X_LLDP_CHASSIS_ID\n      value:           'chassis 02030405'\n    - "
       "field:           X_LLDP_TTL\n      value:           0x1234\n    - "
       "field:           0xFFFF0306.0x00FFFFFE\n      value:           01\n     "
-      " mask:            FF\n  instructions:    \n...\n");
+      " mask:            FF\n  instructions:    []\n...\n");
 }
 
 TEST(decoder, flowmodv4_experimenter_2) {
@@ -790,7 +790,7 @@ TEST(decoder, flowmodv4_experimenter_2) {
       "X_LLDP_CHASSIS_ID\n      value:           'chassis 02030405'\n    - "
       "field:           X_LLDP_TTL\n      value:           0x1234\n    - "
       "field:           X_EXPERIMENTER_01\n      value:           0x0001\n  "
-      "instructions:    \n...\n");
+      "instructions:    []\n...\n");
 }
 
 TEST(decoder, flowmodv4_experimenter_mask_2) {
@@ -810,7 +810,7 @@ TEST(decoder, flowmodv4_experimenter_mask_2) {
       "X_LLDP_CHASSIS_ID\n      value:           'chassis 02030405'\n    - "
       "field:           X_LLDP_TTL\n      value:           0x1234\n    - "
       "field:           X_EXPERIMENTER_01\n      value:           0x0001\n     "
-      " mask:            0x00FF\n  instructions:    \n...\n");
+      " mask:            0x00FF\n  instructions:    []\n...\n");
 }
 
 TEST(decoder, flowmodv4_minimal) {
@@ -823,7 +823,7 @@ TEST(decoder, flowmodv4_minimal) {
       "command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    "
       "0x0000\n  priority:        0x0000\n  buffer_id:       NO_BUFFER\n  "
       "out_port:        ANY\n  out_group:       ANY\n  flags:           [  ]\n "
-      " match:           \n  instructions:    \n...\n");
+      " match:           []\n  instructions:    []\n...\n");
 }
 
 TEST(decoder, flowmodv1) {
@@ -916,7 +916,7 @@ TEST(decoder, flowmodv6) {
       "  0xCCC1\n  match:           \n    - field:           ETH_TYPE\n      "
       "value:           0x86DD\n    - field:           IPV6_SRC\n      value:  "
       "         '::ffff:192.168.0.1'\n    - field:           IPV6_DST\n      "
-      "value:           '2000::1'\n  instructions:    \n...\n");
+      "value:           '2000::1'\n  instructions:    []\n...\n");
 }
 
 TEST(decoder, packetinv4) {
@@ -1000,7 +1000,7 @@ TEST(decoder, packetinv1) {
       " in_phy_port:     0x00000000\n  metadata:        0x0000000000000000\n  "
       "reason:          APPLY_ACTION\n  table_id:        0x00\n  cookie:       "
       " "
-      "  0x0000000000000000\n  match:           \n  data:            "
+      "  0x0000000000000000\n  match:           []\n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n");
 }
@@ -1014,7 +1014,7 @@ TEST(decoder, packetinv2) {
       "total_len:       0x4444\n  in_port:         0x55555555\n  in_phy_port:  "
       "   0x66666666\n  metadata:        0x0000000000000000\n  reason:         "
       " APPLY_ACTION\n  table_id:        0x88\n  cookie:          "
-      "0x0000000000000000\n  match:           \n  data:            "
+      "0x0000000000000000\n  match:           []\n  data:            "
       "FFFFFFFFFFFF000000000001080600010800060400010000000000010A00000100000000"
       "00000A000002\n...\n");
 }
@@ -1103,7 +1103,7 @@ TEST(decoder, portstatusv4) {
       " [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n  peer:       "
       "     [ 10MB_HD, 100MB_FD, 1GB_HD, 40GB_FD, 100GB_FD, COPPER, FIBER, "
       "PAUSE_ASYM, '0x99990000' ]\n  curr_speed:      0xAAAAAAAA\n  max_speed: "
-      "      0xBBBBBBBB\n  properties:      \n...\n");
+      "      0xBBBBBBBB\n  properties:      []\n...\n");
 }
 
 TEST(decoder, portstatusv1) {
@@ -1122,7 +1122,7 @@ TEST(decoder, portstatusv1) {
       "COPPER, PAUSE_ASYM, '0x88880000' ]\n  peer:            [ 10MB_HD, "
       "100MB_FD, 1GB_HD, COPPER, FIBER, PAUSE_ASYM, '0x99990000' ]\n  "
       "curr_speed:      0x00000000\n  max_speed:       0x00000000\n  "
-      "properties:      \n...\n");
+      "properties:      []\n...\n");
 }
 
 TEST(decoder, groupmodv4) {
@@ -1159,7 +1159,7 @@ TEST(decoder, portmodv4) {
       "NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, "
       "NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       [ 10MB_FD, "
       "100MB_HD, 1GB_FD, 10GB_FD, 1TB_FD, OTHER, AUTONEG, PAUSE, '0x66660000' "
-      "]\n  properties:      \n...\n");
+      "]\n  properties:      []\n...\n");
 }
 
 TEST(decoder, portmodv1) {
@@ -1171,7 +1171,7 @@ TEST(decoder, portmodv1) {
       "NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, "
       "NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       [ 10MB_FD, "
       "100MB_HD, 1GB_FD, 10GB_FD, AUTONEG, PAUSE, '0x66660000' ]\n  "
-      "properties:      \n...\n");
+      "properties:      []\n...\n");
 }
 
 TEST(decoder, portmodv5) {
@@ -1203,7 +1203,7 @@ TEST(decoder, portmodv5_missing_ethernet) {
       "hw_addr:         '33:33:33:33:33:33'\n  config:          [ NO_RECV, "
       "NO_PACKET_IN, '0x44444400' ]\n  mask:            [ PORT_DOWN, NO_RECV, "
       "NO_FLOOD, NO_PACKET_IN, '0x55555500' ]\n  advertise:       [  ]\n  "
-      "properties:      \n...\n");
+      "properties:      []\n...\n");
 }
 
 TEST(decoder, tablemodv4) {
@@ -1211,7 +1211,7 @@ TEST(decoder, tablemodv4) {
                    "---\ntype:            TABLE_MOD\nxid:             "
                    "0x11111111\nversion:         0x04\nmsg:             \n  "
                    "table_id:        0x22\n  config:          [ '0x33333330' "
-                   "]\n  properties:      \n...\n");
+                   "]\n  properties:      []\n...\n");
 }
 
 TEST(decoder, tablemodv2) {
@@ -1219,7 +1219,7 @@ TEST(decoder, tablemodv2) {
                    "---\ntype:            TABLE_MOD\nxid:             "
                    "0x11111111\nversion:         0x02\nmsg:             \n  "
                    "table_id:        0x22\n  config:          [ "
-                   "TABLE_MISS_CONTROLLER, '0x33333330' ]\n  properties:      "
+                   "TABLE_MISS_CONTROLLER, '0x33333330' ]\n  properties:      []"
                    "\n...\n");
 }
 
@@ -1252,7 +1252,7 @@ TEST(decoder, getasyncreplyv4) {
       "port_status_master: [ MODIFY, '0x44444440' ]\n  flow_removed_slave: [ "
       "IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, "
       "'0x77777740' ]\n  flow_removed_master: [ HARD_TIMEOUT, DELETE, "
-      "EVICTION, '0x66666640' ]\n  properties:      \n...\n");
+      "EVICTION, '0x66666640' ]\n  properties:      []\n...\n");
 }
 
 TEST(decoder, getasyncreplyv5) {
@@ -1267,7 +1267,7 @@ TEST(decoder, getasyncreplyv5) {
       "port_status_master: [ MODIFY, '0x44444440' ]\n  flow_removed_slave: [ "
       "IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, METER_DELETE, EVICTION, "
       "'0x77777740' ]\n  flow_removed_master: [ HARD_TIMEOUT, DELETE, "
-      "EVICTION, '0x66666640' ]\n  properties:      \n...\n");
+      "EVICTION, '0x66666640' ]\n  properties:      []\n...\n");
 }
 
 TEST(decoder, getasyncreplyv5_2) {
@@ -1308,9 +1308,9 @@ TEST(decoder, queuegetconfigreplyv4) {
       "0x11111111\nversion:         0x04\nmsg:             \n  port_no:        "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
       "   port_no:         0x44444444\n      min_rate:        0x5555\n      "
-      "max_rate:        0x6666\n      properties:      \n    - queue_id:       "
+      "max_rate:        0x6666\n      properties:      []\n    - queue_id:       "
       " 0x77777777\n      port_no:         0x88888888\n      min_rate:        "
-      "0x9999\n      max_rate:        0xAAAA\n      properties:      \n...\n");
+      "0x9999\n      max_rate:        0xAAAA\n      properties:      []\n...\n");
 }
 
 TEST(decoder, queuegetconfigreplyv4_experimenter) {
@@ -1329,7 +1329,7 @@ TEST(decoder, queuegetconfigreplyv4_experimenter) {
       "      - experimenter:    0xFFFFFFFF\n          value:           "
       "ABCDEF\n    - queue_id:        0x77777777\n      port_no:         "
       "0x88888888\n      min_rate:        0x9999\n      max_rate:        "
-      "0xAAAA\n      properties:      \n...\n");
+      "0xAAAA\n      properties:      []\n...\n");
 }
 
 TEST(decoder, queuegetconfigreplyv5_experimenter) {
@@ -1348,7 +1348,7 @@ TEST(decoder, queuegetconfigreplyv5_experimenter) {
       "      - experimenter:    0xFFFFFFFF\n          value:           "
       "ABCDEF\n    - queue_id:        0x77777777\n      port_no:         "
       "0x88888888\n      min_rate:        0x9999\n      max_rate:        "
-      "0xAAAA\n      properties:      \n...\n");
+      "0xAAAA\n      properties:      []\n...\n");
 }
 
 TEST(decoder, queuegetconfigreplyv1) {
@@ -1360,9 +1360,9 @@ TEST(decoder, queuegetconfigreplyv1) {
       "0x11111110\nversion:         0x01\nmsg:             \n  port_no:        "
       " 0x00002221\n  queues:          \n    - queue_id:        0x33333331\n   "
       "   port_no:         0x00000000\n      min_rate:        0x5551\n      "
-      "max_rate:        0x6661\n      properties:      \n    - queue_id:       "
+      "max_rate:        0x6661\n      properties:      []\n    - queue_id:       "
       " 0x77777771\n      port_no:         0x00000000\n      min_rate:        "
-      "0x9991\n      max_rate:        0xAAA1\n      properties:      \n...\n");
+      "0x9991\n      max_rate:        0xAAA1\n      properties:      []\n...\n");
 }
 
 TEST(decoder, queuegetconfigreplyv2) {
@@ -1374,9 +1374,9 @@ TEST(decoder, queuegetconfigreplyv2) {
       "0x11111110\nversion:         0x02\nmsg:             \n  port_no:        "
       " 0x22222221\n  queues:          \n    - queue_id:        0x33333331\n   "
       "   port_no:         0x00000000\n      min_rate:        0x5551\n      "
-      "max_rate:        0x6661\n      properties:      \n    - queue_id:       "
+      "max_rate:        0x6661\n      properties:      []\n    - queue_id:       "
       " 0x77777771\n      port_no:         0x00000000\n      min_rate:        "
-      "0x9991\n      max_rate:        0xAAA1\n      properties:      \n...\n");
+      "0x9991\n      max_rate:        0xAAA1\n      properties:      []\n...\n");
 }
 
 TEST(decoder, getconfigreplyv4) {
@@ -1397,7 +1397,7 @@ TEST(decoder, setasyncv4) {
       "MODIFY, '0x55555550' ]\n  port_status_master: [ MODIFY, '0x44444440' "
       "]\n  flow_removed_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, "
       "METER_DELETE, EVICTION, '0x77777740' ]\n  flow_removed_master: [ "
-      "HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  properties:      "
+      "HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  properties:      []"
       "\n...\n");
 }
 
@@ -1412,7 +1412,7 @@ TEST(decoder, setasyncv5) {
       "MODIFY, '0x55555550' ]\n  port_status_master: [ MODIFY, '0x44444440' "
       "]\n  flow_removed_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, "
       "METER_DELETE, EVICTION, '0x77777740' ]\n  flow_removed_master: [ "
-      "HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  properties:      "
+      "HARD_TIMEOUT, DELETE, EVICTION, '0x66666640' ]\n  properties:      []"
       "\n...\n");
 }
 
@@ -1427,7 +1427,7 @@ TEST(decoder, setasyncv5_2) {
       "IDLE_TIMEOUT, METER_DELETE, EVICTION, '0x77777740' ]\n  "
       "flow_removed_master: [ IDLE_TIMEOUT, EVICTION, '0x66666640' ]\n  "
       "role_status_master: [ MASTER_REQUEST, '0x88888880' ]\n  properties:     "
-      " \n...\n");
+      " []\n...\n");
 }
 
 TEST(decoder, flowremovedv4) {
@@ -1509,21 +1509,21 @@ TEST(decoder, flowremovedv6) {
       "1717986918.x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    "
       "0x9999\n  packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
-      "IN_PORT\n      value:           0x12345678\n  stat:            \n...\n");
+      "IN_PORT\n      value:           0x12345678\n  stat:            []\n...\n");
 }
 
 TEST(decoder, ofmp_desc_request_v4) {
   testDecodeEncode("04120010111111110000000000000000",
                    "---\ntype:            DESC_REQUEST\nflags:           [  "
                    "]\nxid:             0x11111111\nversion:         "
-                   "0x04\nmsg:             \n...\n");
+                   "0x04\nmsg:             {}\n...\n");
 }
 
 TEST(decoder, ofmp_desc_request_v1) {
   testDecodeEncode("0110000C1111111100000000",
                    "---\ntype:            DESC_REQUEST\nflags:           [  "
                    "]\nxid:             0x11111111\nversion:         "
-                   "0x01\nmsg:             \n...\n");
+                   "0x01\nmsg:             {}\n...\n");
 }
 
 TEST(decoder, ofmp_desc_reply_v4) {
@@ -1664,7 +1664,7 @@ TEST(decoder, ofmp_aggregatestatsrequest_v1) {
       "         0x00000018\nversion:         0x01\nmsg:             \n  "
       "table_id:        0x08\n  out_port:        ANY\n  out_group:       "
       "0x00000000\n  cookie:          0x0000000000000000\n  cookie_mask:     "
-      "0x0000000000000000\n  match:           \n...\n");
+      "0x0000000000000000\n  match:           []\n...\n");
 }
 
 TEST(decoder, ofmp_groupfeatures_reply) {
@@ -1792,13 +1792,13 @@ TEST(decoder, ofmp_portdescv4_reply) {
       "advertised:      [ COPPER, AUTONEG ]\n    supported:       [ 100MB_FD, "
       "COPPER, AUTONEG ]\n    peer:            [ 100MB_FD, COPPER, AUTONEG ]\n "
       "   curr_speed:      0x00001388\n    max_speed:       0x00001388\n    "
-      "properties:      \n  - port_no:         0x00000006\n    hw_addr:        "
+      "properties:      []\n  - port_no:         0x00000006\n    hw_addr:        "
       " 'f2:0b:a4:7d:f8:ea'\n    name:            Port6\n    config:          "
       "[  ]\n    state:           [ LIVE ]\n    curr:            [ 100MB_FD, "
       "COPPER, AUTONEG ]\n    advertised:      [ COPPER, AUTONEG ]\n    "
       "supported:       [ 100MB_FD, COPPER, AUTONEG ]\n    peer:            [ "
       "100MB_FD, COPPER, AUTONEG ]\n    curr_speed:      0x00001388\n    "
-      "max_speed:       0x00001388\n    properties:      \n...\n");
+      "max_speed:       0x00001388\n    properties:      []\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv1_reply) {
@@ -1816,23 +1816,23 @@ TEST(decoder, ofmp_portdescv1_reply) {
       "     [ STP_LISTEN ]\n    curr:            [ 10GB_FD, COPPER ]\n    "
       "advertised:      [  ]\n    supported:       [  ]\n    peer:            "
       "[  ]\n    curr_speed:      0x00000000\n    max_speed:       "
-      "0x00000000\n    properties:      \n  - port_no:         0x00000001\n    "
+      "0x00000000\n    properties:      []\n  - port_no:         0x00000001\n    "
       "hw_addr:         '72:de:f2:d6:1e:0c'\n    name:            s1-eth1\n    "
       "config:          [  ]\n    state:           [ STP_LISTEN ]\n    curr:   "
       "         [ 10GB_FD, COPPER ]\n    advertised:      [  ]\n    supported: "
       "      [  ]\n    peer:            [  ]\n    curr_speed:      "
-      "0x00000000\n    max_speed:       0x00000000\n    properties:      \n  - "
+      "0x00000000\n    max_speed:       0x00000000\n    properties:      []\n  - "
       "port_no:         0x00000002\n    hw_addr:         '7e:e6:c7:89:08:16'\n "
       "   name:            s1-eth2\n    config:          [  ]\n    state:      "
       "     [ STP_LISTEN ]\n    curr:            [ 10GB_FD, COPPER ]\n    "
       "advertised:      [  ]\n    supported:       [  ]\n    peer:            "
       "[  ]\n    curr_speed:      0x00000000\n    max_speed:       "
-      "0x00000000\n    properties:      \n  - port_no:         LOCAL\n    "
+      "0x00000000\n    properties:      []\n  - port_no:         LOCAL\n    "
       "hw_addr:         'ba:26:5a:8b:1e:45'\n    name:            s1\n    "
       "config:          [  ]\n    state:           [ STP_LISTEN ]\n    curr:   "
       "         [  ]\n    advertised:      [  ]\n    supported:       [  ]\n   "
       " peer:            [  ]\n    curr_speed:      0x00000000\n    max_speed: "
-      "      0x00000000\n    properties:      \n...\n");
+      "      0x00000000\n    properties:      []\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv2_reply) {
@@ -1854,7 +1854,7 @@ TEST(decoder, ofmp_portdescv2_reply) {
       "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
-      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  - "
       "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
       "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
       "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
@@ -1866,7 +1866,7 @@ TEST(decoder, ofmp_portdescv2_reply) {
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
       "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      "
-      "\n...\n");
+      "[]\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv3_reply) {
@@ -1888,7 +1888,7 @@ TEST(decoder, ofmp_portdescv3_reply) {
       "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
-      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  - "
       "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
       "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
       "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
@@ -1900,7 +1900,7 @@ TEST(decoder, ofmp_portdescv3_reply) {
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
       "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      "
-      "\n...\n");
+      "[]\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv4_reply2) {
@@ -1922,7 +1922,7 @@ TEST(decoder, ofmp_portdescv4_reply2) {
       "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
-      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  - "
       "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
       "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
       "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
@@ -1934,7 +1934,7 @@ TEST(decoder, ofmp_portdescv4_reply2) {
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
       "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      "
-      "\n...\n");
+      "[]\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv5_reply) {
@@ -1956,7 +1956,7 @@ TEST(decoder, ofmp_portdescv5_reply) {
       "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
-      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      \n  - "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  - "
       "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
       "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
       "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
@@ -1968,7 +1968,7 @@ TEST(decoder, ofmp_portdescv5_reply) {
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
       "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      "
-      "\n...\n");
+      "[]\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv5_reply_2) {
@@ -2011,7 +2011,7 @@ TEST(decoder, ofmp_portdescv5_reply_2) {
       "1TB_FD, OTHER, FIBER, AUTONEG, PAUSE, '0x77770000' ]\n    peer:         "
       "   [ 100MB_FD, 40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    "
       "curr_speed:      0x99999999\n    max_speed:       0xAAAAAAAA\n    "
-      "properties:      \n...\n");
+      "properties:      []\n...\n");
 }
 
 TEST(decoder, ofmp_portdescv5_missing_ethernet_prop) {
@@ -2026,7 +2026,7 @@ TEST(decoder, ofmp_portdescv5_missing_ethernet_prop) {
       "'0x44444440' ]\n    curr:            [  ]\n    advertised:      [  ]\n  "
       "  supported:       [  ]\n    peer:            [  ]\n    curr_speed:     "
       " 0x00000000\n    max_speed:       0x00000000\n    properties:      "
-      "\n...\n");
+      "[]\n...\n");
 }
 
 TEST(decoder, ofmp_tablefeaturesv4_reply_unpadded_len) {
@@ -2044,7 +2044,7 @@ TEST(decoder, ofmp_tablefeaturesv4_reply_unpadded_len) {
       "next_tables:     [  ]\n    write_actions:   [  ]\n    apply_actions:   "
       "[  ]\n    match:           [  ]\n    wildcards:       [  ]\n    "
       "write_set_field: [  ]\n    apply_set_field: [  ]\n    properties:      "
-      "\n...\n");
+      "[]\n...\n");
 }
 
 TEST(decoder, queue_get_config_replyv4_fix) {
@@ -2073,7 +2073,7 @@ TEST(decoder, queue_get_config_replyv1) {
       "0xC1C49F86\nversion:         0x01\nmsg:             \n  port_no:        "
       " 0x0000000D\n  queues:          \n    - queue_id:        0x00000012\n   "
       "   port_no:         0x00000000\n      min_rate:        0xFFFF\n      "
-      "max_rate:        0xFFFF\n      properties:      \n...\n");
+      "max_rate:        0xFFFF\n      properties:      []\n...\n");
 }
 
 TEST(decoder, tablemodv5) {
@@ -2143,7 +2143,7 @@ TEST(decoder, mptabledescv5) {
       "0000000100000002\n  - table_id:        0x02\n    config:          [ "
       "VACANCY_EVENTS ]\n    vacancy:         \n      vacancy_down:    0x10\n  "
       "    vacancy_up:      0x20\n      vacancy:         0x30\n    properties: "
-      "     \n...\n");
+      "     []\n...\n");
 }
 
 TEST(decoder, mpqueuedescrequestv5) {
@@ -2180,7 +2180,7 @@ TEST(decoder, nicira_actions) {
       "command:         ADD\n  idle_timeout:    0x0000\n  hard_timeout:    "
       "0x0000\n  priority:        0x0000\n  buffer_id:       NO_BUFFER\n  "
       "out_port:        ANY\n  out_group:       ANY\n  flags:           [  ]\n "
-      " match:           \n  instructions:    \n    - instruction:     "
+      " match:           []\n  instructions:    \n    - instruction:     "
       "APPLY_ACTIONS\n      actions:         \n        - action:          "
       "NX_REG_MOVE\n          src:             'ETH_DST[0:24]'\n          dst: "
       "            'ETH_SRC[24:48]'\n        - action:          NX_REG_LOAD\n  "
@@ -2286,7 +2286,7 @@ TEST(decoder, ofmp_table_features) {
       " IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    apply_set_field: [ "
       "ETH_DST, ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, \n             "
       "          IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    "
-      "properties:      \n...\n");
+      "properties:      []\n...\n");
 }
 
 TEST(decoder, packet_in_fuzz1) {
@@ -2421,14 +2421,14 @@ TEST(decoder, flowmod_icmpv4) {
       " match:           \n    - field:           ETH_TYPE\n      value:       "
       "    0x0800\n    - field:           IP_PROTO\n      value:           "
       "0x01\n    - field:           ICMPV4_TYPE\n      value:           0x00\n "
-      " instructions:    \n...\n");
+      " instructions:    []\n...\n");
 }
 
 TEST(decoder, tablefeatures_empty) {
   testDecodeEncode("0412001000000000000C000000000000",
                    "---\ntype:            TABLE_FEATURES_REQUEST\nflags:       "
                    "    [  ]\nxid:             0x00000000\nversion:         "
-                   "0x04\nmsg:             \n...\n");
+                   "0x04\nmsg:             []\n...\n");
 }
 
 TEST(decoder, tablefeatures_request) {
@@ -2465,5 +2465,5 @@ TEST(decoder, tablefeatures_request) {
       " IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    apply_set_field: [ "
       "ETH_DST, ETH_SRC, VLAN_VID, VLAN_PCP, IP_DSCP, IPV4_SRC, \n             "
       "          IPV4_DST, TCP_SRC, TCP_DST, UDP_SRC, UDP_DST ]\n    "
-      "properties:      \n...\n");
+      "properties:      []\n...\n");
 }
