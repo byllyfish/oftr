@@ -592,7 +592,6 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_SYSTEM_WARNINGS}")
 
 # Add subdirectories of third party projects.
 
-add_subdirectory(external/yaml-io)
 if(LIBOFP_ENABLE_OPENSSL AND LIBOFP_USE_BORINGSSL)
   # Boringssl uses the __FILE__ predefined macro in "openssl/err.h". Redefine
   # __FILE__ to __func__ just for boringssl. (TODO)
@@ -604,7 +603,13 @@ if(LIBOFP_ENABLE_OPENSSL AND LIBOFP_USE_BORINGSSL)
   add_subdirectory(external/boringssl)
 endif()
 
-# Modify flags for compiling our code. Here, we change the warning flags to
+# Add coverage flags when compiling yaml-io (if coverage is enabled).
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LIBOFP_COVERAGE}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${LIBOFP_COVERAGE}")
+add_subdirectory(external/yaml-io)
+
+# Reset flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
 
 set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE} ${LIBOFP_FSANITIZE}")
