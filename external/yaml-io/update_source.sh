@@ -41,8 +41,10 @@ INCLUDES=(
 	include/llvm/ADT/APFloat.h
 	include/llvm/ADT/APInt.h
 	include/llvm/ADT/ArrayRef.h
+	include/llvm/ADT/bit.h
 	include/llvm/ADT/DenseMap.h
 	include/llvm/ADT/DenseMapInfo.h
+	include/llvm/ADT/DenseSet.h
 	include/llvm/ADT/edit_distance.h
 	include/llvm/ADT/EpochTracker.h
 	include/llvm/ADT/FoldingSet.h
@@ -129,10 +131,12 @@ INCLUDES=(
 	include/llvm/Support/UnicodeCharRanges.h
 	include/llvm/Support/Valgrind.h
 	include/llvm/Support/WindowsError.h
+	include/llvm/Support/WithColor.h
 	include/llvm/Support/YAMLParser.h
 	include/llvm/Support/YAMLTraits.h
 	include/llvm-c/Core.h
 	include/llvm-c/DataTypes.h
+	include/llvm-c/Error.h
 	include/llvm-c/Support.h
 	include/llvm-c/Types.h
 )
@@ -174,6 +178,7 @@ SOURCES=(
 	Support/Unix/Program.inc
 	Support/Unix/Unix.h
 	Support/Valgrind.cpp
+	Support/WithColor.cpp
 	Support/YAMLParser.cpp
 	Support/YAMLTraits.cpp
 	Support/Windows/Memory.inc
@@ -206,11 +211,11 @@ done
 # Apply patches.
 
 patch "${WORKING_DIR}/src/Support/SourceMgr.cpp" "$WORKING_DIR/src/SourceMgr.cpp.diff"
-patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff"
+patch "${WORKING_DIR}/src/Support/YAMLTraits.cpp" "$WORKING_DIR/src/YAMLTraits.cpp.diff" || true
 patch "${WORKING_DIR}/src/Support/YAMLParser.cpp" "$WORKING_DIR/src/YAMLParser.cpp.diff"
-patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff"
+patch "${WORKING_DIR}/include/llvm/Support/YAMLTraits.h" "$WORKING_DIR/src/YAMLTraits.h.diff" || true
 patch "${WORKING_DIR}/unittests/Support/YAMLParserTest.cpp" "$WORKING_DIR/src/YAMLParserTest.cpp.diff"
-patch "${WORKING_DIR}/unittests/Support/YAMLIOTest.cpp" "$WORKING_DIR/src/YAMLIOTest.cpp.diff"
+patch "${WORKING_DIR}/unittests/Support/YAMLIOTest.cpp" "$WORKING_DIR/src/YAMLIOTest.cpp.diff" || true
 patch "${WORKING_DIR}/include/llvm/Support/CommandLine.h" "$WORKING_DIR/src/CommandLine.h.diff"
 patch "${WORKING_DIR}/src/Support/CommandLine.cpp" "$WORKING_DIR/src/CommandLine.cpp.diff"
 

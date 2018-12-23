@@ -1,5 +1,5 @@
---- ../../../llvm_git/llvm/lib/Support/YAMLTraits.cpp	2018-06-23 19:55:22.000000000 -0700
-+++ ./src/Support/YAMLTraits.cpp	2018-06-27 21:30:37.000000000 -0700
+--- ../../../llvm_git/llvm/lib/Support/YAMLTraits.cpp	2018-12-22 13:28:05.000000000 -0700
++++ ./src/Support/YAMLTraits.cpp	2018-12-22 14:03:44.000000000 -0700
 @@ -331,6 +331,45 @@
    }
  }
@@ -46,8 +46,8 @@
  void Input::scalarString(StringRef &S, QuotingType) {
    if (ScalarHNode *SN = dyn_cast<ScalarHNode>(CurrentNode)) {
      S = SN->value();
-@@ -618,6 +657,23 @@
-   this->outputUpToEndOfLine(" ]");
+@@ -647,6 +686,23 @@
+   outputUpToEndOfLine(" ]");
  }
  
 +
@@ -68,14 +68,14 @@
 +}
 +
  void Output::scalarString(StringRef &S, QuotingType MustQuote) {
-   this->newLineCheck();
+   newLineCheck();
    if (S.empty()) {
-@@ -644,7 +700,7 @@
+@@ -673,7 +729,7 @@
    // present, and will be escaped using a variety of unicode-scalar and special short-form
    // escapes. This is handled in yaml::escape.
    if (MustQuote == QuotingType::Double) {
 -    output(yaml::escape(Base, /* EscapePrintable= */ false));
 +    output(yaml::escape(S, /* EscapePrintable= */ false));
-     this->outputUpToEndOfLine(Quote);
+     outputUpToEndOfLine(Quote);
      return;
    }

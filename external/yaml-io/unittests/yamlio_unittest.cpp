@@ -221,28 +221,6 @@ test:
   EXPECT_TRUE(yin.error());
 }
 
-TEST(yamlio, isFloat) {
-  EXPECT_TRUE(llvm::yaml::isFloat("0"));
-  EXPECT_TRUE(llvm::yaml::isFloat("0."));
-  EXPECT_TRUE(llvm::yaml::isFloat(".0"));
-  EXPECT_TRUE(llvm::yaml::isFloat("0.0"));
-  EXPECT_TRUE(llvm::yaml::isFloat("0e0"));
-  EXPECT_TRUE(llvm::yaml::isFloat("0E0"));
-  EXPECT_TRUE(llvm::yaml::isFloat("0.e0"));
-  EXPECT_TRUE(llvm::yaml::isFloat(".0e0"));
-  EXPECT_TRUE(llvm::yaml::isFloat("0.0e0"));
-
-  EXPECT_FALSE(llvm::yaml::isFloat(""));
-  EXPECT_FALSE(llvm::yaml::isFloat(" "));
-  EXPECT_FALSE(llvm::yaml::isFloat("."));
-  EXPECT_FALSE(llvm::yaml::isFloat("e0"));
-  EXPECT_FALSE(llvm::yaml::isFloat("0.e"));
-  EXPECT_FALSE(llvm::yaml::isFloat(".e"));
-  EXPECT_FALSE(llvm::yaml::isFloat(".0.e0"));
-  EXPECT_FALSE(llvm::yaml::isFloat(".0."));
-  EXPECT_FALSE(llvm::yaml::isFloat("0e0 "));
-}
-
 static void test_yaml_input_fail(const char *yaml) {
   llvm::SourceMgr sm;
   llvm::yaml::Stream stream(yaml, sm);
