@@ -41,6 +41,7 @@ class RpcServer {
 
   /// Bind RPC server to stdio or unix domain socket.
   std::error_code bind(int inputFD, int outputFD);
+  std::error_code bind(int socketFD);
   std::error_code bind(const std::string &listenPath);
 
   /// Run the rpc server.
@@ -96,6 +97,7 @@ class RpcServer {
                      ChannelOptions options);
 
   void deleteFile(const std::string &listenPath);
+  std::error_code verifySocketFD(int socketFD) const;
 };
 
 OFP_END_IGNORE_PADDING

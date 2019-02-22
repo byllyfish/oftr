@@ -12,6 +12,10 @@ namespace ofpx {
 //
 // Run a JSON-RPC server. By default, the control connection comes from stdio.
 //
+//   --binary-protocol       Use the binary framed protocol
+//   --rpc-socket=<path>     Control connection runs over a unix domain socket.
+//                           If <path> is an integer, use inherited descriptor number.
+//                           Otherwise, listen on <path> for first connection.
 //   --metric-interval=0     Log RPC metrics at specified interval (msec)
 //
 // Usage:
@@ -41,7 +45,10 @@ class JsonRpc : public Subprogram {
   void setMaxOpenFiles();
 
   int runStdio();
-  int runUnixDomainSocket(const std::string &path);
+  int runSocket(int socketFD);
+  int runSocketServer(const std::string &path);
+
+  int getSocketFD() const;
 };
 
 }  // namespace ofpx
