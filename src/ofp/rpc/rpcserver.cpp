@@ -50,7 +50,7 @@ std::error_code RpcServer::bind(int socketFD) {
   if (err) {
     return err;
   }
-  
+
   socket_.assign(sys::unix_domain(), socketFD, err);
   if (err) {
     return err;

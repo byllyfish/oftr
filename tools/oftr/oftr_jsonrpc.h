@@ -14,8 +14,9 @@ namespace ofpx {
 //
 //   --binary-protocol       Use the binary framed protocol
 //   --rpc-socket=<path>     Control connection runs over a unix domain socket.
-//                           If <path> is an integer, use inherited descriptor number.
-//                           Otherwise, listen on <path> for first connection.
+//                           If <path> is an integer, use inherited descriptor
+//                           number. Otherwise, listen on <path> for first
+//                           connection.
 //   --metric-interval=0     Log RPC metrics at specified interval (msec)
 //
 // Usage:

@@ -1215,12 +1215,13 @@ TEST(decoder, tablemodv4) {
 }
 
 TEST(decoder, tablemodv2) {
-  testDecodeEncode("02110010111111112200000033333330",
-                   "---\ntype:            TABLE_MOD\nxid:             "
-                   "0x11111111\nversion:         0x02\nmsg:             \n  "
-                   "table_id:        0x22\n  config:          [ "
-                   "TABLE_MISS_CONTROLLER, '0x33333330' ]\n  properties:      []"
-                   "\n...\n");
+  testDecodeEncode(
+      "02110010111111112200000033333330",
+      "---\ntype:            TABLE_MOD\nxid:             "
+      "0x11111111\nversion:         0x02\nmsg:             \n  "
+      "table_id:        0x22\n  config:          [ "
+      "TABLE_MISS_CONTROLLER, '0x33333330' ]\n  properties:      []"
+      "\n...\n");
 }
 
 TEST(decoder, rolerequestv4) {
@@ -1308,9 +1309,11 @@ TEST(decoder, queuegetconfigreplyv4) {
       "0x11111111\nversion:         0x04\nmsg:             \n  port_no:        "
       " 0x22222222\n  queues:          \n    - queue_id:        0x33333333\n   "
       "   port_no:         0x44444444\n      min_rate:        0x5555\n      "
-      "max_rate:        0x6666\n      properties:      []\n    - queue_id:       "
+      "max_rate:        0x6666\n      properties:      []\n    - queue_id:     "
+      "  "
       " 0x77777777\n      port_no:         0x88888888\n      min_rate:        "
-      "0x9999\n      max_rate:        0xAAAA\n      properties:      []\n...\n");
+      "0x9999\n      max_rate:        0xAAAA\n      properties:      "
+      "[]\n...\n");
 }
 
 TEST(decoder, queuegetconfigreplyv4_experimenter) {
@@ -1360,9 +1363,11 @@ TEST(decoder, queuegetconfigreplyv1) {
       "0x11111110\nversion:         0x01\nmsg:             \n  port_no:        "
       " 0x00002221\n  queues:          \n    - queue_id:        0x33333331\n   "
       "   port_no:         0x00000000\n      min_rate:        0x5551\n      "
-      "max_rate:        0x6661\n      properties:      []\n    - queue_id:       "
+      "max_rate:        0x6661\n      properties:      []\n    - queue_id:     "
+      "  "
       " 0x77777771\n      port_no:         0x00000000\n      min_rate:        "
-      "0x9991\n      max_rate:        0xAAA1\n      properties:      []\n...\n");
+      "0x9991\n      max_rate:        0xAAA1\n      properties:      "
+      "[]\n...\n");
 }
 
 TEST(decoder, queuegetconfigreplyv2) {
@@ -1374,9 +1379,11 @@ TEST(decoder, queuegetconfigreplyv2) {
       "0x11111110\nversion:         0x02\nmsg:             \n  port_no:        "
       " 0x22222221\n  queues:          \n    - queue_id:        0x33333331\n   "
       "   port_no:         0x00000000\n      min_rate:        0x5551\n      "
-      "max_rate:        0x6661\n      properties:      []\n    - queue_id:       "
+      "max_rate:        0x6661\n      properties:      []\n    - queue_id:     "
+      "  "
       " 0x77777771\n      port_no:         0x00000000\n      min_rate:        "
-      "0x9991\n      max_rate:        0xAAA1\n      properties:      []\n...\n");
+      "0x9991\n      max_rate:        0xAAA1\n      properties:      "
+      "[]\n...\n");
 }
 
 TEST(decoder, getconfigreplyv4) {
@@ -1509,7 +1516,8 @@ TEST(decoder, flowremovedv6) {
       "1717986918.x77777777\n  idle_timeout:    0x8888\n  hard_timeout:    "
       "0x9999\n  packet_count:    0xAAAAAAAAAAAAAAAA\n  byte_count:      "
       "0xBBBBBBBBBBBBBBBB\n  match:           \n    - field:           "
-      "IN_PORT\n      value:           0x12345678\n  stat:            []\n...\n");
+      "IN_PORT\n      value:           0x12345678\n  stat:            "
+      "[]\n...\n");
 }
 
 TEST(decoder, ofmp_desc_request_v4) {
@@ -1792,7 +1800,8 @@ TEST(decoder, ofmp_portdescv4_reply) {
       "advertised:      [ COPPER, AUTONEG ]\n    supported:       [ 100MB_FD, "
       "COPPER, AUTONEG ]\n    peer:            [ 100MB_FD, COPPER, AUTONEG ]\n "
       "   curr_speed:      0x00001388\n    max_speed:       0x00001388\n    "
-      "properties:      []\n  - port_no:         0x00000006\n    hw_addr:        "
+      "properties:      []\n  - port_no:         0x00000006\n    hw_addr:      "
+      "  "
       " 'f2:0b:a4:7d:f8:ea'\n    name:            Port6\n    config:          "
       "[  ]\n    state:           [ LIVE ]\n    curr:            [ 100MB_FD, "
       "COPPER, AUTONEG ]\n    advertised:      [ COPPER, AUTONEG ]\n    "
@@ -1816,12 +1825,14 @@ TEST(decoder, ofmp_portdescv1_reply) {
       "     [ STP_LISTEN ]\n    curr:            [ 10GB_FD, COPPER ]\n    "
       "advertised:      [  ]\n    supported:       [  ]\n    peer:            "
       "[  ]\n    curr_speed:      0x00000000\n    max_speed:       "
-      "0x00000000\n    properties:      []\n  - port_no:         0x00000001\n    "
+      "0x00000000\n    properties:      []\n  - port_no:         0x00000001\n  "
+      "  "
       "hw_addr:         '72:de:f2:d6:1e:0c'\n    name:            s1-eth1\n    "
       "config:          [  ]\n    state:           [ STP_LISTEN ]\n    curr:   "
       "         [ 10GB_FD, COPPER ]\n    advertised:      [  ]\n    supported: "
       "      [  ]\n    peer:            [  ]\n    curr_speed:      "
-      "0x00000000\n    max_speed:       0x00000000\n    properties:      []\n  - "
+      "0x00000000\n    max_speed:       0x00000000\n    properties:      []\n  "
+      "- "
       "port_no:         0x00000002\n    hw_addr:         '7e:e6:c7:89:08:16'\n "
       "   name:            s1-eth2\n    config:          [  ]\n    state:      "
       "     [ STP_LISTEN ]\n    curr:            [ 10GB_FD, COPPER ]\n    "
@@ -1854,7 +1865,8 @@ TEST(decoder, ofmp_portdescv2_reply) {
       "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
-      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  - "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  "
+      "- "
       "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
       "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
       "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
@@ -1888,7 +1900,8 @@ TEST(decoder, ofmp_portdescv3_reply) {
       "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
-      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  - "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  "
+      "- "
       "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
       "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
       "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
@@ -1922,7 +1935,8 @@ TEST(decoder, ofmp_portdescv4_reply2) {
       "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
-      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  - "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  "
+      "- "
       "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
       "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
       "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
@@ -1956,7 +1970,8 @@ TEST(decoder, ofmp_portdescv5_reply) {
       "100MB_HD, 1GB_HD, 1GB_FD, 10GB_FD, 100GB_FD, 1TB_FD, OTHER, FIBER, "
       "AUTONEG, PAUSE, '0x77770000' ]\n    peer:            [ 100MB_FD, "
       "40GB_FD, COPPER, PAUSE_ASYM, '0x88880000' ]\n    curr_speed:      "
-      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  - "
+      "0x99999999\n    max_speed:       0xAAAAAAAA\n    properties:      []\n  "
+      "- "
       "port_no:         0x0000BBBB\n    hw_addr:         'cc:cc:cc:cc:cc:cc'\n "
       "   name:            Port 2\n    config:          [ PORT_DOWN, NO_STP, "
       "NO_FLOOD, NO_FWD, '0x33333300' ]\n    state:           [ LIVE, "
