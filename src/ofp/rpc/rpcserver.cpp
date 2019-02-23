@@ -164,9 +164,9 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
     versions = ProtocolVersions::All;
 
   std::error_code err;
-  UInt64 connId =
-      engine_->listen(options, securityId, endpt, versions,
-                      [this]() { return new RpcChannelListener{this}; }, err);
+  UInt64 connId = engine_->listen(
+      options, securityId, endpt, versions,
+      [this]() { return new RpcChannelListener{this}; }, err);
 
   if (open->id.is_missing())
     return;
@@ -221,12 +221,13 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
     versions = ProtocolVersions::All;
 
   auto connPtr = conn->shared_from_this();
-  engine_->connect(options, securityId, endpt, versions,
-                   [this]() { return new RpcChannelListener{this}; },
-                   [connPtr, id](Channel *channel, std::error_code err) {
-                     UInt64 connId = channel ? channel->connectionId() : 0;
-                     connectResponse(connPtr.get(), id, connId, err);
-                   });
+  engine_->connect(
+      options, securityId, endpt, versions,
+      [this]() { return new RpcChannelListener{this}; },
+      [connPtr, id](Channel *channel, std::error_code err) {
+        UInt64 connId = channel ? channel->connectionId() : 0;
+        connectResponse(connPtr.get(), id, connId, err);
+      });
 }
 
 void RpcServer::onRpcClose(RpcConnection *conn, RpcClose *close) {
