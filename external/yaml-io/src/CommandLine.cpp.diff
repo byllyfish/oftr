@@ -1,5 +1,5 @@
---- ../../../llvm_git/llvm/lib/Support/CommandLine.cpp	2018-06-23 19:55:22.000000000 -0700
-+++ ./src/Support/CommandLine.cpp	2018-06-29 11:42:07.000000000 -0700
+--- ../../../llvm_git/llvm/lib/Support/CommandLine.cpp	2018-12-22 13:28:05.000000000 -0700
++++ ./src/Support/CommandLine.cpp	2018-12-22 14:03:44.000000000 -0700
 @@ -25,7 +25,7 @@
  #include "llvm/ADT/SmallString.h"
  #include "llvm/ADT/StringExtras.h"
@@ -9,7 +9,7 @@
  #include "llvm/ADT/Twine.h"
  #include "llvm/Config/config.h"
  #include "llvm/Support/ConvertUTF.h"
-@@ -1082,8 +1082,7 @@
+@@ -1105,8 +1105,7 @@
    BumpPtrAllocator A;
    StringSaver Saver(A);
    ExpandResponseFiles(Saver,
@@ -19,7 +19,7 @@
           newArgv);
    argv = &newArgv[0];
    argc = static_cast<int>(newArgv.size());
-@@ -1597,7 +1596,7 @@
+@@ -1620,7 +1619,7 @@
  
  bool parser<float>::parse(Option &O, StringRef ArgName, StringRef Arg,
                            float &Val) {

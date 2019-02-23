@@ -32,6 +32,7 @@ set(YAMLIO_SOURCES
 	src/Support/Twine.cpp
 	src/Support/Unicode.cpp
 	src/Support/Valgrind.cpp
+	src/Support/WithColor.cpp
 	src/Support/YAMLParser.cpp
 	src/Support/YAMLTraits.cpp
 )

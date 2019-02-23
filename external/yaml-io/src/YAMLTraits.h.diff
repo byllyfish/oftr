@@ -1,5 +1,5 @@
---- ../../../llvm_git/llvm/include/llvm/Support/YAMLTraits.h	2018-06-23 19:55:21.000000000 -0700
-+++ ./include/llvm/Support/YAMLTraits.h	2018-06-27 21:30:37.000000000 -0700
+--- ../../../llvm_git/llvm/include/llvm/Support/YAMLTraits.h	2018-12-22 13:28:04.000000000 -0700
++++ ./include/llvm/Support/YAMLTraits.h	2018-12-22 14:03:44.000000000 -0700
 @@ -19,7 +19,7 @@
  #include "llvm/Support/AlignOf.h"
  #include "llvm/Support/Allocator.h"
@@ -9,15 +9,15 @@
  #include "llvm/Support/SourceMgr.h"
  #include "llvm/Support/YAMLParser.h"
  #include "llvm/Support/raw_ostream.h"
-@@ -154,6 +154,7 @@
-   //static QuotingType mustQuote(StringRef);
+@@ -161,6 +161,7 @@
+   // static QuotingType mustQuote(StringRef);
  };
  
 +
  /// This class should be specialized by type that requires custom conversion
  /// to/from a YAML literal block scalar. For example:
  ///
-@@ -291,6 +292,20 @@
+@@ -361,6 +362,20 @@
        (sizeof(test<ScalarTraits<T>>(nullptr, nullptr, nullptr)) == 1);
  };
  
@@ -38,7 +38,7 @@
  // Test if BlockScalarTraits<T> is defined on type T.
  template <class T>
  struct has_BlockScalarTraits
-@@ -366,6 +381,22 @@
+@@ -449,6 +464,22 @@
    static bool const value = (sizeof(test<MappingTraits<T>>(nullptr)) == 1);
  };
  
@@ -61,7 +61,7 @@
  // Test if SequenceTraits<T> is defined on type T.
  template <class T>
  struct has_SequenceMethodTraits
-@@ -382,6 +413,21 @@
+@@ -464,6 +495,21 @@
    static bool const value =  (sizeof(test<SequenceTraits<T>>(nullptr)) == 1);
  };
  
@@ -83,7 +83,7 @@
  // Test if CustomMappingTraits<T> is defined on type T.
  template <class T>
  struct has_CustomMappingTraits
-@@ -431,7 +477,8 @@
+@@ -511,7 +557,8 @@
  // Test if SequenceTraits<T> is defined on type T
  template<typename T>
  struct has_SequenceTraits : public std::integral_constant<bool,
@@ -93,71 +93,7 @@
  
  // Test if DocumentListTraits<T> is defined on type T
  template <class T>
-@@ -449,6 +496,53 @@
-   static bool const value = (sizeof(test<DocumentListTraits<T>>(nullptr))==1);
- };
- 
-+// Replace regex "^(\\.[0-9]+|[0-9]+(\\.[0-9]*)?)([eE][-+]?[0-9]+)?$"
-+inline bool isFloat(StringRef S) {
-+  bool digitSeen = false;
-+  bool dotSeen = false;
-+  bool expSeen = false;
-+  auto iter = S.begin();
-+  auto iterEnd = S.end();
-+
-+  // Scan sequence of digits optionally containing a period
-+  while (iter < iterEnd) {
-+    char ch = *iter++;
-+    if (isdigit(ch)) {
-+      digitSeen = true;
-+    } else if (ch == '.' && !dotSeen) {
-+      dotSeen = true;
-+    } else if (ch == 'e' || ch == 'E') { 
-+      expSeen = true; 
-+      break; 
-+    } else 
-+      return false;
-+  }
-+
-+  assert(expSeen || iter == iterEnd);
-+
-+  if (!digitSeen)
-+    return false;
-+  if (!expSeen)
-+    return true;
-+  if (iter == iterEnd) 
-+    return false;
-+
-+  // Scan exponent
-+  if (*iter == '+' || *iter == '-') {
-+    if (++iter == iterEnd)
-+      return false;
-+  }
-+
-+  assert(iter != iterEnd);
-+
-+  while (iter < iterEnd) {
-+    if (!isdigit(*iter++)) 
-+      return false;
-+  }
-+
-+  return true;
-+}
-+
- inline bool isNumber(StringRef S) {
-   static const char OctalChars[] = "01234567";
-   if (S.startswith("0") &&
-@@ -471,8 +565,7 @@
-   if (S.equals(".inf") || S.equals(".Inf") || S.equals(".INF"))
-     return true;
- 
--  Regex FloatMatcher("^(\\.[0-9]+|[0-9]+(\\.[0-9]*)?)([eE][-+]?[0-9]+)?$");
--  if (FloatMatcher.match(S))
-+  if (isFloat(S))
-     return true;
- 
-   return false;
-@@ -602,6 +695,7 @@
+@@ -753,6 +800,7 @@
    virtual ~IO();
  
    virtual bool outputting() = 0;
@@ -165,7 +101,7 @@
  
    virtual unsigned beginSequence() = 0;
    virtual bool preflightElement(unsigned, void *&) = 0;
-@@ -632,8 +726,11 @@
+@@ -783,8 +831,11 @@
    virtual bool beginBitSetScalar(bool &) = 0;
    virtual bool bitSetMatch(const char*, bool) = 0;
    virtual void endBitSetScalar() = 0;
@@ -175,9 +111,9 @@
    virtual void scalarString(StringRef &, QuotingType) = 0;
 +  virtual void scalarJson(StringRef) {}
    virtual void blockScalarString(StringRef &) = 0;
+   virtual void scalarTag(std::string &) = 0;
  
-   virtual void setError(const Twine &) = 0;
-@@ -692,6 +789,15 @@
+@@ -846,6 +897,15 @@
        Val = Val | ConstVal;
    }
  
@@ -193,7 +129,7 @@
    void *getContext();
    void setContext(void *);
  
-@@ -710,8 +816,8 @@
+@@ -864,8 +924,8 @@
      mapOptionalWithContext(Key, Val, Ctx);
    }
  
@@ -204,7 +140,7 @@
      EmptyContext Ctx;
      mapOptionalWithContext(Key, Val, Default, Ctx);
    }
-@@ -737,8 +843,8 @@
+@@ -891,8 +951,8 @@
      this->processKey(Key, Val, false, Ctx);
    }
  
@@ -215,7 +151,7 @@
                                Context &Ctx) {
      this->processKeyWithDefault(Key, Val, Default, false, Ctx);
    }
-@@ -766,8 +872,8 @@
+@@ -920,8 +980,8 @@
      }
    }
  
@@ -226,7 +162,7 @@
                               bool Required, Context &Ctx) {
      void *SaveInfo;
      bool UseDefault;
-@@ -830,12 +936,57 @@
+@@ -984,12 +1044,57 @@
    }
  }
  
@@ -287,7 +223,7 @@
      ScalarTraits<T>::output(Val, io.getContext(), Buffer);
      StringRef Str = Buffer.str();
      io.scalarString(Str, ScalarTraits<T>::mustQuote(Str));
-@@ -930,6 +1081,57 @@
+@@ -1123,6 +1228,57 @@
    char missing_yaml_trait_for_type[sizeof(MissingTrait<T>)];
  }
  
@@ -345,7 +281,7 @@
  template <typename T, typename Context>
  typename std::enable_if<has_SequenceTraits<T>::value, void>::type
  yamlize(IO &io, T &Seq, bool, Context &Ctx) {
-@@ -957,6 +1159,7 @@
+@@ -1150,6 +1306,7 @@
      }
      io.endSequence();
    }
@@ -353,7 +289,7 @@
  }
  
  template<>
-@@ -964,6 +1167,7 @@
+@@ -1157,6 +1314,7 @@
    static void output(const bool &, void* , raw_ostream &);
    static StringRef input(StringRef, void *, bool &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -361,7 +297,7 @@
  };
  
  template<>
-@@ -985,6 +1189,7 @@
+@@ -1178,6 +1336,7 @@
    static void output(const uint8_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, uint8_t &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -369,7 +305,7 @@
  };
  
  template<>
-@@ -992,6 +1197,7 @@
+@@ -1185,6 +1344,7 @@
    static void output(const uint16_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, uint16_t &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -377,7 +313,7 @@
  };
  
  template<>
-@@ -999,6 +1205,7 @@
+@@ -1192,6 +1352,7 @@
    static void output(const uint32_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, uint32_t &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -385,7 +321,7 @@
  };
  
  template<>
-@@ -1006,6 +1213,7 @@
+@@ -1199,6 +1360,7 @@
    static void output(const uint64_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, uint64_t &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -393,7 +329,7 @@
  };
  
  template<>
-@@ -1013,6 +1221,7 @@
+@@ -1206,6 +1368,7 @@
    static void output(const int8_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, int8_t &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -401,7 +337,7 @@
  };
  
  template<>
-@@ -1020,6 +1229,7 @@
+@@ -1213,6 +1376,7 @@
    static void output(const int16_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, int16_t &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -409,7 +345,7 @@
  };
  
  template<>
-@@ -1027,6 +1237,7 @@
+@@ -1220,6 +1384,7 @@
    static void output(const int32_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, int32_t &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -417,7 +353,7 @@
  };
  
  template<>
-@@ -1034,6 +1245,7 @@
+@@ -1227,6 +1392,7 @@
    static void output(const int64_t &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, int64_t &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -425,7 +361,7 @@
  };
  
  template<>
-@@ -1041,6 +1253,7 @@
+@@ -1234,6 +1400,7 @@
    static void output(const float &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, float &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -433,7 +369,7 @@
  };
  
  template<>
-@@ -1048,6 +1261,7 @@
+@@ -1241,6 +1408,7 @@
    static void output(const double &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, double &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -441,7 +377,7 @@
  };
  
  // For endian types, we just use the existing ScalarTraits for the underlying
-@@ -1200,6 +1414,8 @@
+@@ -1393,6 +1561,8 @@
    bool beginBitSetScalar(bool &) override;
    bool bitSetMatch(const char *, bool ) override;
    void endBitSetScalar() override;
@@ -449,8 +385,8 @@
 +  StringRef bitSetCaseUnmatched() override;
    void scalarString(StringRef &, QuotingType) override;
    void blockScalarString(StringRef &) override;
-   void setError(const Twine &message) override;
-@@ -1345,6 +1561,8 @@
+   void scalarTag(std::string &) override;
+@@ -1540,6 +1710,8 @@
    bool beginBitSetScalar(bool &) override;
    bool bitSetMatch(const char *, bool ) override;
    void endBitSetScalar() override;
@@ -458,8 +394,8 @@
 +  StringRef bitSetCaseUnmatched() override;
    void scalarString(StringRef &, QuotingType) override;
    void blockScalarString(StringRef &) override;
-   void setError(const Twine &message) override;
-@@ -1424,6 +1642,7 @@
+   void scalarTag(std::string &) override;
+@@ -1628,6 +1800,7 @@
    static void output(const Hex8 &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, Hex8 &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -467,7 +403,7 @@
  };
  
  template<>
-@@ -1431,6 +1650,7 @@
+@@ -1635,6 +1808,7 @@
    static void output(const Hex16 &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, Hex16 &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -475,7 +411,7 @@
  };
  
  template<>
-@@ -1438,6 +1658,7 @@
+@@ -1642,6 +1816,7 @@
    static void output(const Hex32 &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, Hex32 &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }
@@ -483,7 +419,7 @@
  };
  
  template<>
-@@ -1445,6 +1666,7 @@
+@@ -1649,6 +1824,7 @@
    static void output(const Hex64 &, void *, raw_ostream &);
    static StringRef input(StringRef, void *, Hex64 &);
    static QuotingType mustQuote(StringRef) { return QuotingType::None; }

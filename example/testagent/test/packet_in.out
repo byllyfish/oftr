@@ -3,7 +3,7 @@ type:            FEATURES_REQUEST
 xid:             0x00000001
 version:         0x01
 conn_id:         0x0000000000000001
-msg:             
+msg:             {}
 ...
 ---
 type:            SET_CONFIG
@@ -31,15 +31,15 @@ msg:
   out_port:        ANY
   out_group:       0x00000000
   flags:           [  ]
-  match:           
-  instructions:    
+  match:           []
+  instructions:    []
 ...
 ---
 type:            BARRIER_REQUEST
 xid:             0x00000004
 version:         0x01
 conn_id:         0x0000000000000001
-msg:             
+msg:             {}
 ...
 ---
 type:            PACKET_OUT
