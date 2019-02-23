@@ -20,8 +20,14 @@ int JsonRpc::run(int argc, const char *const *argv) {
     return runStdio();
 
   } else {
+    int existingFD = getSocketFD();
+    if (existingFD >= 0) {
+      // Communicate over specified file descriptor.
+      return runSocket(existingFD);
+    }
+
     // Communicate over unix domain socket.
-    return runUnixDomainSocket(rpcSocket_);
+    return runSocketServer(rpcSocket_);
   }
 }
 
@@ -63,7 +69,22 @@ int JsonRpc::runStdio() {
   return 0;
 }
 
-int JsonRpc::runUnixDomainSocket(const std::string &path) {
+int JsonRpc::runSocket(int socketFD) {
+  const Milliseconds metricInterval{metricInterval_};
+
+  rpc::RpcServer server{binaryProtocol_, metricInterval};
+  auto err = server.bind(socketFD);
+  if (err) {
+    log_error("Unix domain socket error:", err);
+    return static_cast<int>(ExitStatus::ListenFailed);
+  }
+
+  server.run();
+
+  return 0;
+}
+
+int JsonRpc::runSocketServer(const std::string &path) {
   const Milliseconds metricInterval{metricInterval_};
 
   rpc::RpcServer server{binaryProtocol_, metricInterval};
@@ -76,4 +97,17 @@ int JsonRpc::runUnixDomainSocket(const std::string &path) {
   server.run();
 
   return 0;
+}
+
+/// Return integer value of RPC socket path.
+/// Return -1 if value is not a positive integer.
+int JsonRpc::getSocketFD() const {
+  llvm::StringRef path{rpcSocket_};
+  int result = 0;
+
+  if (path.getAsInteger(10, result) || (result < 0)) {
+    return -1;
+  }
+
+  return result;
 }

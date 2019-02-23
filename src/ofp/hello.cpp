@@ -57,35 +57,35 @@ void HelloBuilder::setProtocolVersions(ProtocolVersions versions) {
 
 UInt32 HelloBuilder::send(Writable *channel) {
   // HelloRequest is the only message type that doesn't use the channel's
-  // version number. If the highest version number is 4, don't send any
-  // HelloElements; POX doesn't support the extended part of the Hello
-  // request.
+  // version number.
 
   Header &hdr = msg_.header_;
   UInt8 version = hdr.version();
+  ProtocolVersions versionsBitmap = ProtocolVersions::fromBitmap(bitmap_);
 
   if (version == 0) {
     // Infer header version from value of versions bitmap.
     // If versions bitmap is empty, use latest version with a bitmap of all
     // versions.
 
-    if (!bitmap_) {
+    if (versionsBitmap.empty()) {
       version = OFP_VERSION_LAST;
-      bitmap_ = ProtocolVersions::All.bitmap();
+      versionsBitmap = ProtocolVersions::All;
     } else {
-      version = ProtocolVersions::fromBitmap(bitmap_).highestVersion();
+      version = versionsBitmap.highestVersion();
     }
     hdr.setVersion(version);
 
-  } else if (version >= OFP_VERSION_4 && !bitmap_) {
+  } else if (version >= OFP_VERSION_4 && versionsBitmap.empty()) {
     // Version is 1.3 or later, but the bitmap is empty. Set bitmap to
     // contain just the header version.
-    bitmap_ = ProtocolVersions{version}.bitmap();
+    versionsBitmap = ProtocolVersions{version};
   }
 
   size_t msgLen = sizeof(msg_);
-  if (version >= OFP_VERSION_4) {
-    // Include our hello element.
+  if (versionsBitmap.includeInHelloMsg(version)) {
+    // Include our hello element only if multiple versions are supported.
+    bitmap_ = versionsBitmap.bitmap();
     msgLen += sizeof(elem_) + sizeof(bitmap_);
   }
 

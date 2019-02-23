@@ -41,7 +41,7 @@ rm $ofmessages_fail_out
 
 echo "Test ovs-messages.pass"
 ovs_messages_pass_out="$CURRENT_TEST_DIR/ovs-messages$$.pass.out"
-$LIBOFP_MEMCHECK $LIBOFP decode -kV --pkt-decode "$CURRENT_SOURCE_DIR/ovs-messages.pass" > $ovs_messages_pass_out 2>&1
+$LIBOFP_MEMCHECK $LIBOFP decode -kV --pkt-decode "tools/oftr/test/ovs-messages.pass" > $ovs_messages_pass_out 2>&1
 
 echo "Compare $ovs_messages_pass_out to $CURRENT_SOURCE_DIR/ovs-messages.pass.out"
 diff $ovs_messages_pass_out "$CURRENT_SOURCE_DIR/ovs-messages.pass.out"

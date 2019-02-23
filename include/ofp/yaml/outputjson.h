@@ -57,6 +57,11 @@ class OutputJson : public llvm::yaml::IO {
   void blockScalarString(llvm::StringRef &S) override {
     scalarString(S, llvm::yaml::QuotingType::Double);
   }
+  void scalarTag(std::string &Tag) override { assert(Tag.empty()); }
+
+  llvm::yaml::NodeKind getNodeKind() override {
+    llvm::report_fatal_error("invalid call");
+  }
 
   void setError(const llvm::Twine &message) override;
 

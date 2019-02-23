@@ -2,8 +2,7 @@
 type:            HELLO
 xid:             0x00000003
 version:         0x01
-msg:             
-  versions:        [  ]
+msg:             {}
 ...
 ---
 type:            FEATURES_REPLY
@@ -28,7 +27,7 @@ msg:
       peer:            [  ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
-      properties:      
+      properties:      []
     - port_no:         0x00000002
       hw_addr:         '4e:b2:b4:4c:9a:40'
       name:            s1-eth2
@@ -40,7 +39,7 @@ msg:
       peer:            [  ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
-      properties:      
+      properties:      []
     - port_no:         LOCAL
       hw_addr:         '02:69:3c:bf:39:47'
       name:            s1
@@ -52,7 +51,7 @@ msg:
       peer:            [  ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
-      properties:      
+      properties:      []
 ...
 ---
 type:            GET_CONFIG_REPLY
@@ -75,7 +74,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            3333FFB499BA02693CBF394786DD6000000000183AFF00000000000000000000000000000000FF0200000000000000000001FFB499BA87001E8D00000000FE80000000000000B4BC75FFFEB499BA
   _pkt:            
     - field:           ETH_DST
@@ -116,7 +115,7 @@ msg:
   peer:            [  ]
   curr_speed:      0x00000000
   max_speed:       0x00000000
-  properties:      
+  properties:      []
 ...
 ---
 type:            PACKET_IN
@@ -131,7 +130,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            3333FF00000200000000000286DD6000000000183AFF00000000000000000000000000000000FF0200000000000000000001FF00000287007B2300000000FE80000000000000020000FFFE000002
   _pkt:            
     - field:           ETH_DST
@@ -168,7 +167,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            3333FF00000100000000000186DD6000000000183AFF00000000000000000000000000000000FF0200000000000000000001FF00000187007B2500000000FE80000000000000020000FFFE000001
   _pkt:            
     - field:           ETH_DST
@@ -205,7 +204,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00156F0000000102000000FF0200000000000000000001FFB499BA
   _pkt:            
     - field:           ETH_DST
@@ -244,7 +243,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
   _pkt:            
     - field:           ETH_DST
@@ -281,7 +280,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000001600000000000286DD6000000000240001FE80000000000000020000FFFE000002FF0200000000000000000000000000163A000502000001008F0072050000000102000000FF0200000000000000000001FF000002
   _pkt:            
     - field:           ETH_DST
@@ -320,7 +319,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000000200000000000286DD6000000000103AFFFE80000000000000020000FFFE000002FF02000000000000000000000000000285007B2A000000000101000000000002
   _pkt:            
     - field:           ETH_DST
@@ -357,7 +356,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000001600000000000186DD6000000000240001FE80000000000000020000FFFE000001FF0200000000000000000000000000163A000502000001008F0072070000000102000000FF0200000000000000000001FF000001
   _pkt:            
     - field:           ETH_DST
@@ -396,7 +395,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000000200000000000186DD6000000000103AFFFE80000000000000020000FFFE000001FF02000000000000000000000000000285007B2C000000000101000000000001
   _pkt:            
     - field:           ETH_DST
@@ -433,7 +432,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            FFFFFFFFFFFF000000000001080600010800060400010000000000010A0000010000000000000A000002
   _pkt:            
     - field:           ETH_DST
@@ -466,7 +465,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            000000000001000000000002080600010800060400020000000000020A0000020000000000010A000001
   _pkt:            
     - field:           ETH_DST
@@ -499,7 +498,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            0A0027000000000000000002080600010800060400020000000000020A0000020A002700000000000000
   _pkt:            
     - field:           ETH_DST
@@ -532,7 +531,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            0000000000020000000000010800450000544B6840004001DB3E0A0000010A00000208007E0038D900016746EC53000000002DB8010000000000101112131415161718191A1B1C1D1E1F202122232425262728292A2B2C2D2E2F3031323334353637
   _pkt:            
     - field:           ETH_DST
@@ -560,16 +559,16 @@ msg:
 type:            BARRIER_REPLY
 xid:             0x36090809
 version:         0x01
-msg:             
+msg:             {}
 ...
 ---
 type:            BARRIER_REPLY
 xid:             0x3609080A
 version:         0x01
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x3609080B
 version:         0x01
@@ -579,7 +578,7 @@ msg:
   data:            00000000005800000000000011A49A00000100000000000E00010001000000000000000000000000000000000000000000000000000006020800000010040A000001000000050010000000000001000000000000000000080001FFFF0058000000000000111B45C0000100000000000E00010001000000000000000000000000000000000000000000000000000006020800000010040A000002000000050010000000000002000000000000000000080002FFFF
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0x3609080C
 version:         0x01
@@ -591,7 +590,7 @@ msg:
   dp_desc:         None
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x3609080D
 version:         0x01
@@ -610,7 +609,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000002
     duration:        0
     rx_packets:      0x0000000000000005
@@ -625,7 +624,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         LOCAL
     duration:        0
     rx_packets:      0x0000000000000004
@@ -640,10 +639,10 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0x3609080E
 version:         0x01
@@ -2440,7 +2439,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000001600000000000286DD6000000000240001FE80000000000000020000FFFE000002FF0200000000000000000000000000163A000502000001008F0072050000000102000000FF0200000000000000000001FF000002
   _pkt:            
     - field:           ETH_DST
@@ -2479,7 +2478,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000001600000000000286DD6000000000240001FE80000000000000020000FFFE000002FF0200000000000000000000000000163A000502000001008F0070050000000104000000FF0200000000000000000001FF000002
   _pkt:            
     - field:           ETH_DST
@@ -2518,7 +2517,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
   _pkt:            
     - field:           ETH_DST
@@ -2555,7 +2554,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00136F0000000104000000FF0200000000000000000001FFB499BA
   _pkt:            
     - field:           ETH_DST
@@ -2594,7 +2593,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000000200000000000286DD6000000000103AFFFE80000000000000020000FFFE000002FF02000000000000000000000000000285007B2A000000000101000000000002
   _pkt:            
     - field:           ETH_DST
@@ -2631,7 +2630,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000000200000000000186DD6000000000103AFFFE80000000000000020000FFFE000001FF02000000000000000000000000000285007B2C000000000101000000000001
   _pkt:            
     - field:           ETH_DST
@@ -2668,7 +2667,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000001602693CBF394786DD6000000000240001FE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000163A000502000001008F00156F0000000102000000FF0200000000000000000001FFB499BA
   _pkt:            
     - field:           ETH_DST
@@ -2695,7 +2694,7 @@ msg:
       value:           0x0042
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x36090819
 version:         0x01
@@ -2714,7 +2713,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000002
     duration:        0
     rx_packets:      0x000000000000000D
@@ -2729,7 +2728,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         LOCAL
     duration:        0
     rx_packets:      0x0000000000000007
@@ -2744,7 +2743,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
 ...
 ---
 type:            PACKET_IN
@@ -2759,7 +2758,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000001600000000000186DD6000000000240001FE80000000000000020000FFFE000001FF0200000000000000000000000000163A000502000001008F0070070000000104000000FF0200000000000000000001FF000001
   _pkt:            
     - field:           ETH_DST
@@ -2798,7 +2797,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            000000000001000000000002080600010800060400010000000000020A0000020000000000000A000001
   _pkt:            
     - field:           ETH_DST
@@ -2831,7 +2830,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000000202693CBF394786DD6000000000103AFFFE80000000000000B4BC75FFFEB499BAFF0200000000000000000000000000028500409300000000010102693CBF3947
   _pkt:            
     - field:           ETH_DST
@@ -2868,7 +2867,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000000200000000000286DD6000000000103AFFFE80000000000000020000FFFE000002FF02000000000000000000000000000285007B2A000000000101000000000002
   _pkt:            
     - field:           ETH_DST
@@ -2905,7 +2904,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000000200000000000186DD6000000000103AFFFE80000000000000020000FFFE000001FF02000000000000000000000000000285007B2C000000000101000000000001
   _pkt:            
     - field:           ETH_DST
@@ -2942,7 +2941,7 @@ msg:
   reason:          TABLE_MISS
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            33330000001600000000000186DD6000000000240001FE80000000000000020000FFFE000001FF0200000000000000000000000000163A000502000001008F0072070000000102000000FF0200000000000000000001FF000001
   _pkt:            
     - field:           ETH_DST
@@ -2969,7 +2968,7 @@ msg:
       value:           0x0042
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x36090821
 version:         0x01
@@ -2979,7 +2978,7 @@ msg:
   data:            00000000005800000000000A119557C0000100000000000E0003000B000000000000000000000000000000080000000000000310000006020800000010040A000001000000050010000000000001000000000000000000080001FFFF005800000000000A110C0380000100000000000E0003000B000000000000000000000000000000080000000000000310000006020800000010040A000002000000050010000000000002000000000000000000080002FFFF
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x36090822
 version:         0x01
@@ -2998,7 +2997,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000002
     duration:        0
     rx_packets:      0x0000000000000012
@@ -3013,7 +3012,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         LOCAL
     duration:        0
     rx_packets:      0x0000000000000008
@@ -3028,10 +3027,10 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0x36090823
 version:         0x01
@@ -4823,7 +4822,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x36090824
 version:         0x01
@@ -4842,7 +4841,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000002
     duration:        0
     rx_packets:      0x0000000000000012
@@ -4857,7 +4856,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         LOCAL
     duration:        0
     rx_packets:      0x0000000000000008
@@ -4872,7 +4871,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
 ...
 ---
 type:            ECHO_REQUEST
@@ -4882,7 +4881,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x36090825
 version:         0x01
@@ -4892,7 +4891,7 @@ msg:
   data:            00000000005800000000001411A49A00000100000000000E000D0015000000000000000000000000000000080000000000000310000006020800000010040A000001000000050010000000000001000000000000000000080001FFFF0058000000000014111B45C0000100000000000E000D0015000000000000000000000000000000080000000000000310000006020800000010040A000002000000050010000000000002000000000000000000080002FFFF
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x36090826
 version:         0x01
@@ -4911,7 +4910,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000002
     duration:        0
     rx_packets:      0x0000000000000012
@@ -4926,7 +4925,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         LOCAL
     duration:        0
     rx_packets:      0x0000000000000008
@@ -4941,10 +4940,10 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0x36090827
 version:         0x01
@@ -6736,7 +6735,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x36090828
 version:         0x01
@@ -6755,7 +6754,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000002
     duration:        0
     rx_packets:      0x0000000000000012
@@ -6770,7 +6769,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         LOCAL
     duration:        0
     rx_packets:      0x0000000000000008
@@ -6785,10 +6784,10 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x3609082C
 version:         0x01
@@ -6798,7 +6797,7 @@ msg:
   data:            00000000005800000000001E11A49A00000100000000000E0017001F000000000000000000000000000000080000000000000310000006020800000010040A000001000000050010000000000001000000000000000000080001FFFF005800000000001E111B45C0000100000000000E0017001F000000000000000000000000000000080000000000000310000006020800000010040A000002000000050010000000000002000000000000000000080002FFFF
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x3609082D
 version:         0x01
@@ -6817,7 +6816,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000002
     duration:        0
     rx_packets:      0x0000000000000012
@@ -6832,7 +6831,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         LOCAL
     duration:        0
     rx_packets:      0x0000000000000008
@@ -6847,10 +6846,10 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0x3609082E
 version:         0x01
@@ -8642,7 +8641,7 @@ msg:
   data:            ''
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x3609082F
 version:         0x01
@@ -8661,7 +8660,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000002
     duration:        0
     rx_packets:      0x0000000000000012
@@ -8676,7 +8675,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         LOCAL
     duration:        0
     rx_packets:      0x0000000000000008
@@ -8691,5 +8690,5 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
 ...

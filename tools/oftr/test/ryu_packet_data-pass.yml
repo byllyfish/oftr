@@ -71,7 +71,7 @@ msg:
   reason:          APPLY_ACTION
   table_id:        0x00
   cookie:          0x0000000000000000
-  match:           
+  match:           []
   data:            FFFFFFFFFFFFF20BA47DF8EA08060001080006040001F20BA47DF8EA0A0000010000000000000A000003
   _pkt:            
     - field:           ETH_DST
@@ -95,7 +95,7 @@ msg:
 type:            FEATURES_REQUEST
 xid:             0x00000000
 version:         0x01
-msg:             
+msg:             {}
 ...
 ---
 type:            FEATURES_REPLY
@@ -120,7 +120,7 @@ msg:
       peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
-      properties:      
+      properties:      []
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
@@ -132,10 +132,10 @@ msg:
       peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00000000
       max_speed:       0x00000000
-      properties:      
+      properties:      []
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -184,11 +184,10 @@ msg:
 type:            HELLO
 xid:             0x00000000
 version:         0x03
-msg:             
-  versions:        [  ]
+msg:             {}
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -198,10 +197,10 @@ msg:
   out_group:       ANY
   cookie:          0x0000000000000000
   cookie_mask:     0x0000000000000000
-  match:           
+  match:           []
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -215,8 +214,8 @@ msg:
     cookie:          0x0000000000000000
     packet_count:    0x0000000000000000
     byte_count:      0x0000000000000000
-    match:           
-    instructions:    
+    match:           []
+    instructions:    []
   - table_id:        0x00
     duration:        358.115055000
     priority:        0xFFFE
@@ -261,7 +260,7 @@ msg:
     cookie:          0x0000000000000000
     packet_count:    0x0000000000000001
     byte_count:      0x0000000000000062
-    match:           
+    match:           []
     instructions:    
       - instruction:     WRITE_ACTIONS
         actions:         
@@ -306,13 +305,13 @@ msg:
 type:            BARRIER_REQUEST
 xid:             0x00000000
 version:         0x03
-msg:             
+msg:             {}
 ...
 ---
 type:            BARRIER_REPLY
 xid:             0x00000000
 version:         0x03
-msg:             
+msg:             {}
 ...
 ---
 type:            ROLE_REQUEST
@@ -391,7 +390,7 @@ msg:
   config:          [  ]
   mask:            [  ]
   advertise:       [ FIBER ]
-  properties:      
+  properties:      []
 ...
 ---
 type:            TABLE_MOD
@@ -400,17 +399,17 @@ version:         0x03
 msg:             
   table_id:        ALL
   config:          [ TABLE_MISS_CONTROLLER ]
-  properties:      
+  properties:      []
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
-msg:             
+msg:             {}
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -420,10 +419,10 @@ msg:
   out_group:       ANY
   cookie:          0x0000000000000000
   cookie_mask:     0x0000000000000000
-  match:           
+  match:           []
 ...
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -433,14 +432,14 @@ msg:
   flow_count:      0x00000006
 ...
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
-msg:             
+msg:             {}
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -473,7 +472,7 @@ msg:
       table_id:        0x01
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -492,7 +491,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000006
     duration:        0
     rx_packets:      0x0000000000000004
@@ -507,17 +506,17 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
 ...
 ---
-type:            REQUEST.GROUP_FEATURES
+type:            GROUP_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.GROUP_FEATURES
+type:            GROUP_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -534,14 +533,14 @@ msg:
   actions_ff:      [ OUTPUT, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, SET_QUEUE, GROUP, SET_NW_TTL, DEC_NW_TTL, SET_FIELD ]
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -575,15 +574,15 @@ msg:
       port_no:         0x0000004D
       min_rate:        0x000A
       max_rate:        0x0384
-      properties:      
+      properties:      []
     - queue_id:        0x00000058
       port_no:         0x0000004D
       min_rate:        0x0064
       max_rate:        0x00C8
-      properties:      
+      properties:      []
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -592,7 +591,7 @@ msg:
   queue_id:        ALL
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x03
@@ -633,7 +632,7 @@ msg:
   peer:            [ 100MB_FD, COPPER, AUTONEG ]
   curr_speed:      0x00001388
   max_speed:       0x00001388
-  properties:      
+  properties:      []
 ...
 ---
 type:            PACKET_IN
@@ -716,7 +715,7 @@ msg:
 type:            FEATURES_REQUEST
 xid:             0x00000000
 version:         0x03
-msg:             
+msg:             {}
 ...
 ---
 type:            PACKET_IN
@@ -803,7 +802,7 @@ msg:
     - field:           MPLS_TC
       value:           0x05
   data:            ''
-  _pkt:            
+  _pkt:            []
 ...
 ---
 type:            FEATURES_REPLY
@@ -827,7 +826,7 @@ msg:
       peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00001388
       max_speed:       0x00001388
-      properties:      
+      properties:      []
     - port_no:         0x00000006
       hw_addr:         'f2:0b:a4:7d:f8:ea'
       name:            Port6
@@ -839,7 +838,7 @@ msg:
       peer:            [ 100MB_FD, COPPER, AUTONEG ]
       curr_speed:      0x00001388
       max_speed:       0x00001388
-      properties:      
+      properties:      []
 ...
 ---
 type:            FLOW_MOD
@@ -928,7 +927,7 @@ msg:
       value:           0x00098765
     - field:           MPLS_TC
       value:           0x05
-  instructions:    
+  instructions:    []
 ...
 ---
 type:            SET_CONFIG
@@ -942,7 +941,7 @@ msg:
 type:            GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x03
-msg:             
+msg:             {}
 ...
 ---
 type:            GET_CONFIG_REPLY
@@ -953,7 +952,7 @@ msg:
   miss_send_len:   0x0080
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1006,7 +1005,7 @@ msg:
   versions:        [ 1, 2, 3, 9, 10, 30 ]
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1016,10 +1015,10 @@ msg:
   out_group:       ANY
   cookie:          0x0000000000000000
   cookie_mask:     0x0000000000000000
-  match:           
+  match:           []
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1033,8 +1032,8 @@ msg:
     cookie:          0x0000000000000000
     packet_count:    0x0000000000000000
     byte_count:      0x0000000000000000
-    match:           
-    instructions:    
+    match:           []
+    instructions:    []
   - table_id:        0x00
     duration:        358.115055000
     priority:        0xFFFE
@@ -1079,7 +1078,7 @@ msg:
     cookie:          0x0000000000000000
     packet_count:    0x0000000000000001
     byte_count:      0x0000000000000062
-    match:           
+    match:           []
     instructions:    
       - instruction:     WRITE_ACTIONS
         actions:         
@@ -1163,13 +1162,13 @@ msg:
 type:            BARRIER_REQUEST
 xid:             0x00000000
 version:         0x04
-msg:             
+msg:             {}
 ...
 ---
 type:            BARRIER_REPLY
 xid:             0x00000000
 version:         0x04
-msg:             
+msg:             {}
 ...
 ---
 type:            ROLE_REQUEST
@@ -1274,7 +1273,7 @@ msg:
   config:          [  ]
   mask:            [  ]
   advertise:       [ FIBER ]
-  properties:      
+  properties:      []
 ...
 ---
 type:            TABLE_MOD
@@ -1283,17 +1282,17 @@ version:         0x04
 msg:             
   table_id:        ALL
   config:          [  ]
-  properties:      
+  properties:      []
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
-msg:             
+msg:             {}
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1303,10 +1302,10 @@ msg:
   out_group:       ANY
   cookie:          0x0000000000000000
   cookie_mask:     0x0000000000000000
-  match:           
+  match:           []
 ...
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1316,14 +1315,14 @@ msg:
   flow_count:      0x00000006
 ...
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.TABLE_STATS
+type:            TABLE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1344,7 +1343,7 @@ msg:
     matched_count:   0x0000000000000004
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1377,7 +1376,7 @@ msg:
       table_id:        0x01
 ...
 ---
-type:            REPLY.PORT_STATS
+type:            PORT_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1396,7 +1395,7 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
   - port_no:         0x00000006
     duration:        0
     rx_packets:      0x0000000000000004
@@ -1411,17 +1410,17 @@ msg:
     rx_over_err:     0x0000000000000000
     rx_crc_err:      0x0000000000000000
     collisions:      0x0000000000000000
-    properties:      
+    properties:      []
 ...
 ---
-type:            REQUEST.GROUP_FEATURES
+type:            GROUP_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.GROUP_FEATURES
+type:            GROUP_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1438,14 +1437,14 @@ msg:
   actions_ff:      [ OUTPUT, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, SET_QUEUE, GROUP, SET_NW_TTL, DEC_NW_TTL, SET_FIELD ]
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1479,15 +1478,15 @@ msg:
       port_no:         0x0000004D
       min_rate:        0x000A
       max_rate:        0x0384
-      properties:      
+      properties:      []
     - queue_id:        0x00000058
       port_no:         0x0000004D
       min_rate:        0x0064
       max_rate:        0x00C8
-      properties:      
+      properties:      []
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1496,7 +1495,7 @@ msg:
   queue_id:        ALL
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1537,7 +1536,7 @@ msg:
   peer:            [ 100MB_FD, COPPER, AUTONEG ]
   curr_speed:      0x00001388
   max_speed:       0x00001388
-  properties:      
+  properties:      []
 ...
 ---
 type:            PACKET_IN
@@ -1620,7 +1619,7 @@ msg:
 type:            GET_ASYNC_REQUEST
 xid:             0x00000000
 version:         0x04
-msg:             
+msg:             {}
 ...
 ---
 type:            GET_ASYNC_REPLY
@@ -1633,7 +1632,7 @@ msg:
   port_status_master: [ ADD, DELETE, MODIFY ]
   flow_removed_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT ]
   flow_removed_master: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, GROUP_DELETE ]
-  properties:      
+  properties:      []
 ...
 ---
 type:            SET_ASYNC
@@ -1646,7 +1645,7 @@ msg:
   port_status_master: [ ADD, DELETE, MODIFY ]
   flow_removed_slave: [ IDLE_TIMEOUT, HARD_TIMEOUT ]
   flow_removed_master: [ IDLE_TIMEOUT, HARD_TIMEOUT, DELETE, GROUP_DELETE ]
-  properties:      
+  properties:      []
 ...
 ---
 type:            METER_MOD
@@ -1698,7 +1697,7 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            REQUEST.METER_CONFIG
+type:            METER_CONFIG_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1706,7 +1705,7 @@ msg:
   meter_id:        ALL
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1719,7 +1718,7 @@ msg:
         burst_size:      0x0000000A
 ...
 ---
-type:            REQUEST.METER_STATS
+type:            METER_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1730,10 +1729,10 @@ msg:
 type:            FEATURES_REQUEST
 xid:             0x00000000
 version:         0x04
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1748,14 +1747,14 @@ msg:
         byte_count:      0x0000000000000000
 ...
 ---
-type:            REQUEST.METER_FEATURES
+type:            METER_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.METER_FEATURES
+type:            METER_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1767,14 +1766,14 @@ msg:
   max_color:       0x00
 ...
 ---
-type:            REQUEST.PORT_DESC
+type:            PORT_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.PORT_DESC
+type:            PORT_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -1790,7 +1789,7 @@ msg:
     peer:            [ 100MB_FD, COPPER, AUTONEG ]
     curr_speed:      0x00001388
     max_speed:       0x00001388
-    properties:      
+    properties:      []
   - port_no:         0x00000006
     hw_addr:         'f2:0b:a4:7d:f8:ea'
     name:            Port6
@@ -1802,10 +1801,10 @@ msg:
     peer:            [ 100MB_FD, COPPER, AUTONEG ]
     curr_speed:      0x00001388
     max_speed:       0x00001388
-    properties:      
+    properties:      []
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [ MORE ]
 xid:             0x00000000
 version:         0x04
@@ -1983,7 +1982,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x02
     name:            Flow Table 0x02
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2064,7 +2063,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x03
     name:            Flow Table 0x03
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2145,7 +2144,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x04
     name:            Flow Table 0x04
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2226,7 +2225,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x05
     name:            Flow Table 0x05
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2307,7 +2306,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x06
     name:            Flow Table 0x06
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2388,7 +2387,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x07
     name:            Flow Table 0x07
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2469,7 +2468,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x08
     name:            Flow Table 0x08
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2549,7 +2548,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x09
     name:            Flow Table 0x09
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2629,10 +2628,10 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00000000
 version:         0x04
@@ -2810,7 +2809,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x02
     name:            Flow Table 0x02
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2891,7 +2890,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x03
     name:            Flow Table 0x03
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -2972,7 +2971,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x04
     name:            Flow Table 0x04
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3053,7 +3052,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x05
     name:            Flow Table 0x05
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3134,7 +3133,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x06
     name:            Flow Table 0x06
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3215,7 +3214,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x07
     name:            Flow Table 0x07
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3296,7 +3295,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x08
     name:            Flow Table 0x08
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3376,7 +3375,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x09
     name:            Flow Table 0x09
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -3456,10 +3455,10 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
 ...
 ---
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3467,7 +3466,7 @@ msg:
   group_id:        ALL
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3576,7 +3575,7 @@ msg:
     - field:           0xFFFF0007.0x4F4E4600
       value:           0A0001
   data:            ''
-  _pkt:            
+  _pkt:            []
 ...
 ---
 type:            FEATURES_REPLY
@@ -3588,7 +3587,7 @@ msg:
   n_tables:        0xFF
   auxiliary_id:    0x63
   capabilities:    [ FLOW_STATS, TABLE_STATS, PORT_STATS, GROUP_STATS, QUEUE_STATS ]
-  ports:           
+  ports:           []
 ...
 ---
 type:            FLOW_MOD
@@ -3687,10 +3686,10 @@ msg:
       value:           0x01F4
     - field:           0xFFFF0007.0x4F4E4600
       value:           0A0001
-  instructions:    
+  instructions:    []
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3700,7 +3699,7 @@ msg:
   data:            686F6765686F6765
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3710,7 +3709,7 @@ msg:
   data:            74657374646174613939393939393939
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x04
@@ -3731,7 +3730,7 @@ msg:
 type:            GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x04
-msg:             
+msg:             {}
 ...
 ---
 type:            GET_CONFIG_REPLY
@@ -3742,7 +3741,7 @@ msg:
   miss_send_len:   0x0080
 ...
 ---
-type:            REPLY.DESC
+type:            DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -3795,7 +3794,7 @@ msg:
   versions:        [ 1, 2, 3, 9, 10, 30 ]
 ...
 ---
-type:            REQUEST.FLOW_DESC
+type:            FLOW_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -3805,10 +3804,10 @@ msg:
   out_group:       ANY
   cookie:          0x0000000000000000
   cookie_mask:     0x0000000000000000
-  match:           
+  match:           []
 ...
 ---
-type:            REPLY.FLOW_DESC
+type:            FLOW_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -3822,8 +3821,8 @@ msg:
     cookie:          0x0000000000000000
     packet_count:    0x0000000000000000
     byte_count:      0x0000000000000000
-    match:           
-    instructions:    
+    match:           []
+    instructions:    []
   - table_id:        0x00
     duration:        358.115055000
     priority:        0xFFFE
@@ -3868,7 +3867,7 @@ msg:
     cookie:          0x0000000000000000
     packet_count:    0x0000000000000001
     byte_count:      0x0000000000000062
-    match:           
+    match:           []
     instructions:    
       - instruction:     WRITE_ACTIONS
         actions:         
@@ -3952,13 +3951,13 @@ msg:
 type:            BARRIER_REQUEST
 xid:             0x00000000
 version:         0x05
-msg:             
+msg:             {}
 ...
 ---
 type:            BARRIER_REPLY
 xid:             0x00000000
 version:         0x05
-msg:             
+msg:             {}
 ...
 ---
 type:            ROLE_REQUEST
@@ -4056,14 +4055,14 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            REQUEST.DESC
+type:            DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
-msg:             
+msg:             {}
 ...
 ---
-type:            REQUEST.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4073,10 +4072,10 @@ msg:
   out_group:       ANY
   cookie:          0x0000000000000000
   cookie_mask:     0x0000000000000000
-  match:           
+  match:           []
 ...
 ---
-type:            REPLY.AGGREGATE_STATS
+type:            AGGREGATE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4086,14 +4085,14 @@ msg:
   flow_count:      0x00000006
 ...
 ---
-type:            REQUEST.TABLE_STATS
+type:            TABLE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
-msg:             
+msg:             {}
 ...
 ---
-type:            REQUEST.PORT_STATS
+type:            PORT_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4126,14 +4125,14 @@ msg:
       table_id:        0x01
 ...
 ---
-type:            REQUEST.GROUP_FEATURES
+type:            GROUP_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.GROUP_FEATURES
+type:            GROUP_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4150,14 +4149,14 @@ msg:
   actions_ff:      [ OUTPUT, COPY_TTL_OUT, COPY_TTL_IN, SET_MPLS_TTL, DEC_MPLS_TTL, PUSH_VLAN, POP_VLAN, PUSH_MPLS, POP_MPLS, SET_QUEUE, GROUP, SET_NW_TTL, DEC_NW_TTL, SET_FIELD ]
 ...
 ---
-type:            REQUEST.GROUP_DESC
+type:            GROUP_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.GROUP_DESC
+type:            GROUP_DESC_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4174,7 +4173,7 @@ msg:
             max_len:         NO_BUFFER
 ...
 ---
-type:            REQUEST.QUEUE_STATS
+type:            QUEUE_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4183,7 +4182,7 @@ msg:
   queue_id:        ALL
 ...
 ---
-type:            REPLY.QUEUE_STATS
+type:            QUEUE_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4300,7 +4299,7 @@ msg:
 type:            GET_ASYNC_REQUEST
 xid:             0x00000000
 version:         0x05
-msg:             
+msg:             {}
 ...
 ---
 type:            METER_MOD
@@ -4352,7 +4351,7 @@ msg:
           max_len:         NO_BUFFER
 ...
 ---
-type:            REQUEST.METER_CONFIG
+type:            METER_CONFIG_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4360,7 +4359,7 @@ msg:
   meter_id:        ALL
 ...
 ---
-type:            REPLY.METER_CONFIG
+type:            METER_CONFIG_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4373,7 +4372,7 @@ msg:
         burst_size:      0x0000000A
 ...
 ---
-type:            REQUEST.METER_STATS
+type:            METER_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4381,7 +4380,7 @@ msg:
   meter_id:        ALL
 ...
 ---
-type:            REPLY.METER_STATS
+type:            METER_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4396,20 +4395,20 @@ msg:
         byte_count:      0x0000000000000000
 ...
 ---
-type:            REQUEST.METER_FEATURES
+type:            METER_FEATURES_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
-msg:             
+msg:             {}
 ...
 ---
 type:            FEATURES_REQUEST
 xid:             0x00000000
 version:         0x05
-msg:             
+msg:             {}
 ...
 ---
-type:            REPLY.METER_FEATURES
+type:            METER_FEATURES_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -4421,14 +4420,14 @@ msg:
   max_color:       0x00
 ...
 ---
-type:            REQUEST.PORT_DESC
+type:            PORT_DESC_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
-msg:             
+msg:             {}
 ...
 ---
-type:            REQUEST.TABLE_FEATURES
+type:            TABLE_FEATURES_REQUEST
 flags:           [ MORE ]
 xid:             0x00000000
 version:         0x05
@@ -4606,7 +4605,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x02
     name:            Flow Table 0x02
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4687,7 +4686,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x03
     name:            Flow Table 0x03
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4768,7 +4767,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x04
     name:            Flow Table 0x04
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4849,7 +4848,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x05
     name:            Flow Table 0x05
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -4930,7 +4929,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x06
     name:            Flow Table 0x06
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5011,7 +5010,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x07
     name:            Flow Table 0x07
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5092,7 +5091,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x08
     name:            Flow Table 0x08
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5172,7 +5171,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x09
     name:            Flow Table 0x09
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5252,10 +5251,10 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
 ...
 ---
-type:            REPLY.TABLE_FEATURES
+type:            TABLE_FEATURES_REPLY
 flags:           [ MORE ]
 xid:             0x00000000
 version:         0x05
@@ -5433,7 +5432,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x02
     name:            Flow Table 0x02
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5514,7 +5513,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x03
     name:            Flow Table 0x03
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5595,7 +5594,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x04
     name:            Flow Table 0x04
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5676,7 +5675,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x05
     name:            Flow Table 0x05
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5757,7 +5756,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x06
     name:            Flow Table 0x06
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5838,7 +5837,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x07
     name:            Flow Table 0x07
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5919,7 +5918,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x08
     name:            Flow Table 0x08
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -5999,7 +5998,7 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
   - table_id:        0x09
     name:            Flow Table 0x09
     metadata_match:  0xFFFFFFFFFFFFFFFF
@@ -6079,10 +6078,10 @@ msg:
                        '~ICMPV6_CODE', '~IPV6_ND_TARGET', '~IPV6_ND_SLL', 
                        '~IPV6_ND_TLL', '~MPLS_LABEL', '~MPLS_TC', '~MPLS_BOS', 
                        '~PBB_ISID' ]
-    properties:      
+    properties:      []
 ...
 ---
-type:            REQUEST.GROUP_STATS
+type:            GROUP_STATS_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -6090,7 +6089,7 @@ msg:
   group_id:        ALL
 ...
 ---
-type:            REPLY.GROUP_STATS
+type:            GROUP_STATS_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -6199,7 +6198,7 @@ msg:
     - field:           PBB_UCA
       value:           0x01
   data:            ''
-  _pkt:            
+  _pkt:            []
 ...
 ---
 type:            FLOW_MOD
@@ -6298,10 +6297,10 @@ msg:
       value:           0x01F4
     - field:           PBB_UCA
       value:           0x01
-  instructions:    
+  instructions:    []
 ...
 ---
-type:            REQUEST.EXPERIMENTER
+type:            EXPERIMENTER_REQUEST
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -6320,10 +6319,10 @@ msg:
   n_tables:        0xFF
   auxiliary_id:    0x63
   capabilities:    [ FLOW_STATS, TABLE_STATS, PORT_STATS, GROUP_STATS, QUEUE_STATS ]
-  ports:           
+  ports:           []
 ...
 ---
-type:            REPLY.EXPERIMENTER
+type:            EXPERIMENTER_REPLY
 flags:           [  ]
 xid:             0x00000000
 version:         0x05
@@ -6344,7 +6343,7 @@ msg:
 type:            GET_CONFIG_REQUEST
 xid:             0x00000000
 version:         0x05
-msg:             
+msg:             {}
 ...
 ---
 type:            GET_CONFIG_REPLY

@@ -41,6 +41,27 @@ std::error_code RpcServer::bind(int inputFD, int outputFD) {
   return {};
 }
 
+std::error_code RpcServer::bind(int socketFD) {
+  log::fatal_if_false(socketFD >= 0, "socketFD >= 0");
+
+  // Verify that socketFD is a socket descriptor.
+  std::error_code err;
+  err = verifySocketFD(socketFD);
+  if (err) {
+    return err;
+  }
+
+  socket_.assign(sys::unix_domain(), socketFD, err);
+  if (err) {
+    return err;
+  }
+
+  auto conn = std::make_shared<RpcConnectionUnix>(this, std::move(socket_),
+                                                  binaryProtocol_);
+  conn->asyncAccept();
+  return {};
+}
+
 std::error_code RpcServer::bind(const std::string &listenPath) {
   auto endpt = sys::unix_domain::endpoint(listenPath);
 
@@ -143,9 +164,9 @@ void RpcServer::onRpcListen(RpcConnection *conn, RpcListen *open) {
     versions = ProtocolVersions::All;
 
   std::error_code err;
-  UInt64 connId =
-      engine_->listen(options, securityId, endpt, versions,
-                      [this]() { return new RpcChannelListener{this}; }, err);
+  UInt64 connId = engine_->listen(
+      options, securityId, endpt, versions,
+      [this]() { return new RpcChannelListener{this}; }, err);
 
   if (open->id.is_missing())
     return;
@@ -200,12 +221,13 @@ void RpcServer::onRpcConnect(RpcConnection *conn, RpcConnect *connect) {
     versions = ProtocolVersions::All;
 
   auto connPtr = conn->shared_from_this();
-  engine_->connect(options, securityId, endpt, versions,
-                   [this]() { return new RpcChannelListener{this}; },
-                   [connPtr, id](Channel *channel, std::error_code err) {
-                     UInt64 connId = channel ? channel->connectionId() : 0;
-                     connectResponse(connPtr.get(), id, connId, err);
-                   });
+  engine_->connect(
+      options, securityId, endpt, versions,
+      [this]() { return new RpcChannelListener{this}; },
+      [connPtr, id](Channel *channel, std::error_code err) {
+        UInt64 connId = channel ? channel->connectionId() : 0;
+        connectResponse(connPtr.get(), id, connId, err);
+      });
 }
 
 void RpcServer::onRpcClose(RpcConnection *conn, RpcClose *close) {
@@ -483,4 +505,24 @@ void RpcServer::deleteFile(const std::string &listenPath) {
       log_warning("RpcServer::deleteFile: file is not a socket:", listenPath);
     }
   }
+}
+
+/// Verify that socketFD is a socket descriptor.
+std::error_code RpcServer::verifySocketFD(int socketFD) const {
+  std::error_code err;
+
+  struct stat buf;
+  if (::fstat(socketFD, &buf) >= 0) {
+    if (!S_ISSOCK(buf.st_mode)) {
+      err = std::make_error_code(std::errc::not_a_socket);
+    }
+  } else {
+    err = {errno, std::generic_category()};
+  }
+
+  if (err) {
+    log_error("RpcServer::verifySocketFD", err);
+  }
+
+  return err;
 }

@@ -1,5 +1,5 @@
---- ../../../llvm_git/llvm/lib/Support/YAMLParser.cpp	2018-06-23 19:55:22.000000000 -0700
-+++ ./src/Support/YAMLParser.cpp	2018-06-27 21:30:37.000000000 -0700
+--- ../../../llvm_git/llvm/lib/Support/YAMLParser.cpp	2018-12-22 13:28:05.000000000 -0700
++++ ./src/Support/YAMLParser.cpp	2018-12-22 14:03:44.000000000 -0700
 @@ -933,12 +933,13 @@
  }
  

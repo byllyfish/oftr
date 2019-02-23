@@ -59,7 +59,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # Set the version number of the library (use semantic versioning).
 
-set(Libofp_VERSION 0.53.0)
+set(Libofp_VERSION 0.55.0)
 set(Libofp_GITHUB_URL "https://github.com/byllyfish/oftr")
 set(Libofp_MAINTAINER_EMAIL "William W. Fisher <william.w.fisher@gmail.com>")
 set(Libofp_COMPILER_SPEC "${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
@@ -592,7 +592,6 @@ set(CMAKE_C_FLAGS "${LIBOFP_C_FLAGS} ${LIBOFP_SYSTEM_WARNINGS}")
 
 # Add subdirectories of third party projects.
 
-add_subdirectory(external/yaml-io)
 if(LIBOFP_ENABLE_OPENSSL AND LIBOFP_USE_BORINGSSL)
   # Boringssl uses the __FILE__ predefined macro in "openssl/err.h". Redefine
   # __FILE__ to __func__ just for boringssl. (TODO)
@@ -604,7 +603,13 @@ if(LIBOFP_ENABLE_OPENSSL AND LIBOFP_USE_BORINGSSL)
   add_subdirectory(external/boringssl)
 endif()
 
-# Modify flags for compiling our code. Here, we change the warning flags to
+# Add coverage flags when compiling yaml-io (if coverage is enabled).
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LIBOFP_COVERAGE}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${LIBOFP_COVERAGE}")
+add_subdirectory(external/yaml-io)
+
+# Reset flags for compiling our code. Here, we change the warning flags to
 # our own super picky set (-Weverything minus a few).
 
 set(CMAKE_CXX_FLAGS "${LIBOFP_CXX_FLAGS} ${LIBOFP_WARNINGS} ${LIBOFP_DEFINES} ${LIBOFP_COVERAGE} ${LIBOFP_FSANITIZE}")
@@ -723,8 +728,13 @@ add_custom_target(clang-tidy
 
 
 # Run unit tests for boringssl.
+# The unit tests require golang 1.11 or later.
 
-if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+execute_process(COMMAND go version OUTPUT_VARIABLE Libofp_GO_VERSION_FULL)
+string(REGEX REPLACE "[^0-9]+([0-9]+\\.[0-9]+).+" "\\1" Libofp_GO_VERSION "${Libofp_GO_VERSION_FULL}")
+
+if(NOT CMAKE_BUILD_TYPE MATCHES "Debug" AND "${Libofp_GO_VERSION}" VERSION_GREATER_EQUAL "1.11")
+  message(STATUS "Add boringssl-all-tests; go version is ${Libofp_GO_VERSION}")
   add_test(
     NAME boringssl-all-tests 
     COMMAND go run util/all_tests.go -build-dir "${CMAKE_BINARY_DIR}/external/boringssl/"

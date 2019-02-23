@@ -53,20 +53,27 @@ UInt8 ProtocolVersions::negotiateVersion(UInt8 msgVersion,
   return 0;
 }
 
-bool ProtocolVersions::isOnlyOneVersionSupported() const {
-  UInt32 bits = bitmap_;
-  if (bits == 0)
+/// Return true if we should include the versions bitmap in a Hello
+/// message.
+bool ProtocolVersions::includeInHelloMsg(UInt8 version) const {
+  // Hello element was only added in version 1.3.
+  if (version < OFP_VERSION_4) {
     return false;
-
-  while ((bits & 0x01) == 0) {
-    bits >>= 1;
   }
 
-  return (bits == 1);
-}
+  // If bitmap *only* contains `version`, don't include hello versions.
+  if (bitmap_ == (1U << version)) {
+    return false;
+  }
 
-bool ProtocolVersions::containsVersion(UInt8 version) const {
-  return ((bitmap_ >> version) & 1);
+  // If bitmap contains *all* versions <= `version`, don't include hello
+  // versions.
+  UInt32 allVersions = (1 << (version + 1)) - 2;
+  if (bitmap_ == allVersions) {
+    return false;
+  }
+
+  return true;
 }
 
 std::vector<UInt8> ProtocolVersions::versions() const {

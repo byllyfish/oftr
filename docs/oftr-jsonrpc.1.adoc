@@ -24,8 +24,8 @@ oftr-jsonrpc - OpenFlow Microservice
 == DESCRIPTION
 
 The *oftr jsonrpc* tool runs a JSON-RPC service that enables programmatic 
-control of the OpenFlow protocol. The control connection runs overs stdin/stdout. 
-All text uses UTF-8 encoding.
+control of the OpenFlow protocol. The control connection runs overs stdin/stdout or
+a unix domain socket. All text uses UTF-8 encoding.
 
 The control connection reads JSON messages from stdin, each one separated by a NUL (0x00)
 character. The maximum length of a message, including the NUL, is 1 megabyte. The message
@@ -40,6 +40,18 @@ The jsonrpc service is a JSON-RPC 2.0 server (http://www.jsonrpc.org/).
   However, message delivery failure may elicit a notification (see OFP.MESSAGE).
 - Replies may be returned in a different order than requests are submitted.
 - Batch requests are not supported.
+
+== OPTIONS
+
+*-h, --help*::
+    Print out usage information for the command.
+
+*--binary-protocol*::
+    Use binary frame protocol.
+
+*--rpc-socket*='FILE'::
+    Listen on unix domain socket.
+
 
 == Connection Management
 

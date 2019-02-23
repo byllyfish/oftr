@@ -28,17 +28,20 @@ MacAddress DatapathID::macAddress() const {
 }
 
 bool DatapathID::parse(llvm::StringRef s) {
-  // Check if string is a hexadecimal number: "0xHH".
-  if (s.consume_front("0x")) {
-    UInt64 n;
-    if (s.getAsInteger<UInt64>(16, n))
-      return false;
+  // Check for colon delimited hex format: "hh:hh:hh:hh:hh:hh:hh:hh"
+  if (HexDelimitedToRawData(s, dpid_.data(), dpid_.size()) == dpid_.size()) {
+    return true;
+  }
+
+  // Check if string is a decimal or hexadecimal number (0x).
+  UInt64 n;
+  if (!s.getAsInteger<UInt64>(0, n)) {
     Big64 val = n;
     std::memcpy(&dpid_, &val, sizeof(dpid_));
     return true;
   }
 
-  return HexDelimitedToRawData(s, dpid_.data(), dpid_.size()) == dpid_.size();
+  return false;
 }
 
 namespace ofp {
