@@ -733,12 +733,14 @@ add_custom_target(clang-tidy
 execute_process(COMMAND go version OUTPUT_VARIABLE Libofp_GO_VERSION_FULL)
 string(REGEX REPLACE "[^0-9]+([0-9]+\\.[0-9]+).+" "\\1" Libofp_GO_VERSION "${Libofp_GO_VERSION_FULL}")
 
-if(NOT CMAKE_BUILD_TYPE MATCHES "Debug" AND "${Libofp_GO_VERSION}" VERSION_GREATER_EQUAL "1.11")
-  message(STATUS "Add boringssl-all-tests; go version is ${Libofp_GO_VERSION}")
-  add_test(
-    NAME boringssl-all-tests 
-    COMMAND go run util/all_tests.go -build-dir "${CMAKE_BINARY_DIR}/external/boringssl/"
-    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/external/boringssl"
-  )
-  set_tests_properties(boringssl-all-tests PROPERTIES TIMEOUT 300)
+if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+  if(NOT Libofp_GO_VERSION VERSION_LESS "1.11")
+    message(STATUS "Add boringssl-all-tests; go version is ${Libofp_GO_VERSION}")
+    add_test(
+      NAME boringssl-all-tests 
+      COMMAND go run util/all_tests.go -build-dir "${CMAKE_BINARY_DIR}/external/boringssl/"
+      WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/external/boringssl"
+    )
+    set_tests_properties(boringssl-all-tests PROPERTIES TIMEOUT 300)
+  endif()
 endif()
