@@ -356,7 +356,6 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/sys/defaulthandshake.cpp
     src/ofp/sys/engine.cpp
     src/ofp/sys/tcp_server.cpp
-    src/ofp/sys/udp_server.cpp
     src/ofp/rpc/rpcchannellistener.cpp
     src/ofp/rpc/rpcconnection.cpp
     src/ofp/rpc/rpcconnectionstdio.cpp
@@ -372,8 +371,6 @@ if(LIBOFP_ENABLE_JSONRPC)
   if(LIBOFP_ENABLE_OPENSSL)
     set(LIBOFP_SOURCES
       ${LIBOFP_SOURCES}
-      src/ofp/sys/dtls_adapter.cpp
-      src/ofp/sys/dtls_utils.cpp
       src/ofp/sys/identity.cpp
       src/ofp/sys/securitycheck.cpp
     )

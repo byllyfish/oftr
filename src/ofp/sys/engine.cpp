@@ -5,7 +5,6 @@
 #include "ofp/log.h"
 #include "ofp/sys/tcp_connection.h"
 #include "ofp/sys/tcp_server.h"
-#include "ofp/sys/udp_server.h"
 
 using namespace ofp;
 using namespace ofp::sys;
@@ -57,14 +56,6 @@ UInt64 Engine::connect(
 
   UInt64 connId = 0;
 
-  // Check for CONNECT_UDP option.
-  if ((options & ChannelOptions::CONNECT_UDP) != 0) {
-    std::error_code error;
-    connId = connectUDP(securityId, remoteEndpoint, listenerFactory, error);
-    resultHandler(nullptr, error);
-    return connId;
-  }
-
   if (securityId != 0) {
     connId = TCP_AsyncConnect<EncryptedSocket>(this, options, securityId,
                                                versions, listenerFactory,
@@ -74,26 +65,6 @@ UInt64 Engine::connect(
     connId = TCP_AsyncConnect<PlaintextSocket>(this, options, securityId,
                                                versions, listenerFactory,
                                                remoteEndpoint, resultHandler);
-  }
-
-  return connId;
-}
-
-UInt64 Engine::connectUDP(UInt64 securityId, const IPv6Endpoint &remoteEndpoint,
-                          ChannelListener::Factory listenerFactory,
-                          std::error_code &error) {
-  UInt64 connId = 0;
-
-  if (!udpConnect_) {
-    udpConnect_ = UDP_Server::create(this, error);
-    if (error) {
-      udpConnect_.reset();
-    }
-  }
-
-  if (udpConnect_) {
-    connId = udpConnect_->connect(remoteEndpoint, securityId, listenerFactory,
-                                  error);
   }
 
   return connId;
@@ -129,7 +100,7 @@ size_t Engine::close(UInt64 connId, const DatapathID &dpid) {
 
 size_t Engine::closeAll() {
   // Close all servers and connections.
-  size_t result = serverList_.size() + connList_.size() + (udpConnect_ ? 1 : 0);
+  size_t result = serverList_.size() + connList_.size();
   if (result == 0)
     return 0;
 
@@ -148,11 +119,6 @@ size_t Engine::closeAll() {
     if (conn->flags() & Connection::kManualDelete) {
       delete conn;
     }
-  }
-
-  if (udpConnect_) {
-    udpConnect_->shutdown();
-    udpConnect_.reset();
   }
 
   return result;
@@ -238,8 +204,6 @@ bool Engine::registerDatapath(Connection *channel) {
   UInt8 auxID = channel->auxiliaryId();
 
   if (auxID == 0) {
-    assert(!IsChannelTransportUDP(channel->transport()));
-
     // Insert main connection's datapathID into the dpidMap, if not present
     // already.
     auto pair = dpidMap_.insert({dpid, channel});

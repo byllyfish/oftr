@@ -307,19 +307,6 @@ void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
         }
       });
 
-  engine_->forEachUDPServer(
-      [desiredConnId, &response](sys::UDP_Server *server) {
-        UInt64 connId = server->connectionId();
-        if (!desiredConnId || connId == desiredConnId) {
-          response.result.stats.emplace_back();
-          RpcConnectionStats &stats = response.result.stats.back();
-          stats.localEndpoint = server->localEndpoint();
-          stats.connId = connId;
-          stats.auxiliaryId = 0;
-          stats.transport = ChannelTransport::UDP_Plaintext;
-        }
-      });
-
   engine_->forEachConnection([desiredConnId, &response](Channel *channel) {
     UInt64 connId = channel->connectionId();
     if (!desiredConnId || connId == desiredConnId) {
@@ -448,10 +435,6 @@ ChannelOptions RpcServer::parseOptions(
       result = result | ChannelOptions::FEATURES_REQ;
     } else if (opt == "AUXILIARY") {
       result = result | ChannelOptions::AUXILIARY;
-    } else if (opt == "LISTEN_UDP") {
-      result = result | ChannelOptions::LISTEN_UDP;
-    } else if (opt == "CONNECT_UDP") {
-      result = result | ChannelOptions::CONNECT_UDP;
     } else if (opt == "NO_VERSION_CHECK") {
       result = result | ChannelOptions::NO_VERSION_CHECK;
     } else {

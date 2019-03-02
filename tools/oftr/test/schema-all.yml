@@ -56,7 +56,7 @@ Rpc/OFP.LIST_CONNECTIONS:
         datapath_id: DatapathID
         conn_id: UInt64
         auxiliary_id: UInt8
-        transport: TCP | UDP | TLS | DTLS | NONE
+        transport: TCP | TLS | NONE
   
 Rpc/OFP.ADD_IDENTITY: 
   id: !opt UInt64
