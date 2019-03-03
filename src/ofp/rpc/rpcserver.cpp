@@ -9,7 +9,6 @@
 #include "ofp/sys/connection.h"
 #include "ofp/sys/engine.h"
 #include "ofp/sys/tcp_server.h"
-#include "ofp/sys/udp_server.h"
 
 using ofp::rpc::RpcServer;
 using ofp::sys::TCP_Server;
