@@ -96,7 +96,7 @@ class RpcServer {
   bool verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
                      ChannelOptions options);
 
-  void deleteFile(const std::string &listenPath);
+  std::error_code deleteExistingSocketFile(const std::string &listenPath);
   std::error_code verifySocketFD(int socketFD) const;
 };
 

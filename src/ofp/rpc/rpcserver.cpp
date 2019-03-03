@@ -62,16 +62,18 @@ std::error_code RpcServer::bind(int socketFD) {
 }
 
 std::error_code RpcServer::bind(const std::string &listenPath) {
-  auto endpt = sys::unix_domain::endpoint(listenPath);
-
   std::error_code err;
+  err = deleteExistingSocketFile(listenPath);
+  if (err) {
+    log_error("deleteExistingSocketFile error", err);
+    return err;
+  }
+
+  auto endpt = sys::unix_domain::endpoint(listenPath);
   acceptor_.open(endpt.protocol(), err);
   if (err) {
     return err;
   }
-
-  // Delete file before attempting to bind.
-  deleteFile(listenPath);
 
   acceptor_.bind(endpt, err);
   if (err) {
@@ -474,19 +476,23 @@ bool RpcServer::verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
   return true;
 }
 
-void RpcServer::deleteFile(const std::string &listenPath) {
+std::error_code RpcServer::deleteExistingSocketFile(const std::string &listenPath) {
   struct stat buf;
 
   if (::stat(listenPath.c_str(), &buf) >= 0) {
-    // Check if file is a socket before deleting.
-    if (S_ISSOCK(buf.st_mode)) {
-      if (::unlink(listenPath.c_str()) < 0) {
-        log_error("RpcServer::deleteFile: unlink failed", listenPath);
-      }
-    } else {
-      log_warning("RpcServer::deleteFile: file is not a socket:", listenPath);
+    if (!S_ISSOCK(buf.st_mode)) {
+      // File exists and it's not a socket.
+      return std::make_error_code(std::errc::not_a_socket);
+    }
+
+    // Delete existing socket file. (TOCTOU issue can be ignored; if a file
+    // is created after the `stat` check above; the socket bind will fail.)
+    if (::unlink(listenPath.c_str()) < 0) {
+      return {errno, std::generic_category()};
     }
   }
+
+  return {};
 }
 
 /// Verify that socketFD is a socket descriptor.
