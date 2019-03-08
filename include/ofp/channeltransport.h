@@ -6,11 +6,7 @@
 
 namespace ofp {
 
-enum class ChannelTransport {
-  None = 0,
-  TCP_Plaintext,
-  TCP_TLS
-};
+enum class ChannelTransport { None = 0, TCP_Plaintext, TCP_TLS };
 
 namespace sys {
 

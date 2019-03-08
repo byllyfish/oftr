@@ -476,7 +476,8 @@ bool RpcServer::verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
   return true;
 }
 
-std::error_code RpcServer::deleteExistingSocketFile(const std::string &listenPath) {
+std::error_code RpcServer::deleteExistingSocketFile(
+    const std::string &listenPath) {
   struct stat buf;
 
   if (::stat(listenPath.c_str(), &buf) >= 0) {
