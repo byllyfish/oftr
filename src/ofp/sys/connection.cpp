@@ -109,12 +109,6 @@ void Connection::postMessage(Message *message) {
 }
 
 bool Connection::postDatapath(const DatapathID &datapathId, UInt8 auxiliaryId) {
-  if (auxiliaryId == 0 && IsChannelTransportUDP(transport())) {
-    log_error("UDP connection not allowed to have auxiliary_id of 0",
-              std::make_pair("connid", connectionId()));
-    return false;
-  }
-
   if (datapathId.empty()) {
     log_error("Datapath is not allowed to be all zeros",
               std::make_pair("connid", connectionId()));

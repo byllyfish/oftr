@@ -6,13 +6,7 @@
 
 namespace ofp {
 
-enum class ChannelTransport {
-  None = 0,
-  TCP_Plaintext,
-  UDP_Plaintext,
-  TCP_TLS,
-  UDP_DTLS
-};
+enum class ChannelTransport { None = 0, TCP_Plaintext, TCP_TLS };
 
 namespace sys {
 
@@ -21,11 +15,6 @@ namespace sys {
 template <class SocketType>
 constexpr ChannelTransport ToChannelTransport() {
   return ChannelTransport::None;
-}
-
-constexpr bool IsChannelTransportUDP(ChannelTransport transport) {
-  return (transport == ChannelTransport::UDP_Plaintext) ||
-         (transport == ChannelTransport::UDP_DTLS);
 }
 
 }  // namespace sys

@@ -166,7 +166,7 @@ endif()
 
 # Specify additional definitions.
 
-set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS -D ASIO_NO_DEPRECATED")
+set(LIBOFP_DEFINES "-D ASIO_STANDALONE -D ASIO_NO_TYPEID -D ASIO_NO_EXCEPTIONS -D ASIO_NO_DEPRECATED -D ASIO_DISABLE_VISIBILITY")
 #set(LIBOFP_DEFINES "${LIBOFP_DEFINES} -D ASIO_ENABLE_HANDLER_TRACKING")
 
 if(APPLE AND UNIX)
@@ -356,7 +356,6 @@ if(LIBOFP_ENABLE_JSONRPC)
     src/ofp/sys/defaulthandshake.cpp
     src/ofp/sys/engine.cpp
     src/ofp/sys/tcp_server.cpp
-    src/ofp/sys/udp_server.cpp
     src/ofp/rpc/rpcchannellistener.cpp
     src/ofp/rpc/rpcconnection.cpp
     src/ofp/rpc/rpcconnectionstdio.cpp
@@ -372,8 +371,6 @@ if(LIBOFP_ENABLE_JSONRPC)
   if(LIBOFP_ENABLE_OPENSSL)
     set(LIBOFP_SOURCES
       ${LIBOFP_SOURCES}
-      src/ofp/sys/dtls_adapter.cpp
-      src/ofp/sys/dtls_utils.cpp
       src/ofp/sys/identity.cpp
       src/ofp/sys/securitycheck.cpp
     )
@@ -733,12 +730,14 @@ add_custom_target(clang-tidy
 execute_process(COMMAND go version OUTPUT_VARIABLE Libofp_GO_VERSION_FULL)
 string(REGEX REPLACE "[^0-9]+([0-9]+\\.[0-9]+).+" "\\1" Libofp_GO_VERSION "${Libofp_GO_VERSION_FULL}")
 
-if(NOT CMAKE_BUILD_TYPE MATCHES "Debug" AND "${Libofp_GO_VERSION}" VERSION_GREATER_EQUAL "1.11")
-  message(STATUS "Add boringssl-all-tests; go version is ${Libofp_GO_VERSION}")
-  add_test(
-    NAME boringssl-all-tests 
-    COMMAND go run util/all_tests.go -build-dir "${CMAKE_BINARY_DIR}/external/boringssl/"
-    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/external/boringssl"
-  )
-  set_tests_properties(boringssl-all-tests PROPERTIES TIMEOUT 300)
+if(NOT CMAKE_BUILD_TYPE MATCHES "Debug")
+  if(NOT Libofp_GO_VERSION VERSION_LESS "1.11")
+    message(STATUS "Add boringssl-all-tests; go version is ${Libofp_GO_VERSION}")
+    add_test(
+      NAME boringssl-all-tests 
+      COMMAND go run util/all_tests.go -build-dir "${CMAKE_BINARY_DIR}/external/boringssl/"
+      WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/external/boringssl"
+    )
+    set_tests_properties(boringssl-all-tests PROPERTIES TIMEOUT 300)
+  endif()
 endif()

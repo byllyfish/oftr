@@ -9,7 +9,6 @@
 #include "ofp/sys/connection.h"
 #include "ofp/sys/engine.h"
 #include "ofp/sys/tcp_server.h"
-#include "ofp/sys/udp_server.h"
 
 using ofp::rpc::RpcServer;
 using ofp::sys::TCP_Server;
@@ -63,16 +62,18 @@ std::error_code RpcServer::bind(int socketFD) {
 }
 
 std::error_code RpcServer::bind(const std::string &listenPath) {
-  auto endpt = sys::unix_domain::endpoint(listenPath);
-
   std::error_code err;
+  err = deleteExistingSocketFile(listenPath);
+  if (err) {
+    log_error("deleteExistingSocketFile error", err);
+    return err;
+  }
+
+  auto endpt = sys::unix_domain::endpoint(listenPath);
   acceptor_.open(endpt.protocol(), err);
   if (err) {
     return err;
   }
-
-  // Delete file before attempting to bind.
-  deleteFile(listenPath);
 
   acceptor_.bind(endpt, err);
   if (err) {
@@ -307,19 +308,6 @@ void RpcServer::onRpcListConns(RpcConnection *conn, RpcListConns *list) {
         }
       });
 
-  engine_->forEachUDPServer(
-      [desiredConnId, &response](sys::UDP_Server *server) {
-        UInt64 connId = server->connectionId();
-        if (!desiredConnId || connId == desiredConnId) {
-          response.result.stats.emplace_back();
-          RpcConnectionStats &stats = response.result.stats.back();
-          stats.localEndpoint = server->localEndpoint();
-          stats.connId = connId;
-          stats.auxiliaryId = 0;
-          stats.transport = ChannelTransport::UDP_Plaintext;
-        }
-      });
-
   engine_->forEachConnection([desiredConnId, &response](Channel *channel) {
     UInt64 connId = channel->connectionId();
     if (!desiredConnId || connId == desiredConnId) {
@@ -448,10 +436,6 @@ ChannelOptions RpcServer::parseOptions(
       result = result | ChannelOptions::FEATURES_REQ;
     } else if (opt == "AUXILIARY") {
       result = result | ChannelOptions::AUXILIARY;
-    } else if (opt == "LISTEN_UDP") {
-      result = result | ChannelOptions::LISTEN_UDP;
-    } else if (opt == "CONNECT_UDP") {
-      result = result | ChannelOptions::CONNECT_UDP;
     } else if (opt == "NO_VERSION_CHECK") {
       result = result | ChannelOptions::NO_VERSION_CHECK;
     } else {
@@ -492,19 +476,24 @@ bool RpcServer::verifyOptions(RpcConnection *conn, RpcID id, UInt64 securityId,
   return true;
 }
 
-void RpcServer::deleteFile(const std::string &listenPath) {
+std::error_code RpcServer::deleteExistingSocketFile(
+    const std::string &listenPath) {
   struct stat buf;
 
   if (::stat(listenPath.c_str(), &buf) >= 0) {
-    // Check if file is a socket before deleting.
-    if (S_ISSOCK(buf.st_mode)) {
-      if (::unlink(listenPath.c_str()) < 0) {
-        log_error("RpcServer::deleteFile: unlink failed", listenPath);
-      }
-    } else {
-      log_warning("RpcServer::deleteFile: file is not a socket:", listenPath);
+    if (!S_ISSOCK(buf.st_mode)) {
+      // File exists and it's not a socket.
+      return std::make_error_code(std::errc::not_a_socket);
+    }
+
+    // Delete existing socket file. (TOCTOU issue can be ignored; if a file
+    // is created after the `stat` check above; the socket bind will fail.)
+    if (::unlink(listenPath.c_str()) < 0) {
+      return {errno, std::generic_category()};
     }
   }
+
+  return {};
 }
 
 /// Verify that socketFD is a socket descriptor.

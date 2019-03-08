@@ -50,9 +50,6 @@ class TCP_Server : public std::enable_shared_from_this<TCP_Server> {
   void asyncListen(const IPv6Endpoint &localEndpt, std::error_code &error);
   void listen(const IPv6Endpoint &localEndpt, std::error_code &error);
   void asyncAccept();
-
-  void listenUDP(const IPv6Endpoint &localEndpt, std::error_code &error);
-  void shutdownUDP();
 };
 
 OFP_END_IGNORE_PADDING

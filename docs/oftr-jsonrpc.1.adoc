@@ -154,7 +154,6 @@ Open an outgoing OpenFlow connection to the specified host and port.
     - *FEATURES_REQ* = Send a FEATURES_REQUEST to obtain datapath_id from other end. If
       the OpenFlow version is 1.1 or later, also send a multipart PORT_DESC request
       to obtain the port information.
-    - *CONNECT_UDP* = Use UDP instead of TCP. (Not supported with FEATURES_REQ)
     - *NO_VERSION_CHECK* = Permit messages with other versions after HELLO negotiation.
 
 ==== Reply
@@ -174,9 +173,6 @@ If `FEATURES_REQ` option is specified, send a FEATURES_REQUEST message to obtain
 the datapath_id from the other end. For OpenFlow version 1.1 or later, also send a
 multipart PORT_DESC request to obtain port information. The channel will be reported
 up when this extended handshake completes.
-
-If `CONNECT_UDP` option is specified, make an auxiliary connection via UDP to the
-specified endpoint.
 
 If `NO_VERSION_CHECK` option is specified, accept messages with different versions
 after the initial version negotiation using HELLO messages. The default is to close
@@ -210,7 +206,6 @@ Listen for incoming OpenFlow connections on the specified interface and port.
       the OpenFlow version is 1.1 or later, also send a multipart PORT_DESC request
       to obtain the port information.
     - *AUXILIARY* = Support auxiliary connections over TCP (requires FEATURES_REQ).
-    - *LISTEN_UDP* = Support auxiliary connections over UDP also (requires AUXILIARY).
     - *NO_VERSION_CHECK* = Permit messages with other versions after HELLO negotiation.
 
 ==== Reply
@@ -232,9 +227,6 @@ multipart PORT_DESC request to obtain port information. The channel will be repo
 up when this extended handshake completes.
 
 If `AUXILIARY` option is specified, support auxiliary OpenFlow connections.
-
-If `LISTEN_UDP` option is specified, listen for auxiliary UDP connections in addition to TCP.
-The UDP listener will use the same conn_id as the TCP listener.
 
 If `NO_VERSION_CHECK` option is specified, accept messages with different versions
 after the initial version negotiation using HELLO messages. The default is to close
