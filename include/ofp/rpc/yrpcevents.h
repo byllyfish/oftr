@@ -78,7 +78,7 @@ result: !reply
       datapath_id: DatapathID
       conn_id: UInt64
       auxiliary_id: UInt8
-      transport: TCP | UDP | TLS | DTLS | NONE
+      transport: TCP | TLS | NONE
 
 {Rpc/OFP.ADD_IDENTITY}
 id: !opt UInt64
@@ -160,9 +160,7 @@ struct ScalarEnumerationTraits<ofp::ChannelTransport> {
   static void enumeration(IO &io, ofp::ChannelTransport &value) {
     io.enumCase(value, "NONE", ofp::ChannelTransport::None);
     io.enumCase(value, "TCP", ofp::ChannelTransport::TCP_Plaintext);
-    io.enumCase(value, "UDP", ofp::ChannelTransport::UDP_Plaintext);
     io.enumCase(value, "TLS", ofp::ChannelTransport::TCP_TLS);
-    io.enumCase(value, "DTLS", ofp::ChannelTransport::UDP_DTLS);
   }
 };
 

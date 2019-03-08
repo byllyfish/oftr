@@ -72,13 +72,6 @@ class Engine {
     std::for_each(serverList_.begin(), serverList_.end(), func);
   }
 
-  template <class UnaryFunc>
-  void forEachUDPServer(UnaryFunc func) {
-    if (udpConnect_) {
-      func(udpConnect_.get());
-    }
-  }
-
   template <class UnaryPredicate>
   TCP_Server *findTCPServer(UnaryPredicate func) const {
     SaveRestore<bool> lock{serverListLock_, true};
@@ -120,7 +113,6 @@ class Engine {
   std::vector<Connection *> connList_;
   std::vector<TCP_Server *> serverList_;
   std::unordered_map<DatapathID, Connection *> dpidMap_;
-  std::shared_ptr<UDP_Server> udpConnect_;
 
   // The io_context must be one of the first objects to be destroyed when
   // engine destructor runs. Connections may need to update bookkeeping objects.

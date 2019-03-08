@@ -5,7 +5,6 @@
 #include "ofp/log.h"
 #include "ofp/sys/engine.h"
 #include "ofp/sys/tcp_connection.h"
-#include "ofp/sys/udp_server.h"
 
 using namespace ofp;
 using namespace ofp::sys;
@@ -40,9 +39,6 @@ TCP_Server::~TCP_Server() {
   // server, and there is nothing left to destroy.
 
   if (connId_) {
-    // Dispose of UDP server first.
-    shutdownUDP();
-
     log_info("Stop listening on TCP", std::make_pair("tlsid", securityId_),
              std::make_pair("connid", connId_));
     engine_->releaseServer(this);
@@ -56,7 +52,6 @@ ofp::IPv6Endpoint TCP_Server::localEndpoint() const {
 
 void TCP_Server::shutdown() {
   acceptor_.close();
-  shutdownUDP();
 }
 
 void TCP_Server::asyncListen(const IPv6Endpoint &localEndpt,
@@ -69,11 +64,6 @@ void TCP_Server::asyncListen(const IPv6Endpoint &localEndpt,
              std::make_pair("tlsid", securityId_),
              std::make_pair("connid", connId_));
     asyncAccept();
-
-    // Start listening on UDP, if requested.
-    if ((options_ & ChannelOptions::LISTEN_UDP) != 0) {
-      listenUDP(localEndpt, error);
-    }
 
   } else {
     connId_ = 0;
@@ -134,15 +124,4 @@ void TCP_Server::asyncAccept() {
 
     asyncAccept();
   });
-}
-
-void TCP_Server::listenUDP(const IPv6Endpoint &localEndpt,
-                           std::error_code &error) {
-  udpServer_ = UDP_Server::create(engine_, options_, securityId_, localEndpt,
-                                  versions_, connId_, error);
-}
-
-void TCP_Server::shutdownUDP() {
-  if (udpServer_)
-    udpServer_->shutdown();
 }

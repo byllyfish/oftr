@@ -49,21 +49,13 @@ Identity::Identity(const std::string &certData, const std::string &privKey,
                    const std::string &verifyData, const std::string &version,
                    const std::string &ciphers, const std::string &keyLogFile,
                    std::error_code &error)
-    : tls_{asio::ssl::context_base::tlsv12},
-      dtls_{::SSL_CTX_new(::DTLSv1_method()), ::SSL_CTX_free} {
+    : tls_{asio::ssl::context_base::tlsv12} {
   // Allow for retrieving this Identity object given just an SSL context.
   SetIdentityPtr(tls_.native_handle(), this);
-  SetIdentityPtr(dtls_.get(), this);
 
   // Initialize the TLS context.
   error = initContext(tls_.native_handle(), certData, privKey, verifyData,
                       version, ciphers, keyLogFile);
-  if (error)
-    return;
-
-  // Initialize the DTLS context identically (except for version).
-  error =
-      initContext(dtls_.get(), certData, privKey, verifyData, "", ciphers, "");
   if (error)
     return;
 
@@ -129,7 +121,6 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
 
   prepareSessions(ctx);
   prepareVerifier(ctx);
-  prepareDTLSCookies(ctx);
 
   if (!keyLogFile.empty()) {
     result = prepareKeyLogFile(ctx, keyLogFile);
@@ -456,30 +447,4 @@ void Identity::logKeyMaterial(const char *line) {
     *keyLogFile_ << line;
     keyLogFile_->flush();
   }
-}
-
-void Identity::prepareDTLSCookies(SSL_CTX *ctx) {
-#if !defined(OPENSSL_IS_BORINGSSL)
-  SSL_CTX_set_cookie_generate_cb(ctx, dtls_cookie_generate_callback);
-  SSL_CTX_set_cookie_verify_cb(ctx, dtls_cookie_verify_callback);
-#endif  // !defined(OPENSSL_IS_BORINGSSL)
-}
-
-int Identity::dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
-                                            size_t *cookie_len) {
-  log_debug("openssl_cookie_generate_callback",
-            std::make_pair("connid", GetConnectionPtr(ssl)->connectionId()));
-  memset(cookie, 0, 16);
-  for (UInt8 i = 0; i < 16; ++i) {
-    cookie[i] = i;
-  }
-  *cookie_len = 16;
-  return 1;
-}
-
-int Identity::dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
-                                          size_t cookie_len) {
-  log_debug("openssl_cookie_verify_callback",
-            std::make_pair("connid", GetConnectionPtr(ssl)->connectionId()));
-  return 1;
 }

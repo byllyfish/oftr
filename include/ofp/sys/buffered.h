@@ -27,7 +27,7 @@ class Buffered : private StreamType {
       : inherited{io, *context} {}
 
   Buffered(tcp::socket sock, asio::ssl::context *context)
-      : inherited{sock.get_executor().context(), *context} {
+      : inherited{sock.get_executor(), *context} {
     lowest_layer() = std::move(sock);
   }
 

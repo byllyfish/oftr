@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.56 (8 March 2019)
+
+- Remove support for UDP connections and DTLS.
+- Fix cmake builds for trusty/xenial. (Avoid VERSION_GREATER_EQUAL.) 
+- Update asio to latest version.
+- Update boringssl and googletest submodules.
+
 == Version 0.55 (22 February 2019)
 
 - Add support for running RPC protocol over an inherited socket descriptor.

@@ -29,6 +29,7 @@ template void throw_exception(const std::logic_error &);
 template void throw_exception(const asio::invalid_service_owner &);
 template void throw_exception(const asio::service_already_exists &);
 template void throw_exception(const asio::ip::bad_address_cast &);
+template void throw_exception(const asio::bad_executor &);
 
 }  // namespace detail
 }  // namespace asio

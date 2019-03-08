@@ -121,7 +121,6 @@ if(LIBOFP_ENABLE_JSONRPC)
 	if(LIBOFP_ENABLE_OPENSSL)
 		set(LIBOFP_TEST_SOURCES
 			${LIBOFP_TEST_SOURCES}
-			ofp/dtls_utils_unittest.cpp
         	ofp/identity_unittest.cpp
         )
 	endif()

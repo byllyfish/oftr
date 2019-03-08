@@ -30,7 +30,6 @@ class Identity {
   void setSecurityId(UInt64 securityId) { securityId_ = securityId; }
 
   asio::ssl::context *tlsContext() { return &tls_; }
-  SSL_CTX *dtlsContext() { return dtls_.get(); }
 
   std::string subjectName() const { return subjectName_; }
   int peerVerifyMode() const { return peerVerifyMode_; }
@@ -53,9 +52,6 @@ class Identity {
 
   /// SSL context used for TLS connections over TCP.
   asio::ssl::context tls_;
-
-  /// Separate SSL context used for DTLS connections over UDP.
-  std::unique_ptr<SSL_CTX, void (*)(SSL_CTX *)> dtls_;
 
   /// Subject DN of this identity's certificate.
   std::string subjectName_;
@@ -92,17 +88,11 @@ class Identity {
                                         const std::string &version);
   static void prepareSessions(SSL_CTX *ctx);
   static void prepareVerifier(SSL_CTX *ctx);
-  static void prepareDTLSCookies(SSL_CTX *ctx);
 
   std::error_code prepareKeyLogFile(SSL_CTX *ctx,
                                     const std::string &keyLogFile);
   static void keylog_callback(const SSL *ssl, const char *line);
   void logKeyMaterial(const char *line);
-
-  static int dtls_cookie_generate_callback(SSL *ssl, uint8_t *cookie,
-                                           size_t *cookie_len);
-  static int dtls_cookie_verify_callback(SSL *ssl, const uint8_t *cookie,
-                                         size_t cookie_len);
 };
 
 OFP_END_IGNORE_PADDING

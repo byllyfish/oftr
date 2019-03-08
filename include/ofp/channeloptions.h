@@ -10,17 +10,13 @@ namespace ofp {
 
 /// FEATURES_REQ -- automatically send FeaturesRequest to obtain datapath_id
 /// AUXILIARY    -- support auxiliary connections (requires FEATURE_REQ)
-/// LISTEN_UDP   -- listen for UDP connections also (requires AUXILIARY)
-/// CONNECT_UDP  -- connect over UDP *instead of* TCP (requires !FEATURE_REQ)
 /// NO_VERSION_CHECK -- allow versions other than the one negotiated with HELLO
 
 enum class ChannelOptions : UInt8 {
   NONE = 0,
   FEATURES_REQ = 1 << 0,
   AUXILIARY = 1 << 1,
-  LISTEN_UDP = 1 << 2,
-  CONNECT_UDP = 1 << 3,
-  NO_VERSION_CHECK = 1 << 4
+  NO_VERSION_CHECK = 1 << 2
 };
 
 constexpr ChannelOptions operator&(ChannelOptions lhs, ChannelOptions rhs) {
@@ -45,14 +41,6 @@ inline bool AreChannelOptionsValid(ChannelOptions options) {
   // AUXILIARY requires FEATURES_REQ
   if ((options & ChannelOptions::AUXILIARY) != 0 &&
       (options & ChannelOptions::FEATURES_REQ) == 0)
-    return false;
-  // LISTEN_UDP requires AUXILIARY
-  if ((options & ChannelOptions::LISTEN_UDP) != 0 &&
-      (options & ChannelOptions::AUXILIARY) == 0)
-    return false;
-  // CONNECT_UDP requires !FEATURES_REQ
-  if ((options & ChannelOptions::CONNECT_UDP) != 0 &&
-      (options & ChannelOptions::FEATURES_REQ) != 0)
     return false;
   return true;
 }
