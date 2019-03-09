@@ -53,6 +53,11 @@ project(Libofp)
 
 message(STATUS "Running cmake ${CMAKE_VERSION} on ${CMAKE_SYSTEM} ${CMAKE_SYSTEM_PROCESSOR}")
 
+if(NOT "$ENV{CFLAGS}$ENV{CXXFLAGS}" STREQUAL "")
+  message(STATUS "ENV{CFLAGS}: $ENV{CFLAGS}")
+  message(STATUS "ENV{CXXFLAGS}: $ENV{CXXFLAGS}")
+endif()
+
 # Add path for custom modules
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
