@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.57 (18 March 2019)
+
+- Fix bug introduced in 0.56.0 that prevents accepting more than one TCP connection.
+- Update asio to 1.13.0.
+- CMake will log values of CFLAGS, CXXFLAGS if set in environment.
+- Update boringssl submodule.
+
 == Version 0.56 (8 March 2019)
 
 - Remove support for UDP connections and DTLS.
