@@ -16,13 +16,18 @@ cpid=$!
 sleep 1
 
 echo "Run agent tests."
-if bash $CURRENT_SOURCE_DIR/../../testagent/test/runtests.sh $TESTAGENT ; then
-  echo "Agent tests succeeded."
-  status=0
-else
-  echo "Agent tests failed."
-  status=1
-fi
+
+status=0
+for i in 1 2; do
+    # Test multiple agent connections.
+    if bash $CURRENT_SOURCE_DIR/../../testagent/test/runtests.sh $TESTAGENT ; then
+      echo "Agent tests ($i) succeeded."
+    else
+      echo "Agent tests ($i) failed."
+      status=1
+      break
+    fi
+done
 
 echo "Stop controller."
 kill $cpid
