@@ -11,7 +11,7 @@ TESTAGENT="$1"
 echo "Working Directory:" `pwd`
 
 echo "Start controller."
-$LIBOFP_MEMCHECK ../controller &> /dev/null &
+../controller &> /dev/null &
 cpid=$!
 sleep 1
 
