@@ -6,10 +6,10 @@
 *_test
 .~lock.*
 docs/html
-*\+*/
 *.pyc
 old/
 Build/
+Build\+Debug/
 GIT-VERSION.cmake
 *.orig
 *.rej
