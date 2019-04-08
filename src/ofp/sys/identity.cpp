@@ -122,12 +122,10 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
   prepareSessions(ctx);
   prepareVerifier(ctx);
 
-  if (!keyLogFile.empty()) {
-    result = prepareKeyLogFile(ctx, keyLogFile);
-    if (result) {
-      log_error("Identity: prepareKeyLogFile failed", result);
-      return result;
-    }
+  result = prepareKeyLogFile(ctx, keyLogFile);
+  if (result) {
+    log_error("Identity: prepareKeyLogFile failed", result);
+    return result;
   }
 
   result = loadCertificateChain(ctx, certData);
@@ -142,15 +140,9 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
     return result;
   }
 
-  if (verifyData.empty()) {
-    // Don't verify peer certificate. There's no cacert.
-    peerVerifyMode_ = SSL_VERIFY_NONE;
-
-  } else {
-    result = loadVerifier(ctx, verifyData);
-    if (result) {
-      log_error("Identity: loadVerifier failed", result);
-    }
+  result = loadVerifier(ctx, verifyData);
+  if (result) {
+    log_error("Identity: loadVerifier failed", result);
   }
 
   return result;
@@ -343,7 +335,7 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
   }
 
   if (::SSL_CTX_check_private_key(ctx) != 1) {
-    log_warning("loadPrivateKey: private key does not match certificate");
+    log_error("Identity: private key does not match certificate");
     // TODO(bfish): Return error here.
   }
 
@@ -352,6 +344,12 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
 
 std::error_code Identity::loadVerifier(SSL_CTX *ctx,
                                        const std::string &verifyData) {
+  if (verifyData.empty()) {
+    // Don't verify peer certificate. There's no cacert.
+    peerVerifyMode_ = SSL_VERIFY_NONE;
+    return {};
+  }
+
   ::ERR_clear_error();
 
   MemBio bio{verifyData};
@@ -418,7 +416,11 @@ std::error_code Identity::prepareKeyLogFile(SSL_CTX *ctx,
   //   https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format
 
   using namespace llvm::sys;
-  assert(!keyLogFile.empty());
+  
+  if (keyLogFile.empty()) {
+    // Do nothing if no keylog file specified.
+    return {};
+  }
 
   std::error_code err;
   keyLogFile_.reset(
@@ -430,11 +432,10 @@ std::error_code Identity::prepareKeyLogFile(SSL_CTX *ctx,
 
 #if HAVE_SSL_CTX_SET_KEYLOG_CALLBACK
   ::SSL_CTX_set_keylog_callback(ctx, keylog_callback);
+  return {};
 #else
   return std::make_error_code(std::errc::operation_not_supported);
 #endif
-
-  return {};
 }
 
 void Identity::keylog_callback(const SSL *ssl, const char *line) {

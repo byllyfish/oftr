@@ -79,8 +79,7 @@ class Identity {
                                               const std::string &certData);
   static std::error_code loadPrivateKey(SSL_CTX *ctx,
                                         const std::string &keyData);
-  static std::error_code loadVerifier(SSL_CTX *ctx,
-                                      const std::string &verifyData);
+  std::error_code loadVerifier(SSL_CTX *ctx, const std::string &verifyData);
 
   static std::error_code prepareOptions(SSL_CTX *ctx,
                                         const std::string &ciphers);
