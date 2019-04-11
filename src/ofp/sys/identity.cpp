@@ -6,6 +6,8 @@
 #include "ofp/sys/connection.h"
 #include "ofp/sys/membio.h"
 #include "ofp/sys/memx509.h"
+#include <fcntl.h>   // for open()
+#include <unistd.h>  // for lseek(), pread(), close()
 
 using namespace ofp;
 using namespace ofp::sys;
@@ -101,6 +103,11 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
 #endif  // IDENTITY_SESSIONS_ENABLED
 }
 
+/// Return true if argument is (likely) a file path rather than a PEM buffer.
+static bool isFilePath(llvm::StringRef arg) {
+  return !arg.empty() && !arg.contains('\n') && !arg.contains("-----BEGIN ");
+}
+
 std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
                                       const std::string &privKey,
                                       const std::string &verifyData,
@@ -128,19 +135,39 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
     return result;
   }
 
-  result = loadCertificateChain(ctx, certData);
+  if (isFilePath(certData)) {
+    result = loadCertificateChainFile(ctx, certData);
+  } else {
+    result = loadCertificateChain(ctx, certData);
+  }
+
   if (result) {
     log_error("Identity: loadCertificateChain failed", result);
     return result;
   }
 
-  result = loadPrivateKey(ctx, privKey);
+  if (isFilePath(privKey)) {
+    result = loadPrivateKeyFile(ctx, privKey);
+  } else {
+    result = loadPrivateKey(ctx, privKey);
+  }
+
   if (result) {
     log_error("Identity: loadPrivateKey failed", result);
     return result;
   }
 
-  result = loadVerifier(ctx, verifyData);
+  if (::SSL_CTX_check_private_key(ctx) != 1) {
+    log_error("Identity: private key does not match certificate");
+    // TODO(bfish): Return error here.
+  }
+
+  if (isFilePath(verifyData)) {
+    result = loadVerifierFile(ctx, verifyData);
+  } else {
+    result = loadVerifier(ctx, verifyData);
+  }
+
   if (result) {
     log_error("Identity: loadVerifier failed", result);
   }
@@ -314,7 +341,19 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
   return sslError(::ERR_get_error());
 }
 
-/// Load private key from a PEM file.
+std::error_code Identity::loadCertificateChainFile(SSL_CTX *ctx, const std::string &certFile) {
+  std::string fileContents;
+
+  std::error_code err = loadFile(certFile, &fileContents);
+  if (!err) {
+    err = loadCertificateChain(ctx, fileContents);
+  }
+
+  return err;
+}
+
+
+/// Load private key from a PEM file or buffer.
 std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
                                          const std::string &keyData) {
   ::ERR_clear_error();
@@ -334,9 +373,14 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
     return sslError(::ERR_get_error());
   }
 
-  if (::SSL_CTX_check_private_key(ctx) != 1) {
-    log_error("Identity: private key does not match certificate");
-    // TODO(bfish): Return error here.
+  return {};
+}
+
+std::error_code Identity::loadPrivateKeyFile(SSL_CTX *ctx, const std::string &keyFile) {
+  ::ERR_clear_error();
+
+  if (SSL_CTX_use_PrivateKey_file(ctx, keyFile.c_str(), SSL_FILETYPE_PEM) != 1) {
+    return sslError(::ERR_get_error());
   }
 
   return {};
@@ -391,6 +435,52 @@ std::error_code Identity::loadVerifier(SSL_CTX *ctx,
 
   // Return the error.
   return sslError(::ERR_get_error());
+}
+
+std::error_code Identity::loadVerifierFile(SSL_CTX *ctx, const std::string &verifyFile) {
+  std::string fileContents;
+
+  std::error_code err = loadFile(verifyFile, &fileContents);
+  if (!err) {
+    err = loadVerifier(ctx, fileContents);
+  }
+
+  return err;
+}
+
+/// Load contents of specified file.
+std::error_code Identity::loadFile(const std::string &path, std::string *contents) {
+  std::error_code err;
+
+  int fd = ::open(path.c_str(), O_RDONLY);
+  if (fd < 0) {
+    err = {errno, std::generic_category()};
+    log_debug("loadFile: open failed", err);
+    return err;
+  }
+
+  // Get size of file, then read its entire contents into memory.
+  off_t size = ::lseek(fd, 0, SEEK_END);
+  if (size >= 0) {
+    contents->resize(Unsigned_cast(size));
+
+    ssize_t len = ::pread(fd, &(*contents)[0], Unsigned_cast(size), 0);
+    if (len < 0) {
+      err = {errno, std::generic_category()};
+      log_debug("loadFile: pread failed", err);
+      contents->resize(0);
+    } else if (len < size) {
+      contents->resize(Unsigned_cast(len));
+    }
+
+  } else {
+    err = {errno, std::generic_category()};
+    log_debug("loadFile: lseek failed", err);
+  }
+
+  ::close(fd);
+
+  return err;
 }
 
 void Identity::prepareVerifier(SSL_CTX *ctx) {
