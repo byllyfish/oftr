@@ -151,10 +151,10 @@ target_link_libraries(ofp_unittest ofp ${LIBOFP_LINKED_LIBS} ${LIBOFP_LINKED_LIB
 # Add tests here.
 
 add_test(NAME unittests COMMAND ofp_unittest --gtest_shuffle)
-set_tests_properties(unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=8655")
+set_tests_properties(unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=8671")
 
 if(LIBOFP_MEMCHECK)
 	separate_arguments(cmd UNIX_COMMAND "${LIBOFP_MEMCHECK} --leak-check=full --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/ofp_unittest.supp ./ofp_unittest")
     add_test(NAME memcheck_unittests COMMAND ${cmd})
-    set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=8656;LIBOFP_VALGRIND=1")
+    set_tests_properties(memcheck_unittests PROPERTIES TIMEOUT 60 ENVIRONMENT "LIBOFP_DEFAULT_PORT=8672;LIBOFP_VALGRIND=1")
 endif()
