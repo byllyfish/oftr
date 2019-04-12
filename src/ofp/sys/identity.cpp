@@ -58,12 +58,6 @@ Identity::Identity(const std::string &certData, const std::string &privKey,
   // Initialize the TLS context.
   error = initContext(tls_.native_handle(), certData, privKey, verifyData,
                       version, ciphers, keyLogFile);
-  if (error)
-    return;
-
-  // Save subject name of the certificate.
-  MemX509 cert{certData};
-  subjectName_ = cert.subjectName();
 }
 
 Identity::~Identity() {
@@ -310,6 +304,9 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
     log_debug("loadCertificateChain failed: SSL_CTX_use_certificate");
     return sslError(::ERR_get_error());
   }
+
+  // Save subject name of the main certificate.
+  subjectName_ = mainCert.subjectName();
 
   SSL_CTX_clear_chain_certs(ctx);
 

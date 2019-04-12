@@ -75,9 +75,9 @@ class Identity {
                               const std::string &ciphers,
                               const std::string &keyLogFile);
 
-  static std::error_code loadCertificateChain(SSL_CTX *ctx,
+  std::error_code loadCertificateChain(SSL_CTX *ctx,
                                               const std::string &certData);
-  static std::error_code loadCertificateChainFile(SSL_CTX *ctx,
+  std::error_code loadCertificateChainFile(SSL_CTX *ctx,
                                               const std::string &certFile);
   static std::error_code loadPrivateKey(SSL_CTX *ctx,
                                         const std::string &keyData);
