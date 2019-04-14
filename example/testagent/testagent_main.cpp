@@ -49,8 +49,6 @@ int main(int argc, char **argv) {
       return 1;
     }
   }
-
-  log::configure(log::Level::Debug);
   
   std::error_code error;
   Driver driver;
