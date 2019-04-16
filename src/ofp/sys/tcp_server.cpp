@@ -101,7 +101,8 @@ void TCP_Server::listen(const IPv6Endpoint &localEndpt,
 void TCP_Server::asyncAccept() {
   auto self(this->shared_from_this());
 
-  acceptor_.async_accept([this, self](const asio::error_code &err, tcp::socket socket) {
+  acceptor_.async_accept([this, self](const asio::error_code &err,
+                                      tcp::socket socket) {
     // N.B. ASIO still sends a cancellation error even after
     // async_accept() throws an exception. Check for cancelled operation
     // first; our TCP_Server instance will have been destroyed.

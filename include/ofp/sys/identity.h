@@ -76,15 +76,17 @@ class Identity {
                               const std::string &keyLogFile);
 
   std::error_code loadCertificateChain(SSL_CTX *ctx,
-                                              const std::string &certData);
+                                       const std::string &certData);
   std::error_code loadCertificateChainFile(SSL_CTX *ctx,
-                                              const std::string &certFile);
+                                           const std::string &certFile);
   static std::error_code loadPrivateKey(SSL_CTX *ctx,
                                         const std::string &keyData);
-  static std::error_code loadPrivateKeyFile(SSL_CTX *ctx, const std::string &keyFile);
+  static std::error_code loadPrivateKeyFile(SSL_CTX *ctx,
+                                            const std::string &keyFile);
   std::error_code loadVerifier(SSL_CTX *ctx, const std::string &verifyData);
   std::error_code loadVerifierFile(SSL_CTX *ctx, const std::string &verifyFile);
-  static std::error_code loadFile(const std::string &path, std::string *contents);
+  static std::error_code loadFile(const std::string &path,
+                                  std::string *contents);
 
   static std::error_code prepareOptions(SSL_CTX *ctx,
                                         const std::string &ciphers);

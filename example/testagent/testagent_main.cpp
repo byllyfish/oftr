@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
       return 1;
     }
   }
-  
+
   std::error_code error;
   Driver driver;
   driver.installSignalHandlers();

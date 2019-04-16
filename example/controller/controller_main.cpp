@@ -6,7 +6,6 @@
 
 using namespace ofp;
 
-
 static UInt64 addEnvIdentity(Driver &driver, const std::string &envPrefix) {
   std::string envCert = envPrefix + "_CERT";
   std::string envPrivKey = envPrefix + "_PRIVKEY";
@@ -49,8 +48,8 @@ int main(int argc, char **argv) {
 
   std::error_code err;
   (void)driver.listen(
-      ChannelOptions::FEATURES_REQ, securityId, IPv6Endpoint{OFPGetDefaultPort()},
-      ProtocolVersions::All,
+      ChannelOptions::FEATURES_REQ, securityId,
+      IPv6Endpoint{OFPGetDefaultPort()}, ProtocolVersions::All,
       []() { return new controller::SimpleChannelListener; }, err);
 
   driver.run();

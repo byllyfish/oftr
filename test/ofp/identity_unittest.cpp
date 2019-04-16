@@ -133,7 +133,8 @@ TEST(identity, cert_with_missing_private_key_file) {
                          "",
                          err};
 
-  asio::error_code expected{ERR_PACK(ERR_LIB_SYS, ENOENT), asio::error::get_ssl_category()};
+  asio::error_code expected{ERR_PACK(ERR_LIB_SYS, ENOENT),
+                            asio::error::get_ssl_category()};
   EXPECT_EQ(expected, err);
 }
 
@@ -147,7 +148,8 @@ TEST(identity, missing_cert_file) {
                          "",
                          err};
 
-  asio::error_code expected = std::make_error_code(std::errc::no_such_file_or_directory);
+  asio::error_code expected =
+      std::make_error_code(std::errc::no_such_file_or_directory);
   EXPECT_EQ(expected, err);
 }
 

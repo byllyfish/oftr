@@ -45,7 +45,7 @@ class Driver {
                      const std::string &verifier, const std::string &version,
                      const std::string &ciphers, const std::string &keyLogFile,
                      std::error_code &error);
-#endif // LIBOFP_ENABLE_OPENSSL
+#endif  // LIBOFP_ENABLE_OPENSSL
 
  private:
   sys::Engine *engine_;

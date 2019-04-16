@@ -2,12 +2,12 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/identity.h"
+#include <fcntl.h>   // for open()
+#include <unistd.h>  // for lseek(), pread(), close()
 #include "llvm/Support/FileSystem.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/membio.h"
 #include "ofp/sys/memx509.h"
-#include <fcntl.h>   // for open()
-#include <unistd.h>  // for lseek(), pread(), close()
 
 using namespace ofp;
 using namespace ofp::sys;
@@ -338,7 +338,8 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
   return sslError(::ERR_get_error());
 }
 
-std::error_code Identity::loadCertificateChainFile(SSL_CTX *ctx, const std::string &certFile) {
+std::error_code Identity::loadCertificateChainFile(
+    SSL_CTX *ctx, const std::string &certFile) {
   std::string fileContents;
 
   std::error_code err = loadFile(certFile, &fileContents);
@@ -348,7 +349,6 @@ std::error_code Identity::loadCertificateChainFile(SSL_CTX *ctx, const std::stri
 
   return err;
 }
-
 
 /// Load private key from a PEM file or buffer.
 std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
@@ -373,10 +373,12 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
   return {};
 }
 
-std::error_code Identity::loadPrivateKeyFile(SSL_CTX *ctx, const std::string &keyFile) {
+std::error_code Identity::loadPrivateKeyFile(SSL_CTX *ctx,
+                                             const std::string &keyFile) {
   ::ERR_clear_error();
 
-  if (SSL_CTX_use_PrivateKey_file(ctx, keyFile.c_str(), SSL_FILETYPE_PEM) != 1) {
+  if (SSL_CTX_use_PrivateKey_file(ctx, keyFile.c_str(), SSL_FILETYPE_PEM) !=
+      1) {
     return sslError(::ERR_get_error());
   }
 
@@ -434,7 +436,8 @@ std::error_code Identity::loadVerifier(SSL_CTX *ctx,
   return sslError(::ERR_get_error());
 }
 
-std::error_code Identity::loadVerifierFile(SSL_CTX *ctx, const std::string &verifyFile) {
+std::error_code Identity::loadVerifierFile(SSL_CTX *ctx,
+                                           const std::string &verifyFile) {
   std::string fileContents;
 
   std::error_code err = loadFile(verifyFile, &fileContents);
@@ -446,7 +449,8 @@ std::error_code Identity::loadVerifierFile(SSL_CTX *ctx, const std::string &veri
 }
 
 /// Load contents of specified file.
-std::error_code Identity::loadFile(const std::string &path, std::string *contents) {
+std::error_code Identity::loadFile(const std::string &path,
+                                   std::string *contents) {
   std::error_code err;
 
   int fd = ::open(path.c_str(), O_RDONLY);
@@ -503,7 +507,7 @@ std::error_code Identity::prepareKeyLogFile(SSL_CTX *ctx,
   //   https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format
 
   using namespace llvm::sys;
-  
+
   if (keyLogFile.empty()) {
     // Do nothing if no keylog file specified.
     return {};
