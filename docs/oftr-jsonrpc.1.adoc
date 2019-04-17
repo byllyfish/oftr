@@ -358,7 +358,7 @@ using Transport Layer Security (TLS).
       ciphers: !opt String
       keylog: !opt String
 
-*cert*:: PEM certificate chain data.
+*cert*:: PEM certificate chain.
 
 *privkey*: PEM private key associated with given `cert`.
 
@@ -386,13 +386,17 @@ OFP.LISTEN commands.
 
 The `cert` parameter contains the certificate chain sent to clients that want to
 establish a secure connection. The `privkey` parameter is the private key associated 
-with the main certificate in the chain.
+with the main certificate in the chain. The private key may be commingled with the 
+`cert` value instead of being sent in `privkey`.
 
 The `cacert` parameter contains the certificate authority used to authenticate the 
 certificate chain presented by the other end of the connection. The cacert may
 be multiple certificates concatenated together to support multiple, unrelated client 
 certificates. If the cacert is empty or missing, the SSL identity will not request
 or verify the peer certificate.
+
+The `cert`, `privkey`, and `cacert` parameters may be file paths or full PEM formatted
+string values.
 
 The `version` parameter is the supported TLS version. This may be specified as a
 single version "TLS1.2" or a range "TLS1.0-TLS1.2". Supported constants are TLS1.0,
