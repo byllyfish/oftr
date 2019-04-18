@@ -39,7 +39,6 @@ class TCP_Server : public std::enable_shared_from_this<TCP_Server> {
  private:
   Engine *engine_;
   tcp::acceptor acceptor_;
-  tcp::socket socket_;
   ChannelOptions options_;
   ProtocolVersions versions_;
   ChannelListener::Factory factory_;

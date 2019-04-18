@@ -23,22 +23,14 @@ static const char *MySSLVersionString(SSL *ssl) {
       return "TLS 1.1";
     case TLS1_2_VERSION:
       return "TLS 1.2";
+    case TLS1_3_VERSION:
+      return "TLS 1.3";
     case DTLS1_VERSION:
       return "DTLS 1.0";
     case DTLS1_2_VERSION:
       return "DTLS 1.2";
     default:
       return "Unknown";
-  }
-}
-
-static bool IsDTLS(SSL *ssl) {
-  switch (SSL_version(ssl)) {
-    case DTLS1_VERSION:
-    case DTLS1_2_VERSION:
-      return true;
-    default:
-      return false;
   }
 }
 
@@ -57,7 +49,7 @@ void SecurityCheck::beforeHandshake<SSL>(Connection *conn, SSL *ssl,
   // Set up the verify callback.
   SSL_set_verify(ssl, identity->peerVerifyMode(), tls_verify_callback);
 
-  if (isClient && !IsDTLS(ssl)) {
+  if (isClient) {
     // Check if there is a client session we can resume.
     SSL_SESSION *session = identity->findClientSession(conn->remoteEndpoint());
     if (session) {
@@ -90,8 +82,6 @@ void SecurityCheck::afterHandshake<SSL>(Connection *conn, SSL *ssl,
     return;
   }
 
-  assert(SSL_get_verify_result(ssl) == X509_V_OK);
-
   const char *tlsCipherSpec = SSL_get_cipher_name(ssl);
   const bool sessionResumed = SSL_session_reused(ssl);
   const char *sessionStatus = sessionResumed ? "resumed" : "started";
@@ -108,7 +98,7 @@ void SecurityCheck::afterHandshake<SSL>(Connection *conn, SSL *ssl,
            std::make_pair("connid", connId));
 
   // If this is a client handshake, save the client session.
-  if (isClient && !IsDTLS(ssl)) {
+  if (isClient) {
     identity->saveClientSession(conn->remoteEndpoint(), SSL_get1_session(ssl));
   }
 }

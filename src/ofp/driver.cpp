@@ -41,3 +41,18 @@ void Driver::stop(Milliseconds timeout) {
 void Driver::installSignalHandlers(std::function<void()> callback) {
   engine_->installSignalHandlers(callback);
 }
+
+#if LIBOFP_ENABLE_OPENSSL
+
+UInt64 Driver::addIdentity(const std::string &certData,
+                           const std::string &privKey,
+                           const std::string &verifier,
+                           const std::string &version,
+                           const std::string &ciphers,
+                           const std::string &keyLogFile,
+                           std::error_code &error) {
+  return engine_->addIdentity(certData, privKey, verifier, version, ciphers,
+                              keyLogFile, error);
+}
+
+#endif  // LIBOFP_ENABLE_OPENSSL

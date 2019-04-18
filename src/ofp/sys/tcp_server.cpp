@@ -26,7 +26,6 @@ TCP_Server::TCP_Server(PrivateToken t, Engine *engine, ChannelOptions options,
                        ChannelListener::Factory listenerFactory)
     : engine_{engine},
       acceptor_{engine->io()},
-      socket_{engine->io()},
       options_{options},
       versions_{versions},
       factory_{listenerFactory},
@@ -102,7 +101,8 @@ void TCP_Server::listen(const IPv6Endpoint &localEndpt,
 void TCP_Server::asyncAccept() {
   auto self(this->shared_from_this());
 
-  acceptor_.async_accept(socket_, [this, self](const asio::error_code &err) {
+  acceptor_.async_accept([this, self](const asio::error_code &err,
+                                      tcp::socket socket) {
     // N.B. ASIO still sends a cancellation error even after
     // async_accept() throws an exception. Check for cancelled operation
     // first; our TCP_Server instance will have been destroyed.
@@ -111,10 +111,10 @@ void TCP_Server::asyncAccept() {
 
     if (!err) {
       if (securityId_ > 0) {
-        TCP_AsyncAccept<EncryptedSocket>(engine_, std::move(socket_), options_,
+        TCP_AsyncAccept<EncryptedSocket>(engine_, std::move(socket), options_,
                                          securityId_, versions_, factory_);
       } else {
-        TCP_AsyncAccept<PlaintextSocket>(engine_, std::move(socket_), options_,
+        TCP_AsyncAccept<PlaintextSocket>(engine_, std::move(socket), options_,
                                          securityId_, versions_, factory_);
       }
 

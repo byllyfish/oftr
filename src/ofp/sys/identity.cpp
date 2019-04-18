@@ -2,6 +2,8 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/identity.h"
+#include <fcntl.h>   // for open()
+#include <unistd.h>  // for lseek(), pread(), close()
 #include "llvm/Support/FileSystem.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/membio.h"
@@ -56,12 +58,6 @@ Identity::Identity(const std::string &certData, const std::string &privKey,
   // Initialize the TLS context.
   error = initContext(tls_.native_handle(), certData, privKey, verifyData,
                       version, ciphers, keyLogFile);
-  if (error)
-    return;
-
-  // Save subject name of the certificate.
-  MemX509 cert{certData};
-  subjectName_ = cert.subjectName();
 }
 
 Identity::~Identity() {
@@ -101,6 +97,11 @@ void Identity::saveClientSession(const IPv6Endpoint &remoteEndpt,
 #endif  // IDENTITY_SESSIONS_ENABLED
 }
 
+/// Return true if argument is (likely) a file path rather than a PEM buffer.
+static bool isFilePath(llvm::StringRef arg) {
+  return !arg.empty() && !arg.contains('\n') && !arg.contains("-----BEGIN ");
+}
+
 std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
                                       const std::string &privKey,
                                       const std::string &verifyData,
@@ -122,35 +123,47 @@ std::error_code Identity::initContext(SSL_CTX *ctx, const std::string &certData,
   prepareSessions(ctx);
   prepareVerifier(ctx);
 
-  if (!keyLogFile.empty()) {
-    result = prepareKeyLogFile(ctx, keyLogFile);
-    if (result) {
-      log_error("Identity: prepareKeyLogFile failed", result);
-      return result;
-    }
+  result = prepareKeyLogFile(ctx, keyLogFile);
+  if (result) {
+    log_error("Identity: prepareKeyLogFile failed", result);
+    return result;
   }
 
-  result = loadCertificateChain(ctx, certData);
+  if (isFilePath(certData)) {
+    result = loadCertificateChainFile(ctx, certData);
+  } else {
+    result = loadCertificateChain(ctx, certData);
+  }
+
   if (result) {
     log_error("Identity: loadCertificateChain failed", result);
     return result;
   }
 
-  result = loadPrivateKey(ctx, privKey);
+  if (isFilePath(privKey)) {
+    result = loadPrivateKeyFile(ctx, privKey);
+  } else {
+    result = loadPrivateKey(ctx, privKey);
+  }
+
   if (result) {
     log_error("Identity: loadPrivateKey failed", result);
     return result;
   }
 
-  if (verifyData.empty()) {
-    // Don't verify peer certificate. There's no cacert.
-    peerVerifyMode_ = SSL_VERIFY_NONE;
+  if (::SSL_CTX_check_private_key(ctx) != 1) {
+    log_error("Identity: private key does not match certificate");
+    // TODO(bfish): Return error here.
+  }
 
+  if (isFilePath(verifyData)) {
+    result = loadVerifierFile(ctx, verifyData);
   } else {
     result = loadVerifier(ctx, verifyData);
-    if (result) {
-      log_error("Identity: loadVerifier failed", result);
-    }
+  }
+
+  if (result) {
+    log_error("Identity: loadVerifier failed", result);
   }
 
   return result;
@@ -292,6 +305,9 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
     return sslError(::ERR_get_error());
   }
 
+  // Save subject name of the main certificate.
+  subjectName_ = mainCert.subjectName();
+
   SSL_CTX_clear_chain_certs(ctx);
 
   while (true) {
@@ -322,7 +338,19 @@ std::error_code Identity::loadCertificateChain(SSL_CTX *ctx,
   return sslError(::ERR_get_error());
 }
 
-/// Load private key from a PEM file.
+std::error_code Identity::loadCertificateChainFile(
+    SSL_CTX *ctx, const std::string &certFile) {
+  std::string fileContents;
+
+  std::error_code err = loadFile(certFile, &fileContents);
+  if (!err) {
+    err = loadCertificateChain(ctx, fileContents);
+  }
+
+  return err;
+}
+
+/// Load private key from a PEM file or buffer.
 std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
                                          const std::string &keyData) {
   ::ERR_clear_error();
@@ -342,9 +370,16 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
     return sslError(::ERR_get_error());
   }
 
-  if (::SSL_CTX_check_private_key(ctx) != 1) {
-    log_warning("loadPrivateKey: private key does not match certificate");
-    // TODO(bfish): Return error here.
+  return {};
+}
+
+std::error_code Identity::loadPrivateKeyFile(SSL_CTX *ctx,
+                                             const std::string &keyFile) {
+  ::ERR_clear_error();
+
+  if (SSL_CTX_use_PrivateKey_file(ctx, keyFile.c_str(), SSL_FILETYPE_PEM) !=
+      1) {
+    return sslError(::ERR_get_error());
   }
 
   return {};
@@ -352,6 +387,12 @@ std::error_code Identity::loadPrivateKey(SSL_CTX *ctx,
 
 std::error_code Identity::loadVerifier(SSL_CTX *ctx,
                                        const std::string &verifyData) {
+  if (verifyData.empty()) {
+    // Don't verify peer certificate. There's no cacert.
+    peerVerifyMode_ = SSL_VERIFY_NONE;
+    return {};
+  }
+
   ::ERR_clear_error();
 
   MemBio bio{verifyData};
@@ -395,6 +436,54 @@ std::error_code Identity::loadVerifier(SSL_CTX *ctx,
   return sslError(::ERR_get_error());
 }
 
+std::error_code Identity::loadVerifierFile(SSL_CTX *ctx,
+                                           const std::string &verifyFile) {
+  std::string fileContents;
+
+  std::error_code err = loadFile(verifyFile, &fileContents);
+  if (!err) {
+    err = loadVerifier(ctx, fileContents);
+  }
+
+  return err;
+}
+
+/// Load contents of specified file.
+std::error_code Identity::loadFile(const std::string &path,
+                                   std::string *contents) {
+  std::error_code err;
+
+  int fd = ::open(path.c_str(), O_RDONLY);
+  if (fd < 0) {
+    err = {errno, std::generic_category()};
+    log_debug("loadFile: open failed", err);
+    return err;
+  }
+
+  // Get size of file, then read its entire contents into memory.
+  off_t size = ::lseek(fd, 0, SEEK_END);
+  if (size >= 0) {
+    contents->resize(Unsigned_cast(size));
+
+    ssize_t len = ::pread(fd, &(*contents)[0], Unsigned_cast(size), 0);
+    if (len < 0) {
+      err = {errno, std::generic_category()};
+      log_debug("loadFile: pread failed", err);
+      contents->resize(0);
+    } else if (len < size) {
+      contents->resize(Unsigned_cast(len));
+    }
+
+  } else {
+    err = {errno, std::generic_category()};
+    log_debug("loadFile: lseek failed", err);
+  }
+
+  ::close(fd);
+
+  return err;
+}
+
 void Identity::prepareVerifier(SSL_CTX *ctx) {
   // By default, set up the context to REJECT all certificates. The TLS
   // connection object should have its verify_callback set explicitly.
@@ -418,7 +507,11 @@ std::error_code Identity::prepareKeyLogFile(SSL_CTX *ctx,
   //   https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format
 
   using namespace llvm::sys;
-  assert(!keyLogFile.empty());
+
+  if (keyLogFile.empty()) {
+    // Do nothing if no keylog file specified.
+    return {};
+  }
 
   std::error_code err;
   keyLogFile_.reset(
@@ -430,11 +523,10 @@ std::error_code Identity::prepareKeyLogFile(SSL_CTX *ctx,
 
 #if HAVE_SSL_CTX_SET_KEYLOG_CALLBACK
   ::SSL_CTX_set_keylog_callback(ctx, keylog_callback);
+  return {};
 #else
   return std::make_error_code(std::errc::operation_not_supported);
 #endif
-
-  return {};
 }
 
 void Identity::keylog_callback(const SSL *ssl, const char *line) {

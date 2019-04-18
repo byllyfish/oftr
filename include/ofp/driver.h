@@ -40,6 +40,13 @@ class Driver {
 
   void installSignalHandlers(std::function<void()> callback = nullptr);
 
+#if LIBOFP_ENABLE_OPENSSL
+  UInt64 addIdentity(const std::string &certData, const std::string &privKey,
+                     const std::string &verifier, const std::string &version,
+                     const std::string &ciphers, const std::string &keyLogFile,
+                     std::error_code &error);
+#endif  // LIBOFP_ENABLE_OPENSSL
+
  private:
   sys::Engine *engine_;
 };

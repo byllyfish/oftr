@@ -6,6 +6,38 @@
 
 using namespace testagent;
 
+static UInt64 addEnvIdentity(Driver &driver, const std::string &envPrefix) {
+  std::string envCert = envPrefix + "_CERT";
+  std::string envPrivKey = envPrefix + "_PRIVKEY";
+  std::string envCACert = envPrefix + "_CACERT";
+
+  const char *cert = getenv(envCert.c_str());
+  const char *privKey = getenv(envPrivKey.c_str());
+  const char *caCert = getenv(envCACert.c_str());
+
+  if (!cert) {
+    return 0;
+  }
+
+  if (!privKey) {
+    privKey = cert;
+  }
+
+  if (!caCert) {
+    caCert = "";
+  }
+
+  std::error_code err;
+  UInt64 result = driver.addIdentity(cert, privKey, caCert, "", "", "", err);
+
+  if (err) {
+    log_error("Unable to add TLS identity:", err);
+    ::exit(1);
+  }
+
+  return result;
+}
+
 int main(int argc, char **argv) {
   std::vector<std::string> args{argv + 1, argv + argc};
 
@@ -22,9 +54,11 @@ int main(int argc, char **argv) {
   Driver driver;
   driver.installSignalHandlers();
 
+  UInt64 securityId = addEnvIdentity(driver, "AGENT");
+
   if (remoteEndpoint.valid()) {
     (void)driver.connect(
-        ChannelOptions::NONE, 0, remoteEndpoint, {OFP_VERSION_1},
+        ChannelOptions::NONE, securityId, remoteEndpoint, {OFP_VERSION_1},
         TestAgent::Factory,
         [&error, &remoteEndpoint](Channel *channel, std::error_code err) {
           if (err) {
@@ -36,7 +70,7 @@ int main(int argc, char **argv) {
         });
 
   } else {
-    (void)driver.listen(ChannelOptions::NONE, 0,
+    (void)driver.listen(ChannelOptions::NONE, securityId,
                         IPv6Endpoint{OFPGetDefaultPort()}, {OFP_VERSION_1},
                         TestAgent::Factory, error);
   }
