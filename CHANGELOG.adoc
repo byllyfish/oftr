@@ -1,5 +1,12 @@
 = Changelog
 
+== Version 0.58 (18 April 2019)
+
+- Use alternate form of async_accept asio call (Fixes TLS/asio issue.)
+- Add -msse2 compiler flag for trusty/i386 build.
+- Support file paths when configuring a TLS identity.
+- Update boringssl and googletest submodules.
+
 == Version 0.57 (18 March 2019)
 
 - Fix bug introduced in 0.56.0 that prevents accepting more than one TCP connection.
