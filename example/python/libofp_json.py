@@ -5,10 +5,11 @@ No external dependencies; uses builtin json module.
 """
 
 import json
-import subprocess
 import os
-import sys
 import struct
+import subprocess
+import sys
+
 
 def getDefaultPort():
     try:
@@ -76,7 +77,7 @@ class LibOFP(object):
         # Driver's path is specified, so launch the executable.
         # Communicate with the driver using stdin and stdout (in binary mode).
         self._process = subprocess.Popen([driverPath, 'jsonrpc', '--loglevel=info', '--binary-protocol'],
-                        stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                        stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=0)
 
         # Our input is the other process's stdout.
         self._sockInput = self._process.stdout
@@ -94,7 +95,7 @@ class LibOFP(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         line = _read_next(self._sockInput)
         if not line:
             raise StopIteration()
@@ -110,15 +111,15 @@ class LibOFP(object):
         if method == 'OFP.SEND' and 'xid' not in params:
             params['xid'] = self._xid
             self._xid += 1
-        self._write(json.dumps(rpc))
+        self._write(json.dumps(rpc).encode('utf-8'))
 
     def _sendListenRequest(self, openflowAddr):
         self._call('OFP.LISTEN', endpoint='[%s]:%d' % openflowAddr, options=['FEATURES_REQ'])
 
     def _sendDescriptionRequest(self):
         self._call('OFP.DESCRIPTION', id=99999)
-        msg = self.next()
-        print >>sys.stderr, msg
+        msg = next(self)
+        print(msg, file=sys.stderr)
         assert msg.id == 99999
         assert msg.result.api_version == '0.9'
         assert len(msg.result.sw_desc) > 0
