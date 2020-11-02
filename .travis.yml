@@ -12,9 +12,9 @@ os:
   - osx
 
 install:
-  # Boringssl tests require Go 1.11.
+  # Boringssl tests require Go 1.15.
   # Gimme not installed on Travis/Linux for language cpp.
-  - eval "$(curl -sL https://raw.githubusercontent.com/travis-ci/gimme/master/gimme | GIMME_GO_VERSION=1.11 bash)"
+  - eval "$(curl -sL https://raw.githubusercontent.com/travis-ci/gimme/master/gimme | GIMME_GO_VERSION=1.15 bash)"
 
 env:
   global:
