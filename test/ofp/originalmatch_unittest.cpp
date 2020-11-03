@@ -114,3 +114,13 @@ TEST(originalmatch, masks) {
       "192.168.1.0/255.255.255.0\ntp_src: 80 \ntp_dst: 81 \n",
       match.toString());
 }
+
+
+TEST(originalmatch, constructor) {
+  OriginalMatch match1;
+  EXPECT_HEX("00000000000000000000000000000000000000000000000000000000000000000000000000000000", &match1, sizeof(match1));
+
+  OXMRange oxm;
+  OriginalMatch match2{oxm};
+  EXPECT_HEX("003820FF000000000000000000000000000000000000000000000000000000000000000000000000", &match2, sizeof(match2));
+}
