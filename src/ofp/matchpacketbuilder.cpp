@@ -180,11 +180,14 @@ void MatchPacketBuilder::addEthernet(ByteList *msg) const {
 void MatchPacketBuilder::addIPv4(ByteList *msg, size_t length) const {
   pkt::IPv4Hdr ip;
 
-  std::memset(&ip, 0, sizeof(ip));
   ip.ver = 0x45;
+  ip.tos = 0;
   ip.length = UInt16_narrow_cast(sizeof(pkt::IPv4Hdr) + length);
+  ip.ident = 0;
+  ip.frag = 0;
   ip.ttl = ipTtl_ ? ipTtl_ : kDefaultIPv4_TTL;
   ip.proto = ipProto_;
+  ip.cksum = 0;
   ip.src = ipv4Src_;
   ip.dst = ipv4Dst_;
   ip.cksum = pkt::Checksum({&ip, sizeof(ip)});
@@ -195,7 +198,6 @@ void MatchPacketBuilder::addIPv4(ByteList *msg, size_t length) const {
 void MatchPacketBuilder::addIPv6(ByteList *msg, size_t length) const {
   pkt::IPv6Hdr ip;
 
-  std::memset(&ip, 0, sizeof(ip));
   ip.verClassLabel = 0x60000000;
   ip.payloadLength = UInt16_narrow_cast(length);
   ip.nextHeader = ipProto_;
@@ -295,9 +297,9 @@ void MatchPacketBuilder::buildICMPv4(ByteList *msg,
   addIPv4(msg, sizeof(pkt::ICMPHdr) + data.size());
 
   pkt::ICMPHdr icmp;
-  std::memset(&icmp, 0, sizeof(icmp));
   icmp.type = icmpType_;
   icmp.code = icmpCode_;
+  icmp.cksum = 0;
   icmp.cksum = pkt::Checksum({&icmp, sizeof(icmp)}, data);
 
   msg->add(&icmp, sizeof(icmp));
@@ -310,9 +312,14 @@ void MatchPacketBuilder::buildTCPv4(ByteList *msg,
   addIPv4(msg, sizeof(pkt::TCPHdr) + data.size());
 
   pkt::TCPHdr tcp;
-  std::memset(&tcp, 0, sizeof(tcp));
   tcp.srcPort = srcPort_;
   tcp.dstPort = dstPort_;
+  tcp.seqNum = 0;
+  tcp.ackNum = 0;
+  tcp.flags = 0;
+  tcp.winSize = 0;
+  tcp.cksum = 0;
+  tcp.urgPtr = 0;
   tcp.cksum = pkt::Checksum({&tcp, sizeof(tcp)}, data);
 
   msg->add(&tcp, sizeof(tcp));
@@ -359,9 +366,9 @@ void MatchPacketBuilder::buildICMPv6(ByteList *msg,
   pseudoHdr.nextHeader = ipProto_;
 
   pkt::ICMPHdr icmp;
-  std::memset(&icmp, 0, sizeof(icmp));
   icmp.type = icmpType_;
   icmp.code = icmpCode_;
+  icmp.cksum = 0;
   icmp.cksum = pkt::Checksum({&pseudoHdr, sizeof(pseudoHdr)},
                              {&icmp, sizeof(icmp)}, data);
 
