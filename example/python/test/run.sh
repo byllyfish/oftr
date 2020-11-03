@@ -13,7 +13,7 @@ export LIBOFP_PATH="$2"
 echo "Working Directory:" `pwd`
 
 echo "Start controller."
-python $CURRENT_SOURCE_DIR/../controller.py &
+python3 $CURRENT_SOURCE_DIR/../controller.py &
 cpid=$!
 sleep 1
 
