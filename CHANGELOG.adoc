@@ -506,8 +506,8 @@
 == Version 0.4 (26 June 2015)
 
 - Multipart PORT_DESC requests/replies now work for versions 1, 2, 3.
-- Add _text property to decode of Error message to indicate type of message that elicited the error response.
-- Remove OFPET_ prefix from error types in YAML schema. 
+- Add \_text property to decode of Error message to indicate type of message that elicited the error response.
+- Remove OFPET_ prefix from error types in YAML schema.
 - Add support for error types from the OpenFlow 1.5 spec.
 - Version output now displays the version/git commit of asio and boringssl.
 - Replace UInt8 with strong TableNumber type in PacketIn, FlowRemoved, TableMod, and Request.FlowMonitor messages.
