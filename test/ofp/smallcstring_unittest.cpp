@@ -83,14 +83,14 @@ TEST(smallcstring, validUtf8String) {
   EXPECT_EQ("", validTest(""));
   EXPECT_EQ("a", validTest("a"));
 
-  EXPECT_EQ(u8"\u00FF", validTest(u8"\u00FF"));
-  EXPECT_EQ(u8"\u0080", validTest(u8"\u0080"));
-  EXPECT_EQ(u8"\u80FF", validTest(u8"\u80FF"));
-  EXPECT_EQ(u8"\uFFFF", validTest(u8"\uFFFF"));
-  EXPECT_EQ(u8"\uFF00", validTest(u8"\uFF00"));
-  EXPECT_EQ(u8"\u0FFF", validTest(u8"\u0FFF"));
-  EXPECT_EQ(u8"\uFF00", validTest(u8"\uFF00"));
-  EXPECT_EQ(u8"\U0010FFFF", validTest(u8"\U0010FFFF"));
+  EXPECT_EQ("\u00FF", validTest("\u00FF"));
+  EXPECT_EQ("\u0080", validTest("\u0080"));
+  EXPECT_EQ("\u80FF", validTest("\u80FF"));
+  EXPECT_EQ("\uFFFF", validTest("\uFFFF"));
+  EXPECT_EQ("\uFF00", validTest("\uFF00"));
+  EXPECT_EQ("\u0FFF", validTest("\u0FFF"));
+  EXPECT_EQ("\uFF00", validTest("\uFF00"));
+  EXPECT_EQ("\U0010FFFF", validTest("\U0010FFFF"));
 
   EXPECT_EQ("a?", validTest("a\xC2"));
   EXPECT_EQ("a?", validTest("a\x80"));
