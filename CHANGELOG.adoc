@@ -514,7 +514,7 @@
 - Add MeterNumber and QueueNumber types.
 - Add support for OFPGroupModCommand and OFPGroupType enums.
 - Fix TableMod message to use OFPTableConfigFlags enum for config attribute.
-- Request.Flow_Monitor message now supports OFPFlowMonitorCommand and OFPFlowMonitorFlags. 
+- Request.Flow_Monitor message now supports OFPFlowMonitorCommand and OFPFlowMonitorFlags.
 - Added travis/scan.coverity.com integration and fixed some coverity warnings related to uninitialized instance vars and mixed enums.
 
 == Version 0.3 (18 June 2015)
