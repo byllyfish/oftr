@@ -22,23 +22,30 @@
     fun:(below main)
 }
 
-{
-    Suppress leaking in openssl (CRYPTO_set_thread_local)
-    Memcheck:Leak
-    fun:malloc
-    fun:OPENSSL_malloc
-    fun:CRYPTO_set_thread_local
-    fun:err_get_state
-    fun:ERR_clear_error
-    ...
-}
+#{
+#    Suppress leaking in openssl (CRYPTO_set_thread_local)
+#    Memcheck:Leak
+#    fun:malloc
+#    fun:OPENSSL_malloc
+#    fun:CRYPTO_set_thread_local
+#    fun:err_get_state
+#    fun:ERR_clear_error
+#    ...
+#}
+#
+#{
+#    Suppress leaking in openssl (err_get_state)
+#    Memcheck:Leak
+#    fun:malloc
+#    fun:OPENSSL_malloc
+#    fun:err_get_state
+#    fun:ERR_clear_error
+#    ...
+#}
 
 {
-    Suppress leaking in openssl (err_get_state)
-    Memcheck:Leak
-    fun:malloc
-    fun:OPENSSL_malloc
-    fun:err_get_state
-    fun:ERR_clear_error
-    ...
+   openssl: Conditional jump or move depends on uninitialised value (2020-11-03)
+   Memcheck:Cond
+   fun:PEM_read_bio
+   fun:PEM_bytes_read_bio
 }
