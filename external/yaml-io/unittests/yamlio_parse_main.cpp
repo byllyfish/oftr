@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
     args.erase(args.begin());
   }
 
-  for (const auto filename: args) {
+  for (const auto &filename: args) {
     auto result = llvm::MemoryBuffer::getFileOrSTDIN(filename);
     if (!result) {
     	llvm::errs() << filename << ": Failed to open\n";

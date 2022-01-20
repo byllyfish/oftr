@@ -545,9 +545,8 @@ endif()
 
 # Call custom function to check for Python YAML module (optional for testing).
 
-find_package(PythonInterp REQUIRED)
-find_package(PythonModule REQUIRED)
-find_python_module(yaml)
+find_package(Python COMPONENTS Interpreter Development)
+#find_python_module(yaml)
 
 # Look up the specific git commits for libofp, asio, and boringssl. If we are
 # building from a tarball instead of a git repo, the git commits will be empty,

@@ -27,9 +27,7 @@ static void set_nw_dst_mask(UInt32 &wc, unsigned prefix) {
        ((32U - prefix) << OW::OFPFW_NW_DST_SHIFT);
 }
 
-OriginalMatch::OriginalMatch(const OXMRange &range) {
-  std::memset(this, 0, sizeof(OriginalMatch));
-
+OriginalMatch::OriginalMatch(const OXMRange &range) : OriginalMatch() {
   UInt32 wc = OFPFW_ALL;
   for (auto &item : range) {
     switch (item.type()) {

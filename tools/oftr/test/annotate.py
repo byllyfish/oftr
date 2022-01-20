@@ -1,8 +1,8 @@
-import json
-import subprocess
 import copy
-import sys
+import json
 import os
+import subprocess
+import sys
 
 try:
     import yaml
@@ -17,6 +17,7 @@ STR32 = '.' * 32
 STR256 = '.' * 256
 
 def _getType(elem):
+    assert not isinstance(elem, bytes)
     if elem == None:
         return 'null'
     elif isinstance(elem, dict):
@@ -31,7 +32,7 @@ def _getType(elem):
         return 'uint32'
     elif elem == 0xffffffffffffffff:
         return 'uint64'
-    elif isinstance(elem, str) or isinstance(elem, unicode):
+    elif isinstance(elem, str):
         s = elem.lower()
         if s == 'ff:ff:ff:ff:ff:ff':
             return 'macaddress'
@@ -188,7 +189,7 @@ class OFPDocument(object):
 
     def check(self):
         # Test document itself.
-        print >> sys.stderr, '  annotate.py: Checking %s' % self.type()
+        print('  annotate.py: Checking %s' % self.type(), file=sys.stderr)
         self.consequences = self.compare(self.roundtrip())
         self.filter(self.consequences)
         # For each field, try roundtripping the document without it.
@@ -216,8 +217,8 @@ class OFPDocument(object):
         for modifyField in self.fields:
             result = self.roundtrip(incrementField=modifyField)
             if result:
-                print >> sys.stderr, 'Unexpected result:\n' + str(result)
-                print >> sys.stderr, modifyField
+                print('Unexpected result:\n' + str(result), file=sys.stderr)
+                print(modifyField, file=sys.stderr)
             assert not result
 
     def roundtrip(self, omitField=None, modifyField=None, incrementField=None):
@@ -268,7 +269,7 @@ class OFPDocument(object):
         version = self.doc['version']
         for field in sorted(self.fields, key=(lambda f: f.keypath)):
             row =[version, type, field.keypath, field.type, field.required, field.default(), field.effect(self.consequences), field.modified()]
-            print '\t'.join(str(o) for o in row)
+            print('\t'.join(str(o) for o in row))
 
 
 def do_roundtrip(doc, omitField=None, modifyField=None, incrementField=None):
@@ -285,7 +286,7 @@ def do_roundtrip(doc, omitField=None, modifyField=None, incrementField=None):
         if not incrementField.increment(doc):
             return None
     input = json.dumps(doc, separators=(',', ':')) + '\n'
-    PROC.stdin.write(input)
+    PROC.stdin.write(input.encode('utf-8'))
     output = PROC.stdout.readline()
     return json.loads(output)
 
@@ -304,12 +305,12 @@ def _newer_file(lhs, rhs):
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        print 'Usage: annotate.py <input-file>'
+        print('Usage: annotate.py <input-file>')
         sys.exit(1)
 
     cmd = os.environ.get('LIBOFP_MEMCHECK', '').split()
     cmd += [OFTR, 'encode', '-jkR', '--silent-error']
-    PROC = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    PROC = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=0)
 
     inputFile = sys.argv[1]
     jsonFileName = inputFile + '.json'
@@ -318,7 +319,7 @@ if __name__ == '__main__':
         convertYamlToJson(inputFile, jsonFileName)
 
     header=['version', 'type', 'keypath', 'syntax', 'required', 'default', 'missing', 'modify']
-    print '\t'.join(header)
+    print('\t'.join(header))
     for version in range(1,MAX_VERSION+1):
         with open(jsonFileName) as input:
             docs = json.load(input)
