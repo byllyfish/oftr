@@ -35,7 +35,7 @@
 #
 
 # N.B. Trusty supports cmake 2.8.12 (unless you use cmake3 pkg).
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 2.8.12)
 
 # Required for boringssl. (See external/boringssl/CMakeLists.txt)
 if(POLICY CMP0025)
