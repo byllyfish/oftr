@@ -698,19 +698,6 @@ set(CPACK_STRIP_FILES TRUE)
 include(CPack)
 
 #-------------------------------------------------------------------------------
-# Support for Running Cpplint
-#-------------------------------------------------------------------------------
-
-set(CPPLINT_PATH external/cpplint/cpplint.py)
-set(CPPLINT_ARGS --filter=-build/include,-runtime/references,-build/namespaces,-build/c++11 --root=include --linelength=200 --extensions=h,cpp,ipp)
-
-add_custom_target(cpplint
-  COMMAND find include src tools example oxm test \( -name "*.h" -o -name "*.cpp" -o -name "*.ipp" \) -exec ${PYTHON_EXECUTABLE} ${CPPLINT_PATH} ${CPPLINT_ARGS} {} +
-  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-  COMMENT "Checking all libofp code with cpplint" VERBATIM
-)
-
-#-------------------------------------------------------------------------------
 # Support for Running Clang-format
 #-------------------------------------------------------------------------------
 
