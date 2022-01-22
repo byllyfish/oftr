@@ -5,8 +5,7 @@ ifdef::env-github[]
 :toc-placement: preamble
 endif::[]
 
-image:https://travis-ci.org/byllyfish/oftr.svg?branch=master["Travis-CI Build Status", link="https://travis-ci.org/byllyfish/oftr"]
-image:https://codecov.io/github/byllyfish/oftr/coverage.svg?branch=develop["Code Coverage Status", link="https://codecov.io/gh/byllyfish/oftr/branch/develop"]
+image:https://github.com/byllyfish/oftr/actions/workflows/ci.yml/badge.svg["Build Status", link="https://github.com/byllyfish/oftr/actions/workflows/ci.yml"]
 
 == What is oftr?
 
