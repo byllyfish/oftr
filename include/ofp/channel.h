@@ -17,7 +17,7 @@ class DatapathID;
 
 class Channel : public Writable {
  public:
-  virtual ~Channel() {}
+  virtual ~Channel() override {}
 
   virtual Driver *driver() const = 0;
   virtual UInt64 connectionId() const = 0;

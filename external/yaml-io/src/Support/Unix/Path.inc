@@ -108,7 +108,8 @@ test_dir(char ret[PATH_MAX], const char *dir, const char *bin)
   struct stat sb;
   char fullpath[PATH_MAX];
 
-  snprintf(fullpath, PATH_MAX, "%s/%s", dir, bin);
+  if (snprintf(fullpath, PATH_MAX, "%s/%s", dir, bin) < 0)
+    return 0;
   if (!realpath(fullpath, ret))
     return 1;
   if (stat(fullpath, &sb) != 0)
