@@ -4,9 +4,8 @@
 #ifndef OFP_YAML_YBYTEORDER_H_
 #define OFP_YAML_YBYTEORDER_H_
 
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/byteorder.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace llvm {
 namespace yaml {

@@ -5,6 +5,7 @@
 #define EXAMPLE_CONTROLLER_SIMPLECHANNELLISTENER_H_
 
 #include <unordered_map>
+
 #include "./simplecontroller.h"
 
 namespace controller {

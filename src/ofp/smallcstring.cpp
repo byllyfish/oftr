@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/smallcstring.h"
+
 #include "llvm/Support/ConvertUTF.h"  // isLegalUTF8Sequence, getNumBytesForUTF8
 
 using namespace ofp;

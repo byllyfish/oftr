@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/lldpvalue.h"
+
 #include "ofp/byteorder.h"
 #include "ofp/ipv6address.h"
 #include "ofp/macaddress.h"

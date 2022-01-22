@@ -2,7 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/oxmtype.h"
+
 #include <algorithm>
+
 #include "ofp/log.h"
 #include "ofp/oxmfields.h"
 

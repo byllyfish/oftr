@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/queue.h"
+
 #include "ofp/validation.h"
 #include "ofp/writable.h"
 

@@ -2,10 +2,13 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/types.h"
+
 #include <signal.h>    // for sigaction
 #include <sys/time.h>  // for setitimer
 #include <unistd.h>    // for _exit
+
 #include <array>
+
 #include "ofp/log.h"
 
 namespace ofp {

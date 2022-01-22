@@ -4,11 +4,10 @@
 #ifndef OFP_YAML_YSETCONFIG_H_
 #define OFP_YAML_YSETCONFIG_H_
 
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/setconfig.h"
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/ycontrollermaxlen.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace llvm {
 namespace yaml {

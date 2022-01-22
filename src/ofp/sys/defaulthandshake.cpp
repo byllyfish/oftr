@@ -2,7 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/sys/defaulthandshake.h"
+
 #include <sstream>
+
 #include "ofp/constants.h"
 #include "ofp/error.h"
 #include "ofp/featuresreply.h"

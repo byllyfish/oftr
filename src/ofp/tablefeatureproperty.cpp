@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/tablefeatureproperty.h"
+
 #include "ofp/propertyrange.h"
 
 using namespace ofp;

@@ -4,9 +4,8 @@
 #ifndef OFP_YAML_YBYTELIST_H_
 #define OFP_YAML_YBYTELIST_H_
 
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/bytelist.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace llvm {
 namespace yaml {

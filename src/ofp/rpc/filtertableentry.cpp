@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/filtertableentry.h"
+
 #include "ofp/message.h"
 #include "ofp/rpc/filteraction.h"
 

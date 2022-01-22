@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/actiontype.h"
+
 #include "ofp/actions.h"
 
 using namespace ofp;

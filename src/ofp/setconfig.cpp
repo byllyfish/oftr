@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/setconfig.h"
+
 #include "ofp/writable.h"
 
 using namespace ofp;

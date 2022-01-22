@@ -5,6 +5,7 @@
 #define OFP_DEMUX_SEGMENTCACHE_H_
 
 #include <vector>
+
 #include "ofp/bytelist.h"
 
 namespace ofp {

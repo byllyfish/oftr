@@ -1,10 +1,11 @@
 // Copyright (c) 2015-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include <unordered_map>
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/yaml/yconstants.h"
+
+#include <unordered_map>
+
+#include "ofp/yaml/yllvm.h"
 
 using namespace ofp;
 using ofp::yaml::EnumConverter;

@@ -5,6 +5,7 @@
 #define OFP_IPV6ADDRESS_H_
 
 #include <array>
+
 #include "ofp/ipv4address.h"
 
 namespace ofp {

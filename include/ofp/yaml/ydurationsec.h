@@ -4,9 +4,8 @@
 #ifndef OFP_YAML_YDURATIONSEC_H_
 #define OFP_YAML_YDURATIONSEC_H_
 
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/durationsec.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace llvm {
 namespace yaml {

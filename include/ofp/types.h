@@ -7,14 +7,15 @@
 #include <cassert>  // for assert macro
 #include <cctype>   // for std::isxdigit, etc.
 #include <chrono>
-#include <cstddef>                     // for std::size_t, etc.
-#include <cstdint>                     // for std::uint8_t, etc.
-#include <cstdlib>                     // for std::malloc, etc.
-#include <cstring>                     // for std::strlen, std::memcpy, etc.
-#include <memory>                      // for std::unique_ptr<T>
-#include <string>                      // for std::string
-#include <system_error>                // for std::error_code
-#include <type_traits>                 // for std::make_unsigned<T>, etc.
+#include <cstddef>       // for std::size_t, etc.
+#include <cstdint>       // for std::uint8_t, etc.
+#include <cstdlib>       // for std::malloc, etc.
+#include <cstring>       // for std::strlen, std::memcpy, etc.
+#include <memory>        // for std::unique_ptr<T>
+#include <string>        // for std::string
+#include <system_error>  // for std::error_code
+#include <type_traits>   // for std::make_unsigned<T>, etc.
+
 #include "llvm/ADT/StringRef.h"        // for llvm::StringRef
 #include "llvm/Support/raw_ostream.h"  // for llvm::raw_ostream
 #include "ofp/config.h"
@@ -371,7 +372,7 @@ void SetWatchdogTimer(unsigned secs);
 ///
 /// \return unique ptr to new object.
 template <class T, class... Args>
-std::unique_ptr<T> MakeUniquePtr(Args &&... args) {
+std::unique_ptr<T> MakeUniquePtr(Args &&...args) {
   static_assert(!std::is_array<T>::value, "Only supports non-array types.");
   return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }

@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/log.h"
+
 #include "ofp/timestamp.h"
 #include "ofp/yaml/decoder.h"
 

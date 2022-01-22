@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/ipv6endpoint.h"
+
 #include "ofp/unittest.h"
 
 using namespace ofp;

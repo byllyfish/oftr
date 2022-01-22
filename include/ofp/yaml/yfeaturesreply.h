@@ -4,10 +4,9 @@
 #ifndef OFP_YAML_YFEATURESREPLY_H_
 #define OFP_YAML_YFEATURESREPLY_H_
 
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/featuresreply.h"
 #include "ofp/yaml/ydatapathid.h"
+#include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/yport.h"
 
 namespace llvm {

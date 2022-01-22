@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/smallbuffer.h"
+
 #include "ofp/padding.h"
 
 using ofp::SmallBuffer;

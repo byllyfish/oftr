@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/vlannumber.h"
+
 #include "ofp/constants.h"
 #include "ofp/log.h"
 

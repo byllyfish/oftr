@@ -65,7 +65,7 @@ class custom_alloc_handler {
       : allocator_(a), handler_(h) {}
 
   template <typename... Args>
-  void operator()(Args &&... args) {
+  void operator()(Args &&...args) {
     handler_(std::forward<Args>(args)...);
   }
 

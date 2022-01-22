@@ -2,9 +2,11 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/flowcache.h"
+
 #include <iomanip>        // for stats
 #include <map>            // for stats
 #include <unordered_set>  // for stats
+
 #include "llvm/Support/Format.h"
 
 using namespace ofp;

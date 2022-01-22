@@ -2,7 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/ipv4address.h"
+
 #include <asio/detail/socket_ops.hpp>  // for asio's inet_pton, inet_ntop
+
 #include "ofp/log.h"
 
 using namespace ofp;

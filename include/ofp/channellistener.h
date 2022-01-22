@@ -5,6 +5,7 @@
 #define OFP_CHANNELLISTENER_H_
 
 #include <functional>
+
 #include "ofp/types.h"
 
 namespace ofp {

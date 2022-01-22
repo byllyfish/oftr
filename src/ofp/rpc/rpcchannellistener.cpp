@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcchannellistener.h"
+
 #include "ofp/rpc/rpcserver.h"
 
 using namespace ofp;

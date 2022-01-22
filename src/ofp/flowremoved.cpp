@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/flowremoved.h"
+
 #include "ofp/message.h"
 #include "ofp/originalmatch.h"
 #include "ofp/writable.h"

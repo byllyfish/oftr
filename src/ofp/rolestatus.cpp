@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rolestatus.h"
+
 #include "ofp/rolestatusproperty.h"
 #include "ofp/writable.h"
 

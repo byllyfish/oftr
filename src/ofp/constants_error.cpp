@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/constants_error.h"
+
 #include "ofp/log.h"
 
 using namespace ofp;

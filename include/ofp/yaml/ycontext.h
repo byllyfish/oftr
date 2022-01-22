@@ -4,6 +4,10 @@
 #ifndef OFP_YAML_YCONTEXT_H_
 #define OFP_YAML_YCONTEXT_H_
 
+#include "llvm/Support/YAMLParser.h"
+#include "llvm/Support/YAMLTraits.h"
+#include "ofp/header.h"
+
 namespace ofp {
 namespace yaml {
 

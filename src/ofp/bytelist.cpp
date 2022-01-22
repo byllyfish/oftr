@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/bytelist.h"
+
 #include <numeric>  // for iota
 
 using namespace ofp;

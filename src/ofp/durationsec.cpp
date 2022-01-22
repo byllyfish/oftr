@@ -2,7 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/durationsec.h"
+
 #include <iomanip>
+
 #include "llvm/Support/Format.h"
 
 using namespace ofp;

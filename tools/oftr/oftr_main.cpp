@@ -9,6 +9,7 @@
 #endif                    // LIBOFP_ENABLE_OPENSSL
 #if LIBOFP_ENABLE_JSONRPC
 #include <asio/version.hpp>
+
 #include "./oftr_jsonrpc.h"
 #endif  // LIBOFP_ENABLE_JSONRPC
 #if HAVE_LIBPCAP

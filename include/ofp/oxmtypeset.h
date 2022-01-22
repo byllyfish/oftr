@@ -5,6 +5,7 @@
 #define OFP_OXMTYPESET_H_
 
 #include <bitset>
+
 #include "ofp/oxmtype.h"
 
 namespace ofp {

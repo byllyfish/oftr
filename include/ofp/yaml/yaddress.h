@@ -4,12 +4,11 @@
 #ifndef OFP_YAML_YADDRESS_H_
 #define OFP_YAML_YADDRESS_H_
 
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/ipv4address.h"
 #include "ofp/ipv6address.h"
 #include "ofp/ipv6endpoint.h"
 #include "ofp/macaddress.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace llvm {
 namespace yaml {

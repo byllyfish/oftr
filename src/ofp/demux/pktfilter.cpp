@@ -2,7 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/pktfilter.h"
+
 #include <pcap/bpf.h>
+
 #include "ofp/log.h"
 
 using namespace ofp::demux;

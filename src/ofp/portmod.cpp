@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/portmod.h"
+
 #include "ofp/portmodproperty.h"
 #include "ofp/writable.h"
 

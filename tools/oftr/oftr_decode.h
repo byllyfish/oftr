@@ -5,6 +5,7 @@
 #define TOOLS_OFTR_OFTR_DECODE_H_
 
 #include <map>
+
 #include "./oftr.h"
 #include "ofp/messageinfo.h"
 #include "ofp/timestamp.h"

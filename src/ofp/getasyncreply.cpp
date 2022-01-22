@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/getasyncreply.h"
+
 #include "ofp/asyncconfigproperty.h"
 
 using namespace ofp;
