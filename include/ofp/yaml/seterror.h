@@ -4,7 +4,6 @@
 #ifndef OFP_YAML_SETERROR_H_
 #define OFP_YAML_SETERROR_H_
 
-//#include "ofp/yaml/yllvm.h"
 #include "llvm/Support/YAMLParser.h"
 #include "llvm/Support/YAMLTraits.h"
 
