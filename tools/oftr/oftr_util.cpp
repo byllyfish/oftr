@@ -2,7 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "./oftr_util.h"
+
 #include <vector>
+
 #include "ofp/byteorder.h"
 #include "ofp/constants.h"
 #include "ofp/padding.h"

@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <array>
+
 #include "ofp/types.h"
 
 namespace ofp {

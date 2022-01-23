@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+
 #include "ofp/oxmtype.h"  // so we can define lookupInfo().
 
 using namespace std;
@@ -262,6 +263,7 @@ static const char *PrereqFunctionPreamble =
 // process. Please make your changes to `ofp/oxmfields.tab`.
 
 #include <iostream>
+
 #include "ofp/oxmfields.h"
 #include "ofp/oxmlist.h"
 

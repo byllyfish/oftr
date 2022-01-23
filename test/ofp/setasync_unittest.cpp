@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/setasync.h"
+
 #include "ofp/asyncconfigproperty.h"
 #include "ofp/unittest.h"
 

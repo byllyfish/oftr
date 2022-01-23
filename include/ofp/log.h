@@ -36,26 +36,26 @@ inline void write_(llvm::raw_ostream &os, UInt8 value1) {
 }
 
 template <class Type, class... Args>
-void write_(llvm::raw_ostream &os, const Type &value1, const Args &... args) {
+void write_(llvm::raw_ostream &os, const Type &value1, const Args &...args) {
   os << value1 << ' ';
   write_(os, args...);
 }
 
 template <class... Args>
-void write_(llvm::raw_ostream &os, const char *value1, const Args &... args) {
+void write_(llvm::raw_ostream &os, const char *value1, const Args &...args) {
   os << value1 << ' ';
   write_(os, args...);
 }
 
 template <class... Args>
-void write_(llvm::raw_ostream &os, UInt8 value1, const Args &... args) {
+void write_(llvm::raw_ostream &os, UInt8 value1, const Args &...args) {
   // Print out UInt8 as an integer, not the char value.
   os << static_cast<int>(value1) << ' ';
   write_(os, args...);
 }
 
 template <class... Args>
-void write_(Level level, const Args &... args) {
+void write_(Level level, const Args &...args) {
 // Logging is disabled when building oxm helper tools.
 #if !defined(LIBOFP_LOGGING_DISABLED)
   std::string buf;
@@ -101,18 +101,18 @@ inline void trace_rpc(const char *type, UInt64 id, const void *data,
 }
 
 template <class... Args>
-[[noreturn]] inline void fatal(const char *msg, const Args &... args) {
+[[noreturn]] inline void fatal(const char *msg, const Args &...args) {
   detail::write_(Level::Fatal, msg, args...);
   std::abort();
 }
 
 template <class Ptr, class... Args>
-inline Ptr fatal_if_null(Ptr value, const Args &... args) {
+inline Ptr fatal_if_null(Ptr value, const Args &...args) {
   return (value == nullptr) ? fatal("fatal_if_null", args...), value : value;
 }
 
 template <class... Args>
-inline bool fatal_if_false(bool value, const Args &... args) {
+inline bool fatal_if_false(bool value, const Args &...args) {
   return !value ? fatal("fatal_if_false", args...), value : value;
 }
 

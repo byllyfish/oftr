@@ -4,10 +4,9 @@
 #ifndef OFP_YAML_YCONTROLLERMAXLEN_H_
 #define OFP_YAML_YCONTROLLERMAXLEN_H_
 
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/controllermaxlen.h"
 #include "ofp/yaml/enumconverter.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace llvm {
 namespace yaml {

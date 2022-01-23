@@ -2,7 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "./testagent.h"
+
 #include <iostream>
+
 #include "ofp/yaml/decoder.h"
 
 inline std::ostream &operator<<(std::ostream &os, llvm::StringRef s) {

@@ -5,6 +5,7 @@
 #define OFP_YAML_GETJSON_H_
 
 #include <istream>
+
 #include "ofp/types.h"
 
 namespace ofp {

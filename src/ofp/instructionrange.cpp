@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/instructionrange.h"
+
 #include "ofp/instructions.h"
 
 using namespace ofp;

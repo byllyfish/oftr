@@ -5,6 +5,7 @@
 #define OFP_RPC_FILTERTABLE_H_
 
 #include <vector>
+
 #include "ofp/rpc/filtertableentry.h"
 
 namespace ofp {

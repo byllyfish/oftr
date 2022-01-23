@@ -2,9 +2,11 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/timestamp.h"
+
 #include <ctime>  // for gmtime_r, gmtime_s
 #include <iomanip>
 #include <sstream>
+
 #include "llvm/Support/Format.h"
 #include "ofp/log.h"
 

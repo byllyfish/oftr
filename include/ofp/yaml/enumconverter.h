@@ -14,13 +14,11 @@ namespace detail {
 /// Return max storable integer value based on type's size in bytes.
 template <class Type>
 constexpr uint64_t MaxIntValue() {
-  return (sizeof(Type) == 1)
-             ? 0xffu
-             : (sizeof(Type) == 2)
-                   ? 0xffffu
-                   : (sizeof(Type) == 4)
-                         ? 0xffffffffu
-                         : (sizeof(Type) == 8) ? 0xffffffffffffffffu : 0;
+  return (sizeof(Type) == 1)   ? 0xffu
+         : (sizeof(Type) == 2) ? 0xffffu
+         : (sizeof(Type) == 4) ? 0xffffffffu
+         : (sizeof(Type) == 8) ? 0xffffffffffffffffu
+                               : 0;
 }
 
 }  // namespace detail

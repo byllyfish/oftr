@@ -2,7 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/smallbuffer.h"
+
 #include <numeric>
+
 #include "ofp/unittest.h"
 
 using namespace ofp;

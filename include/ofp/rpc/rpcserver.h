@@ -5,6 +5,7 @@
 #define OFP_RPC_RPCSERVER_H_
 
 #include <map>
+
 #include "ofp/datapathid.h"
 #include "ofp/driver.h"
 #include "ofp/rpc/filtertable.h"

@@ -5,9 +5,11 @@
 #define TOOLS_OFTR_OFTR_H_
 
 #include <unistd.h>
+
 #include <iostream>
 #include <string>
 #include <vector>
+
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/FileSystem.h"
 #include "ofp/ofp.h"

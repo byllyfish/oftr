@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcencoder.h"
+
 #include "ofp/unittest.h"
 
 using namespace ofp;

@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/packetoutv6.h"
+
 #include "ofp/message.h"
 
 using namespace ofp;

@@ -5,6 +5,7 @@
 #define OFP_OXMFULLTYPE_H_
 
 #include <vector>
+
 #include "ofp/oxmfields.h"
 #include "ofp/oxmtype.h"
 

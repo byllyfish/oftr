@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/rpc/rpcencoder.h"
+
 #include "ofp/rpc/rpcconnection.h"
 #include "ofp/yaml/seterror.h"
 

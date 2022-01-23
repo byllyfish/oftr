@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/flowremovedv6.h"
+
 #include "ofp/statbuilder.h"
 #include "ofp/unittest.h"
 

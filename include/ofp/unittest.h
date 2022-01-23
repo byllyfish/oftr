@@ -5,7 +5,9 @@
 #define OFP_UNITTEST_H_
 
 #include <gtest/gtest.h>
+
 #include <cstdio>
+
 #include "ofp/memorychannel.h"
 #include "ofp/oxmrange.h"
 #include "ofp/types.h"

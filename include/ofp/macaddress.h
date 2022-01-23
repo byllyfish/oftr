@@ -5,6 +5,7 @@
 #define OFP_MACADDRESS_H_
 
 #include <array>
+
 #include "ofp/hash.h"
 
 namespace ofp {

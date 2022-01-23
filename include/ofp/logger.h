@@ -5,6 +5,7 @@
 #define OFP_LOGGER_H_
 
 #include <mutex>
+
 #include "ofp/types.h"
 
 namespace llvm {

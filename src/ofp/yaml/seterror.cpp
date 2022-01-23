@@ -1,11 +1,11 @@
 // Copyright (c) 2015-2018 William W. Fisher (at gmail dot com)
 // This file is distributed under the MIT License.
 
-#include "ofp/yaml/yllvm.h"
+#include "ofp/yaml/seterror.h"
 
 #include "ofp/yaml/encoder.h"
-#include "ofp/yaml/seterror.h"
 #include "ofp/yaml/ycontext.h"
+#include "ofp/yaml/yllvm.h"
 
 static llvm::StringRef closestValue(llvm::StringRef name,
                                     const std::vector<llvm::StringRef> &vals) {

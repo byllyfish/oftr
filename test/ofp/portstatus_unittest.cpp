@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/portstatus.h"
+
 #include "ofp/message.h"
 #include "ofp/portproperty.h"
 #include "ofp/unittest.h"

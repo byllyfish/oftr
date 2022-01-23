@@ -4,8 +4,6 @@
 #ifndef OFP_YAML_YMATCH_H_
 #define OFP_YAML_YMATCH_H_
 
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/match.h"
 #include "ofp/matchbuilder.h"
 #include "ofp/yaml/encoder.h"
@@ -15,6 +13,7 @@
 #include "ofp/yaml/ybyteorder.h"
 #include "ofp/yaml/ydurationsec.h"
 #include "ofp/yaml/ylldpvalue.h"
+#include "ofp/yaml/yllvm.h"
 #include "ofp/yaml/yoxmfulltype.h"
 #include "ofp/yaml/yportnumber.h"
 #include "ofp/yaml/yvlannumber.h"

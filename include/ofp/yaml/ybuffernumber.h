@@ -4,10 +4,9 @@
 #ifndef OFP_YAML_YBUFFERNUMBER_H_
 #define OFP_YAML_YBUFFERNUMBER_H_
 
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/buffernumber.h"
 #include "ofp/yaml/enumconverter.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace llvm {
 namespace yaml {

@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/normalize.h"
+
 #include "ofp/actions.h"
 #include "ofp/experimenter.h"
 #include "ofp/featuresreply.h"

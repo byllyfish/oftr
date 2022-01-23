@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/originalmatch.h"
+
 #include "ofp/matchbuilder.h"
 #include "ofp/oxmfields.h"
 #include "ofp/unittest.h"
@@ -115,12 +116,17 @@ TEST(originalmatch, masks) {
       match.toString());
 }
 
-
 TEST(originalmatch, constructor) {
   OriginalMatch match1;
-  EXPECT_HEX("00000000000000000000000000000000000000000000000000000000000000000000000000000000", &match1, sizeof(match1));
+  EXPECT_HEX(
+      "000000000000000000000000000000000000000000000000000000000000000000000000"
+      "00000000",
+      &match1, sizeof(match1));
 
   OXMRange oxm;
   OriginalMatch match2{oxm};
-  EXPECT_HEX("003820FF000000000000000000000000000000000000000000000000000000000000000000000000", &match2, sizeof(match2));
+  EXPECT_HEX(
+      "003820FF0000000000000000000000000000000000000000000000000000000000000000"
+      "00000000",
+      &match2, sizeof(match2));
 }

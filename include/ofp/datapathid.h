@@ -5,6 +5,7 @@
 #define OFP_DATAPATHID_H_
 
 #include <array>
+
 #include "ofp/macaddress.h"
 
 namespace ofp {

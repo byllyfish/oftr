@@ -2,8 +2,11 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/demux/messagesource.h"
+
 #include <sys/stat.h>  // mkdir for debugWrite
-#include <fstream>     // for debugWrite
+
+#include <fstream>  // for debugWrite
+
 #include "ofp/demux/messageconvert.h"
 #include "ofp/demux/pktsource.h"
 #include "ofp/header.h"

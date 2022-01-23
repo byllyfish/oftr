@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/matchpacketbuilder.h"
+
 #include "ofp/matchpacket.h"  // for roundtrip testing
 #include "ofp/oxmfields.h"
 #include "ofp/oxmlist.h"

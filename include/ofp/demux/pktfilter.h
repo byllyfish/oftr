@@ -5,6 +5,7 @@
 #define OFP_DEMUX_PKTFILTER_H_
 
 #include <pcap/pcap.h>
+
 #include "ofp/byterange.h"
 
 namespace ofp {

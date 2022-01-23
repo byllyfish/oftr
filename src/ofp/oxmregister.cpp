@@ -2,7 +2,9 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/oxmregister.h"
+
 #include <sstream>
+
 #include "ofp/log.h"
 
 using namespace ofp;

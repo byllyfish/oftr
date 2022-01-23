@@ -5,6 +5,7 @@
 #define OFP_IPV4ADDRESS_H_
 
 #include <array>
+
 #include "ofp/hash.h"
 
 namespace ofp {

@@ -2,8 +2,11 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/libofp.h"
+
 #include <stdlib.h>
+
 #include <string>
+
 #include "ofp/log.h"
 #include "ofp/yaml/decoder.h"
 #include "ofp/yaml/encoder.h"

@@ -2,6 +2,7 @@
 // This file is distributed under the MIT License.
 
 #include "ofp/log.h"
+
 #include "ofp/unittest.h"
 
 static int always_signal = 0;

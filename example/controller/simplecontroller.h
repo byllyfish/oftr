@@ -5,6 +5,7 @@
 #define EXAMPLE_CONTROLLER_SIMPLECONTROLLER_H_
 
 #include <unordered_map>
+
 #include "ofp/ofp.h"
 
 namespace controller {

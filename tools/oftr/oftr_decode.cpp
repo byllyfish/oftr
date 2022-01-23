@@ -2,9 +2,12 @@
 // This file is distributed under the MIT License.
 
 #include "./oftr_decode.h"
+
 #include <fnmatch.h>  // for fnmatch()
+
 #include <fstream>
 #include <iostream>
+
 #include "./oftr_util.h"
 #include "llvm/Support/Path.h"
 #include "ofp/log.h"

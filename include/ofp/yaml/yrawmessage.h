@@ -4,9 +4,8 @@
 #ifndef OFP_YAML_YRAWMESSAGE_H_
 #define OFP_YAML_YRAWMESSAGE_H_
 
-#include "ofp/yaml/yllvm.h"
-
 #include "ofp/rawmessage.h"
+#include "ofp/yaml/yllvm.h"
 
 namespace llvm {
 namespace yaml {
