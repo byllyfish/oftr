@@ -82,28 +82,28 @@ void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
 
   async_write(next_layer(), asio::buffer(outgoing.data(), outgoing.size()),
               [this, id, handler](const asio::error_code &err,
-                                                  size_t bytes_transferred) {
-                    log_debug("Buffered::buf_flush handler called",
-                              bytes_transferred, std::make_pair("connid", id));
-                    if (!err) {
-                      assert(bytes_transferred == buffer_[!bufferIdx_].size());
+                                  size_t bytes_transferred) {
+                log_debug("Buffered::buf_flush handler called",
+                          bytes_transferred, std::make_pair("connid", id));
+                if (!err) {
+                  assert(bytes_transferred == buffer_[!bufferIdx_].size());
 
-                      isFlushing_ = false;
-                      buffer_[!bufferIdx_].clear();
-                      if (buffer_[bufferIdx_].size() > 0) {
-                        // Start another async write for the other output
-                        // buffer.
-                        buf_flush(id, handler);
-                      } else {
-                        // Call completion handler.
-                        handler(err);
-                      }
+                  isFlushing_ = false;
+                  buffer_[!bufferIdx_].clear();
+                  if (buffer_[bufferIdx_].size() > 0) {
+                    // Start another async write for the other output
+                    // buffer.
+                    buf_flush(id, handler);
+                  } else {
+                    // Call completion handler.
+                    handler(err);
+                  }
 
-                    } else {
-                      log_error("Buffered::buf_flush error", err);
-                      handler(err);
-                    }
-                  });
+                } else {
+                  log_error("Buffered::buf_flush error", err);
+                  handler(err);
+                }
+              });
 }
 
 template <class StreamType>

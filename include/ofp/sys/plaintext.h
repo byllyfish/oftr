@@ -28,7 +28,7 @@ class Plaintext : private StreamType, public asio::ssl::stream_base {
   using next_layer_type = inherited;
   using lowest_layer_type = typename inherited::lowest_layer_type;
   using executor_type = typename inherited::executor_type;
-  
+
   // Inherit constructors.
   using inherited::inherited;
 
