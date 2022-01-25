@@ -204,8 +204,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
   asio::async_read(
       socket_,
       asio::buffer(message_.mutableDataResized(sizeof(Header)), sizeof(Header)),
-      make_custom_alloc_handler(
-          allocator_, [this, self](const asio::error_code &err, size_t length) {
+          [this, self](const asio::error_code &err, size_t length) {
             log_debug("asyncReadHeader callback",
                       std::make_pair("connid", connectionId()), err);
             if (!err) {
@@ -253,7 +252,7 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
               channelDown();
               shutdown();
             }
-          }));
+          });
 }
 
 template <class SocketType>
@@ -274,8 +273,6 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
       socket_,
       asio::buffer(message_.mutableDataResized(msgLength) + sizeof(Header),
                    msgLength - sizeof(Header)),
-      make_custom_alloc_handler(
-          allocator_,
           [this, self](const asio::error_code &err, size_t bytes_transferred) {
             log_debug("asyncReadMessage callback",
                       std::make_pair("connid", connectionId()), err);
@@ -297,7 +294,7 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
               }
               channelDown();
             }
-          }));
+          });
 }
 
 template <class SocketType>

@@ -6,7 +6,6 @@
 
 #include "ofp/rpc/rpcconnection.h"
 #include "ofp/sys/asio_utils.h"
-#include "ofp/sys/handler_allocator.h"
 
 namespace ofp {
 namespace rpc {
@@ -29,7 +28,6 @@ class RpcConnectionUnix final : public RpcConnection {
   asio::streambuf streambuf_;
   Big32 hdrBuf_;
   std::string eventBuf_;
-  sys::handler_allocator allocator_;
 
   // Use a two buffer strategy for async-writes. We queue up data in one
   // buffer while we're in the process of writing the other buffer.

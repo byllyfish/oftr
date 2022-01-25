@@ -6,7 +6,6 @@
 
 #include "ofp/bytelist.h"
 #include "ofp/sys/asio_utils.h"
-#include "ofp/sys/handler_allocator.h"
 
 namespace ofp {
 namespace sys {
@@ -20,6 +19,7 @@ class Buffered : private StreamType {
  public:
   using next_layer_type = inherited;
   using lowest_layer_type = typename inherited::lowest_layer_type;
+  using executor_type = typename inherited::executor_type;
 
   // using inherited::inherited;
 
@@ -62,7 +62,6 @@ class Buffered : private StreamType {
   // Use a two buffer strategy for async-writes. We queue up data in one
   // growable buffer while we're in the process of flushing the other buffer.
   ByteList buffer_[2];
-  handler_allocator allocator_;
   int bufferIdx_ = 0;
   bool isFlushing_ = false;
 };
@@ -82,8 +81,7 @@ void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
   log::trace_msg("Write", id, outgoing.data(), outgoing.size());
 
   async_write(next_layer(), asio::buffer(outgoing.data(), outgoing.size()),
-              make_custom_alloc_handler(
-                  allocator_, [this, id, handler](const asio::error_code &err,
+              [this, id, handler](const asio::error_code &err,
                                                   size_t bytes_transferred) {
                     log_debug("Buffered::buf_flush handler called",
                               bytes_transferred, std::make_pair("connid", id));
@@ -105,7 +103,7 @@ void Buffered<StreamType>::buf_flush(UInt64 id, CompletionHandler &&handler) {
                       log_error("Buffered::buf_flush error", err);
                       handler(err);
                     }
-                  }));
+                  });
 }
 
 template <class StreamType>

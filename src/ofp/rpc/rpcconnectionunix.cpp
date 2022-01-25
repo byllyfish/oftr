@@ -112,8 +112,7 @@ void RpcConnectionUnix::asyncReadHeader() {
 
   asio::async_read(
       sock_, asio::buffer(&hdrBuf_, sizeof(hdrBuf_)),
-      make_custom_alloc_handler(
-          allocator_, [this, self](const asio::error_code &err, size_t length) {
+      [this, self](const asio::error_code &err, size_t length) {
             log_debug("rpc::asyncReadHeader callback", err);
             if (!err) {
               assert(length == sizeof(hdrBuf_));
@@ -137,7 +136,7 @@ void RpcConnectionUnix::asyncReadHeader() {
 
               log_error("RPC readHeader error", err);
             }
-          }));
+          });
 }
 
 void RpcConnectionUnix::asyncReadMessage(size_t msgLength) {
@@ -148,8 +147,7 @@ void RpcConnectionUnix::asyncReadMessage(size_t msgLength) {
   eventBuf_.resize(msgLength);
   asio::async_read(
       sock_, asio::buffer(eventBuf_),
-      make_custom_alloc_handler(
-          allocator_, [this, self](const asio::error_code &err, size_t length) {
+      [this, self](const asio::error_code &err, size_t length) {
             log_debug("rpc::asyncReadMessage callback", err, length);
             if (!err) {
               // assert(length == msgLength);
@@ -164,7 +162,7 @@ void RpcConnectionUnix::asyncReadMessage(size_t msgLength) {
 
               log_error("RPC readMessage error", err);
             }
-          }));
+          });
 }
 
 void RpcConnectionUnix::asyncWrite() {

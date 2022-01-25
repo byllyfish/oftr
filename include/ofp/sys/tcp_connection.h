@@ -10,7 +10,6 @@
 #include "ofp/sys/buffered.h"
 #include "ofp/sys/connection.h"
 #include "ofp/sys/engine.h"
-#include "ofp/sys/handler_allocator.h"
 #include "ofp/types.h"
 
 namespace ofp {
@@ -52,7 +51,6 @@ class TCP_Connection
  private:
   Message message_;
   Buffered<SocketType> socket_;
-  handler_allocator allocator_;
 
   enum {
     // Bytes allowed before we must flush buffer.
