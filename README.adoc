@@ -226,7 +226,7 @@ This software is licensed under the terms of the *MIT License*.
 *oftr* relies on the following third-party source code (static linked):
 
 * http://llvm.org/docs/YamlIO.html[yamlio] from the http://llvm.org[llvm] project
-* https://github.com/byllyfish/asio.git[asio] (forked to support boringssl)
+* https://github.com/chriskohlhoff/asio[asio]
 * https://boringssl.googlesource.com/boringssl[boringssl]
 
 For unit tests, *oftr* uses googletest:
