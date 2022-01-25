@@ -22,6 +22,7 @@ void throw_exception(const Exception &e) {
   std::terminate();
 }
 
+template void throw_exception(const std::system_error &);
 template void throw_exception(const std::length_error &);
 template void throw_exception(const std::logic_error &);
 
