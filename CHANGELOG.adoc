@@ -1,5 +1,14 @@
 = Changelog
 
+== Version 0.59 (26 January 2022)
+
+- Update to latest asio.
+- Update boringssl and googletest submodules.
+- Use Github Actions for continuous integration.
+- Fix compiler warnings from latest C++ compilers.
+- Deprecate ctypes tests.
+- Port Python scripts to Python3.
+
 == Version 0.58 (18 April 2019)
 
 - Use alternate form of async_accept asio call (Fixes TLS/asio issue.)
