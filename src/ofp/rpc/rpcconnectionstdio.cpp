@@ -114,34 +114,32 @@ void RpcConnectionStdio::asyncReadLine() {
 void RpcConnectionStdio::asyncReadHeader() {
   auto self(this->shared_from_this());
 
-  asio::async_read(
-      input_, asio::buffer(&hdrBuf_, sizeof(hdrBuf_)),
-      make_custom_alloc_handler(
-          allocator_, [this, self](const asio::error_code &err, size_t length) {
-            log_debug("rpc::asyncReadHeader callback", err);
-            if (!err) {
-              assert(length == sizeof(hdrBuf_));
+  asio::async_read(input_, asio::buffer(&hdrBuf_, sizeof(hdrBuf_)),
+                   [this, self](const asio::error_code &err, size_t length) {
+                     log_debug("rpc::asyncReadHeader callback", err);
+                     if (!err) {
+                       assert(length == sizeof(hdrBuf_));
 
-              UInt32 tagLen = hdrBuf_;
-              UInt8 tag = tagLen & 0x00FFu;
-              UInt32 len = (tagLen >> 8);
+                       UInt32 tagLen = hdrBuf_;
+                       UInt8 tag = tagLen & 0x00FFu;
+                       UInt32 len = (tagLen >> 8);
 
-              if (tag != RPC_EVENT_BINARY_TAG) {
-                log_error("RPC invalid header:", UInt32_cast(tag));
-                rpcRequestInvalid("RPC invalid header");
-              } else if (len > RPC_MAX_MESSAGE_SIZE) {
-                log_error("RPC request is too big:", len);
-                rpcRequestInvalid("RPC request is too big");
-              } else {
-                asyncReadMessage(len);
-              }
+                       if (tag != RPC_EVENT_BINARY_TAG) {
+                         log_error("RPC invalid header:", UInt32_cast(tag));
+                         rpcRequestInvalid("RPC invalid header");
+                       } else if (len > RPC_MAX_MESSAGE_SIZE) {
+                         log_error("RPC request is too big:", len);
+                         rpcRequestInvalid("RPC request is too big");
+                       } else {
+                         asyncReadMessage(len);
+                       }
 
-            } else {
-              assert(err);
+                     } else {
+                       assert(err);
 
-              log_error("RPC readHeader error", err);
-            }
-          }));
+                       log_error("RPC readHeader error", err);
+                     }
+                   });
 }
 
 void RpcConnectionStdio::asyncReadMessage(size_t msgLength) {
@@ -150,25 +148,24 @@ void RpcConnectionStdio::asyncReadMessage(size_t msgLength) {
   log_debug("rpc::asyncReadMessage:", msgLength, "bytes");
 
   eventBuf_.resize(msgLength);
-  asio::async_read(
-      input_, asio::buffer(eventBuf_),
-      make_custom_alloc_handler(
-          allocator_, [this, self](const asio::error_code &err, size_t length) {
-            log_debug("rpc::asyncReadMessage callback", err, length);
-            if (!err) {
-              // assert(length == msgLength);
-              assert(eventBuf_.size() == length);
+  asio::async_read(input_, asio::buffer(eventBuf_),
+                   [this, self](const asio::error_code &err, size_t length) {
+                     log_debug("rpc::asyncReadMessage callback", err, length);
+                     if (!err) {
+                       // assert(length == msgLength);
+                       assert(eventBuf_.size() == length);
 
-              log::trace_rpc("Read RPC", 0, eventBuf_.data(), eventBuf_.size());
-              handleEvent(eventBuf_);
-              asyncReadHeader();
+                       log::trace_rpc("Read RPC", 0, eventBuf_.data(),
+                                      eventBuf_.size());
+                       handleEvent(eventBuf_);
+                       asyncReadHeader();
 
-            } else {
-              assert(err);
+                     } else {
+                       assert(err);
 
-              log_error("RPC readMessage error", err);
-            }
-          }));
+                       log_error("RPC readMessage error", err);
+                     }
+                   });
 }
 
 void RpcConnectionStdio::asyncWrite() {

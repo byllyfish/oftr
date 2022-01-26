@@ -204,56 +204,55 @@ void TCP_Connection<SocketType>::asyncReadHeader() {
   asio::async_read(
       socket_,
       asio::buffer(message_.mutableDataResized(sizeof(Header)), sizeof(Header)),
-      make_custom_alloc_handler(
-          allocator_, [this, self](const asio::error_code &err, size_t length) {
-            log_debug("asyncReadHeader callback",
-                      std::make_pair("connid", connectionId()), err);
-            if (!err) {
-              assert(length == sizeof(Header));
-              const Header *hdr = message_.header();
+      [this, self](const asio::error_code &err, size_t length) {
+        log_debug("asyncReadHeader callback",
+                  std::make_pair("connid", connectionId()), err);
+        if (!err) {
+          assert(length == sizeof(Header));
+          const Header *hdr = message_.header();
 
-              UInt8 negotiatedVersion =
-                  (flags() & kPermitsOtherVersions) ? 0 : version();
+          UInt8 negotiatedVersion =
+              (flags() & kPermitsOtherVersions) ? 0 : version();
 
-              if (hdr->validateInput(negotiatedVersion)) {
-                // The header has passed our rudimentary validation checks.
-                UInt16 msgLength = hdr->length();
+          if (hdr->validateInput(negotiatedVersion)) {
+            // The header has passed our rudimentary validation checks.
+            UInt16 msgLength = hdr->length();
 
-                if (msgLength == sizeof(Header)) {
-                  postMessage(&message_);
-                  if (socket_.is_open()) {
-                    asyncReadHeader();
-                  } else {
-                    // Rare: postMessage() closed the socket forcefully.
-                    channelDown();
-                  }
-
-                } else {
-                  asyncReadMessage(msgLength);
-                }
+            if (msgLength == sizeof(Header)) {
+              postMessage(&message_);
+              if (socket_.is_open()) {
+                asyncReadHeader();
               } else {
-                // The header failed our rudimentary validation checks.
-                log_debug("asyncReadHeader header validation failed",
-                          std::make_pair("connid", connectionId()));
+                // Rare: postMessage() closed the socket forcefully.
                 channelDown();
-                engine()->alert(this, "Invalid OpenFlow message header",
-                                {hdr, sizeof(*hdr)});
               }
 
             } else {
-              assert(err);
-
-              if (err != asio::error::eof &&
-                  err != asio::error::operation_aborted &&
-                  err != asio::error::connection_reset) {
-                log_error("asyncReadHeader error",
-                          std::make_pair("connid", connectionId()), err);
-              }
-
-              channelDown();
-              shutdown();
+              asyncReadMessage(msgLength);
             }
-          }));
+          } else {
+            // The header failed our rudimentary validation checks.
+            log_debug("asyncReadHeader header validation failed",
+                      std::make_pair("connid", connectionId()));
+            channelDown();
+            engine()->alert(this, "Invalid OpenFlow message header",
+                            {hdr, sizeof(*hdr)});
+          }
+
+        } else {
+          assert(err);
+
+          if (err != asio::error::eof &&
+              err != asio::error::operation_aborted &&
+              err != asio::error::connection_reset) {
+            log_error("asyncReadHeader error",
+                      std::make_pair("connid", connectionId()), err);
+          }
+
+          channelDown();
+          shutdown();
+        }
+      });
 }
 
 template <class SocketType>
@@ -274,30 +273,28 @@ void TCP_Connection<SocketType>::asyncReadMessage(size_t msgLength) {
       socket_,
       asio::buffer(message_.mutableDataResized(msgLength) + sizeof(Header),
                    msgLength - sizeof(Header)),
-      make_custom_alloc_handler(
-          allocator_,
-          [this, self](const asio::error_code &err, size_t bytes_transferred) {
-            log_debug("asyncReadMessage callback",
-                      std::make_pair("connid", connectionId()), err);
-            if (!err) {
-              assert(bytes_transferred == message_.size() - sizeof(Header));
+      [this, self](const asio::error_code &err, size_t bytes_transferred) {
+        log_debug("asyncReadMessage callback",
+                  std::make_pair("connid", connectionId()), err);
+        if (!err) {
+          assert(bytes_transferred == message_.size() - sizeof(Header));
 
-              postMessage(&message_);
-              if (socket_.is_open()) {
-                asyncReadHeader();
-              } else {
-                // Rare: postMessage() closed the socket forcefully.
-                channelDown();
-              }
+          postMessage(&message_);
+          if (socket_.is_open()) {
+            asyncReadHeader();
+          } else {
+            // Rare: postMessage() closed the socket forcefully.
+            channelDown();
+          }
 
-            } else {
-              if (err != asio::error::eof) {
-                log_info("asyncReadMessage error",
-                         std::make_pair("connid", connectionId()), err);
-              }
-              channelDown();
-            }
-          }));
+        } else {
+          if (err != asio::error::eof) {
+            log_info("asyncReadMessage error",
+                     std::make_pair("connid", connectionId()), err);
+          }
+          channelDown();
+        }
+      });
 }
 
 template <class SocketType>

@@ -4,7 +4,7 @@
 	branch = main
 [submodule "external/asio"]
 	path = external/asio
-	url = https://github.com/byllyfish/asio.git
+	url = https://github.com/chriskohlhoff/asio
 [submodule "external/boringssl"]
 	path = external/boringssl
 	url = https://boringssl.googlesource.com/boringssl
