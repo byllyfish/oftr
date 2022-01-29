@@ -3,7 +3,7 @@ Section: devel
 Priority: optional
 Standards-Version: 3.9.7
 Maintainer: William W. Fisher <william.w.fisher@gmail.com>
-Build-Depends: cmake, python, golang, libpcap-dev
+Build-Depends: cmake, python3, golang, libpcap-dev
 Homepage: https://github.com/byllyfish/oftr
 
 Package: oftr
