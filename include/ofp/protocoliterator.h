@@ -166,13 +166,14 @@ class ProtocolIterator {
     return pos_ >= rhs.pos_;
   }
 
- private:
-  const UInt8 *pos_;
-
   // Only a ProtocolRange or ProtocolList can construct a ProtocolIterator.
+  // (Treat as private: moved here for compatibility with gcc 7.5.0)
   explicit ProtocolIterator(const UInt8 *pos) : pos_{pos} {
     assert(IsPtrAligned(pos, Alignment));
   }
+
+ private:
+  const UInt8 *pos_;
 
   static size_t itemCount(const ByteRange &range) {
     return detail::ProtocolRangeItemCount(sizeof(ElemType), range, SizeOffset,
